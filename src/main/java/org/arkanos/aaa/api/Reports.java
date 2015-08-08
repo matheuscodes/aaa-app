@@ -1,6 +1,10 @@
 package org.arkanos.aaa.api;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,11 +35,50 @@ public class Reports extends HttpServlet {
 		if(!to_parse.endsWith("/")) to_parse += "/";
 		
 		to_parse = to_parse.replaceAll("/reports/", "");
-		System.out.println(to_parse.substring(0, to_parse.indexOf("/")));
-		to_parse = to_parse.substring(to_parse.indexOf("/")+1);
-		System.out.println(to_parse.substring(0, to_parse.indexOf("/")));
-		to_parse = to_parse.substring(to_parse.indexOf("/")+1);
-		System.out.println(to_parse.substring(0, to_parse.indexOf("/")));
+		if(to_parse.substring(0, to_parse.indexOf("/")).equals("monthly")){
+			to_parse = to_parse.substring(to_parse.indexOf("/")+1);
+			int year = Integer.parseInt(to_parse.substring(0, to_parse.indexOf("/")));
+			to_parse = to_parse.substring(to_parse.indexOf("/")+1);
+			int month = Integer.parseInt(to_parse.substring(0, to_parse.indexOf("/")));
+			to_parse = to_parse.substring(to_parse.indexOf("/")+1);
+			
+			GregorianCalendar gc = new GregorianCalendar();
+			gc.clear();
+			gc.set(Calendar.YEAR, year);
+			gc.set(Calendar.MONTH, month-1);
+			gc.set(Calendar.DATE,1);
+			System.out.println(gc.getTime());
+			int week_start = gc.get(Calendar.WEEK_OF_YEAR);
+			System.out.println(week_start);
+			
+			gc.clear();
+			gc.set(Calendar.YEAR, year);
+			gc.set(Calendar.MONTH, month);
+			gc.set(Calendar.DATE,0);
+			System.out.println(gc.getTime());
+			int week_end = gc.get(Calendar.WEEK_OF_YEAR);
+			System.out.println(week_end);
+			
+			gc.clear();
+			gc.set(Calendar.YEAR, year);
+			gc.set(Calendar.WEEK_OF_YEAR,week_start);
+			Date start = gc.getTime();
+			
+			gc.clear();
+			gc.set(Calendar.YEAR, year);
+			gc.set(Calendar.WEEK_OF_YEAR,week_end+1);
+			gc.roll(Calendar.DATE, -1);
+			Date end = gc.getTime();
+			
+			System.out.println(start);
+			System.out.println(end);
+			
+		}
+		//TODO throw error, treat exceptions
+		
+		//System.out.println(to_parse.substring(0, to_parse.indexOf("/")));
+		//to_parse = to_parse.substring(to_parse.indexOf("/")+1);
+		//System.out.println(to_parse.substring(0, to_parse.indexOf("/")));
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
