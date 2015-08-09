@@ -1,6 +1,7 @@
 package org.arkanos.aaa.api;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -67,11 +68,13 @@ public class Reports extends HttpServlet {
 			gc.clear();
 			gc.set(Calendar.YEAR, year);
 			gc.set(Calendar.WEEK_OF_YEAR,week_end+1);
-			gc.roll(Calendar.DATE, -1);
 			Date end = gc.getTime();
+					
+			SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd");
 			
-			System.out.println(start);
-			System.out.println(end);
+			System.out.println(format.format(start));
+			System.out.println(format.format(end));
+			
 			
 		}
 		//TODO throw error, treat exceptions
