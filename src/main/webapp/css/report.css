@@ -1,0 +1,22 @@
+.day {
+	width: 14.28%;
+	float: left;
+}
+
+.week {
+	float: left;
+}
+
+.week-title{
+	float: left;
+	width: 100%;
+	text-align: right;
+}
+
+.week-title h2{
+	float: right;
+}
+
+.week-title p{
+	float: right;
+}

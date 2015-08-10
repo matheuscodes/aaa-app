@@ -32,6 +32,7 @@ public class Reports extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String json = "";
 		String to_parse = request.getRequestURI();
 		if(!to_parse.endsWith("/")) to_parse += "/";
 		
@@ -43,22 +44,20 @@ public class Reports extends HttpServlet {
 			int month = Integer.parseInt(to_parse.substring(0, to_parse.indexOf("/")));
 			to_parse = to_parse.substring(to_parse.indexOf("/")+1);
 			
+			//TODO error if there is still BS in the URI.
+			
 			GregorianCalendar gc = new GregorianCalendar();
 			gc.clear();
 			gc.set(Calendar.YEAR, year);
 			gc.set(Calendar.MONTH, month-1);
 			gc.set(Calendar.DATE,1);
-			System.out.println(gc.getTime());
 			int week_start = gc.get(Calendar.WEEK_OF_YEAR);
-			System.out.println(week_start);
 			
 			gc.clear();
 			gc.set(Calendar.YEAR, year);
 			gc.set(Calendar.MONTH, month);
 			gc.set(Calendar.DATE,0);
-			System.out.println(gc.getTime());
 			int week_end = gc.get(Calendar.WEEK_OF_YEAR);
-			System.out.println(week_end);
 			
 			gc.clear();
 			gc.set(Calendar.YEAR, year);
@@ -66,15 +65,26 @@ public class Reports extends HttpServlet {
 			Date start = gc.getTime();
 			
 			gc.clear();
-			gc.set(Calendar.YEAR, year);
+			if(week_start < week_end){
+				gc.set(Calendar.YEAR, year);
+			}
+			else {
+				gc.set(Calendar.YEAR, year+1);
+			}
 			gc.set(Calendar.WEEK_OF_YEAR,week_end+1);
 			Date end = gc.getTime();
 					
-			SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd");
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			
 			System.out.println(format.format(start));
 			System.out.println(format.format(end));
 			
+			json += "{";
+			json += "\"start\":\""+format.format(start)+"\",";
+			json += "\"end\":\""+format.format(end)+"\",";
+			json += "\"week_start\":"+week_start+",";
+			json += "\"week_end\":"+week_end+",";
+			json += "\"response\":200}";
 			
 		}
 		//TODO throw error, treat exceptions
@@ -82,7 +92,8 @@ public class Reports extends HttpServlet {
 		//System.out.println(to_parse.substring(0, to_parse.indexOf("/")));
 		//to_parse = to_parse.substring(to_parse.indexOf("/")+1);
 		//System.out.println(to_parse.substring(0, to_parse.indexOf("/")));
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		response.getWriter().append(json);
+		response.addHeader("Content-Type", "application/json");
 	}
 
 	/**
