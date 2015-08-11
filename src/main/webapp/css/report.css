@@ -3,7 +3,7 @@ body{
 }
 
 .skip_header{
-	height:45pt;
+	height:44.5pt;
 	float:left;
 	width:100%;
 }
@@ -19,29 +19,38 @@ body{
 
 .label{
 	float:left;
-	font-size: 9pt;
 	width: 100%;
 	border-bottom: 1pt solid #000;
+	font-size: 8pt;
+	padding: 0 0 0 5pt;
+	margin: 0;
 }
 
 .label p{
-	float:left;
+	height: 10pt;
+	padding: 0;
 	margin: 0;
-	height:10pt;
-	text-align:right;
-	width:40%;
 }
 
-.label div{
-	float:right;
-	width:50%;
+.label table{
+	width:100%;
+	font-size: 8pt;
+}
+
+.label .text{
+	width:30%;
 	text-align:right;
-	height:10pt;
-	padding: 0 5pt 0 0;
+	font-size: 8pt;
+}
+
+.label .text p{
 	border-bottom: 1pt dotted #000;
+	height:10pt;
+	padding: 0 10pt 0 0;
+	margin: 0;
 }
 
-.label div:nth-last-child(1){
+.label .text p:nth-last-child(1){
 	border-bottom: none;
 }
 
@@ -64,12 +73,17 @@ body{
 .day:nth-child(7n+1){	
 	border-left: none;
 }
+
 .day {
 	width: 13.8%;
 	border-left: 1pt dotted #000;
 	border-bottom: 1pt dotted #000;
 	float: left;
 	height: 10pt;
+}
+
+.end{
+	border-bottom: 1pt solid #000 !important;
 }
 
 .week:nth-child(2) {

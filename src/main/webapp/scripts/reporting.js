@@ -56,21 +56,48 @@ function buildMonthlyReport(download){
 	html += "</div>"
 	document.body.innerHTML = html;
 	
+	html = document.getElementById("labels").innerHTML;
+	html += "<div id='warmup' class='label'>"
+	html += "<p>warmup</p>";
+	html += "</div>";
+	document.getElementById("labels").innerHTML = html;
+	current = new Date(download.start);
+	week = download.week_start;
+	while(current < stop){
+		html = document.getElementById("week-data-"+week).innerHTML;
+		for(i = 0; i < 7;i++){
+			html += "<div class='day end";
+			if(i > 4) html += " weekend";
+			if(current.getMonth() + 1 != download.month) html += " offtime";
+			html += "'>";
+			if(download.arrow_counts.warmup[current.toJSON().substring(0,10)]){
+				html += download.arrow_counts.warmup[current.toJSON().substring(0,10)];
+			}
+			else{
+				html += " ";
+			}
+			html += "</div>";
+			current.setDate(current.getDate() + 1);
+		}
+		console.log(week+","+current);
+		document.getElementById("week-data-"+week).innerHTML = html;
+		week++;				
+	}
 	
-	for(var distance in download.arrow_counts){
-		
+	
+	
+	for(var distance in download.arrow_counts){		
 		if(distance != 'warmup' && distance != 'warmout'){
 			html = document.getElementById("labels").innerHTML;
 			html += "<div id='counts-"+distance+"' class='label'>"
-			html += "<p>"+distance+" m</p>";
 			html += "</div>";
 			document.getElementById("labels").innerHTML = html;
+			var label = "";
+			label += "<table cellspacing='0' cellpadding='0'><tr>"
+			label += "<td class='text'><p>"+distance+" m</p></td>";
+			label += "<td class='text'>";
 			for(var type in download.arrow_counts[distance]){
-				
-				html = document.getElementById("counts-"+distance).innerHTML;
-				html += "<div>"+type+"</div>";
-				document.getElementById("counts-"+distance).innerHTML = html;
-				
+				label += "<p>"+type+"</p>";
 				current = new Date(download.start);
 				week = download.week_start;
 				while(current < stop){
@@ -89,12 +116,50 @@ function buildMonthlyReport(download){
 						html += "</div>";
 						current.setDate(current.getDate() + 1);
 					}
-					console.log(week+","+current);
 					document.getElementById("week-data-"+week).innerHTML = html;
 					week++;				
 				}
 			}
+			for(var i = download.week_start;i < week; i++){
+				var element = document.getElementById('week-data-'+i).getElementsByClassName('day');
+				var length = element.length;
+				for(j = 0; j < 7; j++){
+					element[length-1-j]['className'] += " end";
+				}
+			}
+			label += "</td>";
+			label += "</table></tr>"
+			document.getElementById("counts-"+distance).innerHTML = label;
 		}
 	}
 	
+	html = document.getElementById("labels").innerHTML;
+	html += "<div id='warmout' class='label'>"
+	html += "<p>warmout</p>";
+	html += "</div>";
+	document.getElementById("labels").innerHTML = html;
+	current = new Date(download.start);
+	week = download.week_start;
+	while(current < stop){
+		html = document.getElementById("week-data-"+week).innerHTML;
+		for(i = 0; i < 7;i++){
+			html += "<div class='day end";
+			if(i > 4) html += " weekend";
+			if(current.getMonth() + 1 != download.month) html += " offtime";
+			html += "'>";
+			if(download.arrow_counts.warmout[current.toJSON().substring(0,10)]){
+				html += download.arrow_counts.warmout[current.toJSON().substring(0,10)];
+			}
+			else{
+				html += " ";
+			}
+			html += "</div>";
+			current.setDate(current.getDate() + 1);
+		}
+		console.log(week+","+current);
+		document.getElementById("week-data-"+week).innerHTML = html;
+		week++;				
+	}
+	
+	document.body.innerHTML += "<img src='/img/seasons/2015/summer' style='padding:10pt 0' width='100%'/>";
 }
