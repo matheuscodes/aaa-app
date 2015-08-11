@@ -35,7 +35,7 @@ function buildMonthlyReport(download){
 		html += "<div class='week' style='width:"+width+"%'>";
 		
 		html += "<div class='week-title'>"
-		html += "<h2>"+week+"</h2><p>Wochen-Nr.</p>";
+		html += "<h2>"+week+"</h2><p>week_number</p>";
 		html += "</div>";
 
 		html += "<div class='days'>"
@@ -87,7 +87,7 @@ function buildMonthlyReport(download){
 	
 	
 	for(var distance in download.arrow_counts){		
-		if(distance != 'warmup' && distance != 'warmout'){
+		if(!isNaN(distance)){
 			html = document.getElementById("labels").innerHTML;
 			html += "<div id='counts-"+distance+"' class='label'>"
 			html += "</div>";
@@ -149,6 +149,62 @@ function buildMonthlyReport(download){
 			html += "'>";
 			if(download.arrow_counts.warmout[current.toJSON().substring(0,10)]){
 				html += download.arrow_counts.warmout[current.toJSON().substring(0,10)];
+			}
+			else{
+				html += " ";
+			}
+			html += "</div>";
+			current.setDate(current.getDate() + 1);
+		}
+		console.log(week+","+current);
+		document.getElementById("week-data-"+week).innerHTML = html;
+		week++;				
+	}
+	
+	html = document.getElementById("labels").innerHTML;
+	html += "<div id='technique_totals' class='label'>"
+	html += "<p>technique_totals</p>";
+	html += "</div>";
+	document.getElementById("labels").innerHTML = html;
+	current = new Date(download.start);
+	week = download.week_start;
+	while(current < stop){
+		html = document.getElementById("week-data-"+week).innerHTML;
+		for(i = 0; i < 7;i++){
+			html += "<div class='day end";
+			if(i > 4) html += " weekend";
+			if(current.getMonth() + 1 != download.month) html += " offtime";
+			html += "'>";
+			if(download.arrow_counts.technique_totals[current.toJSON().substring(0,10)]){
+				html += download.arrow_counts.technique_totals[current.toJSON().substring(0,10)];
+			}
+			else{
+				html += " ";
+			}
+			html += "</div>";
+			current.setDate(current.getDate() + 1);
+		}
+		console.log(week+","+current);
+		document.getElementById("week-data-"+week).innerHTML = html;
+		week++;				
+	}
+	
+	html = document.getElementById("labels").innerHTML;
+	html += "<div id='totals' class='label'>"
+	html += "<p>totals</p>";
+	html += "</div>";
+	document.getElementById("labels").innerHTML = html;
+	current = new Date(download.start);
+	week = download.week_start;
+	while(current < stop){
+		html = document.getElementById("week-data-"+week).innerHTML;
+		for(i = 0; i < 7;i++){
+			html += "<div class='day end";
+			if(i > 4) html += " weekend";
+			if(current.getMonth() + 1 != download.month) html += " offtime";
+			html += " summary'>";
+			if(download.arrow_counts.totals[current.toJSON().substring(0,10)]){
+				html += download.arrow_counts.totals[current.toJSON().substring(0,10)];
 			}
 			else{
 				html += " ";

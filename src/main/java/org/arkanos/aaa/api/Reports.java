@@ -87,8 +87,11 @@ public class Reports extends HttpServlet {
 			
 			HashMap<Integer,HashMap<String,HashMap<String,Integer>>> distance_type = new HashMap<Integer,HashMap<String,HashMap<String,Integer>>>();
 			HashMap<String,HashMap<String,Integer>> technique_days = new HashMap<String,HashMap<String,Integer>>();
+			HashMap<String,Integer> technique_totals = new HashMap<String,Integer>();
+			HashMap<String,Integer> totals = new HashMap<String,Integer>();
+			
 			try{
-				
+				//TODO optimise calling the same thing all the time via variables (e.g. sdf.format).
 				//SELECT SUM(arrows) as arrows,date,type FROM aaa.training_technique WHERE archer='arkanos' AND type != 'target' AND date >= '2015-07-27' AND date < '2015-09-07' GROUP BY date,type;
 				ResultSet rs = Database.query("SELECT SUM(arrows) as arrows,date,type FROM aaa.training_technique WHERE archer='arkanos' AND type != 'target' AND date >= '"+sdf.format(start)+"' AND date < '"+sdf.format(end)+"' GROUP BY date,type;");
 				while(rs.next()){
@@ -98,6 +101,18 @@ public class Reports extends HttpServlet {
 						technique_days.put(rs.getString("type"),parent);
 					}
 					parent.put(sdf.format(rs.getDate("date")), rs.getInt("arrows"));
+					if(technique_totals.get(sdf.format(rs.getDate("date"))) == null){
+						technique_totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows"));
+					}
+					else{
+						technique_totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows") + technique_totals.get(sdf.format(rs.getDate("date"))));
+					}
+					if(totals.get(sdf.format(rs.getDate("date"))) == null){
+						totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows"));
+					}
+					else{
+						totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows") + totals.get(sdf.format(rs.getDate("date"))));
+					}
 				}
 				rs.close();
 				
@@ -115,6 +130,18 @@ public class Reports extends HttpServlet {
 						grandparent.put(rs.getString("type"),parent);
 					}
 					parent.put(sdf.format(rs.getDate("date")), rs.getInt("arrows"));
+					if(technique_totals.get(sdf.format(rs.getDate("date"))) == null){
+						technique_totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows"));
+					}
+					else{
+						technique_totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows") + technique_totals.get(sdf.format(rs.getDate("date"))));
+					}
+					if(totals.get(sdf.format(rs.getDate("date"))) == null){
+						totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows"));
+					}
+					else{
+						totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows") + totals.get(sdf.format(rs.getDate("date"))));
+					}
 				}
 				rs.close();
 				
@@ -132,6 +159,12 @@ public class Reports extends HttpServlet {
 						grandparent.put("gauged",parent);
 					}
 					parent.put(sdf.format(rs.getDate("date")), rs.getInt("arrows"));
+					if(totals.get(sdf.format(rs.getDate("date"))) == null){
+						totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows"));
+					}
+					else{
+						totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows") + totals.get(sdf.format(rs.getDate("date"))));
+					}
 				}
 				rs.close();
 				
@@ -175,9 +208,24 @@ public class Reports extends HttpServlet {
 				json += "},";
 			}
 			
+			json += "\"technique_totals\":";
+			json += "{";
+			for(String d: technique_totals.keySet()){
+				json += "\""+d+"\":"+technique_totals.get(d)+",";
+			}
 			if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
+			json += "},";
+			
+			json += "\"totals\":";
+			json += "{";
+			for(String d: totals.keySet()){
+				json += "\""+d+"\":"+totals.get(d)+",";
+			}
+			if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
+			json += "}";
 			
 			json += "},";
+			
 			
 			json += "\"start\":\""+sdf.format(start)+"\",";
 			json += "\"end\":\""+sdf.format(end)+"\",";
