@@ -81,11 +81,14 @@ public class Reports extends HttpServlet {
 			Date end = gc.getTime();
 					
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			
+
 			System.out.println(sdf.format(start));
 			System.out.println(sdf.format(end));
 			
 			HashMap<Integer,HashMap<String,HashMap<String,Integer>>> distance_type = new HashMap<Integer,HashMap<String,HashMap<String,Integer>>>();
+			HashMap<Integer,HashMap<String,HashMap<Integer,HashMap<String,Integer>>>> results = new HashMap<Integer,HashMap<String,HashMap<Integer,HashMap<String,Integer>>>>();
+			HashMap<Integer,HashMap<String,HashMap<String,Float>>> averages = new HashMap<Integer,HashMap<String,HashMap<String,Float>>>();
+			
 			HashMap<String,HashMap<String,Integer>> technique_days = new HashMap<String,HashMap<String,Integer>>();
 			HashMap<String,Integer> technique_totals = new HashMap<String,Integer>();
 			HashMap<String,Integer> totals = new HashMap<String,Integer>();
@@ -169,6 +172,64 @@ public class Reports extends HttpServlet {
 				rs.close();
 				
 				
+				//SELECT date,distance,class,id,AVG(value) FROM aaa.training_target LEFT JOIN arrow ON id = training_id GROUP BY id;
+				HashMap<String,Integer> result_order = new HashMap<String,Integer>();
+				rs = Database.query("SELECT date,distance,class,id,SUM(value) as result FROM training_target LEFT JOIN arrow ON id = training_id WHERE archer='arkanos' AND date >= '"+sdf.format(start)+"' AND date < '"+sdf.format(end)+"' GROUP BY id;");
+				while(rs.next()){
+					int distance = rs.getInt("distance");
+					String classs = rs.getString("class");
+					String date = sdf.format(rs.getDate("date"));
+					int result = rs.getInt("result");
+					
+					
+					HashMap<String,HashMap<Integer,HashMap<String,Integer>>> greatgrandparent = results.get(distance);
+					if(greatgrandparent == null){
+						greatgrandparent = new HashMap<String,HashMap<Integer,HashMap<String,Integer>>>();
+						results.put(distance,greatgrandparent);
+					}
+					HashMap<Integer, HashMap<String, Integer>> grandparent = greatgrandparent.get(classs);
+					if(grandparent == null){
+						grandparent = new HashMap<Integer, HashMap<String, Integer>>();
+						greatgrandparent.put(classs,grandparent);
+					}
+					
+					/**ID to order magic**/
+					Integer order = result_order.get(distance+classs+date);
+					if(order == null){
+						order = 1;
+					}
+					
+					result_order.put(distance+classs+date,order++);
+					
+					HashMap<String,Integer> parent = grandparent.get(order);
+					if(parent == null){
+						parent = new HashMap<String,Integer>();
+						grandparent.put(order,parent);
+					}
+					parent.put(date,result);
+				}
+				rs.close();
+				
+				rs = Database.query("SELECT date,distance,class,id,AVG(value) AS average FROM training_target LEFT JOIN arrow ON id = training_id WHERE archer='arkanos' AND date >= '"+sdf.format(start)+"' AND date < '"+sdf.format(end)+"' GROUP BY date,class;");
+				while(rs.next()){
+					int distance = rs.getInt("distance");
+					String classs = rs.getString("class");
+					String date = sdf.format(rs.getDate("date"));
+					float result = rs.getFloat("average");
+					//TODO make all above look like this in variables.
+					
+					HashMap<String,HashMap<String,Float>> grandparent = averages.get(distance);
+					if(grandparent == null){
+						grandparent = new HashMap<String,HashMap<String,Float>>();
+						averages.put(distance,grandparent);
+					}
+					HashMap<String, Float> parent = grandparent.get(classs);
+					if(parent == null){
+						parent = new HashMap<String, Float>();
+						grandparent.put(classs,parent);
+					}
+					parent.put(date,result);
+				}
 			}
 			catch(SQLException e){
 				//TODO
@@ -205,6 +266,35 @@ public class Reports extends HttpServlet {
 					json += "},";
 				}
 				if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
+				json += "},";
+			}
+
+			for(Integer di: results.keySet()){
+				json += "\""+di+"\":";
+				json += "{";
+				for(String c: results.get(di).keySet()){
+					json += "\""+c+"\":";
+					json += "{";
+					for(int o: results.get(di).get(c).keySet()){
+						json += "\""+o+"\":";
+						json += "{";
+						for(String d: results.get(di).get(c).get(o).keySet()){
+							json += "\""+d+"\":"+results.get(di).get(c).get(d)+",";
+						}
+						if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
+						json += "},";
+					}
+					if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
+					json += "},";
+
+					json += "\"0\":";
+					json += "{";
+					for(String d: averages.get(di).get(c).keySet()){
+						json += "\""+d+"\":"+averages.get(di).get(c).get(d)+",";
+					}
+					if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
+					json += "}";
+				}
 				json += "},";
 			}
 			

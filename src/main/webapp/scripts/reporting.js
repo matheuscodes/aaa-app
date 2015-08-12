@@ -87,7 +87,7 @@ function buildMonthlyReport(download){
 	
 	
 	for(var distance in download.arrow_counts){		
-		if(!isNaN(distance)){
+		if(!isNaN(distance)){ 
 			html = document.getElementById("labels").innerHTML;
 			html += "<div id='counts-"+distance+"' class='label'>"
 			html += "</div>";
