@@ -93,6 +93,9 @@ public class Reports extends HttpServlet {
 			HashMap<String,Integer> technique_totals = new HashMap<String,Integer>();
 			HashMap<String,Integer> totals = new HashMap<String,Integer>();
 			
+			HashMap<String,Integer> gauged_trainings = new HashMap<String,Integer>();
+			HashMap<String,Float> average_sum = new HashMap<String,Float>();
+			
 			try{
 				//TODO optimise calling the same thing all the time via variables (e.g. sdf.format).
 				//SELECT SUM(arrows) as arrows,date,type FROM aaa.training_technique WHERE archer='arkanos' AND type != 'target' AND date >= '2015-07-27' AND date < '2015-09-07' GROUP BY date,type;
@@ -229,6 +232,19 @@ public class Reports extends HttpServlet {
 						grandparent.put(classs,parent);
 					}
 					parent.put(date,result);
+					
+					if(gauged_trainings.get(date) == null){
+						gauged_trainings.put(date, 1);
+					}
+					else{
+						gauged_trainings.put(date, gauged_trainings.get(date)+1);
+					}
+					if(average_sum.get(date) == null){
+						average_sum.put(date, result);
+					}
+					else{
+						average_sum.put(date, result + totals.get(date));
+					}
 				}
 			}
 			catch(SQLException e){
@@ -269,6 +285,26 @@ public class Reports extends HttpServlet {
 				json += "},";
 			}
 
+			json += "\"technique_totals\":";
+			json += "{";
+			for(String d: technique_totals.keySet()){
+				json += "\""+d+"\":"+technique_totals.get(d)+",";
+			}
+			if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
+			json += "},";
+			
+			json += "\"totals\":";
+			json += "{";
+			for(String d: totals.keySet()){
+				json += "\""+d+"\":"+totals.get(d)+",";
+			}
+			if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
+			json += "}";
+			
+			json += "},";
+			
+			json += "\"results\":";
+			json += "{";
 			for(Integer di: results.keySet()){
 				json += "\""+di+"\":";
 				json += "{";
@@ -297,25 +333,16 @@ public class Reports extends HttpServlet {
 				}
 				json += "},";
 			}
-			
-			json += "\"technique_totals\":";
-			json += "{";
-			for(String d: technique_totals.keySet()){
-				json += "\""+d+"\":"+technique_totals.get(d)+",";
-			}
 			if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
 			json += "},";
 			
-			json += "\"totals\":";
+			json += "\"result_totals\":";
 			json += "{";
-			for(String d: totals.keySet()){
-				json += "\""+d+"\":"+totals.get(d)+",";
+			for(String d: gauged_trainings.keySet()){
+				json += "\""+d+"\":"+(average_sum.get(d)/gauged_trainings.get(d))+",";
 			}
 			if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
-			json += "}";
-			
 			json += "},";
-			
 			
 			json += "\"start\":\""+sdf.format(start)+"\",";
 			json += "\"end\":\""+sdf.format(end)+"\",";
