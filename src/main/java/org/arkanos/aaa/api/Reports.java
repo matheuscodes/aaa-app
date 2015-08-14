@@ -3,11 +3,15 @@ package org.arkanos.aaa.api;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -202,14 +206,16 @@ public class Reports extends HttpServlet {
 						order = 1;
 					}
 					
-					result_order.put(distance+classs+date,order++);
-					
+					result_order.put(distance+classs+date,order);
 					HashMap<String,Integer> parent = grandparent.get(order);
 					if(parent == null){
 						parent = new HashMap<String,Integer>();
 						grandparent.put(order,parent);
 					}
+					order += 1;
+					System.out.println("httm... "+result);
 					parent.put(date,result);
+					System.out.println("huum... "+parent.get(date));
 				}
 				rs.close();
 				
@@ -243,7 +249,7 @@ public class Reports extends HttpServlet {
 						average_sum.put(date, result);
 					}
 					else{
-						average_sum.put(date, result + totals.get(date));
+						average_sum.put(date, result + average_sum.get(date));
 					}
 				}
 			}
@@ -315,14 +321,12 @@ public class Reports extends HttpServlet {
 						json += "\""+o+"\":";
 						json += "{";
 						for(String d: results.get(di).get(c).get(o).keySet()){
-							json += "\""+d+"\":"+results.get(di).get(c).get(d)+",";
+							json += "\""+d+"\":"+results.get(di).get(c).get(o).get(d)+",";
 						}
 						if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
 						json += "},";
 					}
-					if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
-					json += "},";
-
+					
 					json += "\"0\":";
 					json += "{";
 					for(String d: averages.get(di).get(c).keySet()){
@@ -330,11 +334,13 @@ public class Reports extends HttpServlet {
 					}
 					if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
 					json += "}";
+					
+					json += "},";					
 				}
+				
+				if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
 				json += "},";
 			}
-			if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
-			json += "},";
 			
 			json += "\"result_totals\":";
 			json += "{";
@@ -342,6 +348,8 @@ public class Reports extends HttpServlet {
 				json += "\""+d+"\":"+(average_sum.get(d)/gauged_trainings.get(d))+",";
 			}
 			if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
+			json += "}";
+			
 			json += "},";
 			
 			json += "\"start\":\""+sdf.format(start)+"\",";

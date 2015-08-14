@@ -2,6 +2,8 @@ body{
 	font-family:arial;
 }
 
+
+
 .skip_header{
 	height:44.5pt;
 	float:left;
@@ -52,6 +54,17 @@ body{
 
 .label .text p:nth-last-child(1){
 	border-bottom: none;
+	float:right;
+}
+
+.classes{
+	float: left;
+	border: none !important;
+}
+
+.individual_results{
+	float: right;
+	width: 40%;
 }
 
 .header_day {
@@ -72,6 +85,10 @@ body{
 
 .summary{
 	background-color: #EEEEEE;
+	font-weight: bold;
+}
+
+.subtotal{
 	font-weight: bold;
 }
 
