@@ -384,7 +384,7 @@ public class Reports extends HttpServlet {
 			
 			json += "},";
 			
-			json += "\"result_totals\":";
+			json += "\"weekly\":";
 			json += "{";
 			
 			for(int i = week_start; i <= week_end;i++){

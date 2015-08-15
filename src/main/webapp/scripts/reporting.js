@@ -171,7 +171,7 @@ function buildMonthlyReport(download){
 	while(current < stop){
 		html = document.getElementById("week-data-"+week).innerHTML;
 		for(i = 0; i < 7;i++){
-			html += "<div class='day end";
+			html += "<div class='day end subtotal";
 			if(i > 4) html += " weekend";
 			if(current.getMonth() + 1 != download.month) html += " offtime";
 			html += "'>";
@@ -215,6 +215,38 @@ function buildMonthlyReport(download){
 		console.log(week+","+current);
 		document.getElementById("week-data-"+week).innerHTML = html;
 		week++;				
+	}
+	
+	html = document.getElementById("labels").innerHTML;
+	html += "<div id='weekly_technique' class='label'>"
+	html += "<p>weekly_technique</p>";
+	html += "</div>";
+	document.getElementById("labels").innerHTML = html;
+	for(week in download.weekly){
+		html = document.getElementById("week-data-"+week).innerHTML;
+		html += "<div class='week-summary end";
+		html += " '>";
+		if(download.weekly[week].total){
+			html += download.weekly[week].technique_total;
+		}
+		html += "</div>";
+		document.getElementById("week-data-"+week).innerHTML = html;
+	}
+	
+	html = document.getElementById("labels").innerHTML;
+	html += "<div id='weekly_technique' class='label'>"
+	html += "<p>weekly_total</p>";
+	html += "</div>";
+	document.getElementById("labels").innerHTML = html;
+	for(week in download.weekly){
+		html = document.getElementById("week-data-"+week).innerHTML;
+		html += "<div class='week-summary end";
+		html += " '>";
+		if(download.weekly[week].total){
+			html += download.weekly[week].total;
+		}
+		html += "</div>";
+		document.getElementById("week-data-"+week).innerHTML = html;
 	}
 	
 	
@@ -307,8 +339,6 @@ function buildMonthlyReport(download){
 		}
 	}
 	
-	
-	
 	html = document.getElementById("labels").innerHTML;
 	html += "<div id='result_totals' class='label'>"
 	html += "<p>result_totals</p>";
@@ -335,6 +365,22 @@ function buildMonthlyReport(download){
 		console.log(week+","+current);
 		document.getElementById("week-data-"+week).innerHTML = html;
 		week++;				
+	}
+	
+	html = document.getElementById("labels").innerHTML;
+	html += "<div id='weekly_technique' class='label'>"
+	html += "<p>weekly_technique</p>";
+	html += "</div>";
+	document.getElementById("labels").innerHTML = html;
+	for(week in download.weekly){
+		html = document.getElementById("week-data-"+week).innerHTML;
+		html += "<div class='week-summary end";
+		html += " summary'>";
+		if(download.weekly[week].result_total){
+			html += (10-download.weekly[week].result_total).toPrecision(3);
+		}
+		html += "</div>";
+		document.getElementById("week-data-"+week).innerHTML = html;
 	}
 	
 	document.body.innerHTML += "<img src='/img/seasons/2015/summer' style='padding:10pt 0' width='100%'/>";

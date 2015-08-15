@@ -104,6 +104,14 @@ body{
 	height: 10pt;
 }
 
+.week-summary {
+	width: 100%;
+	border: none;
+	float: left;
+	height: 10pt;
+	font-weight: bold;
+}
+
 .end{
 	border-bottom: 1pt solid #000 !important;
 }
