@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -86,9 +87,6 @@ public class Reports extends HttpServlet {
 					
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-			System.out.println(sdf.format(start));
-			System.out.println(sdf.format(end));
-			
 			HashMap<Integer,HashMap<String,HashMap<String,Integer>>> distance_type = new HashMap<Integer,HashMap<String,HashMap<String,Integer>>>();
 			HashMap<Integer,HashMap<String,HashMap<Integer,HashMap<String,Integer>>>> results = new HashMap<Integer,HashMap<String,HashMap<Integer,HashMap<String,Integer>>>>();
 			HashMap<Integer,HashMap<String,HashMap<String,Float>>> averages = new HashMap<Integer,HashMap<String,HashMap<String,Float>>>();
@@ -99,6 +97,14 @@ public class Reports extends HttpServlet {
 			
 			HashMap<String,Integer> gauged_trainings = new HashMap<String,Integer>();
 			HashMap<String,Float> average_sum = new HashMap<String,Float>();
+			
+
+			/** WEEKLY STUFF **/
+			int[] weekly_results = new int[week_end - week_start +1];
+			float[] weekly_sum = new float[week_end - week_start +1];
+			int[] weekly_training = new int[week_end - week_start +1];
+			int[] weekly_totals = new int[week_end - week_start +1];
+			//TODO initialize
 			
 			try{
 				//TODO optimise calling the same thing all the time via variables (e.g. sdf.format).
@@ -252,6 +258,32 @@ public class Reports extends HttpServlet {
 						average_sum.put(date, result + average_sum.get(date));
 					}
 				}
+				
+				
+				
+				try {
+					for(String d: technique_totals.keySet()){
+						gc.clear();
+						gc.setTime(sdf.parse(d));
+						weekly_training[gc.get(Calendar.WEEK_OF_YEAR)-week_start] += technique_totals.get(d);
+					}
+					for(String d: totals.keySet()){
+						gc.clear();
+						gc.setTime(sdf.parse(d));
+						weekly_totals[gc.get(Calendar.WEEK_OF_YEAR)-week_start] += totals.get(d);
+					}
+					for(String d: gauged_trainings.keySet()){
+						gc.clear();
+						gc.setTime(sdf.parse(d));
+						weekly_sum[gc.get(Calendar.WEEK_OF_YEAR)-week_start] += (average_sum.get(d)/gauged_trainings.get(d));
+						weekly_results[gc.get(Calendar.WEEK_OF_YEAR)-week_start]++;
+					}
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
 			}
 			catch(SQLException e){
 				//TODO
@@ -349,6 +381,21 @@ public class Reports extends HttpServlet {
 			}
 			if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
 			json += "}";
+			
+			json += "},";
+			
+			json += "\"result_totals\":";
+			json += "{";
+			
+			for(int i = week_start; i <= week_end;i++){
+				json += "\""+i+"\":";
+				json += "{";
+				json += "\"technique_total\":"+weekly_training[i-week_start]+",";
+				if(weekly_results[i-week_start] > 0) json += "\"result_total\":"+(weekly_sum[i-week_start]/weekly_results[i-week_start])+",";
+				json += "\"total\":"+weekly_totals[i-week_start];
+				json += "},";
+			}
+			if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
 			
 			json += "},";
 			

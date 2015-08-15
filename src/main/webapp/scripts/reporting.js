@@ -233,32 +233,34 @@ function buildMonthlyReport(download){
 				console.log(classes);
 				console.log(download.results);
 				for(var order in download.results[distance][classes]){
-					label += "<p class='individual_results'>"+order+"</p>";
-					current = new Date(download.start);
-					week = download.week_start;
-					while(current < stop){
-						html = document.getElementById("week-data-"+week).innerHTML;
-						for(i = 0; i < 7;i++){
-							html += "<div class='day";
-							if(i > 4) html += " weekend";
-							if(current.getMonth() + 1 != download.month) html += " offtime";
-							html += "'>";
-							console.log(download.results[distance][classes]);
-							if(download.results[distance][classes][order][current.toJSON().substring(0,10)]){
-								html += download.results[distance][classes][order][current.toJSON().substring(0,10)];
+					if(order != 0){
+						label += "<p class='individual_results'>"+order+"</p>";
+						current = new Date(download.start);
+						week = download.week_start;
+						while(current < stop){
+							html = document.getElementById("week-data-"+week).innerHTML;
+							for(i = 0; i < 7;i++){
+								html += "<div class='day";
+								if(i > 4) html += " weekend";
+								if(current.getMonth() + 1 != download.month) html += " offtime";
+								html += "'>";
+								console.log(download.results[distance][classes]);
+								if(download.results[distance][classes][order][current.toJSON().substring(0,10)]){
+									html += download.results[distance][classes][order][current.toJSON().substring(0,10)];
+								}
+								else{
+									html += " ";
+								}
+								html += "</div>";
+								current.setDate(current.getDate() + 1);
 							}
-							else{
-								html += " ";
-							}
-							html += "</div>";
-							current.setDate(current.getDate() + 1);
+							document.getElementById("week-data-"+week).innerHTML = html;
+							week++;				
 						}
-						document.getElementById("week-data-"+week).innerHTML = html;
-						week++;				
 					}
 				}
 				
-				label += "<p> overall </p>";
+				label += "<p> average_inacurracy </p>";
 				
 				current = new Date(download.start);
 				week = download.week_start;
@@ -271,7 +273,7 @@ function buildMonthlyReport(download){
 						html += "'>";
 						console.log(download.results[distance][classes]);
 						if(download.results[distance][classes][0][current.toJSON().substring(0,10)]){
-							html += download.results[distance][classes][0][current.toJSON().substring(0,10)].toPrecision(3);
+							html += (10-download.results[distance][classes][0][current.toJSON().substring(0,10)]).toPrecision(3);
 						}
 						else{
 							html += " ";
