@@ -229,7 +229,8 @@ function buildMonthlyReport(download){
 		if(download.weekly[week].total){
 			html += download.weekly[week].technique_total;
 		}
-		html += "</div>";
+		/**Dummies not to break the CSS child rule**/
+		html += "</div><div></div><div></div><div></div><div></div><div></div><div></div>";
 		document.getElementById("week-data-"+week).innerHTML = html;
 	}
 	
@@ -245,7 +246,8 @@ function buildMonthlyReport(download){
 		if(download.weekly[week].total){
 			html += download.weekly[week].total;
 		}
-		html += "</div>";
+		/**Dummies not to break the CSS child rule**/
+		html += "</div><div></div><div></div><div></div><div></div><div></div><div></div>";
 		document.getElementById("week-data-"+week).innerHTML = html;
 	}
 	
@@ -369,7 +371,7 @@ function buildMonthlyReport(download){
 	
 	html = document.getElementById("labels").innerHTML;
 	html += "<div id='weekly_technique' class='label'>"
-	html += "<p>weekly_technique</p>";
+	html += "<p>weekly_inacurracy</p>";
 	html += "</div>";
 	document.getElementById("labels").innerHTML = html;
 	for(week in download.weekly){
