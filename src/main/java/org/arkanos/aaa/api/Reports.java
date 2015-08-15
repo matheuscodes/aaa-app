@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.arkanos.aaa.controllers.Database;
+import org.arkanos.aaa.controllers.ReportData;
 
 /**
  * Servlet implementation class Reports
@@ -85,236 +86,40 @@ public class Reports extends HttpServlet {
 			gc.set(Calendar.WEEK_OF_YEAR,week_end+1);
 			Date end = gc.getTime();
 					
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-			HashMap<Integer,HashMap<String,HashMap<String,Integer>>> distance_type = new HashMap<Integer,HashMap<String,HashMap<String,Integer>>>();
-			HashMap<Integer,HashMap<String,HashMap<Integer,HashMap<String,Integer>>>> results = new HashMap<Integer,HashMap<String,HashMap<Integer,HashMap<String,Integer>>>>();
-			HashMap<Integer,HashMap<String,HashMap<String,Float>>> averages = new HashMap<Integer,HashMap<String,HashMap<String,Float>>>();
-			
-			HashMap<String,HashMap<String,Integer>> technique_days = new HashMap<String,HashMap<String,Integer>>();
-			HashMap<String,Integer> technique_totals = new HashMap<String,Integer>();
-			HashMap<String,Integer> totals = new HashMap<String,Integer>();
-			
-			HashMap<String,Integer> gauged_trainings = new HashMap<String,Integer>();
-			HashMap<String,Float> average_sum = new HashMap<String,Float>();
-			
-
-			/** WEEKLY STUFF **/
-			int[] weekly_results = new int[week_end - week_start +1];
-			float[] weekly_sum = new float[week_end - week_start +1];
-			int[] weekly_training = new int[week_end - week_start +1];
-			int[] weekly_totals = new int[week_end - week_start +1];
-			//TODO initialize
-			
-			try{
-				//TODO optimise calling the same thing all the time via variables (e.g. sdf.format).
-				//SELECT SUM(arrows) as arrows,date,type FROM aaa.training_technique WHERE archer='arkanos' AND type != 'target' AND date >= '2015-07-27' AND date < '2015-09-07' GROUP BY date,type;
-				ResultSet rs = Database.query("SELECT SUM(arrows) as arrows,date,type FROM aaa.training_technique WHERE archer='arkanos' AND type != 'target' AND date >= '"+sdf.format(start)+"' AND date < '"+sdf.format(end)+"' GROUP BY date,type;");
-				while(rs.next()){
-					HashMap<String,Integer> parent = technique_days.get(rs.getString("type"));
-					if(parent == null){
-						parent = new HashMap<String,Integer>();
-						technique_days.put(rs.getString("type"),parent);
-					}
-					parent.put(sdf.format(rs.getDate("date")), rs.getInt("arrows"));
-					if(technique_totals.get(sdf.format(rs.getDate("date"))) == null){
-						technique_totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows"));
-					}
-					else{
-						technique_totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows") + technique_totals.get(sdf.format(rs.getDate("date"))));
-					}
-					if(totals.get(sdf.format(rs.getDate("date"))) == null){
-						totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows"));
-					}
-					else{
-						totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows") + totals.get(sdf.format(rs.getDate("date"))));
-					}
-				}
-				rs.close();
-				
-				//SELECT SUM(arrows) as arrows,distance,date,type FROM aaa.training_technique WHERE archer='arkanos' AND date >= '2015-07-27' AND date < '2015-09-07' GROUP BY distance,date,type;
-				rs = Database.query("SELECT SUM(arrows) as arrows,distance,date,type FROM aaa.training_technique WHERE archer='arkanos' AND type = 'target' AND date >= '"+sdf.format(start)+"' AND date < '"+sdf.format(end)+"' GROUP BY distance,date,type;");
-				while(rs.next()){
-					HashMap<String,HashMap<String,Integer>> grandparent = distance_type.get(rs.getInt("distance"));
-					if(grandparent == null){
-						grandparent = new HashMap<String,HashMap<String,Integer>>();
-						distance_type.put(rs.getInt("distance"),grandparent);
-					}
-					HashMap<String,Integer> parent = grandparent.get(rs.getString("type"));
-					if(parent == null){
-						parent = new HashMap<String,Integer>();
-						grandparent.put(rs.getString("type"),parent);
-					}
-					parent.put(sdf.format(rs.getDate("date")), rs.getInt("arrows"));
-					if(technique_totals.get(sdf.format(rs.getDate("date"))) == null){
-						technique_totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows"));
-					}
-					else{
-						technique_totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows") + technique_totals.get(sdf.format(rs.getDate("date"))));
-					}
-					if(totals.get(sdf.format(rs.getDate("date"))) == null){
-						totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows"));
-					}
-					else{
-						totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows") + totals.get(sdf.format(rs.getDate("date"))));
-					}
-				}
-				rs.close();
-				
-				//SELECT COUNT(value) as total_arrows,date,distance FROM arrow LEFT JOIN training_target ON id = training_id WHERE archer='arkanos' GROUP BY date,distance;
-				rs = Database.query("SELECT COUNT(value) as arrows,date,distance FROM arrow LEFT JOIN training_target ON id = training_id WHERE archer='arkanos' AND date >= '"+sdf.format(start)+"' AND date < '"+sdf.format(end)+"' GROUP BY date,distance;");
-				while(rs.next()){
-					HashMap<String,HashMap<String,Integer>> grandparent = distance_type.get(rs.getInt("distance"));
-					if(grandparent == null){
-						grandparent = new HashMap<String,HashMap<String,Integer>>();
-						distance_type.put(rs.getInt("distance"),grandparent);
-					}
-					HashMap<String,Integer> parent = grandparent.get("gauged");
-					if(parent == null){
-						parent = new HashMap<String,Integer>();
-						grandparent.put("gauged",parent);
-					}
-					parent.put(sdf.format(rs.getDate("date")), rs.getInt("arrows"));
-					if(totals.get(sdf.format(rs.getDate("date"))) == null){
-						totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows"));
-					}
-					else{
-						totals.put(sdf.format(rs.getDate("date")), rs.getInt("arrows") + totals.get(sdf.format(rs.getDate("date"))));
-					}
-				}
-				rs.close();
-				
-				
-				//SELECT date,distance,class,id,AVG(value) FROM aaa.training_target LEFT JOIN arrow ON id = training_id GROUP BY id;
-				HashMap<String,Integer> result_order = new HashMap<String,Integer>();
-				rs = Database.query("SELECT date,distance,class,id,SUM(value) as result FROM training_target LEFT JOIN arrow ON id = training_id WHERE archer='arkanos' AND date >= '"+sdf.format(start)+"' AND date < '"+sdf.format(end)+"' GROUP BY id;");
-				while(rs.next()){
-					int distance = rs.getInt("distance");
-					String classs = rs.getString("class");
-					String date = sdf.format(rs.getDate("date"));
-					int result = rs.getInt("result");
-					
-					
-					HashMap<String,HashMap<Integer,HashMap<String,Integer>>> greatgrandparent = results.get(distance);
-					if(greatgrandparent == null){
-						greatgrandparent = new HashMap<String,HashMap<Integer,HashMap<String,Integer>>>();
-						results.put(distance,greatgrandparent);
-					}
-					HashMap<Integer, HashMap<String, Integer>> grandparent = greatgrandparent.get(classs);
-					if(grandparent == null){
-						grandparent = new HashMap<Integer, HashMap<String, Integer>>();
-						greatgrandparent.put(classs,grandparent);
-					}
-					
-					/**ID to order magic**/
-					Integer order = result_order.get(distance+classs+date);
-					if(order == null){
-						order = 1;
-					}
-					
-					result_order.put(distance+classs+date,order);
-					HashMap<String,Integer> parent = grandparent.get(order);
-					if(parent == null){
-						parent = new HashMap<String,Integer>();
-						grandparent.put(order,parent);
-					}
-					order += 1;
-					System.out.println("httm... "+result);
-					parent.put(date,result);
-					System.out.println("huum... "+parent.get(date));
-				}
-				rs.close();
-				
-				rs = Database.query("SELECT date,distance,class,id,AVG(value) AS average FROM training_target LEFT JOIN arrow ON id = training_id WHERE archer='arkanos' AND date >= '"+sdf.format(start)+"' AND date < '"+sdf.format(end)+"' GROUP BY date,class;");
-				while(rs.next()){
-					int distance = rs.getInt("distance");
-					String classs = rs.getString("class");
-					String date = sdf.format(rs.getDate("date"));
-					float result = rs.getFloat("average");
-					//TODO make all above look like this in variables.
-					
-					HashMap<String,HashMap<String,Float>> grandparent = averages.get(distance);
-					if(grandparent == null){
-						grandparent = new HashMap<String,HashMap<String,Float>>();
-						averages.put(distance,grandparent);
-					}
-					HashMap<String, Float> parent = grandparent.get(classs);
-					if(parent == null){
-						parent = new HashMap<String, Float>();
-						grandparent.put(classs,parent);
-					}
-					parent.put(date,result);
-					
-					if(gauged_trainings.get(date) == null){
-						gauged_trainings.put(date, 1);
-					}
-					else{
-						gauged_trainings.put(date, gauged_trainings.get(date)+1);
-					}
-					if(average_sum.get(date) == null){
-						average_sum.put(date, result);
-					}
-					else{
-						average_sum.put(date, result + average_sum.get(date));
-					}
-				}
-				
-				
-				
-				try {
-					for(String d: technique_totals.keySet()){
-						gc.clear();
-						gc.setTime(sdf.parse(d));
-						weekly_training[gc.get(Calendar.WEEK_OF_YEAR)-week_start] += technique_totals.get(d);
-					}
-					for(String d: totals.keySet()){
-						gc.clear();
-						gc.setTime(sdf.parse(d));
-						weekly_totals[gc.get(Calendar.WEEK_OF_YEAR)-week_start] += totals.get(d);
-					}
-					for(String d: gauged_trainings.keySet()){
-						gc.clear();
-						gc.setTime(sdf.parse(d));
-						weekly_sum[gc.get(Calendar.WEEK_OF_YEAR)-week_start] += (average_sum.get(d)/gauged_trainings.get(d));
-						weekly_results[gc.get(Calendar.WEEK_OF_YEAR)-week_start]++;
-					}
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				
+			ReportData.Season season = null;
+			ReportData.DailyReport report = null;
+			try {
+				season = ReportData.compileSeasonData(start, "arkanos");
+				report = ReportData.compileDailyReport(start,end,"arkanos");
 			}
 			catch(SQLException e){
 				//TODO
 				e.printStackTrace();
 			}
-			
-			
-			
+			//TODO move JSON generation to ReportData objects.
 			json += "{";
 			
 			json += "\"arrow_counts\":";
 
 			json += "{";
-			for(String t: technique_days.keySet()){
+			for(String t: report.technique_days.keySet()){
 				json += "\""+t+"\":";
 				json += "{";
-				for(String d: technique_days.get(t).keySet()){
-					json += "\""+d+"\":"+technique_days.get(t).get(d)+",";
+				for(String d: report.technique_days.get(t).keySet()){
+					json += "\""+d+"\":"+report.technique_days.get(t).get(d)+",";
 				}
 				if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
 				json += "},";
 			}
 			
-			for(Integer di: distance_type.keySet()){
+			for(Integer di: report.distance_type.keySet()){
 				json += "\""+di+"\":";
 				json += "{";
-				for(String t: distance_type.get(di).keySet()){
+				for(String t: report.distance_type.get(di).keySet()){
 					json += "\""+t+"\":";
 					json += "{";
-					for(String d: distance_type.get(di).get(t).keySet()){
-						json += "\""+d+"\":"+distance_type.get(di).get(t).get(d)+",";
+					for(String d: report.distance_type.get(di).get(t).keySet()){
+						json += "\""+d+"\":"+report.distance_type.get(di).get(t).get(d)+",";
 					}
 					if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
 					json += "},";
@@ -325,16 +130,16 @@ public class Reports extends HttpServlet {
 
 			json += "\"technique_totals\":";
 			json += "{";
-			for(String d: technique_totals.keySet()){
-				json += "\""+d+"\":"+technique_totals.get(d)+",";
+			for(String d: report.technique_totals.keySet()){
+				json += "\""+d+"\":"+report.technique_totals.get(d)+",";
 			}
 			if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
 			json += "},";
 			
 			json += "\"totals\":";
 			json += "{";
-			for(String d: totals.keySet()){
-				json += "\""+d+"\":"+totals.get(d)+",";
+			for(String d: report.totals.keySet()){
+				json += "\""+d+"\":"+report.totals.get(d)+",";
 			}
 			if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
 			json += "}";
@@ -343,17 +148,17 @@ public class Reports extends HttpServlet {
 			
 			json += "\"results\":";
 			json += "{";
-			for(Integer di: results.keySet()){
+			for(Integer di: report.results.keySet()){
 				json += "\""+di+"\":";
 				json += "{";
-				for(String c: results.get(di).keySet()){
+				for(String c: report.results.get(di).keySet()){
 					json += "\""+c+"\":";
 					json += "{";
-					for(int o: results.get(di).get(c).keySet()){
+					for(int o: report.results.get(di).get(c).keySet()){
 						json += "\""+o+"\":";
 						json += "{";
-						for(String d: results.get(di).get(c).get(o).keySet()){
-							json += "\""+d+"\":"+results.get(di).get(c).get(o).get(d)+",";
+						for(String d: report.results.get(di).get(c).get(o).keySet()){
+							json += "\""+d+"\":"+report.results.get(di).get(c).get(o).get(d)+",";
 						}
 						if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
 						json += "},";
@@ -361,8 +166,8 @@ public class Reports extends HttpServlet {
 					
 					json += "\"0\":";
 					json += "{";
-					for(String d: averages.get(di).get(c).keySet()){
-						json += "\""+d+"\":"+averages.get(di).get(c).get(d)+",";
+					for(String d: report.averages.get(di).get(c).keySet()){
+						json += "\""+d+"\":"+report.averages.get(di).get(c).get(d)+",";
 					}
 					if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
 					json += "}";
@@ -376,8 +181,8 @@ public class Reports extends HttpServlet {
 			
 			json += "\"result_totals\":";
 			json += "{";
-			for(String d: gauged_trainings.keySet()){
-				json += "\""+d+"\":"+(average_sum.get(d)/gauged_trainings.get(d))+",";
+			for(String d: report.gauged_trainings.keySet()){
+				json += "\""+d+"\":"+(report.average_sum.get(d)/report.gauged_trainings.get(d))+",";
 			}
 			if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
 			json += "}";
@@ -386,21 +191,40 @@ public class Reports extends HttpServlet {
 			
 			json += "\"weekly\":";
 			json += "{";
-			
+			//TODO Reestructure this JSON so that report uses this duplication from Season.
 			for(int i = week_start; i <= week_end;i++){
 				json += "\""+i+"\":";
 				json += "{";
-				json += "\"technique_total\":"+weekly_training[i-week_start]+",";
-				if(weekly_results[i-week_start] > 0) json += "\"result_total\":"+(weekly_sum[i-week_start]/weekly_results[i-week_start])+",";
-				json += "\"total\":"+weekly_totals[i-week_start];
+				json += "\"technique_total\":"+season.technique[i-season.start]+",";
+				if(season.results[i-season.start] > 0) json += "\"result_total\":"+(season.sum[i-season.start]/season.results[i-season.start])+",";
+				json += "\"total\":"+season.totals[i-season.start];
 				json += "},";
 			}
 			if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
 			
 			json += "},";
 			
-			json += "\"start\":\""+sdf.format(start)+"\",";
-			json += "\"end\":\""+sdf.format(end)+"\",";
+			json += "\"season\":";
+			json += "{";
+			json += "\"name\":\""+season.name+"\",";
+			json += "\"max\":"+season.max+",";
+			json += "\"size\":"+season.size+",";
+			json += "\"start\":"+season.start+",";
+			for(int i = 0; i < season.size; i++){
+				json += "\""+(season.start+i)+"\":";
+				json += "{"; //TODO make names uniform...
+				json += "\"total_plan\":"+season.plan[i]+",";
+				json += "\"gauged_plan\":"+season.gauged[i]+",";
+				json += "\"technique_total\":"+season.technique[i]+",";
+				if(season.results[i] > 0) json += "\"result_total\":"+(season.sum[i]/season.results[i])+",";
+				json += "\"total\":"+season.totals[i];
+				json += "},";
+			}
+			if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
+			json += "},";
+			
+			json += "\"start\":\""+ReportData.sdf.format(start)+"\",";
+			json += "\"end\":\""+ReportData.sdf.format(end)+"\",";
 			json += "\"week_start\":"+week_start+",";
 			json += "\"week_end\":"+week_end+",";
 			json += "\"month\":"+month+",";

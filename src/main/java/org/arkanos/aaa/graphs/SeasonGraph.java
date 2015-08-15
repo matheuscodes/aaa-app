@@ -63,7 +63,7 @@ public class SeasonGraph extends HttpServlet {
 			
 			System.out.println(year+" "+season);
 			
-			ResultSet rs = Database.query("SELECT id,start FROM season WHERE end >= '"+year+"' AND type = '"+season+"';");
+			ResultSet rs = Database.query("SELECT id,start FROM season WHERE end >= '"+year+"' AND name = 'Sommersaison';");
 			rs.next();
 			int season_id = rs.getInt(1);
 			GregorianCalendar start = new GregorianCalendar();

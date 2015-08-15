@@ -385,5 +385,135 @@ function buildMonthlyReport(download){
 		document.getElementById("week-data-"+week).innerHTML = html;
 	}
 	
-	document.body.innerHTML += "<img src='/img/seasons/2015/summer' style='padding:10pt 0' width='100%'/>";
+	//TODO put max in json
+	
+	weeks = download.season.size;
+	max = 608;
+	
+	html = "<svg xmlns='http://www.w3.org/2000/svg'";
+	html += " id='season'";
+	html += " version='1.1'";
+	html += " viewBox='0 "+(-max)+" "+weeks*100+" "+max+"'";
+	html += " preserveAspectRatio='xMidYMid meet'";
+	html += ">";
+	
+	html += "<style>";
+	
+	html += ".border {fill:none;stroke:#00F;stroke-width:1;stroke-opacity:1}";
+	
+	html += ".plan {fill:#FFF;stroke:#000;stroke-opacity:1}";
+	html += ".training {fill:#CCFFFF;stroke:#000;stroke-opacity:1}";
+	html += ".target {fill:#FFCC99;stroke:#000;stroke-opacity:1}";
+	html += ".result {fill:#33CCCC;stroke:#000;stroke-opacity:1}";
+	html += ".estimation {fill:none;stroke:#00F;stroke-opacity:1;stroke-width:2}";
+	
+	html += ".grid {fill:none;stroke:#000;stroke-opacity:1;stroke-dasharray: 10 5}";
+	
+	html += ".share {fill:#777}";
+	html += ".share-shadow {fill:#000}";
+	
+	html += "</style>";
+	
+	html += "<g id='main'>";
+	
+	html += "<g id='data' transform='translate("+weeks/2+",-"+weeks/2+") scale(0.99)'>";
+	
+	html += getGrid(max,weeks);
+	var season = download.season;
+	var estimate = false;
+	var estimations = [];
+	var bullets = {};
+	for(i in season){
+		if(!isNaN(i)){
+			html += getPlan(season[i].total_plan,i-season.start);
+			html += getActual(season[i].total-season[i].technique_total,season[i].technique_total,i-season.start);
+			html += getShare(season[i].total_plan-season[i].gauged_plan,i-season.start);
+			if(season[i].result_total){
+				bullets[i] = season[i].result_total;
+				estimations.push(season[i].result_total);
+				estimate = true;
+			}
+			else{
+				if(estimate && i > 1){
+					//TODO test this... probably not working.
+					estimations.push((estimations[i-season.start-1]+estimations[i-season.start-2])/2);
+				}
+				else{
+					estimations.push(0);
+				}
+			}
+			
+		}
+	}
+	html += getEstimations(estimations,max);
+	
+	for(bullet in bullets){
+		html += getResult(bullets[bullet],bullet-season.start,max);
+	}
+	
+	html += "</g>";
+	
+	html += "</g>";
+	
+	html += "</svg>";
+	
+	document.body.innerHTML += html;
+}
+
+function getGrid(height, columns){
+	var s = "<g>";
+	for(var i = 0; i <= columns; i++){
+		s += "<path class='grid' d='m "+100*i+",0 0,"+(-height)+"  ' />";
+	}
+	for(var i = height; i > 0; i -= height/10){
+		s += "<path class='grid' d='m 0,"+(-i)+" "+(columns*100)+",0  ' />";
+	}
+	s += "</g>";
+	return s;
+}
+
+function getPlan(value, column){
+	var s = "<g transform='translate(0,"+(-value)+")'>";
+	s += "<rect class='plan' x='"+(10+column*100)+"' height='"+value+"' width='80' />";
+	s += "</g>";
+	return s;
+}
+
+function getActual(target, training, column){
+	var s = "<g transform='translate(0,"+(-target-training)+")'>";
+	s += "<rect class='target' x='"+(10+column*100)+"' height='"+ target +"' width='80' />";
+	s += "<rect class='training' x='"+(10+column*100)+"' y='"+target+"' height='"+ training +"' width='80' />";
+	s += "</g>";
+	return s;
+}
+
+function getShare(value, column){
+	var s = "<g transform='translate("+(column*100)+","+(-value)+")'>";
+	s += "<rect class='share-shadow' x='5' y='0' height='20' width='100' />";
+	s += "<rect class='share' y='-5' height='20' width='100' />";
+	s += "</g>";
+	return s;
+}
+
+function getResult(value,position,size) {
+	var s = "<g>";
+	var k = -((value)/10);
+	s+= "<circle class='result' cx='"+(position*100+50)+"' cy='"+(k*size)+"' r='10'/>";
+	s+="</g>";
+	return s;
+}
+
+function getEstimations(data, size) {
+	var s = "<g><path class='estimation' d='M ";
+	for(var i = 0; i < data.length;i++){ //TODO improve this
+		var k = -((data[i])/10);
+		if(i == 0){
+			s += "50 "+(k*size)+" C "+ 100 +","+(k*size)+" ";
+		}
+		else {
+			s += (50+i*100-50)+","+(k*size)+" "+(i*100+50)+" "+(k*size)+" S ";
+		}			
+	}
+	s+="'/></g>";
+	return s;
 }
