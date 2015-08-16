@@ -12,7 +12,7 @@ body{
 
 .sidebar{
 	float:left;
-	width:13.9%;
+	width:140pt;
 }
 
 .labels{
@@ -68,11 +68,11 @@ body{
 }
 
 .header_day {
-	border-bottom: 1.5pt solid #000 !important;
+	border-bottom: 2pt solid #000 !important;
 }
 
 .fixed {
-	border-bottom: 1.5pt solid #000 !important;
+	border-bottom: 2pt solid #000 !important;
 }
 
 .weekend{
@@ -98,7 +98,7 @@ body{
 }
 
 .day {
-	width: 13.8%;
+	width: 19.35pt;
 	border-left: 1pt dotted #000;
 	border-bottom: 1pt dotted #000;
 	float: left;

@@ -207,7 +207,6 @@ public class Reports extends HttpServlet {
 			json += "\"season\":";
 			json += "{";
 			json += "\"name\":\""+season.name+"\",";
-			json += "\"max\":"+season.max+",";
 			json += "\"size\":"+season.size+",";
 			json += "\"start\":"+season.start+",";
 			for(int i = 0; i < season.size; i++){
@@ -218,9 +217,10 @@ public class Reports extends HttpServlet {
 				json += "\"technique_total\":"+season.technique[i]+",";
 				if(season.results[i] > 0) json += "\"result_total\":"+(season.sum[i]/season.results[i])+",";
 				json += "\"total\":"+season.totals[i];
+				if(season.totals[i] > season.max) season.max = season.totals[i];
 				json += "},";
 			}
-			if(json.endsWith(",")) json = json.substring(0,json.lastIndexOf(','));
+			json += "\"max\":"+season.max;
 			json += "},";
 			
 			json += "\"start\":\""+ReportData.sdf.format(start)+"\",";
