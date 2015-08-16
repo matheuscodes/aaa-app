@@ -413,19 +413,19 @@ function getShare(value, column){
 	return s;
 }
 
-function getResult(value,position,size) {
+function getResult(value,position,size,min,max) {
 	var s = "<g>";
-	var k = -((value)/10);
+	var k = -((value-min)/(max-min));
 	s+= "<circle class='result' cx='"+(position*100+50)+"' cy='"+(k*size)+"' r='10'/>";
 	s+="</g>";
 	return s;
 }
 
-function getEstimations(data, size) {
+function getEstimations(data, size,min,max) {
 	var s = "<g><path class='estimation' d='M ";
 	var first = true;
 	for(var i = 0; i < data.length;i++){ //TODO improve this
-		var k = -((data[i])/10);
+		var k = -((data[i]-min)/(max-min));
 		if(k <= 0){
 			if(first){
 				s += (50+i*100)+" "+(k*size)+" C "+ (i*100+100) +","+(k*size)+" ";
@@ -444,15 +444,16 @@ function drawDailyGraph(download){
 
 	var days = (new Date(download.end) - new Date(download.start))/(1000*60*60*24);
 	var season = download.season;
-	var max = download.season.max*1.1;
+	var max = Math.ceil(download.season.max/50)*50+50;
 	
-	var general_width = (days*100+700);
+	var general_width = (days*100+700+150);
+	var general_height = max+100+50;
 	var width = 20.2/(100/general_width);
 	
 	html = "<svg xmlns='http://www.w3.org/2000/svg'";
 	html += " id='season'";
 	html += " version='1.1'";
-	html += " viewBox='0 "+(-max)+" "+(general_width+2)+" "+(max+1)+"'";
+	html += " viewBox='0 "+(-general_height)+" "+(general_width+2)+" "+(general_height+1)+"'";
 	html += " preserveAspectRatio='xMidYMid meet'";
 	html += " width='"+width+"pt'>";
 	
@@ -462,9 +463,12 @@ function drawDailyGraph(download){
 	
 	html += getLabels(max);
 	
-	html += "<g id='data' transform='translate(700,0) scale(1,1)'>";
+	html += "<g id='data' transform='translate(700,-100) scale(1,1)'>";
 	
 	html += getGrid(max,days);
+	
+	html += drawBottomDays(download.start,download.end);
+	html += drawLeftAxis(0,max,"arrow_count",max);
 	
 	var estimate = false;
 	var estimations = [];
@@ -477,6 +481,8 @@ function drawDailyGraph(download){
 	var estimate = false;
 	var estimations = [];
 	var bullets = {};
+	var min_result = 10;
+	var max_result = 0;
 	while(current < stop){
 		var now = current.toJSON().substring(0,10);
 		var technique = 0;
@@ -499,25 +505,37 @@ function drawDailyGraph(download){
 		if(download.results.result_totals[now]){
 			bullets[i] = download.results.result_totals[now];
 			estimations.push(download.results.result_totals[now]);
+			if(download.results.result_totals[now] > max_result) max_result = download.results.result_totals[now];
+			if(download.results.result_totals[now] < min_result) min_result = download.results.result_totals[now];
 			estimate = true;
 		}
 		else{
 			if(estimate && i > 1){
 				//TODO test this... probably not working.
-				estimations.push((estimations[i-1]+estimations[i-2])/2);
+				var estimate = (estimations[i-1]+estimations[i-2])/2;
+				estimations.push(estimate);
+				if(estimate > max_result) max_result = estimate;
+				if(estimate < min_result) min_result = estimate;
 			}
 			else{
 				estimations.push(-1);
 			}
 		}
+
 			
 		current.setDate(current.getDate() + 1);
 		i++
 	}
-	html += getEstimations(estimations,max);
+	
+	difference = max_result - min_result;
+	max_result += 0.1*difference;
+	min_result -= 0.1*difference;
+	html += getEstimations(estimations,max,min_result,max_result);
+	
+	html += drawRightAxis(10-min_result,10-max_result,"results",max,days*100);
 	
 	for(bullet in bullets){
-		html += getResult(bullets[bullet],bullet,max);
+		html += getResult(bullets[bullet],bullet,max,min_result,max_result);
 	}
 	
 	
@@ -534,15 +552,16 @@ function drawSeasonGraph(download){
 	
 	var weeks = download.season.size;
 	var season = download.season;
-	var max = download.season.max*1.1;
+	var max = Math.ceil(download.season.max/50)*50+50;
 	
-	var general_width = (weeks*100+700);
+	var general_width = (weeks*100+700+150);
+	var general_height = max + 150 + 50;
 	var width = 20.2/(100/general_width);
 	
 	html = "<svg xmlns='http://www.w3.org/2000/svg'";
 	html += " id='season'";
 	html += " version='1.1'";
-	html += " viewBox='0 "+(-max)+" "+(general_width+2)+" "+(max+2)+"'";
+	html += " viewBox='0 "+(-general_height)+" "+(general_width+2)+" "+(general_height+2)+"'";
 	html += " preserveAspectRatio='xMidYMid meet'";
 	html += " width='"+width+"pt'>";
 	
@@ -552,13 +571,18 @@ function drawSeasonGraph(download){
 	
 	html += getLabels(max);
 	
-	html += "<g id='data' transform='translate(700,0) scale(1,1)'>";
+	html += "<g id='data' transform='translate(700,-150)'>";
 	
 	html += getGrid(max,weeks);
+	
+	html += drawBottomWeeks(season.start,season.start+season.size);
+	html += drawLeftAxis(0,max,"arrow_count",max);
 	
 	var estimate = false;
 	var estimations = [];
 	var bullets = {};
+	var min_result = 10;
+	var max_result = 0;
 	for(i in season){
 		if(!isNaN(i)){
 			html += getPlan(season[i].total_plan,i-season.start);
@@ -567,24 +591,34 @@ function drawSeasonGraph(download){
 			if(season[i].result_total){
 				bullets[i] = season[i].result_total;
 				estimations.push(season[i].result_total);
+				if(season[i].result_total > max_result) max_result = season[i].result_total;
+				if(season[i].result_total < min_result) min_result = season[i].result_total;
 				estimate = true;
 			}
 			else{
 				if(estimate && i > 1){
 					//TODO test this... probably not working.
-					estimations.push((estimations[i-season.start-1]+estimations[i-season.start-2])/2);
+					estimate = (estimations[i-season.start-1]+estimations[i-season.start-2])/2;
+					estimations.push(estimate);
+					if(estimate > max_result) max_result = estimate;
+					if(estimate < min_result) min_result = estimate;
 				}
 				else{
 					estimations.push(-1);
 				}
 			}
-			
 		}
 	}
-	html += getEstimations(estimations,max);
+	
+	difference = max_result - min_result;
+	max_result += 0.1*difference;
+	min_result -= 0.1*difference;
+	html += getEstimations(estimations,max,min_result,max_result);
+	
+	html += drawRightAxis(10-min_result,10-max_result,"results",max,weeks*100);
 	
 	for(bullet in bullets){
-		html += getResult(bullets[bullet],bullet-season.start,max);
+		html += getResult(bullets[bullet],bullet-season.start,max,min_result,max_result);
 	}
 	
 	html += "</g>";
@@ -593,6 +627,57 @@ function drawSeasonGraph(download){
 	
 	html += "</svg>";
 	
+	return html;
+}
+
+function drawRightAxis(min, max,title,size,offset){
+	var html = "<g id='right' transform='translate(0,0)'>";
+	unit = (max - min) / 10;
+	block = (size/10);
+	for(var i = min,j = 0; j <= size; i+=unit,j+=block){
+		html += "<text class='right' x='"+(offset+10)+"' y='-"+j+"'>"+(i).toPrecision(3)+"</text>";
+	}
+	html += "<text transform='translate("+(offset+10+90)+",0) rotate(-90)' class='title' x='0' y='0'>"+title+"</text>";
+	html += "</g>";
+	return html;
+}
+
+function drawLeftAxis(min, max,title,size){
+	var html = "<g id='left' transform='translate(0,0)'>";
+	unit = (max - min) / 10;
+	block = (size/10);
+	for(var i = min,j = 0; i <= max; i+=unit,j+=block){
+		html += "<text class='left' x='-10' y='-"+j+"'>"+Math.floor(i)+"</text>";
+	}
+	html += "<text transform='translate("+(-10-60)+",0) rotate(-90)' class='title' x='0' y='0'>"+title+"</text>";
+	html += "</g>";
+	return html;
+}
+
+function drawBottomDays(min, max){
+	var html = "<g id='bottom'>";
+	end =  new Date(max);
+	for(var i = new Date(min), j = 0; i < end; i.setDate(i.getDate() + 1,j++) ){
+		html += "<g transform=translate("+(j*100+50)+",50)>";
+		html += "<text class='bottom' x='0' y='0'>"+i.toJSON().substring(8,10)+"</text>";
+		html += "</g>";
+	}
+	html += "</g>";
+	return html;
+}
+
+
+
+//TODO change all from get to draw
+function drawBottomWeeks(min, max){
+	var html = "<g id='bottom'>";
+	for(var i = min; i < max; i++){
+		html += "<g transform=translate("+((i-min)*100+50)+",50)>";
+		html += "<text class='bottom' x='0' y='0'>wk</text>";
+		html += "<text class='bottom' x='0' y='45'>"+i+"</text>";
+		html += "</g>";
+	}
+	html += "</g>";
 	return html;
 }
 
@@ -636,13 +721,19 @@ function getStyle(){
 	html += ".estimation {fill:none;stroke:#00F;stroke-opacity:1;stroke-width:2}";
 	html += ".strength {fill:#FFCC00;stroke:#000;stroke-opacity:1}";
 	
-	html += ".grid {fill:none;stroke:#000;stroke-opacity:1;stroke-dasharray: 10 5}";
+	html += ".grid {fill:none;stroke:#000;stroke-opacity:1;stroke-dasharray: 10 5;stroke-width:2}";
 	
 	html += ".share {fill:#777}";
 	html += ".share-shadow {fill:#000}";
 	
 	html += ".graph_scale {}";
 	html += ".graph_label {font-size:40}";
+	
+
+	html += ".bottom {font-size:40; text-anchor:middle}";
+	html += ".left {font-size:30; text-anchor:end}";
+	html += ".right {font-size:30; text-anchor:start}";
+	html += ".title {font-size:40;font-weight:bold; text-anchor:start}";
 	
 	html += "</style>";
 	return html;

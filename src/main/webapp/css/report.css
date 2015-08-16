@@ -1,8 +1,7 @@
 body{
 	font-family:arial;
+	display: inline-block;
 }
-
-
 
 .skip_header{
 	height:44.5pt;
