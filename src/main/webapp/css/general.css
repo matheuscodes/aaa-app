@@ -1,0 +1,22 @@
+.mdl-mini-footer{
+	padding: 0 10pt;
+}
+
+#login_box{
+	width:unset;
+}
+	#login_box .mdl-card__title{
+		height:200pt;
+	}
+
+#login{
+	float:right;
+}
+
+.aaa-login{
+	width:100%;
+}
+	
+.mdl-cell--4-col-offset{
+	margin-left: calc(33.3333% - 16px);
+}
