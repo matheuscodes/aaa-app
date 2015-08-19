@@ -38,10 +38,6 @@ function getFooter(){
 	return html;
 }
 
-function processLogin(){
-	console.log("Oie!");
-}
-
 function getLoginCard(){
 	var html = "<div class='mdl-cell mdl-cell--middle mdl-cell--4-col mdl-cell--2-col-tablet mdl-cell--hide-phone'></div>";
 	html += "<div class='mdl-cell mdl-cell--middle mdl-cell--4-col'>";
@@ -51,7 +47,7 @@ function getLoginCard(){
 			">";
 	html += "</div>";
 
-	html += "<form onSubmit='JavaScript:processLogin()'>";
+	html += "<form onSubmit='JavaScript:doLogin()'>";
 	html += "<div class='mdl-card__supporting-text'>";
 	
 	html += "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label aaa-login'>";
@@ -83,13 +79,20 @@ function getLoginCard(){
 	return html;
 }
 
+function doLogin(){
+	if(processLogin()){
+		$("#login_area").hide("slide", { direction: "right" }, 1000);
+		$("header").hide("slide", { direction: "up" }, 1000);
+	}
+}
+
 function buildLogin(){
 	var html = "";
 	// Always shows a header, even in smaller screens. -->
 	html += "<div class='mdl-layout mdl-js-layout mdl-layout--fixed-header'>";
 	html += getHeader("Arkanos Advanced Archery");
 	html += "<main class='mdl-layout__content'>";
-	html += "<div class='page-content mdl-grid'>";
+	html += "<div id='login_area' class='page-content mdl-grid'>";
 	html += getLoginCard();
 	html += "</div>";
 	html += "</main>";
