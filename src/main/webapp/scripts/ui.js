@@ -47,7 +47,8 @@ function getLoginCard(){
 			">";
 	html += "</div>";
 
-	html += "<form onSubmit='JavaScript:doLogin()'>";
+	html += "<form onsubmit='doLogin();return false'>";
+	
 	html += "<div class='mdl-card__supporting-text'>";
 	
 	html += "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label aaa-login'>";
@@ -55,6 +56,7 @@ function getLoginCard(){
 	html += "<label class='mdl-textfield__label' for='email'>Email</label>";
 	html += "<span class='mdl-textfield__error'>This is not a valid email!</span>";
 	html += "</div>";
+	
 	html += "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label aaa-login'>";
 	html += "<input class='mdl-textfield__input' type='password' id='password' />";
 	html += "<label class='mdl-textfield__label' for='password'>Password</label>";

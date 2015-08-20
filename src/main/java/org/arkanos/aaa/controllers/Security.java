@@ -61,7 +61,7 @@ public class Security {
 	}
 	
 	/** Default cookie name for the token **/
-	public static final String					TOKEN_COOKIE_NAME	= "aos-token";
+	public static final String					TOKEN_COOKIE_NAME	= "aaa-token";
 	
 	/** Cache of provided tokens **/
 	static private HashMap<String, TokenInfo>	all_tokens			= null;
