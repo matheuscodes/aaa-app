@@ -1,9 +1,13 @@
 
 function processLogin(){
 	var content = {};
-	content['email'] = document.getElementById("email").value;
-	var password = document.getElementById("password").value;
-	content['hashed_password'] = ""+CryptoJS.MD5(password);
+	if(document.getElementById("email")){
+		content['email'] = document.getElementById("email").value;
+	}
+	if(document.getElementById("password")){
+		var password = document.getElementById("password").value;
+		content['hashed_password'] = ""+CryptoJS.MD5(password);
+	}
 	
 	var string = JSON.stringify(content);
 	
@@ -18,12 +22,18 @@ function processLogin(){
 	xmlhttp.onreadystatechange = function() {
 		if(xmlhttp.readyState == 4){
 		    if (xmlhttp.status == 201) {
-		    	console.log("OK: "+xmlhttp.responseText);
+		    	console.log("LOGGED.");
 		    	alright = true;
 		    }
 		    else{
-		    	console.log("ERROR.");
-		    	alright = false;
+		    	if (xmlhttp.status == 200){
+		    		console.log("ALREADY LOGGED.");
+			    	alright = true;
+		    	}
+		    	else{
+			    	console.log("ERROR.");
+			    	alright = false;
+		    	}
 		    }
 	    }
 	}

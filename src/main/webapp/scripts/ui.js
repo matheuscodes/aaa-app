@@ -1,5 +1,5 @@
 function getDrawerMenu(){
-	var html =  "<div class='mdl-layout__drawer'>";
+	var html =  "<div id='aaa_drawer' class='mdl-layout__drawer'>";
 	
 	html += "<span class='mdl-layout-title'>Title</span>";
 	html += "<nav class='mdl-navigation'>";
@@ -14,15 +14,24 @@ function getDrawerMenu(){
 }
 
 function getHeader(title){
-	var html =  "";
-	html += "<header class='mdl-layout__header'>";
-	html += "<div class='mdl-layout__header-row'>";
+	var html = "<div class='mdl-layout__header-row'>";
     // Title -->
-	html += "<span class='mdl-layout-title'>"+title+"</span>";
+	html += "<span id='aaa_header_title' class='mdl-layout-title'>"+title+"</span>";
+	html += "<div class='mdl-layout-spacer'></div>";
+    // Navigation. We hide it in small screens. -->
+    /*<nav class="mdl-navigation mdl-layout--large-screen-only">
+      <a class="mdl-navigation__link" href="">Link</a>
+      <a class="mdl-navigation__link" href="">Link</a>
+      <a class="mdl-navigation__link" href="">Link</a>
+      <a class="mdl-navigation__link" href="">Link</a>
+    </nav>*/
+	html += "<button id='aaa_header_logout' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab'>";
+	html += "<i class='material-icons'>exit_to_app</i>";
+	html += "</button>";
     html += "</div>";
-	html += "</header>";
-	
-	return html;
+
+	//html += getDrawerMenu();
+    return html;
 }
 
 function getFooter(){
@@ -83,22 +92,62 @@ function getLoginCard(){
 
 function doLogin(){
 	if(processLogin()){
-		$("#login_area").hide("slide", { direction: "right" }, 1000);
-		$("header").hide("slide", { direction: "up" }, 1000);
+		$("#aaa_content").hide("slide", { direction: "right" }, 1000);
+		$("#aaa_header_title").fadeOut(1000,function(){
+			$("#aaa_header_title").html("Home");
+		});
+		$("#aaa_header_title").fadeIn(2000);
+		buildHomePage();
+	}
+	else{
+		alert("Error!");
 	}
 }
 
-function buildLogin(){
+function buildLoginPage(){
+	$("#aaa_header_title").html("Arkanos Advanced Archery");
+	$("#aaa_header_title").fadeIn(2000);
+	document.getElementById("aaa_content").innerHTML = getLoginCard();
+	$("#aaa_content").show("slide", { direction: "left" }, 1000);
+}
+
+function buildHomePage(){
+	if($("#aaa_header_title").html() == "") $("#aaa_header_title").html("Home");
+	$("#aaa_header_title").fadeIn(2000);
+	$("#aaa_header_logout").fadeIn(3000);
+	if($(".mdl-layout__drawer-button").length <= 0){
+		$('#aaa_header').bind('DOMNodeInserted', 
+				function() {
+					$(".mdl-layout__drawer-button").fadeIn(2000);
+				}
+		);
+	}
+	else{
+		$(".mdl-layout__drawer-button").fadeIn(3000);
+	}
+}
+
+function buildApplication(){
 	var html = "";
 	// Always shows a header, even in smaller screens. -->
 	html += "<div class='mdl-layout mdl-js-layout mdl-layout--fixed-header'>";
-	html += getHeader("Arkanos Advanced Archery");
+	html += "<header id='aaa_header' class='mdl-layout__header'>";
+	html += getHeader("");
+	html += "</header>";
+	html += getDrawerMenu();
 	html += "<main class='mdl-layout__content'>";
-	html += "<div id='login_area' class='page-content mdl-grid'>";
-	html += getLoginCard();
+	html += "<div id='aaa_content' class='page-content mdl-grid'>";
 	html += "</div>";
 	html += "</main>";
 	html += getFooter();
 	html += "</div>";
 	document.body.innerHTML = html;
+	$("#aaa_content").hide();
+
+	if(processLogin()){
+		buildHomePage();
+	}
+	else{
+		buildLoginPage();
+	}
 }

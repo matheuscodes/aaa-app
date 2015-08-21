@@ -2,6 +2,18 @@
 	padding: 0 10pt;
 }
 
+#aaa_header_title{
+	display: none;
+}
+
+#aaa_header_logout{
+	display: none;
+}
+
+#aaa_header .mdl-layout__drawer-button{
+	display: none;
+}
+
 #login_box{
 	width:unset;
 }
