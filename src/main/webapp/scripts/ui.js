@@ -75,7 +75,7 @@ function getLoginCard(){
 	
 	html += "<div class='mdl-card__actions mdl-card--border'>";
 	html += "<a class='mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effec'>";
-	html += "<i class='material-icons'>perm_identity add</i>";
+	html += "<i class='material-icons'>person_add</i>";
 	html += "</a>";
 	html += "<button type='submit' id='login' class='mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effec'>";
 	html += "Login <i class='material-icons'>chevron_right</i>";

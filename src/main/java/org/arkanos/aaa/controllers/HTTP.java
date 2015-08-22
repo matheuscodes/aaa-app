@@ -21,4 +21,9 @@ public class HTTP {
 		response.setContentType("application/x-json");
 	}
 	
+	static public void setUpImageHeaders(HttpServletResponse response,int size) {
+		response.setContentType("image/png");
+		response.setContentLength(size);
+	}
+	
 }

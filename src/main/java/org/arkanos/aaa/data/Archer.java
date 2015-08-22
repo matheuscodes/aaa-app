@@ -25,13 +25,14 @@ public class Archer {
 	/** SQL field for the last name **/
 	//static final private String	FIELD_LAST_NAME			= "last_name";
 	/** SQL field for the email **/
-	static final private String	FIELD_EMAIL				= "email";
+	static final public String	FIELD_EMAIL				= "email";
 	/** SQL field for the password **/
 	static final public String	FIELD_HASHED_PASSWORD	= "hashed_password";
 	/** SQL field for the secret key **/
 	//static final public String	FIELD_SECRET_KEY		= "secret_key";
 	/** SQL field for the expiration date **/
 	//static final private String	FIELD_EXPIRATION_DATE	= "expiration_date";
+	static final public String FIELD_AVATAR = "avatar";
 	
 	/**
 	 * Sets both expiration and secret keys to null.
