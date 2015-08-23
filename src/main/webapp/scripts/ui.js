@@ -1,34 +1,14 @@
-function getDrawerMenu(){
-	var html =  "<div id='aaa_drawer' class='mdl-layout__drawer'>";
-	
-	html += "<span class='mdl-layout-title'>Title</span>";
-	html += "<nav class='mdl-navigation'>";
-	html += "<a class='mdl-navigation__link' href=''>Link</a>";
-	html += "<a class='mdl-navigation__link' href=''>Link</a>";
-	html += "<a class='mdl-navigation__link' href=''>Link</a>";
-	html += "<a class='mdl-navigation__link' href=''>Link</a>";
-	html += "</nav>";
-	html += "</div>";
-	
-	return html;
-}
-
 function getHeader(title){
 	var html = "<div class='mdl-layout__header-row'>";
     // Title -->
 	html += "<span id='aaa_header_title' class='mdl-layout-title'>"+title+"</span>";
 	html += "<div class='mdl-layout-spacer'></div>";
-    // Navigation. We hide it in small screens. -->
-    /*<nav class="mdl-navigation mdl-layout--large-screen-only">
-      <a class="mdl-navigation__link" href="">Link</a>
-      <a class="mdl-navigation__link" href="">Link</a>
-      <a class="mdl-navigation__link" href="">Link</a>
-      <a class="mdl-navigation__link" href="">Link</a>
-    </nav>*/
-	html += "<button id='aaa_header_logout' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab'>";
+    
+	html += "<button id='aaa_header_logout' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-color-text--accent-contrast'>";
 	html += "<i class='material-icons'>exit_to_app</i>";
 	html += "</button>";
-    html += "</div>";
+	html += "<div class='mdl-tooltip' for='aaa_header_logout'>logout</div>";
+	html += "</div>";
 
 	//html += getDrawerMenu();
     return html;
@@ -112,9 +92,11 @@ function buildLoginPage(){
 }
 
 function buildHomePage(){
-	if($("#aaa_header_title").html() == "") $("#aaa_header_title").html("Home");
+	if($("#aaa_header_title").html() == "") $("#aaa_header_title").html("home");
 	$("#aaa_header_title").fadeIn(2000);
 	$("#aaa_header_logout").fadeIn(3000);
+	//TODO recheck compliance of the header/layout to see if this hack is necessary.
+	//Check whether the structure is exactly like the example, not like the template code.
 	if($(".mdl-layout__drawer-button").length <= 0){
 		$('#aaa_header').bind('DOMNodeInserted', 
 				function() {
@@ -125,6 +107,47 @@ function buildHomePage(){
 	else{
 		$(".mdl-layout__drawer-button").fadeIn(3000);
 	}
+}
+
+function getAvatarHeader(){
+	var html = "<header class='aaa-drawer-header mdl-layout__header'>";
+	html += "<img src='/avatar'>";
+	html += "<div class='aaa-options-dropdown'>";
+	html += "<span>"+User['email']+"</span>";
+	
+	html += "<div class='mdl-layout-spacer'></div>";
+	
+	html += "<button id='aaa_user_options' class='mdl-button mdl-js-button mdl-button--icon'>";
+	html += "<i class='material-icons'>arrow_drop_down</i>";
+	html += "</button>";
+
+	html += "<div class='mdl-tooltip' for='aaa_user_options'>options</div>"; //TODO fix that it is too low.
+	
+	html += "<ul class='mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect' for='aaa_user_options'>";
+	html += "<li class='mdl-menu__item'><i class='material-icons'>settings</i> settings</li>";
+	html += "<li class='mdl-menu__item'><i class='material-icons'>exit_to_app</i> logout</li>";
+	html += "</ul>";
+	
+	
+	html += "</div>";
+	html += "</header>";
+	return html;
+}
+
+function getDrawerMenu(){
+	var html =  "<div id='aaa_drawer' class='mdl-layout__drawer'>";
+	//document.getElementById("aaa_drawer").className = document.getElementById("aaa_drawer").className.replace(" is-visible","");
+	html += getAvatarHeader();
+	html += "<nav class='mdl-navigation'>";
+	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick=''><i class='material-icons'>home</i> home</a>";
+	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick=''><i class='material-icons'>assignment_ind</i> manage_profile</a>";
+	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick=''><i class='material-icons'>create</i> manage_trainings</a>";
+	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick=''><i class='material-icons'>history</i> performance_history</a>";
+	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick=''><i class='material-icons'>help_outline</i> help</a>";
+	html += "</nav>";
+	html += "</div>";
+	
+	return html;
 }
 
 function buildApplication(){

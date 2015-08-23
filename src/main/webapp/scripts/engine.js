@@ -1,4 +1,8 @@
 
+var User = {
+		email:"matheus.sss"
+}
+
 function processLogin(){
 	var content = {};
 	if(document.getElementById("email")){
