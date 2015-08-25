@@ -103,7 +103,7 @@ function doLogin(){
 	if(User.processLogin()){
 		$("#aaa_content").hide("slide", { direction: "right" }, 1000);
 		$("#aaa_header_title").fadeOut(1000,function(){
-			$("#aaa_header_title").html("Home");
+			$("#aaa_header_title").html(Text['home']);
 		});
 		$("#aaa_header_title").fadeIn(2000);
 		buildHomePage();
@@ -138,6 +138,20 @@ function buildHomePage(){
 	}
 }
 
+function destroyCurrentPage(next){
+	$("#aaa_content").hide("slide", { direction: "right" }, 1000);
+	$("#aaa_content").html(""); //TODO fix this, disappears all at once, async
+	$("#aaa_drawer").removeClass("is-visible");
+	$("#aaa_header_title").fadeOut(1000,function(){
+		$("#aaa_header_title").html(next);
+		$("#aaa_header_title").fadeIn(1000);
+	});
+}
+
+
+
+
+
 function getAvatarHeader(){
 	var html = "<header class='aaa-drawer-header mdl-layout__header'>";
 	html += "<img src='/avatar' />";
@@ -170,7 +184,7 @@ function getDrawerMenu(){
 	html += "<nav class='mdl-navigation'>";
 	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick=''><i class='material-icons'>home</i> "+Text['home']+"</a>";
 	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick=''><i class='material-icons'>assignment_ind</i> "+Text['manage_profile']+"</a>";
-	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick=''><i class='material-icons'>create</i> "+Text['manage_trainings']+"</a>";
+	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick='TrainingPage.buildTrainingsPage();'><i class='material-icons'>create</i> "+Text['manage_trainings']+"</a>";
 	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick=''><i class='material-icons'>history</i> "+Text['performance_history']+"</a>";
 	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick=''><i class='material-icons'>help_outline</i> "+Text['help']+"</a>";
 	html += "</nav>";
@@ -195,7 +209,7 @@ function buildApplication(){
 	html += getFooter();
 	html += "</div>";
 	document.body.innerHTML = html;
-	$("#aaa_content").hide();
+	//$("#aaa_content").hide();
 
 	if(User.isLoggedIn()){
 		buildHomePage();
@@ -230,4 +244,421 @@ function initializeApplication(){
 function swapLanguage(code){
 	User.setLanguage(code);
 	location.reload();
+}
+
+//TODO study a way to call this properly via event.
+function makeFreakingMDLwork() {
+  "classList" in document.createElement("div") && "querySelector" in document && "addEventListener" in window && Array.prototype.forEach ? (document.documentElement.classList.add("mdl-js"), componentHandler.upgradeAllRegistered()) : componentHandler.upgradeElement = componentHandler.register = function() {}
+}
+
+//TODO rename to TrainingsPage
+var TrainingPage = {
+	buildTrainingsPage: function(){
+		destroyCurrentPage(Text['manage_trainings']);
+		
+		var html = "<div class='mdl-cell--12-col'>"; 
+		html += "<button id='aaa_new_training' onClick='TrainingPage.openTraining();' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect'>";
+		html += "<i class='material-icons'>add gps_off</i>";
+		html += "</button>";
+		
+		html += "<button id='aaa_new_gauge' onClick='TrainingPage.openGauge();' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect'>";
+		html += "<i class='material-icons'>add gps_fixed</i>";
+		html += "</button>";
+		
+		html += "</div>";
+		
+		html += "<div id='aaa_training_page_content' class='mdl-grid mdl-cell--12-col'></div>";
+		$("#aaa_content").html(html);
+		makeFreakingMDLwork();
+		$("#aaa_content").show("slide", { direction: "left" }, 1000);
+	},
+	
+	addTraining: function(){
+		var caller = this; //TODO fix  the problem with date being overwritten all the time.
+		var type = $("#aaa_training_options input[type='radio']:checked").val();
+		var count = $("#aaa_training_arrow_count").val();
+		var distance = $("#aaa_training_distance").val();
+		if(count.length > 0 && distance.length > 0){
+			User.pushTrainingDraft(distance,type,count);
+			$("#aaa_training_content").fadeOut(1000,function(){
+				$("#aaa_training_content").html(caller.HTML.getTrainingDraft());
+				makeFreakingMDLwork();
+				$("#aaa_training_content").fadeIn(1000);
+			});
+		}
+	},
+
+	closeEnd: function(){
+		var arrows = []
+		$( "#aaa_gauge_end" ).children().each(function( index ) {
+		  arrows.push($( this ).text());
+		});
+		if(arrows.length > 0){
+			User.pushGaugeDraft(arrows);
+			//TODO block user input during transition, otherwise... shit will happen.
+			$( "#aaa_gauge_ends" ).fadeOut(500,function(){
+				$("#aaa_gauge_ends").html(TrainingPage.HTML.getGaugeEnds(User.getGaugeDraft().ends));
+				makeFreakingMDLwork();
+				$("#aaa_gauge_ends").fadeIn(500);
+			});
+			$( "#aaa_gauge_end" ).fadeOut(500,function(){
+				$("#aaa_gauge_end").html("");
+				$("#aaa_gauge_end").show();
+				makeFreakingMDLwork();
+			});
+		}
+		else{
+			//TODO tell the user it is empty
+		}
+	},
+
+	addArrow: function(i){
+		$("#aaa_gauge_end").append("<div>"+i+"</div>");
+		$("#aaa_gauge_end :last-child").addClass("aaa-arrow-input");
+		$("#aaa_gauge_end :last-child").addClass("aaa-arrow-end");
+		switch(i){
+			case 1:
+			case 2: $("#aaa_gauge_end :last-child").addClass("mdl-color--white");
+					break;
+			case 3:
+			case 4: $("#aaa_gauge_end :last-child").addClass("mdl-color--black");
+					$("#aaa_gauge_end :last-child").addClass("mdl-color-text--white");
+					break;
+			case 5:
+			case 6: $("#aaa_gauge_end :last-child").addClass("mdl-color--blue-400");
+					break;
+			case 7:
+			case 8: $("#aaa_gauge_end :last-child").addClass("mdl-color--red-400");
+					break;
+			case 9:
+			case 10: $("#aaa_gauge_end :last-child").addClass("mdl-color--yellow-400");
+					break;
+		}
+	},
+
+	removeArrow: function(){
+		$("#aaa_gauge_end :last-child").fadeOut(500,function(){
+			$("#aaa_gauge_end :last-child").remove();
+		});
+	},
+
+
+	//TODO unify both methods
+	openGauge: function(){
+		//TODO improve display and scales of this... not very optimal ATM. Looks bad.
+		var caller = this;
+		$("#aaa_new_gauge").attr('disabled','disabled');
+		$("#aaa_training_page_content").hide("slide", { direction: "right" }, 1000, function(){
+			$("#aaa_training_page_content").html(caller.HTML.getGaugeCard());
+			makeFreakingMDLwork();
+			$("#aaa_training_page_content").show("slide", { direction: "left" }, 1000);
+			$("#aaa_new_training").removeAttr('disabled');
+		});
+	},
+
+	openTraining: function(){
+		var caller = this;
+		$("#aaa_new_training").attr('disabled','disabled');
+		$("#aaa_training_page_content").hide("slide", { direction: "right" }, 1000, function(){
+			$("#aaa_training_page_content").html(caller.HTML.getTrainingCard());
+			makeFreakingMDLwork();
+			$("#aaa_training_page_content").show("slide", { direction: "left" }, 1000);
+			$("#aaa_new_gauge").removeAttr('disabled');
+		});
+	},
+
+	submitGauge: function(){
+		if($("#aaa_gauge_date").parent().hasClass("is-invalid") || $("#aaa_gauge_date").val().length == 0 ||
+				$("#aaa_gauge_distance").parent().hasClass("is-invalid") || $("#aaa_gauge_distance").val().length == 0){
+			//TODO hint the user about missing/invalid date or distance.
+		}
+		else{
+			if(User.getGaugeDraft()){
+				var date = $("#aaa_gauge_date").val();
+				var distance = $("#aaa_gauge_distance").val();
+				var target = $("#aaa_gauge_targets input[type='radio']:checked").val();
+				User.setGaugeDraft(date,distance,target);
+				console.log(JSON.stringify(User.getGaugeDraft()));
+				$("#aaa_new_gauge").removeAttr('disabled');
+			}
+			else{
+				//TODO hint the user about nothing to add.
+			}
+		}
+	},
+	
+	discardGauge: function(){
+		User.discardGaugeDraft();
+		
+		$("#aaa_gauge_card").parent().hide("slide", { direction: "right" }, 1000);
+
+		$("#aaa_new_gauge").removeAttr('disabled');
+
+	},
+	
+	submitTraining: function(){
+		if($("#aaa_training_date").parent().hasClass("is-invalid") || $("#aaa_training_date").val().length == 0){
+			//TODO hint the user about missing/invalid date.
+		}
+		else{
+			if(User.getTrainingDraft()){
+				var json = User.getTrainingDraft();
+				json.date = $("#aaa_training_date").val();
+				console.log(JSON.stringify(json));
+				$("#aaa_new_training").removeAttr('disabled');
+			}
+			else{
+				//TODO hint the user about nothing to add.
+			}
+		}
+	},
+	
+	discardTraining: function(){
+		User.discardTrainingDraft();
+		
+		$("#aaa_training_card").parent().hide("slide", { direction: "right" }, 1000);
+
+		$("#aaa_new_training").removeAttr('disabled');
+
+	},
+	
+	HTML: {
+		getTrainingCard: function(){
+			var html = "<div class='mdl-layout-spacer'></div>";
+			html += "<div id='aaa_training_card' class='mdl-cell mdl-cell--4-col'>";
+			html += "<div class='demo-card-wide mdl-card mdl-shadow--2dp'>";
+			html += "<div class='mdl-card__title'>";
+			html += "<h1 class='mdl-card__title-text'>"+Text['add_new_training']+"</h1>";
+			html += "</div>";
+			html += "<div id='aaa_training_content' class='mdl-card__supporting-text'>";
+			html += this.getTrainingDraft();
+			html += "</div>";
+			html += "<div class='mdl-card__actions mdl-card--border'>";
+			
+			html += "<form onsubmit='return false'>";
+			
+			html += "<div class='aaa-training-field'>";
+			html += "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
+			html += "<input class='mdl-textfield__input' type='text' pattern='^[0-9]+$' id='aaa_training_arrow_count' />";
+			html += "<label class='mdl-textfield__label' for='aaa_training_arrow_count'>"+Text['arrow_count']+"</label>";
+			html += "<span class='mdl-textfield__error'>"+Text['not_an_integer']+"</span>";
+			html += "</div>";
+			html += "</div>";
+			
+			html += "<div class='aaa-training-field'>";
+			html += "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
+			html += "<input class='mdl-textfield__input' type='text' pattern='-?[0-9]*(\.[0-9]+)?' id='aaa_training_distance' />";
+			html += "<label class='mdl-textfield__label' for='aaa_training_distance'>"+Text['distance']+"</label>";
+			html += "<span class='mdl-textfield__error'>"+Text['not_a_number']+"</span>";
+			html += "</div>";
+			html += "</div>";
+			
+			html += "<button id='aaa_add_training' onClick='TrainingPage.addTraining();' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'>";
+			html += "<i class='material-icons'>add</i>";
+			html += "</button>";
+			
+			
+			html += "<div id='aaa_training_options'>";
+			
+			html += "<label class='mdl-radio mdl-js-radio mdl-js-ripple-effect' for='aaa_option_1'>";
+			html += "<input type='radio' id='aaa_option_1' class='mdl-radio__button' name='options' value='warmup' checked />";
+			html += "<span class='mdl-radio__label'>"+Text['warmup']+"</span>";
+			html += "</label>";
+			
+			html += "<label class='mdl-radio mdl-js-radio mdl-js-ripple-effect' for='aaa_option_2'>";
+			html += "<input type='radio' id='aaa_option_2' class='mdl-radio__button' name='options' value='target' />";
+			html += "<span class='mdl-radio__label'>"+Text['target']+"</span>";
+			html += "</label>";
+			
+			html += "<label class='mdl-radio mdl-js-radio mdl-js-ripple-effect' for='aaa_option_3'>";
+			html += "<input type='radio' id='aaa_option_3' class='mdl-radio__button' name='options' value='board' />";
+			html += "<span class='mdl-radio__label'>"+Text['board']+"</span>";
+			html += "</label>";
+			
+			html += "<label class='mdl-radio mdl-js-radio mdl-js-ripple-effect' for='aaa_option_4'>";
+			html += "<input type='radio' id='aaa_option_4' class='mdl-radio__button' name='options' value='warmout' />";
+			html += "<span class='mdl-radio__label'>"+Text['warmout']+"</span>";
+			html += "</label>";
+			
+			html += "</div>";
+			
+			
+			
+			html += "</form>";
+			
+			html += "</div>";
+			
+			html += "<div class='mdl-card__menu'>";
+			html += "<button id='aaa_upload_training' onClick='TrainingPage.submitTraining();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+			html += "<i class='material-icons'>backup</i>";
+			html += "</button>";
+			html += "<button id='aaa_discard_training' onClick='TrainingPage.discardTraining();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+			html += "<i class='material-icons'>delete</i>";
+			html += "</button>";
+			html += "</div>";
+			
+			html += "</div>";
+			
+			html += "</div>";
+			
+			html += "<div class='mdl-layout-spacer'></div>";
+			
+			return html;
+		},
+
+		getGaugeCard: function(){
+			var html = "<div class='mdl-layout-spacer'></div>";
+			html += "<div id='aaa_gauge_card' class='mdl-cell mdl-cell--4-col'>";
+			html += "<div class='demo-card-wide mdl-card mdl-shadow--2dp'>";
+			html += "<div class='mdl-card__title'>";
+			html += "<h1 class='mdl-card__title-text'>"+Text['add_new_gauge']+"</h1>";
+			html += "</div>";
+			html += "<div id='aaa_gauge_content' class='mdl-card__supporting-text'>";
+			html += this.getGaugeDraft();
+			html += "</div>";
+			html += "<div class='mdl-card__actions mdl-card--border'>";
+			
+			html += "<form onsubmit='return false'>";
+			
+			html += "<div class='mdl-grid'>";
+			
+			html += "<div id='aaa_gauge_end' class='aaa-arrows'></div>";
+			
+			html += "<button id='aaa_close_end' onClick='TrainingPage.closeEnd();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--colored'>";
+			html += "<i class='material-icons'>done</i>";
+			html += "</button>";
+			
+			html += "<div class='aaa-arrows'>";
+			
+			for(var i = 1; i <= 10; i++){
+				html += "<button id='aaa_arrow_"+i+"' onClick='TrainingPage.addArrow("+i+");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect aaa-arrow-input'>";
+				html += "<strong>"+i+"</strong>";
+				html += "</button>";
+			}
+			
+			html += "</div>";
+			
+			
+			html += "<button id='aaa_remove_arrow' onClick='TrainingPage.removeArrow();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--colored'>";
+			html += "<i class='material-icons'>undo</i>";
+			html += "</button>";
+			
+			
+			
+			html += "</form>";
+			
+			html += "</div>";
+			
+			html += "</div>";
+			
+			html += "<div class='mdl-card__menu'>";
+			html += "<button id='aaa_upload_training' onClick='TrainingPage.submitGauge();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+			html += "<i class='material-icons'>backup</i>";
+			html += "</button>";
+			html += "<button id='aaa_discard_training' onClick='TrainingPage.discardGauge();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+			html += "<i class='material-icons'>delete</i>";
+			html += "</button>";
+			html += "</div>";
+			
+			html += "</div>";
+			
+			html += "</div>";
+			
+			html += "<div class='mdl-layout-spacer'></div>";
+			
+			return html;
+		},
+		
+		getGaugeDraft: function(){
+			var now = new Date().toJSON().substring(0,10);
+			var html = "<div class='aaa-training-field'>";
+			//TODO rename training field class (Both cards use it)
+			html += "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
+			html += "<input class='mdl-textfield__input' type='text' pattern='[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])' id='aaa_gauge_date' value='"+now+"'/>";
+			html += "<label class='mdl-textfield__label' for='aaa_gauge_date'>"+Text['date']+"</label>";
+			html += "<span class='mdl-textfield__error'>"+Text['not_a_date']+"</span>";
+			html += "</div>";
+			html += "</div>";
+			
+			html += "<div class='aaa-training-field'>";
+			html += "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
+			html += "<input class='mdl-textfield__input' type='text' pattern='-?[0-9]*(\.[0-9]+)?' id='aaa_gauge_distance' />";
+			html += "<label class='mdl-textfield__label' for='aaa_gauge_distance'>"+Text['distance']+"</label>";
+			html += "<span class='mdl-textfield__error'>"+Text['not_a_number']+"</span>";
+			html += "</div>";
+			html += "</div>";
+			
+			html += "<div id='aaa_gauge_targets'>";
+			
+			for(var i = 0; i < Text['targets'].length;i++){
+				html += "<label class='mdl-radio mdl-js-radio mdl-js-ripple-effect' for='aaa_option_"+i+"'>";
+				html += "<input type='radio' id='aaa_option_"+i+"' class='mdl-radio__button' name='targets' value='"+Text['targets'][i]+"' checked />";
+				html += "<span class='mdl-radio__label'>"+Text['targets'][i]+"</span>";
+				html += "</label>";
+			}
+			
+			html += "</div>";
+			
+			html += "<div id='aaa_gauge_ends'>";
+			if(User.getGaugeDraft()){
+				html += this.getGaugeEnds(User.getGaugeDraft().ends);
+			}
+			html += "</div>";
+			return html;
+		},
+		
+		getGaugeEnds: function(ends){
+			var html = "<div>";
+			for(var i = 0; i < ends.length; i++){
+				html += "<br/><strong>"+Text['end']+" "+(i+1)+":</strong>";
+				for(var j = 0; j < ends[i].length; j++){
+					html += "<div class='aaa-arrow-input aaa-arrow-end ";
+					var arrow = parseInt(ends[i][j]);
+					switch(arrow){
+						case 1:
+						case 2: html += "mdl-color--white";
+								break;
+						case 3:
+						case 4: html += "mdl-color--black";
+								html += " mdl-color-text--white";
+								break;
+						case 5:
+						case 6: html += "mdl-color--blue-400";
+								break;
+						case 7:
+						case 8: html += "mdl-color--red-400";
+								break;
+						case 9:
+						case 10: html += "mdl-color--yellow-400";
+								break;
+					}
+					html += "'>"+arrow+"</div>";
+				}
+			}
+			html += "</div>";
+			return html;
+		},
+
+		getTrainingDraft: function(){
+			var now = new Date().toJSON().substring(0,10);
+			var html = "<div>";
+			html += "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
+			html += "<input class='mdl-textfield__input' type='text' pattern='[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])' id='aaa_training_date' value='"+now+"'/>";
+			html += "<label class='mdl-textfield__label' for='aaa_training_date'>"+Text['date']+"</label>";
+			html += "<span class='mdl-textfield__error'>"+Text['not_a_date']+"</span>";
+			html += "</div>";
+			html += "</div>";
+			
+			if(User.getTrainingDraft()){
+				var draft = User.getTrainingDraft();
+				for(type in draft){
+					html+="<h2>"+Text[type]+"</h2>";
+					for(distance in draft[type]){
+						html+="<p><strong>"+distance+"m:</strong> "+draft[type][distance]+"</p>";
+					}
+				}
+			}
+			return html;
+		}
+	}
 }

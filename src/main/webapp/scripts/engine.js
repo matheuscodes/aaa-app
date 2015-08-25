@@ -6,6 +6,7 @@ var User = {
 		if(document.getElementById("email")){
 			content['email'] = document.getElementById("email").value;
 		}
+		
 		if(document.getElementById("password")){
 			var password = document.getElementById("password").value;
 			content['hashed_password'] = ""+CryptoJS.MD5(password);
@@ -53,6 +54,40 @@ var User = {
 	
 	getLanguage: function(){
 		return this.language;
+	},
+	
+	getTrainingDraft: function(){
+		return this.training_draft;
+	},
+	
+	discardTrainingDraft: function(){
+		if(this.training_draft) delete this.training_draft;
+	},
+	
+	pushTrainingDraft: function(distance,type,count){
+		if(!this.training_draft) this.training_draft = {type:"training"};
+		if(!this.training_draft[""+type]) this.training_draft[""+type] = {};
+		this.training_draft[""+type][""+distance] = count;
+	},
+	
+	getGaugeDraft: function(){
+		return this.gauge_draft;
+	},
+	
+	pushGaugeDraft: function(arrows){
+		if(!this.gauge_draft) this.gauge_draft = {ends:[],type:"gauge"};
+		this.gauge_draft.ends.push(arrows);
+	},
+	
+	setGaugeDraft: function(date,distance,target){
+		if(!this.gauge_draft) this.gauge_draft = {ends:[],type:"gauge"};
+		this.gauge_draft.date = date;
+		this.gauge_draft.distance = distance;
+		this.gauge_draft.target = target;;
+	},
+	
+	discardGaugeDraft: function(){
+		if(this.gauge_draft) delete this.gauge_draft;
 	}
 }
 
@@ -61,7 +96,7 @@ var Text = {
 	language_name: "unloaded",
 	language_all: {},
 	loaded: false,
-
+	targets: [],
 	loadLanguage: function(code){
 		if(this.language_code != code){
 			var caller = this;
@@ -80,6 +115,21 @@ var Text = {
 			    }
 			}
 			xmlhttp.send();
+			
+			//TODO think whether this stays here or move somewhere as "constant"
+			this.targets.push("FITA 40cm");
+			this.targets.push("FITA 60cm");
+			this.targets.push("FITA 80cm");
+			this.targets.push("FITA 80cm Centre");
+			this.targets.push("FITA 80cm 6-Ring");
+			this.targets.push("FITA 122cm");
+			this.targets.push("FITA 3x20cm Vertical");
+			this.targets.push("FITA 3x20cm Las Vegas");
+			this.targets.push("Field 3x20cm");
+			this.targets.push("Field 40cm");
+			this.targets.push("Field 60cm");
+			this.targets.push("Field 80cm");
+			
 		}
 	},
 	
