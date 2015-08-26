@@ -23,16 +23,24 @@ public class English extends Base {
 		put("arrow_count","Arrow Count");
 		put("not_a_number","Must be a number!");
 		put("distance","Distance (m)");
-		put("warmup","Warm Up");
+		put("warmup","Warm up");
 		put("target","Target");
-		put("board","Blank Board");
-		put("warmout","Warm Out");
-		put("upload_training","Upload Training");
-		put("discard_training","Discard Draft");
-		put("add_training","Add to Training");
+		put("board","Blank board");
+		put("warmout","Warm out");
+		
+		put("upload_training","Upload training");
+		put("discard_training","Discard draft");
+		put("add_training","Add to training");
 		put("add_new_training","New training");
 		put("not_a_date","Must be a date in format YYYY-MM-dd!");
 		put("date","Date");
+		
+		put("upload_gauge","Upload gauged training");
+		put("discard_gauge","Discard draft");
+		put("add_gauge_end","Add new end");
+		put("remove_end_arrow","Remove last arrow");
+		put("add_new_gauge","New gauged training");
+		put("end","End");
 	}
 	
 }

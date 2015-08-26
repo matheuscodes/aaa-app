@@ -261,9 +261,13 @@ var TrainingPage = {
 		html += "<i class='material-icons'>add gps_off</i>";
 		html += "</button>";
 		
+		html += "<div class='mdl-tooltip' for='aaa_new_training'>"+Text['add_new_training']+"</div>";
+		
 		html += "<button id='aaa_new_gauge' onClick='TrainingPage.openGauge();' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect'>";
 		html += "<i class='material-icons'>add gps_fixed</i>";
 		html += "</button>";
+		
+		html += "<div class='mdl-tooltip' for='aaa_new_gauge'>"+Text['add_new_gauge']+"</div>";
 		
 		html += "</div>";
 		
@@ -353,6 +357,7 @@ var TrainingPage = {
 			makeFreakingMDLwork();
 			$("#aaa_training_page_content").show("slide", { direction: "left" }, 1000);
 			$("#aaa_new_training").removeAttr('disabled');
+			$(".mdl-tooltip").each(function(i){$(this).removeClass("is-active");});//TODO fix this better
 		});
 	},
 
@@ -364,6 +369,7 @@ var TrainingPage = {
 			makeFreakingMDLwork();
 			$("#aaa_training_page_content").show("slide", { direction: "left" }, 1000);
 			$("#aaa_new_gauge").removeAttr('disabled');
+			$(".mdl-tooltip").each(function(i){$(this).removeClass("is-active")});
 		});
 	},
 
@@ -457,6 +463,8 @@ var TrainingPage = {
 			html += "<i class='material-icons'>add</i>";
 			html += "</button>";
 			
+			html += "<div class='mdl-tooltip' for='aaa_add_training'>"+Text['add_training']+"</div>";
+			
 			
 			html += "<div id='aaa_training_options'>";
 			
@@ -492,9 +500,15 @@ var TrainingPage = {
 			html += "<button id='aaa_upload_training' onClick='TrainingPage.submitTraining();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
 			html += "<i class='material-icons'>backup</i>";
 			html += "</button>";
+			
+			html += "<div class='mdl-tooltip' for='aaa_upload_training'>"+Text['upload_training']+"</div>";
+			
 			html += "<button id='aaa_discard_training' onClick='TrainingPage.discardTraining();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
 			html += "<i class='material-icons'>delete</i>";
 			html += "</button>";
+			
+			html += "<div class='mdl-tooltip' for='aaa_discard_training'>"+Text['discard_training']+"</div>";
+			
 			html += "</div>";
 			
 			html += "</div>";
@@ -527,6 +541,8 @@ var TrainingPage = {
 			html += "<button id='aaa_close_end' onClick='TrainingPage.closeEnd();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--colored'>";
 			html += "<i class='material-icons'>done</i>";
 			html += "</button>";
+			//TODO rename the text to match id
+			html += "<div class='mdl-tooltip' for='aaa_close_end'>"+Text['add_gauge_end']+"</div>";
 			
 			html += "<div class='aaa-arrows'>";
 			
@@ -543,6 +559,7 @@ var TrainingPage = {
 			html += "<i class='material-icons'>undo</i>";
 			html += "</button>";
 			
+			html += "<div class='mdl-tooltip' for='aaa_remove_arrow'>"+Text['remove_end_arrow']+"</div>";
 			
 			
 			html += "</form>";
@@ -552,12 +569,18 @@ var TrainingPage = {
 			html += "</div>";
 			
 			html += "<div class='mdl-card__menu'>";
-			html += "<button id='aaa_upload_training' onClick='TrainingPage.submitGauge();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+			html += "<button id='aaa_upload_gauge' onClick='TrainingPage.submitGauge();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
 			html += "<i class='material-icons'>backup</i>";
 			html += "</button>";
-			html += "<button id='aaa_discard_training' onClick='TrainingPage.discardGauge();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+			
+			html += "<div class='mdl-tooltip' for='aaa_upload_gauge'>"+Text['upload_gauge']+"</div>";
+			
+			html += "<button id='aaa_discard_gauge' onClick='TrainingPage.discardGauge();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
 			html += "<i class='material-icons'>delete</i>";
 			html += "</button>";
+			
+			html += "<div class='mdl-tooltip' for='aaa_discard_gauge'>"+Text['discard_gauge']+"</div>";
+			
 			html += "</div>";
 			
 			html += "</div>";

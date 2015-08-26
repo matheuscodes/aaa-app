@@ -34,12 +34,20 @@ public class Base extends HashMap<String, String> {
 		put("target","Arrow count shooting to a target (no gauge)");
 		put("board","Arrow count shooting to a blank board");
 		put("warmout","Warm out arrow count in trainings");
+		
 		put("upload_training","Tooltip of the training upload button");
 		put("discard_training","Tooltip of the training trash button");
 		put("add_training","Tooltip of the training add button");
 		put("add_new_training","Title of the training card");
 		put("not_a_date","Error message when not a date");
 		put("date","Date in format YYYY-MM-dd");
+
+		put("upload_gauge","Tooltip of the gauge upload button");
+		put("discard_gauge","Tooltip of the gauge trash button");
+		put("add_gauge_end","Tooltip of the end add button");
+		put("remove_end_arrow","Tooltip of the end undo button");
+		put("add_new_gauge","Title of the gauge card");
+		put("end","Name of the round of arrows");
 	}
 	
 	protected Base(String code, String name){

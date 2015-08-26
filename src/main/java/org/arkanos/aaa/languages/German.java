@@ -27,12 +27,20 @@ public class German extends Base {
 		put("target","Zielpunkt");
 		put("board","Tafel");
 		put("warmout","Ausschießen");
+		
 		put("upload_training","Training hochladen");
 		put("discard_training","Entwurf löschen");
 		put("add_training","Daten hinzufügen");
 		put("add_new_training","Neues Training");
 		put("not_a_date","Datum muss in Format YYYY-MM-dd sein!");
 		put("date","Datum");
+		
+		put("upload_gauge","Leistungskontrolle hochladen");
+		put("discard_gauge","Entwurf löschen");
+		put("add_gauge_end","Daten hinzufügen");
+		put("remove_end_arrow","Das Letzte zurücknehmen");
+		put("add_new_gauge","Neue Leistungskontrolle");
+		put("end","End");
 	}
 
 }
