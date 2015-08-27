@@ -675,9 +675,14 @@ var TrainingPage = {
 			if(User.getTrainingDraft()){
 				var draft = User.getTrainingDraft();
 				for(type in draft){
-					html+="<h2>"+Text[type]+"</h2>";
-					for(distance in draft[type]){
-						html+="<p><strong>"+distance+"m:</strong> "+draft[type][distance]+"</p>";
+					if(Text[type] && type != 'date'){
+						html+="<h2>"+Text[type]+"</h2>";
+						for(distance in draft[type]){
+							var number = parseInt(distance);
+							if(number > 0){
+								html+="<p><strong>"+distance+"m:</strong> "+draft[type][distance]+"</p>";
+							}
+						}
 					}
 				}
 			}
