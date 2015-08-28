@@ -21,6 +21,7 @@ package org.arkanos.aaa.controllers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -155,6 +156,22 @@ public class Database {
 		s = s.replace('\"', ' ');
 		s = s.replace('`', ' ');
 		s = s.replace(';', ' ');
+		//TODO by using prepared statement this can be deleted.
 		return s;
+	}
+	
+	static public PreparedStatement prepare(String q) {
+		try {
+			if ((Database.link == null) || Database.link.isValid(1) || Database.link.isClosed()) {
+				Database.initialize();
+			}
+			PreparedStatement prepared = Database.link.prepareStatement(q);
+			return prepared;
+		}
+		catch (SQLException e) {
+			//Log.error("Database", "Problems executing: " + q);
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

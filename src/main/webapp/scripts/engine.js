@@ -1,3 +1,28 @@
+var API = {
+	postTraining: function(string,type){
+		var xmlhttp = new XMLHttpRequest();
+		var url = "/trainings";
+		xmlhttp.open("POST", url, true);
+	
+		xmlhttp.setRequestHeader("Content-type", "application/x-json");
+		xmlhttp.setRequestHeader("Content-length", string.length);
+		xmlhttp.setRequestHeader("Connection", "close");
+		xmlhttp.onreadystatechange = function() {
+			if(xmlhttp.readyState == 4){
+				if(xmlhttp.status == 201){
+					console.log("SAVED TRAINING.");
+					if(type == "training") User.discardTrainingDraft();
+					if(type == "gauge") User.discardGaugeDraft();
+				}
+				else{
+			    	console.log("TRAINING NOT SAVED. "+xmlhttp.status);
+			    }
+			}
+		}
+		xmlhttp.send(string);
+	}
+}
+
 
 var User = {
 	logged_in: false,

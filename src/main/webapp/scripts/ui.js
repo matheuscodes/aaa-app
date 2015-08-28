@@ -384,8 +384,14 @@ var TrainingPage = {
 				var distance = $("#aaa_gauge_distance").val();
 				var target = $("#aaa_gauge_targets input[type='radio']:checked").val();
 				User.setGaugeDraft(date,distance,target);
-				console.log(JSON.stringify(User.getGaugeDraft()));
-				$("#aaa_new_gauge").removeAttr('disabled');
+				var json = User.getGaugeDraft();
+				console.log(JSON.stringify(json));
+				API.postTraining(JSON.stringify(json),json.type);
+				$("#aaa_gauge_card").parent().hide("slide", { direction: "right", 
+							complete: function(){
+								$("#aaa_new_gauge").removeAttr('disabled');
+							}
+						}, 1000);
 			}
 			else{
 				//TODO hint the user about nothing to add.
@@ -411,7 +417,12 @@ var TrainingPage = {
 				var json = User.getTrainingDraft();
 				json.date = $("#aaa_training_date").val();
 				console.log(JSON.stringify(json));
-				$("#aaa_new_training").removeAttr('disabled');
+				API.postTraining(JSON.stringify(json),json.type);
+				$("#aaa_training_card").parent().hide("slide", { direction: "right", 
+							complete: function(){
+								$("#aaa_new_training").removeAttr('disabled');
+							}
+						}, 1000);
 			}
 			else{
 				//TODO hint the user about nothing to add.
@@ -436,9 +447,20 @@ var TrainingPage = {
 			html += "<div class='mdl-card__title'>";
 			html += "<h1 class='mdl-card__title-text'>"+Text['add_new_training']+"</h1>";
 			html += "</div>";
+			
+			var now = new Date().toJSON().substring(0,10);
+			html += "<div class='aaa-training-field'>";
+			html += "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
+			html += "<input class='mdl-textfield__input' type='text' pattern='[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])' id='aaa_training_date' value='"+now+"'/>";
+			html += "<label class='mdl-textfield__label' for='aaa_training_date'>"+Text['date']+"</label>";
+			html += "<span class='mdl-textfield__error'>"+Text['not_a_date']+"</span>";
+			html += "</div>";
+			html += "</div>";
+			
 			html += "<div id='aaa_training_content' class='mdl-card__supporting-text'>";
 			html += this.getTrainingDraft();
 			html += "</div>";
+			
 			html += "<div class='mdl-card__actions mdl-card--border'>";
 			
 			html += "<form onsubmit='return false'>";
@@ -663,15 +685,7 @@ var TrainingPage = {
 		},
 
 		getTrainingDraft: function(){
-			var now = new Date().toJSON().substring(0,10);
-			var html = "<div>";
-			html += "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
-			html += "<input class='mdl-textfield__input' type='text' pattern='[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])' id='aaa_training_date' value='"+now+"'/>";
-			html += "<label class='mdl-textfield__label' for='aaa_training_date'>"+Text['date']+"</label>";
-			html += "<span class='mdl-textfield__error'>"+Text['not_a_date']+"</span>";
-			html += "</div>";
-			html += "</div>";
-			
+			var html = "";
 			if(User.getTrainingDraft()){
 				var draft = User.getTrainingDraft();
 				for(type in draft){
