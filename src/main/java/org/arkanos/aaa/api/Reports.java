@@ -21,7 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.arkanos.aaa.controllers.Database;
-import org.arkanos.aaa.controllers.ReportData;
+import org.arkanos.aaa.data.Season;
+import org.arkanos.aaa.data.Training;
 
 /**
  * Servlet implementation class Reports
@@ -29,6 +30,7 @@ import org.arkanos.aaa.controllers.ReportData;
 @WebServlet("/reports/*")
 public class Reports extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -86,11 +88,11 @@ public class Reports extends HttpServlet {
 			gc.set(Calendar.WEEK_OF_YEAR,week_end+1);
 			Date end = gc.getTime();
 					
-			ReportData.Season season = null;
-			ReportData.DailyReport report = null;
+			Season.WeeklyPerformance season = null;
+			Training.DailyPerformance report = null;
 			try {
-				season = ReportData.compileSeasonData(start, "arkanos");
-				report = ReportData.compileDailyReport(start,end,"arkanos");
+				season = Season.compileWeekly(start, "matheus.bt@gmail.com");
+				report = Training.compileDaily(start,end,"matheus.bt@gmail.com");
 			}
 			catch(SQLException e){
 				//TODO
@@ -112,7 +114,7 @@ public class Reports extends HttpServlet {
 				json += "},";
 			}
 			
-			for(Integer di: report.distance_type.keySet()){
+			for(Float di: report.distance_type.keySet()){
 				json += "\""+di+"\":";
 				json += "{";
 				for(String t: report.distance_type.get(di).keySet()){
@@ -223,8 +225,8 @@ public class Reports extends HttpServlet {
 			json += "\"max\":"+season.max;
 			json += "},";
 			
-			json += "\"start\":\""+ReportData.sdf.format(start)+"\",";
-			json += "\"end\":\""+ReportData.sdf.format(end)+"\",";
+			json += "\"start\":\""+sdf.format(start)+"\",";
+			json += "\"end\":\""+sdf.format(end)+"\",";
 			json += "\"week_start\":"+week_start+",";
 			json += "\"week_end\":"+week_end+",";
 			json += "\"month\":"+month+",";

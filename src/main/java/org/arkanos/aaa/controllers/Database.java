@@ -174,4 +174,12 @@ public class Database {
 		}
 		return null;
 	}
+	
+	static public java.sql.Date java2sql(java.util.Date javaDate){
+	    java.sql.Date sqlDate = null;
+	    if (javaDate != null) {
+	        sqlDate = new java.sql.Date(javaDate.getTime());
+	    }
+	    return sqlDate;
+}
 }
