@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.arkanos.aaa.controllers.Database;
+import org.arkanos.aaa.controllers.Security;
+import org.arkanos.aaa.controllers.Security.TokenInfo;
 import org.arkanos.aaa.data.Season;
 import org.arkanos.aaa.data.Training;
 
@@ -46,7 +48,12 @@ public class Reports extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		TokenInfo requester = Security.authenticateToken(request);
+		if (requester == null){
+			response.sendError(403); //TODO better message and logging.
+			return;
+		}
+		
 		String json = "";
 		String to_parse = request.getRequestURI();
 		if(!to_parse.endsWith("/")) to_parse += "/";
@@ -92,8 +99,8 @@ public class Reports extends HttpServlet {
 			Season.WeeklyPerformance season = null;
 			Training.DailyPerformance report = null;
 			try {
-				season = Season.compileWeekly(start, "matheus.bt@gmail.com");
-				report = Training.compileDaily(start,end,"matheus.bt@gmail.com");
+				season = Season.compileWeekly(start, requester.getUsername());
+				report = Training.compileDaily(start,end, requester.getUsername());
 			}
 			catch(SQLException e){
 				//TODO
@@ -240,6 +247,7 @@ public class Reports extends HttpServlet {
 		//to_parse = to_parse.substring(to_parse.indexOf("/")+1);
 		//System.out.println(to_parse.substring(0, to_parse.indexOf("/")));
 		response.getWriter().append(json);
+		response.setStatus(200);
 		response.addHeader("Content-Type", "application/json");
 	}
 

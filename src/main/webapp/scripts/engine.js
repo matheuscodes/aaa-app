@@ -22,9 +22,15 @@ var API = {
 		xmlhttp.send(string);
 	},
 	
-	getCompleteReport: function(){
+	getCompleteReport: function(month,year){
 		var xmlhttp = new XMLHttpRequest();
-		var url = "/reports/monthly/2015/08";
+		var url = "/reports/monthly/"+year;
+		if(month > 8){
+			url += "/"+(month+1);
+		}
+		else{
+			url += "/0"+(month+1);
+		}
 
 		xmlhttp.onreadystatechange = function() {
 		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {

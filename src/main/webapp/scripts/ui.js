@@ -185,7 +185,7 @@ function getDrawerMenu(){
 	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick=''><i class='material-icons'>home</i> "+Text['home']+"</a>";
 	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick=''><i class='material-icons'>assignment_ind</i> "+Text['manage_profile']+"</a>";
 	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick='TrainingPage.buildTrainingsPage();'><i class='material-icons'>create</i> "+Text['manage_trainings']+"</a>";
-	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick=''><i class='material-icons'>history</i> "+Text['performance_history']+"</a>";
+	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick='Report.buildPerformancePage();'><i class='material-icons'>history</i> "+Text['performance_history']+"</a>";
 	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick=''><i class='material-icons'>help_outline</i> "+Text['help']+"</a>";
 	html += "</nav>";
 	html += "</div>";
@@ -707,14 +707,87 @@ var TrainingPage = {
 
 
 var Report = {
+	setMonth: function(month){
+		this.month = month;
+		this.updateReport();
+	},
+	
+	setYear: function(year){
+		this.year = year;
+		this.updateReport();
+	},
+
+	updateReport: function(){
+		$("#aaa_report_month").html(Text["month_full_"+this.month]);
+		$("#aaa_report_year").html(this.year);
+		API.getCompleteReport(this.month,this.year);
+	},
+	
+	buildPerformancePage: function(){
+		destroyCurrentPage(Text['performance_history']);
+		//TODO fix fix transition bug
+		var html = "<div class='mdl-grid mdl-cell--12-col'>";
+		//TODO remove demo card class from examples (search for demo)
+		html += "<div class='mdl-card mdl-shadow--2dp'>";
+		
+		var now = new Date();
+		if(!this.month){
+			this.month = now.getMonth();
+		}
+		if(!this.year){
+			this.year = 1900+now.getYear();
+		}
+		html += "<div id='aaa_report_selector'>";
+		html += "<div class='mdl-layout-spacer'></div>";
+		
+		html += "<p id='aaa_report_month'>"+Text["month_full_"+this.month]+"</p>";
+		
+		html+= "<button id='aaa_report_set_month' class='mdl-button mdl-js-button mdl-button--icon'>";
+		html+= "<i class='material-icons'>expand_more</i>";
+		html+= "</button>";
+
+		html+= "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='aaa_report_set_month'>";
+		for(var i = 0; i < 12; i++){
+			html+= "<li class='mdl-menu__item' onClick='Report.setMonth("+i+")'>"+Text["month_full_"+i]+"</li>";
+		}
+		html+= "</ul>";
+		
+		html += "<p id='aaa_report_year'>"+this.year+"</p>";
+		
+		html+= "<button id='aaa_report_set_year' class='mdl-button mdl-js-button mdl-button--icon'>";
+		html+= "<i class='material-icons'>expand_more</i>";
+		html+= "</button>";
+
+		html+= "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='aaa_report_set_year'>";
+		for(var i = now.getYear()+1900; i > now.getYear()+1900-10; i--){
+			html+= "<li class='mdl-menu__item' onClick='Report.setYear("+i+")'>"+i+"</li>";
+		}
+		html+= "</ul>";
+		
+		html += "</div>";
+		
+		html += "<div id='aaa_report_content'></div>";
+		html += "</div>";
+		
+		html += "<div class='mdl-layout-spacer'></div>";
+		
+		
+		$("#aaa_content").html(html);
+		makeFreakingMDLwork();
+		
+		this.updateReport();
+	},
+	
 	buildMonthlyReport: function(download){
 		var current = new Date(download.start);
 		var stop = new Date(download.end);
 		var request = download.month;
 		var week = download.week_start;
 		
-		var html = "<div>";
-
+		var html = "<h2>"+Text['statistics_title']+"</h2>";
+		
+		html += "<div id='aaa_report_viewport'>";
+		
 		html += "<div class='aaa-report-sidebar'>";
 		html += "<div class='aaa-report-skip-header'></div>";
 		html += "<div id='aaa_report_labels'>";
@@ -726,7 +799,7 @@ var Report = {
 			html += "<div class='aaa-report-week'>";
 			
 			html += "<div class='aaa-report-week-title'>"
-			html += "<h2>"+week+"</h2><p>week_number</p>";
+			html += "<h3>"+week+"</h3><p>"+Text['week_number']+"</p>";
 			html += "</div>";
 
 			html += "<div class='aaa-report-days'>"
@@ -748,7 +821,7 @@ var Report = {
 		
 		html = $("#aaa_report_labels").html();
 		html += "<div id='aaa_report_warmup' class='aaa-report-label'>"
-		html += "<p>warmup</p>";
+		html += "<p>"+Text['warmup']+"</p>";
 		html += "</div>";
 		$("#aaa_report_labels").html(html);
 		
@@ -789,7 +862,7 @@ var Report = {
 				label += "<td class='aaa-report-text'><p>"+distance+" m</p></td>";
 				label += "<td class='aaa-report-text'>";
 				for(var type in download.arrow_counts[distance]){
-					label += "<p>"+type+"</p>";
+					label += "<p>"+Text[type]+"</p>";
 					current = new Date(download.start);
 					week = download.week_start;
 					while(current < stop){
@@ -828,7 +901,7 @@ var Report = {
 		
 		html = $("#aaa_report_labels").html();
 		html += "<div id='aaa_report_warmout' class='aaa-report-label'>"
-		html += "<p>warmout</p>";
+		html += "<p>"+Text['warmout']+"</p>";
 		html += "</div>";
 		$("#aaa_report_labels").html(html);
 		current = new Date(download.start);
@@ -855,7 +928,7 @@ var Report = {
 
 		html = $("#aaa_report_labels").html();
 		html += "<div id='aaa_report_technique_totals' class='aaa-report-label'>"
-		html += "<p>technique_totals</p>";
+		html += "<p>"+Text['technique_totals']+"</p>";
 		html += "</div>";
 		$("#aaa_report_labels").html(html);
 		current = new Date(download.start);
@@ -883,7 +956,7 @@ var Report = {
 		
 		html = $("#aaa_report_labels").html();
 		html += "<div id='aaa_report_totals' class='aaa-report-label'>"
-		html += "<p>totals</p>";
+		html += "<p>"+Text['totals']+"</p>";
 		html += "</div>";
 		$("#aaa_report_labels").html(html);
 		current = new Date(download.start);
@@ -910,7 +983,7 @@ var Report = {
 
 		html = $("#aaa_report_labels").html();
 		html += "<div id='aaa_report_weekly_technique' class='aaa-report-label'>"
-		html += "<p>weekly_technique</p>";
+		html += "<p>"+Text['weekly_technique']+"</p>";
 		html += "</div>";
 		$("#aaa_report_labels").html(html);
 		for(week in download.weekly){
@@ -927,7 +1000,7 @@ var Report = {
 
 		html = $("#aaa_report_labels").html();
 		html += "<div id='aaa_report_weekly_technique' class='aaa-report-label'>"
-		html += "<p>weekly_total</p>";
+		html += "<p>"+Text['weekly_total']+"</p>";
 		html += "</div>";
 		$("#aaa_report_labels").html(html);
 		for(week in download.weekly){
@@ -957,7 +1030,7 @@ var Report = {
 					label += "<p class='aaa-report-classes'>"+classes+"</p>";
 					for(var order in download.results[distance][classes]){
 						if(order != 0){
-							label += "<p class='aaa-report-individual-results'>"+order+"</p>";
+							label += "<p class='aaa-report-individual-results'>"+Text['result']+" "+order+"</p>";
 							current = new Date(download.start);
 							week = download.week_start;
 							while(current < stop){
@@ -982,7 +1055,7 @@ var Report = {
 						}
 					}
 					
-					label += "<p> average_inacurracy </p>";
+					label += "<p> "+Text['average_inacurracy']+" </p>";
 					
 					current = new Date(download.start);
 					week = download.week_start;
@@ -1031,7 +1104,7 @@ var Report = {
 		
 		html = $("#aaa_report_labels").html();
 		html += "<div id='aaa_report_result_totals' class='aaa-report-label'>"
-		html += "<p>result_totals</p>";
+		html += "<p>"+Text['result_totals']+"</p>";
 		html += "</div>";
 		$("#aaa_report_labels").html(html);
 		current = new Date(download.start);
@@ -1058,7 +1131,7 @@ var Report = {
 		
 		html = $("#aaa_report_labels").html();
 		html += "<div id='aaa_report_weekly_technique' class='aaa-report-label'>"
-		html += "<p>weekly_inacurracy</p>";
+		html += "<p>"+Text['weekly_inacurracy']+"</p>";
 		html += "</div>";
 		$("#aaa_report_labels").html(html);
 		for(week in download.weekly){
@@ -1071,9 +1144,13 @@ var Report = {
 			html += "</div>";
 			$("#aaa_report_week_data_"+week).html(html);
 		}
-		
+		$("#aaa_report_content").append("<h2>"+Text['overview_title']+"</h2>");
 		$("#aaa_report_content").append(this.HTML.getDailyGraph(download));
+		$("#aaa_report_content").append("<h2>"+Text['season_title']+"</h2>");
 		$("#aaa_report_content").append(this.HTML.getSeasonGraph(download));
+		
+		$("#aaa_report_viewport").width($("#aaa_report_daily_graph").width());
+		$("#aaa_content").show("slide", { direction: "left" }, 1000);
 	},
 	
 	HTML:{
@@ -1095,13 +1172,13 @@ var Report = {
 			html += ".share-shadow {fill:#000}";
 			
 			html += ".graph_scale {}";
-			html += ".graph_label {font-size:40}";
+			html += ".graph_label {font-size:30pt}";
 			
 
-			html += ".bottom {font-size:40; text-anchor:middle}";
-			html += ".left {font-size:30; text-anchor:end}";
-			html += ".right {font-size:30; text-anchor:start}";
-			html += ".title {font-size:40;font-weight:bold; text-anchor:start}";
+			html += ".bottom {font-size:30pt; text-anchor:middle}";
+			html += ".left {font-size:20pt; text-anchor:end}";
+			html += ".right {font-size:20pt; text-anchor:start}";
+			html += ".title {font-size:30pt;font-weight:bold; text-anchor:start}";
 			
 			html += "</style>";
 			return html;
@@ -1181,7 +1258,7 @@ var Report = {
 			var width = 20.2/(100/general_width);
 			
 			var html = "<svg xmlns='http://www.w3.org/2000/svg'";
-			html += " id='season'";
+			html += " id='aaa_report_daily_graph'";
 			html += " version='1.1'";
 			html += " viewBox='0 "+(-general_height)+" "+(general_width+2)+" "+(general_height+1)+"'";
 			html += " preserveAspectRatio='xMidYMid meet'";
@@ -1289,7 +1366,7 @@ var Report = {
 			var width = 20.2/(100/general_width);
 			
 			var html = "<svg xmlns='http://www.w3.org/2000/svg'";
-			html += " id='season'";
+			html += " id='aaa_report_season_graph'";
 			html += " version='1.1'";
 			html += " viewBox='0 "+(-general_height)+" "+(general_width+2)+" "+(general_height+2)+"'";
 			html += " preserveAspectRatio='xMidYMid meet'";
@@ -1367,7 +1444,7 @@ var Report = {
 			for(var i = min,j = 0; j <= size; i+=unit,j+=block){
 				html += "<text class='right' x='"+(offset+10)+"' y='-"+j+"'>"+(i).toPrecision(3)+"</text>";
 			}
-			html += "<text transform='translate("+(offset+10+90)+",0) rotate(-90)' class='title' x='0' y='0'>"+title+"</text>";
+			html += "<text transform='translate("+(offset+10+90)+",0) rotate(-90)' class='title' x='0' y='0'>"+Text[title]+"</text>";
 			html += "</g>";
 			return html;
 		},
@@ -1379,7 +1456,7 @@ var Report = {
 			for(var i = min,j = 0; i <= max; i+=unit,j+=block){
 				html += "<text class='left' x='-10' y='-"+j+"'>"+Math.floor(i)+"</text>";
 			}
-			html += "<text transform='translate("+(-10-60)+",0) rotate(-90)' class='title' x='0' y='0'>"+title+"</text>";
+			html += "<text transform='translate("+(-10-60)+",0) rotate(-90)' class='title' x='0' y='0'>"+Text[title]+"</text>";
 			html += "</g>";
 			return html;
 		},
@@ -1400,7 +1477,7 @@ var Report = {
 			var html = "<g id='bottom'>";
 			for(var i = min; i < max; i++){
 				html += "<g transform=translate("+((i-min)*100+50)+",50)>";
-				html += "<text class='bottom' x='0' y='0'>wk</text>";
+				html += "<text class='bottom' x='0' y='0'>"+Text['wk']+"</text>";
 				html += "<text class='bottom' x='0' y='45'>"+i+"</text>";
 				html += "</g>";
 			}
@@ -1412,24 +1489,24 @@ var Report = {
 			var html = "<g id='labels' transform='translate(0,-"+max+")'>";
 			
 			html += "<rect class='plan' x='0' y='"+(1*max/10-25)+"' height='20' width='100' />";
-			html += "<text class='graph_label' x='125' y='"+(1*max/10-2)+"'> total_plan </text>"
+			html += "<text class='graph_label' x='125' y='"+(1*max/10-2)+"'>"+Text['total_plan']+"</text>"
 			
 			html += "<rect class='training' x='0' y='"+(2*max/10-25)+"' height='20' width='100' />";
-			html += "<text class='graph_label' x='125' y='"+(2*max/10-2)+"'> technique_totals </text>"
+			html += "<text class='graph_label' x='125' y='"+(2*max/10-2)+"'>"+Text['technique_totals']+"</text>"
 			
 			html += "<rect class='target' x='0' y='"+(3*max/10-25)+"' height='20' width='100' />";
-			html += "<text class='graph_label' x='125' y='"+(3*max/10-2)+"'> totals </text>"
+			html += "<text class='graph_label' x='125' y='"+(3*max/10-2)+"'>"+Text['target_totals']+"</text>"
 			
 			html += "<rect class='share-shadow' x='5' y='"+(4*max/10-25)+"' height='20' width='100' />";
 			html += "<rect class='share' y='"+(4*max/10-5-25)+"' height='20' width='100' />";
-			html += "<text class='graph_label' x='125' y='"+(4*max/10-2)+"'> technique_share </text>"
+			html += "<text class='graph_label' x='125' y='"+(4*max/10-2)+"'>"+Text['technique_share']+"</text>"
 			
 			html += "<path class='estimation' d='M 0,"+(5*max/10-12.5)+" l 100,0'/>";
 			html += "<circle class='result' cx='50' cy='"+(5*max/10-12.5)+"' r='10'/>";
-			html += "<text class='graph_label' x='125' y='"+(5*max/10-2)+"'> result_totals </text>"
+			html += "<text class='graph_label' x='125' y='"+(5*max/10-2)+"'>"+Text['result_totals']+"</text>"
 			
 			html += "<circle class='strength' cx='50' cy='"+(6*max/10-12.5)+"' r='10'/>";
-			html += "<text class='graph_label' x='125' y='"+(6*max/10-2)+"'> strength_training </text>"
+			html += "<text class='graph_label' x='125' y='"+(6*max/10-2)+"'>"+Text['strength_training']+"</text>"
 			
 			html += "</g>";
 			

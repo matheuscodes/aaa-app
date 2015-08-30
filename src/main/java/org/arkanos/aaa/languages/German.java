@@ -41,6 +41,52 @@ public class German extends Base {
 		put("remove_end_arrow","Das Letzte zurücknehmen");
 		put("add_new_gauge","Neue Leistungskontrolle");
 		put("end","End");
+		
+		put("gauged","Scheibe");
+		put("statistics_title","Trainingsbericht");
+		put("week_number","Wochen-Nr.");
+		put("wk","KW");
+		put("technique_totals","Summe Technikschüsse");
+		put("target_totals","Summe auf Auflage");
+		put("totals","Schußzahl gesamt");
+		put("weekly_technique","Technikzahl pro Woche");
+		put("weekly_total","Schußzahl pro Woche");
+		put("result","Erg.");
+		put("average_inacurracy","Umrechnung");
+		put("result_totals","Umrechnung Durchschnitt");
+		put("weekly_inacurracy","Wochendurchschnitt");
+		put("overview_title","Tagesauswertung");
+		put("total_plan","Vorgabe Gesamt");
+		put("technique_share","Vorgabe Auflage");
+		put("strength_training","Krafttraining");
+		put("results","Ergebnisse");
+		put("season_title","Wochenauswertung");
+		
+		put("month_full_0","Januar");
+		put("month_full_1","Februar");
+		put("month_full_2","März");
+		put("month_full_3","April");
+		put("month_full_4","Mai");
+		put("month_full_5","Juni");
+		put("month_full_6","Juli");
+		put("month_full_7","August");
+		put("month_full_8","September");
+		put("month_full_9","Oktober");
+		put("month_full_10","November");
+		put("month_full_11","Dezember");
+		
+		put("month_short_0","Jan");
+		put("month_short_1","Feb");
+		put("month_short_2","Mrz");
+		put("month_short_3","Apr");
+		put("month_short_4","Mai");
+		put("month_short_5","Jun");
+		put("month_short_6","Jul");
+		put("month_short_7","Aug");
+		put("month_short_8","Sep");
+		put("month_short_9","Okt");
+		put("month_short_10","Nov");
+		put("month_short_11","Dez");
 	}
 
 }

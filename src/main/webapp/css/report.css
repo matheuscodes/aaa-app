@@ -1,6 +1,36 @@
-body{
-	font-family:arial;
-	display: inline-block;
+#aaa_report_selector{
+	padding: 20pt 0pt 0px 20pt;
+}
+
+#aaa_report_selector p{
+	display: inline;
+	font-size: 15pt;
+	padding: 0pt 0pt 0px 20pt;
+}
+
+#aaa_report_content{
+	overflow: auto;
+	margin: 10pt;
+	-webkit-user-select: none; /* Chrome/Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
+	
+	/* Rules below not implemented in browsers yet */
+	-o-user-select: none;
+	user-select: none;
+}
+
+#aaa_report_content h2{
+	font-size: 15pt;
+	line-height: 15pt;
+	padding: 30pt 0pt 10pt 0pt;
+	margin: 0pt;
+	float: left;
+	width:100%;
+}
+
+#aaa_report_content h2:first-child{
+	padding: 0pt 0pt 10pt 0pt;
 }
 
 .aaa-report-skip-header{
@@ -141,7 +171,7 @@ body{
 	height:30pt;
 }
 
-.aaa-report-week-title h2{
+.aaa-report-week-title h3{
 	float: right;
 	font-weight:bold;
 	color: #C0C0C0;
