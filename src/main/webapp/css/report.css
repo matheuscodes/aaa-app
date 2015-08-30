@@ -3,133 +3,137 @@ body{
 	display: inline-block;
 }
 
-.skip_header{
+.aaa-report-skip-header{
 	height:44.5pt;
 	float:left;
 	width:100%;
 }
 
-.sidebar{
+.aaa-report-sidebar{
 	float:left;
 	width:140pt;
 }
 
-.labels{
+.aaa-report-labels{
 	float:left;
 }
 
-.label{
+.aaa-report-label{
 	float:left;
 	width: 100%;
 	border-bottom: 1pt solid #000;
-	font-size: 8pt;
 	padding: 0 0 0 5pt;
 	margin: 0;
 }
 
-.label p{
+.aaa-report-label p{
 	height: 10pt;
+	line-height: 10pt;
 	padding: 0;
 	margin: 0;
+	font-size: 8pt;
 }
 
-.label table{
+.aaa-report-label table{
 	width:100%;
 	font-size: 8pt;
 }
 
-.label .text{
+.aaa-report-label .aaa-report-text{
 	width:30%;
 	text-align:right;
 	font-size: 8pt;
 }
 
-.label .text p{
+.aaa-report-label .aaa-report-text p{
 	border-bottom: 1pt dotted #000;
 	height:10pt;
 	padding: 0 10pt 0 0;
 	margin: 0;
 }
 
-.label .text p:nth-last-child(1){
+.aaa-report-label .aaa-report-text p:nth-last-child(1){
 	border-bottom: none;
 	float:right;
 }
 
-.classes{
+.aaa-report-classes{
 	float: left;
 	border: none !important;
 }
 
-.individual_results{
+.aaa-report-individual-results{
 	float: right;
 	width: 40%;
 }
 
-.header_day {
+.aaa-report-header-day {
 	border-bottom: 2pt solid #000 !important;
 }
 
-.fixed {
+.aaa-report-fixed {
 	border-bottom: 2pt solid #000 !important;
 }
 
-.weekend{
+.aaa-report-weekend{
 	background-color: #CCFFFF;
 }
 
-.offtime{
+.aaa-report-offtime{
 	color: #777777 !important;
 	background-color: #CCCCCC !important;
 }
 
-.summary{
+.aaa-report-summary{
 	background-color: #EEEEEE;
 	font-weight: bold;
 }
 
-.subtotal{
+.aaa-report-subtotal{
 	font-weight: bold;
 }
 
-.day:nth-child(7n+1){	
+.aaa-report-day:nth-child(7n+1){	
 	border-left: none;
 }
 
-.day {
+.aaa-report-day {
 	width: 19.35pt;
 	border-left: 1pt dotted #000;
 	border-bottom: 1pt dotted #000;
 	float: left;
 	height: 10pt;
+	line-height: 10pt;
 }
 
-.week-summary {
+.aaa-report-week-summary {
 	width: 100%;
 	border: none;
 	float: left;
 	height: 10pt;
+	line-height: 10pt;
 	font-weight: bold;
 }
 
-.end{
+.aaa-report-end{
 	border-bottom: 1pt solid #000 !important;
 }
 
-.week:nth-child(2) {
+.aaa-report-week:nth-child(2) {
 	border-left: 1.5pt solid #000;
 }
 
-.week {
+.aaa-report-week {
 	float: left;
 	border-top: 1.5pt solid #000;
 	border-bottom: 1.5pt solid #000;
 	border-right: 1.5pt solid #000;
 	font-size: 8pt;
-	text-align:center;
+	text-align: center;
+	width: 140pt;
 }
 
-.week-title{
+.aaa-report-week-title{
 	float: left;
 	width: 100%;
 	text-align: right;
@@ -137,15 +141,16 @@ body{
 	height:30pt;
 }
 
-.week-title h2{
+.aaa-report-week-title h2{
 	float: right;
 	font-weight:bold;
 	color: #C0C0C0;
 	font-size: 20pt;
+	line-height: 20pt;
 	margin: 7pt 0 0 0;
 }
 
-.week-title p{
+.aaa-report-week-title p{
 	float: right;
 	font-size: 7pt;
 }

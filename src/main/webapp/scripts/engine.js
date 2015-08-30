@@ -20,6 +20,21 @@ var API = {
 			}
 		}
 		xmlhttp.send(string);
+	},
+	
+	getCompleteReport: function(){
+		var xmlhttp = new XMLHttpRequest();
+		var url = "/reports/monthly/2015/08";
+
+		xmlhttp.onreadystatechange = function() {
+		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		    	var download = JSON.parse(xmlhttp.responseText);
+		        Report.buildMonthlyReport(download);
+		    }
+		}
+
+		xmlhttp.open("GET", url, true); //Review the way downloads are made.
+		xmlhttp.send();
 	}
 }
 

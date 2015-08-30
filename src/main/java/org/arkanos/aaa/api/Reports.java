@@ -31,6 +31,7 @@ import org.arkanos.aaa.data.Training;
 public class Reports extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	private static final DecimalFormat df = new DecimalFormat("#");
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -115,7 +116,7 @@ public class Reports extends HttpServlet {
 			}
 			
 			for(Float di: report.distance_type.keySet()){
-				json += "\""+di+"\":";
+				json += "\""+df.format(di)+"\":"; //TODO make sure all distances are float and formatted
 				json += "{";
 				for(String t: report.distance_type.get(di).keySet()){
 					json += "\""+t+"\":";
