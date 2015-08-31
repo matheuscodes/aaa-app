@@ -544,7 +544,7 @@ var TrainingPage = {
 
 		getGaugeCard: function(){
 			var html = "<div class='mdl-layout-spacer'></div>";
-			html += "<div id='aaa_gauge_card' class='mdl-cell mdl-cell--4-col'>";
+			html += "<div id='aaa_gauge_card' class='mdl-cell mdl-cell--8-col'>";
 			html += "<div class='demo-card-wide mdl-card mdl-shadow--2dp'>";
 			html += "<div class='mdl-card__title'>";
 			html += "<h1 class='mdl-card__title-text'>"+Text['add_new_gauge']+"</h1>";
@@ -568,7 +568,7 @@ var TrainingPage = {
 			
 			html += "<div class='aaa-arrows'>";
 			
-			for(var i = 1; i <= 10; i++){
+			for(var i = 0; i <= 10; i++){
 				html += "<button id='aaa_arrow_"+i+"' onClick='TrainingPage.addArrow("+i+");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect aaa-arrow-input'>";
 				html += "<strong>"+i+"</strong>";
 				html += "</button>";
@@ -1055,7 +1055,7 @@ var Report = {
 						}
 					}
 					
-					label += "<p> "+Text['average_inacurracy']+" </p>";
+					label += "<p class='aaa-report-individual-inacurracy'> "+Text['average_inacurracy']+" </p>";
 					
 					current = new Date(download.start);
 					week = download.week_start;

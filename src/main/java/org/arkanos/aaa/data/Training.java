@@ -32,6 +32,7 @@ public class Training {
 	
 	/*Gauge only*/
 	static final public String	FIELD_TARGET = "target";
+	static final public String	FIELD_ROUND = "round";
 	
 	/*Arrow only*/
 	static final public String	FIELD_TRAINING_ID = "training_id";
@@ -255,7 +256,7 @@ public class Training {
 		query += "WHERE "+FIELD_ARCHER+" = ? ";
 		query += "AND "+FIELD_DATE+" >= ? ";
 		query += "AND "+FIELD_DATE+" < ? ";
-		query += "GROUP BY "+FIELD_DATE+","+FIELD_TARGET+";";
+		query += "GROUP BY "+FIELD_DATE+","+FIELD_TARGET+","+FIELD_DISTANCE+";";
 		ps = Database.prepare(query);
 		ps.setString(1, user);
 		ps.setDate(2, Database.java2sql(from));
@@ -267,7 +268,6 @@ public class Training {
 			String target = rs.getString(FIELD_TARGET);
 			String date = sdf.format(rs.getDate(FIELD_DATE));
 			float result = rs.getFloat("average");
-			
 			HashMap<String,HashMap<String,Float>> grandparent = dp.averages.get(distance);
 			if(grandparent == null){
 				grandparent = new HashMap<String,HashMap<String,Float>>();
@@ -324,18 +324,37 @@ public class Training {
 	}
 	
 	public static long insertGauge(String email, String date,float value, String target) {
-		String query = "INSERT INTO " + TABLE_NAME_GAUGE + "(";
-		query += FIELD_ARCHER+",";
-		query += FIELD_DATE+",";
-		query += FIELD_DISTANCE+",";
-		query += FIELD_TARGET+")";
-		query += " VALUES (?,?,?,?);";
 		try {
+			int round = 0;
+			String query = "SELECT MAX("+FIELD_ROUND+") AS last FROM "+TABLE_NAME_GAUGE+" ";
+			query += "WHERE "+FIELD_ARCHER+"=? ";
+			query += "AND "+FIELD_DATE+"=? ";
+			query += "AND "+FIELD_DISTANCE+"=? ";
+			query += "AND "+FIELD_TARGET+"=?;";
 			PreparedStatement ps = Database.prepare(query);
 			ps.setString(1,email);
 			ps.setString(2,date);
 			ps.setFloat(3,value);
 			ps.setString(4,target);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()){
+				round = rs.getInt("last")+1; //TODO make combination and not ID as PK.
+			}
+			rs.close();
+			
+			query = "INSERT INTO " + TABLE_NAME_GAUGE + "(";
+			query += FIELD_ARCHER+",";
+			query += FIELD_DATE+",";
+			query += FIELD_DISTANCE+",";
+			query += FIELD_ROUND+",";
+			query += FIELD_TARGET+")";
+			query += " VALUES (?,?,?,?,?);";
+			ps = Database.prepare(query);
+			ps.setString(1,email);
+			ps.setString(2,date);
+			ps.setFloat(3,value);
+			ps.setFloat(4,round);
+			ps.setString(5,target);
 			boolean result = (ps.executeUpdate() > 0);
 			ps.close();
 			if(!result){
@@ -346,16 +365,20 @@ public class Training {
 				query += "WHERE "+FIELD_ARCHER+"=? ";
 				query += "AND "+FIELD_DATE+"=? ";
 				query += "AND "+FIELD_DISTANCE+"=? ";
+				query += "AND "+FIELD_ROUND+"=? ";
 				query += "AND "+FIELD_TARGET+"=?;";
 				ps = Database.prepare(query);
 				ps.setString(1,email);
 				ps.setString(2,date);
 				ps.setFloat(3,value);
-				ps.setString(4,target);
-				ResultSet rs = ps.executeQuery();
+				ps.setFloat(4,round);
+				ps.setString(5,target);
+				rs = ps.executeQuery();
 				if(rs.next()){
 					return rs.getLong(FIELD_ID);
 				}
+				rs.close();
+				ps.close(); //TODO check the rest of the code for leaks
 			}
 			
 			
@@ -382,14 +405,13 @@ public class Training {
 					ps.addBatch();
 				}
 			}
-			
-			for(int i: ps.executeBatch()){
+			int[] results = ps.executeBatch();
+			ps.close();
+			for(int i: results){
 				if(i <= 0){
-					ps.close();
 					return false;
 				}
 			}
-			ps.close();
 			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

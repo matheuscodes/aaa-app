@@ -70,7 +70,7 @@
 }
 
 .aaa-report-label .aaa-report-text{
-	width:30%;
+	width:20%;
 	text-align:right;
 	font-size: 8pt;
 }
@@ -90,11 +90,22 @@
 .aaa-report-classes{
 	float: left;
 	border: none !important;
+	padding: 0pt !important; /*TODO fix overlap when it is too long*/
 }
 
 .aaa-report-individual-results{
 	float: right;
 	width: 40%;
+}
+
+.aaa-report-individual-inacurracy{
+	float: right;
+	width: 90%;
+	border-bottom: 1pt solid #000 !important;
+}
+
+.aaa-report-individual-inacurracy:nth-last-child(1){
+	border-bottom: none !important;
 }
 
 .aaa-report-header-day {

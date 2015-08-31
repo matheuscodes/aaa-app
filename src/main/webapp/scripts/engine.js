@@ -129,7 +129,7 @@ var User = {
 		if(!this.gauge_draft) this.gauge_draft = {ends:[],type:"gauge"};
 		this.gauge_draft.date = date;
 		this.gauge_draft.distance = distance;
-		this.gauge_draft.target = target;;
+		this.gauge_draft.target = target;
 	},
 	
 	discardGaugeDraft: function(){
