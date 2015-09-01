@@ -1638,7 +1638,7 @@ var ProfilePage = {
 			html += "<img src='/img/bow/recurve.png' />";
 			html += "</div>";
 			html += "<div class='aaa-inventory-item'>";
-			html += "<img src='/img/bow/long.png' />";
+			html += "<img src='/img/bow/longbow.png' />";
 			html += "</div>";
 			html += "</div>";
 			
