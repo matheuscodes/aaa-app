@@ -2,9 +2,125 @@
 	padding: 0 10pt;
 }
 
+/*TODO review this... causing issues*/
 .mdl-card{
 	width: unset;
 	min-height: unset;
+}
+
+
+#aaa_new_season{
+	float:right;
+	height: 30pt;
+	width: 30pt;
+	min-width: 30pt;
+}
+
+#aaa_content h1 p{
+	float: right;
+	margin: 5pt;
+}
+
+
+#aaa_new_inventory{
+	float:right;
+	height: 30pt;
+	width: 30pt;
+	min-width: 30pt;
+}
+
+#aaa_content h1{
+	font-size: 24pt;
+	margin: 12pt;
+	display: block;
+}
+
+#aaa_content h2{
+	font-size: 16pt;
+	margin: 12pt;
+	display: block;
+}
+
+.aaa-downslider{
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	text-align: center;
+}
+.aaa-field-tiny{
+	width: calc(7.5% - 6pt);
+	margin:3pt;
+	font-size: 8pt;
+	min-width: 33pt;
+	display:inline-block;
+	vertical-align:top;
+}
+
+.aaa-field-small{
+	width: calc(25% - 24pt);
+	margin:12pt;
+	font-size: 10pt;
+	display:inline-block;
+	vertical-align:top;
+}
+
+.aaa-field-medium{
+	width: calc(50% - 24pt);
+	margin:12pt;
+	font-size: 10pt;
+	display:inline-block;
+	vertical-align:top;
+}
+
+
+.aaa-field-small input{
+	font-size: 10pt;	
+}
+
+#aaa_inventory_type label{
+	margin: 5pt;
+}
+
+.aaa-seasons-item{
+	float: left;
+}
+
+.aaa-seasons-item p{
+	line-height: 10pt;
+	font-size: 8pt;
+	padding: 0pt;
+	margin: 2pt;
+	float: left;
+	display: inline-block;
+}
+
+.aaa-seasons-item svg{
+	display: inline-block;
+	float: left;
+}
+
+.aaa-inventory-item{
+	margin: 5pt;
+	width: 200pt;
+	display: inline-block;
+}
+
+.aaa-inventory-item p{
+	line-height: 10pt;
+	font-size: 8pt;
+	padding: 0pt;
+	margin: 2pt;
+}
+
+.aaa-inventory-item img{
+	height: 100pt;
+	float: left;
+}
+
+.aaa-calendar-day{
+	float: left;
+	margin: 2pt;
+	font-size: 7pt;
+	max-width: 8%;
+	width: 8%;
 }
 
 #aaa_gauge_ends div strong{

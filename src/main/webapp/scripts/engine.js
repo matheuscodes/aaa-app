@@ -41,6 +41,29 @@ var API = {
 
 		xmlhttp.open("GET", url, true); //Review the way downloads are made.
 		xmlhttp.send();
+	},
+	
+	getSeasons: function(id){
+		//TODO
+		var string;
+		if(!id){
+			string = "[";
+			string += '{"id":7,"max":260,"start":33,"size":26,"start_date":"2014-10-01","end_date":"2015-03-31","name":"Winter","arrows":[10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260],"targets":[5,10,15,20,25,30,35,40,45,60,20,40,130,40,50,60,140,140,100,200,210,20,30,40,50,60]},';
+			string += '{"id":13,"max":260,"start":33,"size":26,"start_date":"2015-04-01","end_date":"2015-09-30","name":"Summer","arrows":[10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260],"targets":[5,10,15,20,25,30,35,40,45,60,20,40,130,40,50,60,140,140,100,200,210,20,30,40,50,60]}';
+			string += ']';
+		}
+		else{
+			string = '{"id":'+id+',"max":260,"start":33,"size":26,"start_date":"2014-10-01","end_date":"2015-03-31","name":"Winter","arrows":[10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260],"targets":[5,10,15,20,25,30,35,40,45,60,20,40,130,40,50,60,140,140,100,200,210,20,30,40,50,60]}';
+			
+		}
+		return JSON.parse(string);
+	},
+	
+	deleteSeason: function(id,callback){
+		//TODO with callback function
+		//TODO review all with UI calls to make callback
+		console.log("Deleted "+id);
+		callback();
 	}
 }
 
