@@ -67,7 +67,8 @@ public class Reports extends HttpServlet {
 			to_parse = to_parse.substring(to_parse.indexOf("/")+1);
 			
 			//TODO error if there is still BS in the URI.
-			
+			//FIXME error in PRODUCTION CLOUD CONTROL... locale starts week on sunday, breaks the whole report building on Javascript side (dislocated by one day)
+			//FIXME force week to start on monday.
 			GregorianCalendar gc = new GregorianCalendar();
 			gc.clear();
 			gc.set(Calendar.YEAR, year);
