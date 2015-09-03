@@ -8,6 +8,21 @@
 	min-height: unset;
 }
 
+#aaa_new_event_color{
+	width:20pt;
+	height:20pt;
+	border:none;
+	background-color:unset;
+	margin:5pt;
+	padding: 0;
+}
+
+#aaa_new_event{
+	float:right;
+	height: 30pt;
+	width: 30pt;
+	min-width: 30pt;
+}
 
 #aaa_new_season{
 	float:right;
@@ -16,9 +31,17 @@
 	min-width: 30pt;
 }
 
+#aaa_content{
+	text-align: center;
+}
+
 #aaa_content h1 p{
 	float: right;
 	margin: 5pt;
+}
+
+#aaa_content h2 p{
+	margin: 0;
 }
 
 
@@ -39,6 +62,7 @@
 	font-size: 16pt;
 	margin: 12pt;
 	display: block;
+	line-height:0pt;
 }
 
 .aaa-downslider{
@@ -70,6 +94,25 @@
 	vertical-align:top;
 }
 
+.aaa-field-large{
+	width: calc(100% - 24pt);
+	margin:12pt;
+	font-size: 10pt;
+	display:inline-block;
+	vertical-align:top;
+}
+
+#aaa_new_task{
+	width: calc(100% - 54pt);
+	vertical-align:middle;
+}
+
+#aaa_new_task_content button{
+	margin: 5pt;
+	height: 20pt !important;
+	width: 20pt !important;
+	min-width: 20pt !important;
+}
 
 .aaa-field-small input{
 	font-size: 10pt;	
@@ -77,6 +120,64 @@
 
 #aaa_inventory_type label{
 	margin: 5pt;
+}
+
+.aaa-list-item-circle{
+	margin: 10pt;
+	border-radius: 50%;
+	display: inline-block;
+	width: 32pt;
+	line-height: 32pt;
+	font-weight: bold;
+	font-size: 16pt;
+	text-align: center;
+}
+
+.aaa-list-item-content{
+	display: inline-block;
+	width: calc(90% - 32pt - 10pt);
+	vertical-align: middle;
+	border-bottom: 1pt solid #CCC;
+}
+
+.aaa-tasks-item{
+	margin: 5pt;
+	display: block;
+	vertical-align: top;
+}
+
+.aaa-tasks-item span{
+	vertical-align: top;
+}
+
+.aaa-tasks-item button{
+	min-width: 15pt;
+	width: 15pt;
+	max-height: 15pt;
+	float: right;
+}
+
+.aaa-task-done{
+	font-size: 7pt;
+	margin:2pt;
+}
+
+.aaa-events-item p{
+	line-height: 10pt;
+	font-size: 8pt;
+	padding: 0pt;
+	margin: 2pt;
+}
+
+.aaa-events-item a{
+	float: right;
+}
+
+.aaa-events-item p{
+	line-height: 10pt;
+	font-size: 8pt;
+	padding: 0pt;
+	margin: 2pt;
 }
 
 .aaa-seasons-item{
@@ -119,8 +220,30 @@
 	float: left;
 	margin: 2pt;
 	font-size: 7pt;
-	max-width: 8%;
-	width: 8%;
+	width: 6%;
+	height: 6%;
+	line-height: 100%;
+	border-radius: 50%;
+	padding: 3pt;
+	text-align: center;
+	border: 1pt solid rgba(0, 0, 0, 0);
+}
+
+.aaa-calendar-day:hover{
+	background:#CCC;
+}
+
+.aaa-calendar-filled{
+	border: 1pt solid;
+}
+
+.aaa-calendar-empty:hover{
+	background:unset !important;
+}
+
+.aaa-calendar{
+	width: calc(7 * (12pt + 6%));
+	display:inline-block;
 }
 
 #aaa_gauge_ends div strong{

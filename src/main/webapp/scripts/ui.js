@@ -1355,20 +1355,13 @@ var ProfilePage = {
 		destroyCurrentPage(Text['manage_profile']);
 		//TODO remove mdl-card crap from all previous cells *facepalm* I overwritten CSS (See TODO there)
 		var html = "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet'></div>";
-		html += "<div id='aaa_profile_events' class='mdl-cell mdl-cell--4-col mdl-shadow--2dp'>";
 
-		html += "<p>oii</p>";
-
-		html += "</div>";
+		html += this.HTML.getTasksCard();
 		
-		html += "<div id='aaa_profile_events' class='mdl-cell mdl-cell--2-col mdl-shadow--2dp'>";
-		html += "<p>oii</p>";
-		html += "</div>";
+		html += this.HTML.getEventsCard();
 			
 		
-		html += "<div id='aaa_profile_strengths' class='mdl-cell mdl-cell--2-col mdl-shadow--2dp'>";
-		html += "<p>29</p><p>29</p><p>29</p><p>29</p><p>29</p><p>29</p><p>29</p>";
-		html += "</div>";
+		html += this.HTML.getCalendarCard();
 		
 		html += "<div class='mdl-cell--2-col mdl-cell mdl-cell--hide-tablet'></div>";
 		
@@ -1388,6 +1381,8 @@ var ProfilePage = {
 		makeFreakingMDLwork();
 
 		$("#aaa_new_season_content").hide();
+		$("#aaa_new_event_content").hide();
+		$("#aaa_new_item_content").hide();
 		$("#aaa_content").show("slide", { direction: "left" }, 1000);
 	},
 	
@@ -1503,6 +1498,231 @@ var ProfilePage = {
 		}
 	},
 	
+	createNewEvent: function(){
+		var html = "<form onSubmit='ProfilePage.submitEvent();return false'>";
+		
+		html += "<div class='aaa-field-large mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
+		html += "<input class='mdl-textfield__input' type='text' id='aaa_new_event_name' />";
+		html += "<label class='mdl-textfield__label' for='aaa_new_event_name'>"+Text['event_name']+"</label>";
+		html += "<span class='mdl-textfield__error'>error</span>";
+		html += "</div>";
+		
+		html += "<div class='aaa-field-medium mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
+		html += "<input class='mdl-textfield__input' type='text' id='aaa_new_event_start' />";
+		html += "<label class='mdl-textfield__label' for='aaa_new_event_start'>"+Text['event_start']+"</label>";
+		html += "<span class='mdl-textfield__error'>error</span>";
+		html += "</div>";
+		
+		html += "<div class='aaa-field-medium mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
+		html += "<input class='mdl-textfield__input' type='text' id='aaa_new_event_name_short' />";
+		html += "<label class='mdl-textfield__label' for='aaa_new_event_name_short'>"+Text['event_name_short']+"</label>";
+		html += "<span class='mdl-textfield__error'>error</span>";
+		html += "</div>";
+		
+		html += "<div class='aaa-field-medium'>";
+		html += "<input class='mdl-slider mdl-js-slider' type='range' min='1' max='7' value='1' tabindex='0' onChange='$(\"#aaa_new_event_days\").html(this.value);'/>";
+		html += "</div>"
+			
+		html += "<div class='aaa-field-small'>";
+		html += "<p><span id='aaa_new_event_days'>1</span> days.</p>";
+		html += "</div>";
+			
+		html += "<div class='aaa-field-small'>";
+		html += "Color:";
+		html += "<input id='aaa_new_event_color' type='color' value='#0000FF'>";
+		html += "</div>";
+		
+		html += "<div class='aaa-field-small'>";
+		html += "<button  class='mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored'>";
+		html += "<i class='material-icons'>backup</i>";
+		html += "</button>";
+		html += "</div>";
+		
+		html += "</div>";
+		
+		html += "</form>";
+		
+		$("#aaa_new_event_content").html(html);
+		makeFreakingMDLwork();
+		
+		$("#aaa_new_event_content").show("slide", { direction: "up" }, 1000);
+	},
+	
+	submitEvent: function(){
+		var event = {};
+		if(event){
+			//TODO maybe modularize this sequence (will be used often, shall save lots of code)
+			if($("#aaa_new_event_name").val()){
+				event['name'] = $("#aaa_new_event_name").val();
+			}
+			else{
+				$("#aaa_new_event_name").attr('required','required');
+				return;
+			}
+			
+			if($("#aaa_new_event_name_short").val()){
+				event['name_short'] = $("#aaa_new_event_name_short").val();
+			}
+			else{
+				$("#aaa_new_event_name_short").attr('required','required');
+				return;
+			}
+			if($("#aaa_new_event_start").val()){
+				event['start'] = $("#aaa_new_event_start").val();
+			}
+			else{
+				$("#aaa_new_event_start").attr('required','required');
+				return;
+			}
+			event['days'] = $("#aaa_new_event_days").html();
+			console.log(JSON.stringify(event));
+		}
+	},
+	
+	removeEvent: function(id){
+		API.deleteEvent(id,function(){
+			console.log("fading out");
+			$("#aaa_event_"+id).fadeOut(500);
+		});
+	},
+	
+	submitTask: function(){
+		var task = {};
+		//TODO maybe modularize this sequence (will be used often, shall save lots of code)
+		if($("#aaa_new_task_description").val()){
+			task['description'] = $("#aaa_new_task_description").val();
+		}
+		else{
+			$("#aaa_new_task_description").attr('required','required');
+			return;
+		}
+		console.log(JSON.stringify(task));
+	},
+	
+	removeTask: function(id){
+		API.deleteTask(id,function(){
+			console.log("fading out");
+			$("#aaa_task_"+id).fadeOut(500);
+		});
+	},
+	
+	checkTasks: function(id){
+		var ids = [];
+		var tasks = API.getTasks();
+		for(var i = 0; i < tasks.length; i++){
+			if($("#aaa_task_check_"+tasks[i].id).is(":checked")){
+				ids.push(tasks[i].id);
+			}
+		}
+		API.closeTasks(ids,function(){
+			console.log("fading out");
+			for(var i = 0; i < ids.length; i++){
+				$("#aaa_task_"+ids[i]).fadeOut(500);
+			}
+		});
+	},
+	
+	previousMonth: function(){
+		$("#aaa_calendar_content").hide("slide", { direction: "right" }, 500,function(){
+			ProfilePage.calendar.setMonth(ProfilePage.calendar.getMonth()-1);
+			$("#aaa_calendar_content").html(ProfilePage.HTML.getCalendarContent());
+			$("#aaa_calendar_content").show("slide", { direction: "left" }, 500);
+		});
+		$("#aaa_calendar_year").fadeOut(500);
+		$("#aaa_calendar_month").fadeOut(500,function(){
+			$("#aaa_calendar_month").html(Text['month_full_'+ProfilePage.calendar.getMonth()]);
+			$("#aaa_calendar_year").html(ProfilePage.calendar.getFullYear());
+			$("#aaa_calendar_month").fadeIn(500);
+			$("#aaa_calendar_year").fadeIn(500);
+		});
+	},
+	
+	nextMonth: function(){
+		$("#aaa_calendar_content").hide("slide", { direction: "left" }, 500,function(){
+			ProfilePage.calendar.setMonth(ProfilePage.calendar.getMonth()+1);
+			$("#aaa_calendar_content").html(ProfilePage.HTML.getCalendarContent());
+			$("#aaa_calendar_content").show("slide", { direction: "right" }, 500);
+		});
+		$("#aaa_calendar_year").fadeOut(500);
+		$("#aaa_calendar_month").fadeOut(500,function(){
+			$("#aaa_calendar_month").html(Text['month_full_'+ProfilePage.calendar.getMonth()]);
+			$("#aaa_calendar_year").html(ProfilePage.calendar.getFullYear());
+			$("#aaa_calendar_month").fadeIn(500);
+			$("#aaa_calendar_year").fadeIn(500);
+		});
+	},	
+	
+	toggleDay: function(date){
+		API.toggleStrengthTraining(date, function(){
+			$("#aaa_calendar_content").html(ProfilePage.HTML.getCalendarContent());
+		});
+	},
+	
+	createNewItem: function(){
+		var html = "<form onSubmit='ProfilePage.submitItem();return false'>";
+		html += "<div class='aaa-field-small mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
+		html += "<input class='mdl-textfield__input' type='text' id='aaa_inventory_bow' />";
+		html += "<label class='mdl-textfield__label' for='aaa_inventory_bow'>"+Text['inventory_bow']+"</label>";
+		html += "<span class='mdl-textfield__error'>error</span>";
+		html += "</div>";
+		
+		html += "<div class='aaa-field-small mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
+		html += "<input class='mdl-textfield__input' type='text' id='aaa_inventory_arms' />";
+		html += "<label class='mdl-textfield__label' for='aaa_inventory_arms'>"+Text['inventory_arms']+"</label>";
+		html += "<span class='mdl-textfield__error'>error</span>";
+		html += "</div>";
+		
+		html += "<div class='aaa-field-small mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
+		html += "<input class='mdl-textfield__input' type='text' id='aaa_inventory_weight' />";
+		html += "<label class='mdl-textfield__label' for='aaa_inventory_weight'>"+Text['inventory_weight']+"</label>";
+		html += "<span class='mdl-textfield__error'>error</span>";
+		html += "</div>";
+		
+		html += "<div class='aaa-field-small mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
+		html += "<input class='mdl-textfield__input' type='text' id='aaa_inventory_arrow' />";
+		html += "<label class='mdl-textfield__label' for='aaa_inventory_arrow'>"+Text['inventory_arrow']+"</label>";
+		html += "<span class='mdl-textfield__error'>error</span>";
+		html += "</div>";
+		
+		html += "<div class='aaa-field-small mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
+		html += "<input class='mdl-textfield__input' type='text' id='aaa_inventory_arrows' />";
+		html += "<label class='mdl-textfield__label' for='aaa_inventory_arrows'>"+Text['inventory_arrows']+"</label>";
+		html += "<span class='mdl-textfield__error'>error</span>";
+		html += "</div>";
+		
+		html += "<div id='aaa_inventory_type' class='aaa-field-medium'>";
+		
+		html += "<label class='mdl-radio mdl-js-radio mdl-js-ripple-effect' for='aaa_option_1'>";
+		html += "<input type='radio' id='aaa_option_1' class='mdl-radio__button' name='options' value='recurve' checked />";
+		html += "<span class='mdl-radio__label'>"+Text['recurve']+"</span>";
+		html += "</label>";
+		
+		html += "<label class='mdl-radio mdl-js-radio mdl-js-ripple-effect' for='aaa_option_2'>";
+		html += "<input type='radio' id='aaa_option_2' class='mdl-radio__button' name='options' value='compound' />";
+		html += "<span class='mdl-radio__label'>"+Text['compound']+"</span>";
+		html += "</label>";
+		
+		html += "<label class='mdl-radio mdl-js-radio mdl-js-ripple-effect' for='aaa_option_3'>";
+		html += "<input type='radio' id='aaa_option_3' class='mdl-radio__button' name='options' value='longbow' />"; //TODO rename png to longbow
+		html += "<span class='mdl-radio__label'>"+Text['longbow']+"</span>";
+		html += "</label>";
+		
+		html += "</div>";
+		
+		html += "<div class='aaa-field-small'>";
+		html += "<button class='mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored'>";
+		html += "<i class='material-icons'>backup</i>";
+		html += "</button>";
+		html += "</div>";
+		
+		html += "</form>";
+		
+		$("#aaa_new_item_content").html(html);
+		makeFreakingMDLwork();
+		
+		$("#aaa_new_item_content").show("slide", { direction: "up" }, 1000);
+	},
+	
 	HTML: {
 		SVG: {
 			getSeasonGraph: function(season){
@@ -1544,110 +1764,6 @@ var ProfilePage = {
 				
 				return html;
 			}
-		},
-		
-		getInventoryCard: function(){
-			var html = "<div id='aaa_profile_inventory' class='mdl-cell mdl-cell--8-col mdl-shadow--2dp'>";
-			html += "<h1>"+Text['profile_inventory'];
-			
-			html += "<button id='aaa_new_inventory' class='mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored'>";
-			html += "<i class='material-icons'>library_add</i>";
-			html += "</button>";
-			html += "</h1>";
-			
-			html += "<div class='aaa-downslider'>";
-			
-			html += "<div class='aaa-field-small mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
-			html += "<input class='mdl-textfield__input' type='text' id='aaa_inventory_bow' />";
-			html += "<label class='mdl-textfield__label' for='aaa_inventory_bow'>"+Text['inventory_bow']+"</label>";
-			html += "<span class='mdl-textfield__error'>error</span>";
-			html += "</div>";
-			
-			html += "<div class='aaa-field-small mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
-			html += "<input class='mdl-textfield__input' type='text' id='aaa_inventory_arms' />";
-			html += "<label class='mdl-textfield__label' for='aaa_inventory_arms'>"+Text['inventory_arms']+"</label>";
-			html += "<span class='mdl-textfield__error'>error</span>";
-			html += "</div>";
-			
-			html += "<div class='aaa-field-small mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
-			html += "<input class='mdl-textfield__input' type='text' id='aaa_inventory_weight' />";
-			html += "<label class='mdl-textfield__label' for='aaa_inventory_weight'>"+Text['inventory_weight']+"</label>";
-			html += "<span class='mdl-textfield__error'>error</span>";
-			html += "</div>";
-			
-			html += "<div class='aaa-field-small mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
-			html += "<input class='mdl-textfield__input' type='text' id='aaa_inventory_arrow' />";
-			html += "<label class='mdl-textfield__label' for='aaa_inventory_arrow'>"+Text['inventory_arrow']+"</label>";
-			html += "<span class='mdl-textfield__error'>error</span>";
-			html += "</div>";
-			
-			html += "<div class='aaa-field-small mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
-			html += "<input class='mdl-textfield__input' type='text' id='aaa_inventory_arrows' />";
-			html += "<label class='mdl-textfield__label' for='aaa_inventory_arrows'>"+Text['inventory_arrows']+"</label>";
-			html += "<span class='mdl-textfield__error'>error</span>";
-			html += "</div>";
-			
-			html += "<div id='aaa_inventory_type' class='aaa-field-medium'>";
-			
-			html += "<label class='mdl-radio mdl-js-radio mdl-js-ripple-effect' for='aaa_option_1'>";
-			html += "<input type='radio' id='aaa_option_1' class='mdl-radio__button' name='options' value='recurve' checked />";
-			html += "<span class='mdl-radio__label'>"+Text['recurve']+"</span>";
-			html += "</label>";
-			
-			html += "<label class='mdl-radio mdl-js-radio mdl-js-ripple-effect' for='aaa_option_2'>";
-			html += "<input type='radio' id='aaa_option_2' class='mdl-radio__button' name='options' value='compound' />";
-			html += "<span class='mdl-radio__label'>"+Text['compound']+"</span>";
-			html += "</label>";
-			
-			html += "<label class='mdl-radio mdl-js-radio mdl-js-ripple-effect' for='aaa_option_3'>";
-			html += "<input type='radio' id='aaa_option_3' class='mdl-radio__button' name='options' value='longbow' />"; //TODO rename png to longbow
-			html += "<span class='mdl-radio__label'>"+Text['longbow']+"</span>";
-			html += "</label>";
-			
-			html += "</div>";
-			
-			html += "<div class='aaa-field-small'>";
-			html += "<button  class='mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored'>";
-			html += "<i class='material-icons'>backup</i>";
-			html += "</button>";
-			html += "</div>";
-			
-			html += "</div>";
-			
-			//TODO mdl-card being misused here (parent is no card)
-			html += "<div class=''>";
-			html += "<div class='aaa-inventory-item'>";
-			html += "<img src='/img/bow/recurve.png' />";
-			html += "<p><strong>ID:</strong></p>";
-			html += "<p><strong>Name:</strong></p>";
-			html += "<p><strong>Arms:</strong></p>";
-			html += "<p><strong>Weight:</strong></p>";
-			html += "<p><strong>Arrow:</strong></p>";
-			html += "<p>x arrows in quiver.</p>";
-			html += "<p class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effec'>";
-			html += "<i class='material-icons'>edit</i>";
-			html += "</p>";
-			html += "<p  class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
-			html += "<i class='material-icons'>delete</i>";
-			html += "</p>";
-			html += "</div>";
-			html += "<div class='aaa-inventory-item'>";
-			html += "<img src='/img/bow/compound.png' />";
-			html += "</div>";
-			html += "<div class='aaa-inventory-item'>";
-			html += "<img src='/img/bow/recurve.png' />";
-			html += "</div>";
-			html += "<div class='aaa-inventory-item'>";
-			html += "<img src='/img/bow/longbow.png' />";
-			html += "</div>";
-			html += "</div>";
-			
-			html += "</div>";
-			
-			
-			
-			html += "</div>";
-			return html;
 		},
 		
 		getSeasonsCard: function(){
@@ -1697,6 +1813,201 @@ var ProfilePage = {
 			
 			
 			
+			html += "</div>";
+			return html;
+		},
+		
+		getEventsCard: function(){
+			var html = "<div id='aaa_profile_events' class='mdl-cell mdl-cell--3-col mdl-shadow--2dp'>";
+			html += "<h1>"+Text['profile_events'];
+			html += "<button id='aaa_new_event' onClick='ProfilePage.createNewEvent();' class='mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored'>";
+			html += "<i class='material-icons'>library_add</i>";
+			html += "</button>";
+			html += "</h1>";
+			
+			html += "<div id='aaa_new_event_content'class='aaa-downslider'></div>";
+			
+			html += "<div id='aaa_events_content'>"+this.getEventsContent()+"</div>";
+			
+			html += "</div>";
+			return html;
+		},
+		
+		getEventsContent: function(){
+			var events = API.getEvents();
+			var html = "<h5>"+Text['profile_upcoming_events']+"</h5>";
+			for(var i = 0; i < events.length; i++){
+				//TODO maybe merge aaa-xxx-item into one or change naming pattern
+				html += "<div id='aaa_event_"+events[i].date+"_"+events[i].name_short+"' class='aaa-events-item'>";
+				//html += "<h2>"+seasons[i].name+"</h2>";
+				html += "<div class='aaa-list-item-circle mdl-color-text--accent-contrast mdl-color--accent'>"+events[i].name_short+"</div>";
+				
+				html += "<div class='aaa-list-item-content'>";
+				
+				html += "<a onClick='ProfilePage.removeEvent(\""+events[i].date+"_"+events[i].name_short+"\");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+				html += "<i class='material-icons'>delete</i>";
+				html += "</a>";
+				
+				html += "<p><strong>"+events[i].name+"</strong></p>";
+				html += "<p><strong>Start: </strong>"+events[i].start_date+"</p>";
+				html += "<p>"+events[i].start_date+"<strong> days.</strong></p>";
+				
+				html += "</div>";
+				html += "</div>";
+			}
+			
+			return html;
+		},
+		
+		getTasksCard: function(){
+			var html = "<div id='aaa_profile_tasks' class='mdl-cell mdl-cell--3-col mdl-shadow--2dp'>";
+			html += "<h1>"+Text['profile_tasks']+"</h1>";
+			
+			html += "<form onSubmit='ProfilePage.submitTask(); return false;'>"
+			html += "<div id='aaa_new_task_content' class='aaa-downslider'>";
+			
+			html += "<div id='aaa_new_task' class='aaa-field-large mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
+			html += "<input class='mdl-textfield__input' type='text' id='aaa_new_task_description' />";
+			html += "<label class='mdl-textfield__label' for='aaa_new_description'>"+Text['task_description']+"</label>";
+			html += "<span class='mdl-textfield__error'>error</span>";
+			html += "</div>";
+			
+			html += "<button onClick='ProfilePage.submitTask();' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'>";
+			html += "<i class='material-icons'>add</i>";
+			html += "</button>";
+			
+			html += "</div>";
+			html += "</form>"
+			
+			html += "<div id='aaa_tasks_content'>";
+			html += this.getTasksContent();
+			html += "</div>";
+
+			html += "<button onClick='ProfilePage.checkTasks()' class='mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effec'>";
+			html += Text['close_tasks']+" <i class='material-icons'>done</i>";
+			html += "</button>";
+			
+			html += "</div>";
+			return html;
+		},
+		
+		getTasksContent: function(){
+			var tasks = API.getTasks();
+			var html = "";
+			for(var i = 0; i < tasks.length; i++){
+				if(!tasks[i].done){
+					html += "<div id='aaa_task_"+tasks[i].id+"' class='aaa-tasks-item'>";
+					html += "<label class='mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect' for='aaa_task_check_"+i+"'>";
+					html += "<input type='checkbox' id='aaa_task_check_"+tasks[i].id+"' class='mdl-checkbox__input' />";
+					html += "<span class='mdl-checkbox__label'>"+tasks[i].description +"</span>";
+					html += "<button onClick='ProfilePage.removeTask("+tasks[i].id+");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+					html += "<i class='material-icons'>delete</i>";
+					html += "</button>";
+					html += "</label>";
+					html += "</div>";
+				}
+			}
+			
+			return html;
+		},
+		
+		getCalendarCard: function(){
+			ProfilePage.calendar = new Date();
+			var html = "<div id='aaa_profile_tasks' class='mdl-cell mdl-cell--2-col mdl-shadow--2dp'>";
+			html += "<h1>"+Text['profile_calendar']+"</h1>";
+			
+			html += "<div id='aaa_calendar_controller' class='aaa-downslider'>";
+			html += "<h2>";
+			html += "<p id='aaa_calendar_year'>2015</p>";
+			html += "<button onClick='ProfilePage.previousMonth();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+			html += "<i class='material-icons'>chevron_left</i>";
+			html += "</button>";
+			html += "<span id='aaa_calendar_month'>"+Text['month_full_'+ProfilePage.calendar.getMonth()]+"</span>";
+			html += "<button onClick='ProfilePage.nextMonth();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+			html += "<i class='material-icons'>chevron_right</i>";
+			html += "</button>";
+			html += "</h2>";
+			
+			html += "</div>";
+			html += "<div id='aaa_calendar_content'>";
+			html += this.getCalendarContent();
+			html += "</div>";
+
+			html += "</div>";
+			return html;
+		},
+		
+		getCalendarContent: function(){
+			var days = API.getStrengthTrainings();
+			var html = "";
+			var start = new Date();
+			start = new Date(ProfilePage.calendar.setDate(1));
+			console.log(start);
+			console.log(start.getDay());
+			
+			html += "<div class='aaa-calendar'>";
+			for(var i = 0,date = new Date(start); date.getMonth() == start.getMonth(); i++){
+				var string = date.toJSON().substring(0,10);
+				html += "<div class='aaa-calendar-day";
+				if(i >= start.getDay()){
+					if(days[string]){
+						html += " aaa-calendar-filled";
+					}
+					html += "' onClick='ProfilePage.toggleDay(\""+string+"\");'>";
+					html += date.getDate();
+					date.setDate(date.getDate()+1);
+				}
+				else{
+					html += " aaa-calendar-empty'>";
+				}
+				html += "</div>";
+			}
+			html += "</div>";
+			return html;
+		},
+		
+		getInventoryCard: function(){
+			var html = "<div id='aaa_profile_inventory' class='mdl-cell mdl-cell--8-col mdl-shadow--2dp'>";
+			html += "<h1>"+Text['profile_inventory'];
+			
+			html += "<button onClick='ProfilePage.createNewItem()' id='aaa_new_inventory' class='mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored'>";
+			html += "<i class='material-icons'>library_add</i>";
+			html += "</button>";
+			html += "</h1>";
+			
+			html += "<div id='aaa_new_item_content' class='aaa-downslider'>";
+			
+			html += "</div>";
+			
+			html += "<div id='aaa_inventory_content'>";
+			
+			html += this.getInventoryContent();
+			
+			html += "</div>";
+			
+			html += "</div>";
+			
+			
+			
+			html += "</div>";
+			return html;
+		},
+		
+		getInventoryContent: function(){
+			var html = "<div class='aaa-inventory-item'>";
+			html += "<img src='/img/bow/recurve.png' />";
+			html += "<p><strong>ID:</strong></p>";
+			html += "<p><strong>Name:</strong></p>";
+			html += "<p><strong>Arms:</strong></p>";
+			html += "<p><strong>Weight:</strong></p>";
+			html += "<p><strong>Arrow:</strong></p>";
+			html += "<p>x arrows in quiver.</p>";
+			html += "<p class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effec'>";
+			html += "<i class='material-icons'>edit</i>";
+			html += "</p>";
+			html += "<p  class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+			html += "<i class='material-icons'>delete</i>";
+			html += "</p>";
 			html += "</div>";
 			return html;
 		}

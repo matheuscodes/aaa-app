@@ -64,7 +64,72 @@ var API = {
 		//TODO review all with UI calls to make callback
 		console.log("Deleted "+id);
 		callback();
-	}
+	},
+	
+	getEvents: function(){
+		var string = '[';
+		string += '{"date":"2015-09-03","days":2,"name":"Deutsche Meisterschaft","name_short":"DM"},';
+		string += '{"date":"2015-09-04","days":1,"name":"Verein Meisterschaft","name_short":"VM"}';
+		string += ']';
+		return JSON.parse(string);
+	},
+	
+	deleteEvent: function(id,success){
+		//TODO with callback function
+		//TODO review all with UI calls to make callback
+		console.log("Deleted "+id);
+		success();
+	},
+	
+	getTasks: function(){
+		var string = '[';
+		string += '{"id":2,"description":"Deutsche Meisterschaft","created":"2015-09-03","done":"2015-09-04"},';
+		string += '{"id":1,"description":"Verein Meisterschaft","created":"2015-09-03"}';
+		string += ']';
+		return JSON.parse(string);
+	},
+	
+	deleteTask: function(id,success){
+		//TODO with callback function
+		//TODO review all with UI calls to make callback
+		console.log("Deleted "+id);
+		success();
+	},
+	
+	closeTasks: function(ids,success){
+		//TODO with callback function
+		//TODO review all with UI calls to make callback
+		console.log(ids);
+		success();
+	},
+	
+	getStrengthTrainings: function(){
+		var string = '{';
+		string += '"2015-09-04":1,';
+		string += '"2015-08-26":1,';
+		string += '"2015-06-02":1,';
+		string += '"2015-07-11":1,';
+		string += '"2015-07-15":1';
+		string += '}';
+		if(User.strength_trainings){
+			return User.strength_trainings;
+		}
+		else{
+			User.strength_trainings = {};
+			return JSON.parse(string);
+		}
+		
+	},
+	
+	toggleStrengthTraining: function(date,success){
+		if(!User.strength_trainings[date]){
+			User.strength_trainings[date] = 1;
+		}
+		else{
+			delete User.strength_trainings[date];
+		}
+		success();
+	},
 }
 
 
