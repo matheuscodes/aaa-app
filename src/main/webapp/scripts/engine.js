@@ -44,26 +44,72 @@ var API = {
 	},
 	
 	getSeasons: function(id){
-		//TODO
-		var string;
-		if(!id){
-			string = "[";
-			string += '{"id":7,"max":260,"start":33,"size":26,"start_date":"2014-10-01","end_date":"2015-03-31","name":"Winter","arrows":[10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260],"targets":[5,10,15,20,25,30,35,40,45,60,20,40,130,40,50,60,140,140,100,200,210,20,30,40,50,60]},';
-			string += '{"id":13,"max":260,"start":33,"size":26,"start_date":"2015-04-01","end_date":"2015-09-30","name":"Summer","arrows":[10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260],"targets":[5,10,15,20,25,30,35,40,45,60,20,40,130,40,50,60,140,140,100,200,210,20,30,40,50,60]}';
-			string += ']';
+		//TODO review blocking requests
+		var xmlhttp = new XMLHttpRequest();
+		var url = "/seasons/";
+
+		xmlhttp.onreadystatechange = function() {
+		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		    	var download = JSON.parse(""+xmlhttp.responseText);
+		    	if(download){
+		    		User.seasons = download;
+		    	}
+		    }
+		}
+
+		xmlhttp.open("GET", url, false); //Review the way downloads are made.
+		xmlhttp.send();
+		if(id){
+			return User.seasons[id];
 		}
 		else{
-			string = '{"id":'+id+',"max":260,"start":33,"size":26,"start_date":"2014-10-01","end_date":"2015-03-31","name":"Winter","arrows":[10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260],"targets":[5,10,15,20,25,30,35,40,45,60,20,40,130,40,50,60,140,140,100,200,210,20,30,40,50,60]}';
-			
+			return User.seasons;
 		}
-		return JSON.parse(string);
+	},
+	
+	placeSeason: function(season,success){
+		//TODO review blocking requests
+		var xmlhttp = new XMLHttpRequest();
+		var url = "/seasons/";
+
+		xmlhttp.onreadystatechange = function() {
+		    if (xmlhttp.readyState == 4) {
+		    	if(xmlhttp.status == 201){
+			    	console.log("Added " + season)
+			    	success();
+		    	}
+		    	if(xmlhttp.status == 204){
+			    	console.log("Updated " + season)
+			    	success();
+		    	}
+		    }
+		}
+		if(season.id){
+			url += season.id+"/";
+			console.log(url);
+			xmlhttp.open("PUT", url, true);
+		}
+		else{
+			xmlhttp.open("POST", url, true);
+		}
+		xmlhttp.send(JSON.stringify(season));
 	},
 	
 	deleteSeason: function(id,callback){
 		//TODO with callback function
 		//TODO review all with UI calls to make callback
-		console.log("Deleted "+id);
-		callback();
+		var xmlhttp = new XMLHttpRequest();
+		var url = "/seasons/"+id+"/";
+
+		xmlhttp.onreadystatechange = function() {
+		    if (xmlhttp.readyState == 4 && xmlhttp.status == 204) {				
+				console.log("Deleted "+id);
+				callback();
+		    }
+		}
+
+		xmlhttp.open("DELETE", url, true);
+		xmlhttp.send();
 	},
 	
 	getEvents: function(){

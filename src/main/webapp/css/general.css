@@ -196,6 +196,8 @@
 .aaa-seasons-item svg{
 	display: inline-block;
 	float: left;
+	width: 87%;
+	max-height: 130pt;
 }
 
 .aaa-inventory-item{

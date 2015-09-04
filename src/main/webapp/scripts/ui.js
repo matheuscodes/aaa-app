@@ -1386,14 +1386,20 @@ var ProfilePage = {
 		$("#aaa_content").show("slide", { direction: "left" }, 1000);
 	},
 	
-	createNewSeason: function(weeks){
+	createNewSeason: function(weeks,week_labels){
 		var html = "<form onSubmit='ProfilePage.submitSeason("+weeks+");return false'>";
-
+		var labels = [];
+		if(week_labels){
+			labels = week_labels;
+		}
+		else{
+			for(var i = 0; i < weeks; i++) labels.push(i+1);
+		}
 		html += "<h2>"+Text['total_plan']+"</h2>";
 		for(var i = 0; i < weeks; i++){
 			html += "<div class='aaa-field-tiny mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 			html += "<input class='mdl-textfield__input' type='text' id='aaa_new_season_week_arrows_"+i+"' />";
-			html += "<label class='mdl-textfield__label' for='aaa_new_season_week_arrows_"+i+"'>"+Text['wk']+" "+(i+1)+"</label>";
+			html += "<label class='mdl-textfield__label' for='aaa_new_season_week_arrows_"+i+"'>"+Text['wk']+" "+labels[i]+"</label>";
 			html += "<span class='mdl-textfield__error'>error</span>";
 			html += "</div>";
 		}
@@ -1401,7 +1407,7 @@ var ProfilePage = {
 		for(var i = 0; i < weeks; i++){
 			html += "<div class='aaa-field-tiny mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 			html += "<input class='mdl-textfield__input' type='text' id='aaa_new_season_week_target_"+i+"' />";
-			html += "<label class='mdl-textfield__label' for='aaa_new_season_week_target_"+i+"'>"+Text['wk']+" "+(i+1)+"</label>";
+			html += "<label class='mdl-textfield__label' for='aaa_new_season_week_target_"+i+"'>"+Text['wk']+" "+labels[i]+"</label>";
 			html += "<span class='mdl-textfield__error'>error</span>"; //TODO replace all those 'error'... damn copy paste.
 			html += "</div>";
 		}
@@ -1428,6 +1434,7 @@ var ProfilePage = {
 		
 		html += "</div>";
 		
+		html += "<input type='hidden' id='aaa_new_season_id' />";
 		html += "</form>";
 		
 		$("#aaa_new_season_content").html(html);
@@ -1446,8 +1453,8 @@ var ProfilePage = {
 	updateSeason: function(id){
 		var season = API.getSeasons(id);
 		if(season){
-			this.createNewSeason(season.size);
-			for(var i = 0; i < season.size; i++){
+			this.createNewSeason(season.weeks.length,season.weeks);
+			for(var i = 0; i < season.weeks.length; i++){
 				$("#aaa_new_season_week_arrows_"+i).val(season.arrows[i]);
 				$("#aaa_new_season_week_arrows_"+i).parent().addClass("is-dirty");
 				$("#aaa_new_season_week_target_"+i).val(season.targets[i]);
@@ -1456,6 +1463,7 @@ var ProfilePage = {
 				$("#aaa_new_season_start").parent().addClass("is-dirty");
 				$("#aaa_new_season_name").val(season.name);
 				$("#aaa_new_season_name").parent().addClass("is-dirty");
+				$("#aaa_new_season_id").val(season.id);
 			}
 		}
 	},
@@ -1490,11 +1498,17 @@ var ProfilePage = {
 		var season = ProfilePage.compileSeason(weeks);
 		if(season){
 			season['name'] = $("#aaa_new_season_name").val();
-			season['start'] = $("#aaa_new_season_start").val();
-			var end = new Date(Date.parse(season['start']));
-			end.setDate(end.getDate() + 7*weeks);
-			season['end'] = end.toJSON().substring(0,10);
+			season['start_date'] = $("#aaa_new_season_start").val();
+			var end = new Date(Date.parse(season['start_date']));
+			end.setDate(end.getDate() + 7*(weeks-1)); //FIXME what about when 1 week? works only for 2+
+			season['end_date'] = end.toJSON().substring(0,10);
+			if($("#aaa_new_season_id").val()){
+				season['id'] = $("#aaa_new_season_id").val();
+			}
 			console.log(JSON.stringify(season));
+			API.placeSeason(season,function(){
+				//TODO do ui stuff.
+			});
 		}
 	},
 	
@@ -1726,10 +1740,9 @@ var ProfilePage = {
 	HTML: {
 		SVG: {
 			getSeasonGraph: function(season){
-				var weeks = season.size;
 				var max = Math.ceil(season.max/50)*50+50;
 				
-				var general_width = (weeks*100+110+150);
+				var general_width = (season.weeks.length*100+110+150);
 				var general_height = max + 150 + 50;
 				var width = 20.2/(100/general_width);
 				
@@ -1746,9 +1759,9 @@ var ProfilePage = {
 				
 				html += "<g id='data' transform='translate(140,-150)'>";
 				
-				html += SVG.getGrid(max,weeks);
+				html += SVG.getGrid(max,season.weeks.length);
 				
-				html += SVG.getBottomWeeks(season.start,season.start+season.size);
+				html += SVG.getBottomWeeks(season.weeks);
 				html += SVG.getLeftAxis(0,max,"arrow_count",max);
 				
 				for(var i = 0; i < season.arrows.length; i++){
@@ -1782,36 +1795,41 @@ var ProfilePage = {
 			html += "<p>"+Text['new_season_size']+" <span id='aaa_new_season_size'>26</span> "+Text['weeks']+".</p>";
 			html += "</h1>";
 			
-			html += "<div id='aaa_new_season_content'class='aaa-downslider'></div>";
+			html += "<div id='aaa_new_season_content' class='aaa-downslider'></div>";
 			
 			
-			html += "<div class=''>";
+			html += "<div id='aaa_seasons_content'>";
 			
 			var seasons = API.getSeasons();
 			
-			for(var i = 0; i < seasons.length; i++){
-				html += "<div id='aaa_season_"+seasons[i].id+"' class='aaa-seasons-item'>";
-				html += "<h2>"+seasons[i].name+"</h2>";
-				
-				html += this.SVG.getSeasonGraph(seasons[i]);
-				
-				html += "<p><strong>Start: </strong>"+seasons[i].start_date+"</p>";
-				html += "<p><strong>End: </strong>"+seasons[i].start_date+"</p>";
-				
-				html += "<p onClick='ProfilePage.updateSeason("+seasons[i].id+");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effec'>";
-				html += "<i class='material-icons'>edit</i>";
-				html += "</p>";
-				
-				html += "<p onClick='ProfilePage.removeSeason("+seasons[i].id+");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
-				html += "<i class='material-icons'>delete</i>";
-				html += "</p>";
-				
-				html += "</div>";
+			for(var i in seasons){
+				html += this.getSingleSeason(seasons[i]);
 			}
 			
 			html += "</div>";
 			
 			
+			
+			html += "</div>";
+			return html;
+		},
+		
+		getSingleSeason: function(season){
+			var html = "<div id='aaa_season_"+season.id+"' class='aaa-seasons-item'>";
+			html += "<h2>"+season.name+"</h2>";
+			
+			html += this.SVG.getSeasonGraph(season);
+			
+			html += "<p><strong>Start: </strong>"+season.start_date+"</p>";
+			html += "<p><strong>End: </strong>"+season.end_date+"</p>";
+			
+			html += "<p onClick='ProfilePage.updateSeason("+season.id+");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effec'>";
+			html += "<i class='material-icons'>edit</i>";
+			html += "</p>";
+			
+			html += "<p onClick='ProfilePage.removeSeason("+season.id+");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+			html += "<i class='material-icons'>delete</i>";
+			html += "</p>";
 			
 			html += "</div>";
 			return html;
@@ -2143,12 +2161,12 @@ var SVG = {
 		return html;
 	},
 
-	getBottomWeeks: function(min, max){
+	getBottomWeeks: function(weeks){
 		var html = "<g id='bottom'>";
-		for(var i = min; i < max; i++){
-			html += "<g transform=translate("+((i-min)*100+50)+",50)>";
+		for(var i = 0; i < weeks.length; i++){
+			html += "<g transform=translate("+((i)*100+50)+",50)>";
 			html += "<text class='bottom' x='0' y='0'>"+Text['wk']+"</text>";
-			html += "<text class='bottom' x='0' y='45'>"+i+"</text>";
+			html += "<text class='bottom' x='0' y='45'>"+weeks[i]+"</text>";
 			html += "</g>";
 		}
 		html += "</g>";

@@ -161,6 +161,7 @@ public class Database {
 	}
 	
 	static public PreparedStatement prepare(String q) {
+		System.out.println("Preparing: "+q);
 		try {
 			if ((Database.link == null) || Database.link.isValid(1) || Database.link.isClosed()) {
 				Database.initialize();
