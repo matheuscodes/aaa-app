@@ -128,11 +128,22 @@ var API = {
 	},
 	
 	getTasks: function(){
-		var string = '[';
-		string += '{"id":2,"description":"Deutsche Meisterschaft","created":"2015-09-03","done":"2015-09-04"},';
-		string += '{"id":1,"description":"Verein Meisterschaft","created":"2015-09-03"}';
-		string += ']';
-		return JSON.parse(string);
+		//TODO review blocking requests
+		var xmlhttp = new XMLHttpRequest();
+		var url = "/tasks/";
+
+		xmlhttp.onreadystatechange = function() {
+		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		    	var download = JSON.parse(""+xmlhttp.responseText);
+		    	if(download){
+		    		User.tasks = download;
+		    	}
+		    }
+		}
+
+		xmlhttp.open("GET", url, false); //Review the way downloads are made.
+		xmlhttp.send();
+		return User.tasks;
 	},
 	
 	deleteTask: function(id,success){
