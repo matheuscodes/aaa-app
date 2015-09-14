@@ -1605,17 +1605,26 @@ var ProfilePage = {
 		//TODO maybe modularize this sequence (will be used often, shall save lots of code)
 		if($("#aaa_new_task_description").val()){
 			task['description'] = $("#aaa_new_task_description").val();
+			$("#aaa_new_task_button").attr('disabled','disabled');
+			var HTML = this.HTML;
+			API.addTask(task, function(t){
+				var html = HTML.getTaskCheckbox(t.id,t.description);
+				var newnode = $(html).hide();
+				$('#aaa_tasks_content').prepend(newnode);
+				$("#aaa_new_task_description").val(null);
+				$("#aaa_new_task_button").removeAttr('disabled');
+				makeFreakingMDLwork();
+				$("#aaa_task_"+t.id).fadeIn(500);
+			});
 		}
 		else{
 			$("#aaa_new_task_description").attr('required','required');
 			return;
 		}
-		console.log(JSON.stringify(task));
 	},
 	
 	removeTask: function(id){
 		API.deleteTask(id,function(){
-			console.log("fading out");
 			$("#aaa_task_"+id).fadeOut(500);
 		});
 	},
@@ -1628,11 +1637,8 @@ var ProfilePage = {
 				ids.push(tasks[i].id);
 			}
 		}
-		API.closeTasks(ids,function(){
-			console.log("fading out");
-			for(var i = 0; i < ids.length; i++){
-				$("#aaa_task_"+ids[i]).fadeOut(500);
-			}
+		API.closeTasks(ids,function(id){
+			$("#aaa_task_"+id).fadeOut(500);
 		});
 	},
 	
@@ -1890,7 +1896,7 @@ var ProfilePage = {
 			html += "<span class='mdl-textfield__error'>error</span>";
 			html += "</div>";
 			
-			html += "<button onClick='ProfilePage.submitTask();' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'>";
+			html += "<button id='aaa_new_task_button' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'>";
 			html += "<i class='material-icons'>add</i>";
 			html += "</button>";
 			
@@ -1913,19 +1919,24 @@ var ProfilePage = {
 			var tasks = API.getTasks();
 			var html = "";
 			for(var i = 0; i < tasks.length; i++){
-				if(!tasks[i].done){
-					html += "<div id='aaa_task_"+tasks[i].id+"' class='aaa-tasks-item'>";
-					html += "<label class='mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect' for='aaa_task_check_"+i+"'>";
-					html += "<input type='checkbox' id='aaa_task_check_"+tasks[i].id+"' class='mdl-checkbox__input' />";
-					html += "<span class='mdl-checkbox__label'>"+tasks[i].description +"</span>";
-					html += "<button onClick='ProfilePage.removeTask("+tasks[i].id+");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
-					html += "<i class='material-icons'>delete</i>";
-					html += "</button>";
-					html += "</label>";
-					html += "</div>";
+				if(tasks[i].status != "done"){
+					html += this.getTaskCheckbox(tasks[i].id,tasks[i].description);
 				}
 			}
 			
+			return html;
+		},
+		
+		getTaskCheckbox: function(id,description){
+			var html = "<div id='aaa_task_"+id+"' class='aaa-tasks-item'>";
+			html += "<label class='mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect' for='aaa_task_check_"+id+"'>";
+			html += "<input type='checkbox' id='aaa_task_check_"+id+"' class='mdl-checkbox__input' />";
+			html += "<span class='mdl-checkbox__label'>"+description +"</span>";
+			html += "<button onClick='ProfilePage.removeTask("+id+");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+			html += "<i class='material-icons'>delete</i>";
+			html += "</button>";
+			html += "</label>";
+			html += "</div>";
 			return html;
 		},
 		

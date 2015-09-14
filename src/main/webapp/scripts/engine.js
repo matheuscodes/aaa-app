@@ -146,18 +146,52 @@ var API = {
 		return User.tasks;
 	},
 	
+	addTask: function(task,success){
+		var xmlhttp = new XMLHttpRequest();
+		var url = "/tasks/";
+
+		xmlhttp.onreadystatechange = function() {
+		    if (xmlhttp.readyState == 4 && xmlhttp.status == 201) {
+		    	var download = JSON.parse(""+xmlhttp.responseText);
+				success(download);
+		    }
+		}
+
+		xmlhttp.open("POST", url, false); //Review the way downloads are made.
+		xmlhttp.send(JSON.stringify(task));
+	},
+	
 	deleteTask: function(id,success){
 		//TODO with callback function
 		//TODO review all with UI calls to make callback
-		console.log("Deleted "+id);
-		success();
+		var xmlhttp = new XMLHttpRequest();
+		var url = "/tasks/"+id;
+
+		xmlhttp.onreadystatechange = function() {
+		    if (xmlhttp.readyState == 4 && xmlhttp.status == 204) {
+				success();
+		    }
+		}
+		xmlhttp.open("DELETE", url, false); //Review the way downloads are made.
+		xmlhttp.send();
 	},
 	
 	closeTasks: function(ids,success){
 		//TODO with callback function
 		//TODO review all with UI calls to make callback
-		console.log(ids);
-		success();
+		for(var i = 0; i < ids.length; i++){
+			var xmlhttp = new XMLHttpRequest();
+			var url = "/tasks/"+ids[i];
+
+			xmlhttp.onreadystatechange = function() {
+			    if (xmlhttp.readyState == 4 && xmlhttp.status == 204) {
+					success(ids[i]);
+			    }
+			}
+
+			xmlhttp.open("PUT", url, false); //Review the way downloads are made.
+			xmlhttp.send('{"status":"done"}');
+		}
 	},
 	
 	getStrengthTrainings: function(){
