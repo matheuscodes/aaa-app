@@ -10,16 +10,16 @@ import java.util.Date;
  */
 public class Log {
 
-    /**
-     * Logs an entry as an error.
-     * 
-     * @param who
-     *            should define the class calling.
-     * @param what
-     *            specifies a message to record.
-     */
-    static public void error(String who, String what) {
-	System.out.println("[ERROR] " + new Date(System.currentTimeMillis()) + " - " + who + ": " + what);
-    }
+	/**
+	 * Logs an entry as an error.
+	 * 
+	 * @param who
+	 *            should define the class calling.
+	 * @param what
+	 *            specifies a message to record.
+	 */
+	static public void error(String who, String what) {
+		System.out.println("[ERROR] " + new Date(System.currentTimeMillis()) + " - " + who + ": " + what);
+	}
 
 }

@@ -10,20 +10,20 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class HTTP {
 
-    /**
-     * Defines a common set of header settings.
-     * 
-     * @param response
-     *            to be set.
-     */
-    static public void setUpDefaultHeaders(HttpServletResponse response) {
-	response.addHeader("Cache-Control", "no-store");
-	response.setContentType("application/x-json");
-    }
+	/**
+	 * Defines a common set of header settings.
+	 * 
+	 * @param response
+	 *            to be set.
+	 */
+	static public void setUpDefaultHeaders(HttpServletResponse response) {
+		response.addHeader("Cache-Control", "no-store");
+		response.setContentType("application/x-json");
+	}
 
-    static public void setUpImageHeaders(HttpServletResponse response, int size) {
-	response.setContentType("image/png");
-	response.setContentLength(size);
-    }
+	static public void setUpImageHeaders(HttpServletResponse response, int size) {
+		response.setContentType("image/png");
+		response.setContentLength(size);
+	}
 
 }
