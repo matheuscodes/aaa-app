@@ -11,7 +11,7 @@
 		<jettyVersion>9.2.8.v20150217</jettyVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
- 
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -48,7 +48,7 @@
 	<build>
 		<plugins>
 			<plugin>
-    				<groupId>org.codehaus.mojo</groupId>
+				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>keytool-maven-plugin</artifactId>
 				<version>1.5</version>
 				<!-- This needs to be generated once via mvn keytool:generateKeyPair -->

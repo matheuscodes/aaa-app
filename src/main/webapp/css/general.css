@@ -1,128 +1,128 @@
-.mdl-mini-footer{
+.mdl-mini-footer {
 	padding: 0 10pt;
 }
 
 /*TODO review this... causing issues*/
-.mdl-card{
+.mdl-card {
 	width: unset;
 	min-height: unset;
 }
 
-#aaa_new_event_color{
-	width:20pt;
-	height:20pt;
-	border:none;
-	background-color:unset;
-	margin:5pt;
+#aaa_new_event_color {
+	width: 20pt;
+	height: 20pt;
+	border: none;
+	background-color: unset;
+	margin: 5pt;
 	padding: 0;
 }
 
-#aaa_new_event{
-	float:right;
+#aaa_new_event {
+	float: right;
 	height: 30pt;
 	width: 30pt;
 	min-width: 30pt;
 }
 
-#aaa_new_season{
-	float:right;
+#aaa_new_season {
+	float: right;
 	height: 30pt;
 	width: 30pt;
 	min-width: 30pt;
 }
 
-#aaa_content{
+#aaa_content {
 	text-align: center;
 }
 
-#aaa_content h1 p{
+#aaa_content h1 p {
 	float: right;
 	margin: 5pt;
 }
 
-#aaa_content h2 p{
+#aaa_content h2 p {
 	margin: 0;
 }
 
-
-#aaa_new_inventory{
-	float:right;
+#aaa_new_inventory {
+	float: right;
 	height: 30pt;
 	width: 30pt;
 	min-width: 30pt;
 }
 
-#aaa_content h1{
+#aaa_content h1 {
 	font-size: 24pt;
 	margin: 12pt;
 	display: block;
 }
 
-#aaa_content h2{
+#aaa_content h2 {
 	font-size: 16pt;
 	margin: 12pt;
 	display: block;
-	line-height:0pt;
+	line-height: 0pt;
 }
 
-.aaa-downslider{
+.aaa-downslider {
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 	text-align: center;
 }
-.aaa-field-tiny{
+
+.aaa-field-tiny {
 	width: calc(7.5% - 6pt);
-	margin:3pt;
+	margin: 3pt;
 	font-size: 8pt;
 	min-width: 33pt;
-	display:inline-block;
-	vertical-align:top;
+	display: inline-block;
+	vertical-align: top;
 }
 
-.aaa-field-small{
+.aaa-field-small {
 	width: calc(25% - 24pt);
-	margin:12pt;
+	margin: 12pt;
 	font-size: 10pt;
-	display:inline-block;
-	vertical-align:top;
+	display: inline-block;
+	vertical-align: top;
 }
 
-.aaa-field-medium{
+.aaa-field-medium {
 	width: calc(50% - 24pt);
-	margin:12pt;
+	margin: 12pt;
 	font-size: 10pt;
-	display:inline-block;
-	vertical-align:top;
+	display: inline-block;
+	vertical-align: top;
 }
 
-.aaa-field-large{
+.aaa-field-large {
 	width: calc(100% - 24pt);
-	margin:12pt;
+	margin: 12pt;
 	font-size: 10pt;
-	display:inline-block;
-	vertical-align:top;
+	display: inline-block;
+	vertical-align: top;
 }
 
-#aaa_new_task{
+#aaa_new_task {
 	width: calc(100% - 54pt);
-	vertical-align:middle;
+	vertical-align: middle;
 }
 
-#aaa_new_task_content button{
+#aaa_new_task_content button {
 	margin: 5pt;
 	height: 20pt !important;
 	width: 20pt !important;
 	min-width: 20pt !important;
 }
 
-.aaa-field-small input{
-	font-size: 10pt;	
+.aaa-field-small input {
+	font-size: 10pt;
 }
 
-#aaa_inventory_type label{
+#aaa_inventory_type label {
 	margin: 5pt;
 }
 
-.aaa-list-item-circle{
+.aaa-list-item-circle {
 	margin: 10pt;
 	border-radius: 50%;
 	display: inline-block;
@@ -133,58 +133,58 @@
 	text-align: center;
 }
 
-.aaa-list-item-content{
+.aaa-list-item-content {
 	display: inline-block;
 	width: calc(90% - 32pt - 10pt);
 	vertical-align: middle;
 	border-bottom: 1pt solid #CCC;
 }
 
-.aaa-tasks-item{
+.aaa-tasks-item {
 	margin: 5pt;
 	display: block;
 	vertical-align: top;
 }
 
-.aaa-tasks-item span{
+.aaa-tasks-item span {
 	vertical-align: top;
 }
 
-.aaa-tasks-item button{
+.aaa-tasks-item button {
 	min-width: 15pt;
 	width: 15pt;
 	max-height: 15pt;
 	float: right;
 }
 
-.aaa-task-done{
+.aaa-task-done {
 	font-size: 7pt;
-	margin:2pt;
+	margin: 2pt;
 }
 
-.aaa-events-item p{
+.aaa-events-item p {
 	line-height: 10pt;
 	font-size: 8pt;
 	padding: 0pt;
 	margin: 2pt;
 }
 
-.aaa-events-item a{
+.aaa-events-item a {
 	float: right;
 }
 
-.aaa-events-item p{
+.aaa-events-item p {
 	line-height: 10pt;
 	font-size: 8pt;
 	padding: 0pt;
 	margin: 2pt;
 }
 
-.aaa-seasons-item{
+.aaa-seasons-item {
 	float: left;
 }
 
-.aaa-seasons-item p{
+.aaa-seasons-item p {
 	line-height: 10pt;
 	font-size: 8pt;
 	padding: 0pt;
@@ -193,32 +193,32 @@
 	display: inline-block;
 }
 
-.aaa-seasons-item svg{
+.aaa-seasons-item svg {
 	display: inline-block;
 	float: left;
 	width: 87%;
 	max-height: 130pt;
 }
 
-.aaa-inventory-item{
+.aaa-inventory-item {
 	margin: 5pt;
 	width: 200pt;
 	display: inline-block;
 }
 
-.aaa-inventory-item p{
+.aaa-inventory-item p {
 	line-height: 10pt;
 	font-size: 8pt;
 	padding: 0pt;
 	margin: 2pt;
 }
 
-.aaa-inventory-item img{
+.aaa-inventory-item img {
 	height: 100pt;
 	float: left;
 }
 
-.aaa-calendar-day{
+.aaa-calendar-day {
 	float: left;
 	margin: 2pt;
 	font-size: 7pt;
@@ -231,36 +231,36 @@
 	border: 1pt solid rgba(0, 0, 0, 0);
 }
 
-.aaa-calendar-day:hover{
-	background:#CCC;
+.aaa-calendar-day:hover {
+	background: #CCC;
 }
 
-.aaa-calendar-filled{
+.aaa-calendar-filled {
 	border: 1pt solid;
 }
 
-.aaa-calendar-empty:hover{
-	background:unset !important;
+.aaa-calendar-empty:hover {
+	background: unset !important;
 }
 
-.aaa-calendar{
-	width: calc(7 * (12pt + 6%));
-	display:inline-block;
+.aaa-calendar {
+	width: calc(7 * ( 12pt + 6%));
+	display: inline-block;
 }
 
-#aaa_gauge_ends div strong{
+#aaa_gauge_ends div strong {
 	padding: 5pt;
 }
 
-.aaa-arrow-input{
-	font-size:10pt;
+.aaa-arrow-input {
+	font-size: 10pt;
 	min-height: 23pt;
 	min-width: 23pt;
 	height: 25pt;
 	width: 25pt;
 }
 
-.aaa-arrow-end{
+.aaa-arrow-end {
 	border-radius: 25%;
 	display: inline-block;
 	text-align: center;
@@ -271,146 +271,147 @@
 	border: solid 1pt #444;
 }
 
-.aaa-arrows{
+.aaa-arrows {
 	width: calc(100% - 25pt);
 }
 
-#aaa_remove_arrow{
+#aaa_remove_arrow {
 	min-height: 20pt;
 	min-width: 20pt;
 }
 
-#aaa_close_end{
+#aaa_close_end {
 	min-height: 20pt;
 	min-width: 20pt;
 }
 
-#aaa_gauge_targets label{
+#aaa_gauge_targets label {
 	margin: 5pt;
 	width: 40%;
 	font-size: 8pt;
 	display: inline-block;
 }
 
-#aaa_new_gauge{
+#aaa_new_gauge {
 	margin: 5pt;
 	float: right;
 }
 
-#aaa_new_training{
+#aaa_new_training {
 	margin: 5pt;
 	float: right;
 }
 
-#aaa_training_content p{
+#aaa_training_content p {
 	display: inline-block;
-    margin: 0 5pt 10pt 5pt;
-    font-size: 8pt;
+	margin: 0 5pt 10pt 5pt;
+	font-size: 8pt;
 }
 
-#aaa_training_content h2{
+#aaa_training_content h2 {
 	margin: 0 0 10pt 0;
 	font-size: 16pt;
 	line-height: unset;
 }
 
-#aaa_add_training{
+#aaa_add_training {
 	float: right;
 	margin: 2%;
 }
 
-.aaa-training-options{
+.aaa-training-options {
 	width: 100%;
 	display: inline-block;
 }
 
-#aaa_training_options label{
+#aaa_training_options label {
 	margin: 5pt;
 	width: 40%;
 }
 
-.aaa-training-field{
+.aaa-training-field {
 	width: 30%;
 	padding: 5pt;
-	float: left;	
+	float: left;
 }
 
-#aaa_header_title{
+#aaa_header_title {
 	display: none;
 }
 
-#aaa_header_logout{
+#aaa_header_logout {
 	display: none;
 }
 
-#aaa_header .mdl-layout__drawer-button{
+#aaa_header .mdl-layout__drawer-button {
 	display: none;
 }
 
-#aaa_languages{
+#aaa_languages {
 	border: solid 1pt #FFF;
 	color: #FFF;
 }
 
-footer svg{
+footer svg {
 	width: 24pt;
-    height: 24pt;
+	height: 24pt;
 	fill: #FFF;
-    margin: 5pt;
+	margin: 5pt;
 }
 
-.aaa-languages{
+.aaa-languages {
 	font-size: 100%;
 	border: solid 1pt #000;
 	margin: 5pt;
 }
 
-.aaa-drawer-header{
-	padding:10pt;
+.aaa-drawer-header {
+	padding: 10pt;
 }
 
-.aaa-drawer-header img{
-    width: 48pt;
-    height: 48pt;
-    border-radius: 24pt;
-    display: block;
+.aaa-drawer-header img {
+	width: 48pt;
+	height: 48pt;
+	border-radius: 24pt;
+	display: block;
 	margin-left: auto;
 	margin-right: auto;
 	border: 1pt solid #CCC;
 }
 
 .aaa-options-dropdown {
-    display: flex;
-    position: relative;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
+	display: flex;
+	position: relative;
+	flex-direction: row;
+	align-items: center;
+	width: 100%;
 }
 
 .mdl-layout__drawer {
-  width: 200pt;
-  left: -100pt;
+	width: 200pt;
+	left: -100pt;
 }
 
 .mdl-layout__drawer.is-visible {
-  left: 0;
+	left: 0;
 }
 
 #aaa_drawer .material-icons {
 	vertical-align: middle;
 }
 
-#login_box{
-	width:unset;
-}
-	#login_box .mdl-card__title{
-		height:200pt;
-	}
-
-#login{
-	float:right;
+#login_box {
+	width: unset;
 }
 
-.aaa-login{
-	width:100%;
+#login_box .mdl-card__title {
+	height: 200pt;
+}
+
+#login {
+	float: right;
+}
+
+.aaa-login {
+	width: 100%;
 }
