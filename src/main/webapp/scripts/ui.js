@@ -1582,21 +1582,29 @@ var ProfilePage = {
 				return;
 			}
 			if($("#aaa_new_event_start").val()){
-				event['start'] = $("#aaa_new_event_start").val();
+				event['date'] = $("#aaa_new_event_start").val();
 			}
 			else{
 				$("#aaa_new_event_start").attr('required','required');
 				return;
 			}
 			event['days'] = $("#aaa_new_event_days").html();
-			console.log(JSON.stringify(event));
+			event['color'] = $("#aaa_new_event_color").val();
+			var HTML = this.HTML;
+			API.addEvent(event, function(e){
+				var html = HTML.getEventUnit(e);
+				var newnode = $(html).hide();
+				$("#aaa_new_event_content").hide("slide", { direction: "up" }, 500);
+				$('#aaa_events_content').append(newnode);
+				makeFreakingMDLwork();
+				$("#aaa_event_"+e.date+"_"+e.name_short).fadeIn(1000);
+			});
 		}
 	},
 	
-	removeEvent: function(id){
-		API.deleteEvent(id,function(){
-			console.log("fading out");
-			$("#aaa_event_"+id).fadeOut(500);
+	removeEvent: function(date,name_short){
+		API.deleteEvent(date,name_short, function(){
+			$("#aaa_event_"+date+"_"+name_short).fadeOut(500);
 		});
 	},
 	
@@ -1861,25 +1869,29 @@ var ProfilePage = {
 			var events = API.getEvents();
 			var html = "<h5>"+Text['profile_upcoming_events']+"</h5>";
 			for(var i = 0; i < events.length; i++){
-				//TODO maybe merge aaa-xxx-item into one or change naming pattern
-				html += "<div id='aaa_event_"+events[i].date+"_"+events[i].name_short+"' class='aaa-events-item'>";
-				//html += "<h2>"+seasons[i].name+"</h2>";
-				html += "<div class='aaa-list-item-circle mdl-color-text--accent-contrast mdl-color--accent'>"+events[i].name_short+"</div>";
-				
-				html += "<div class='aaa-list-item-content'>";
-				
-				html += "<a onClick='ProfilePage.removeEvent(\""+events[i].date+"_"+events[i].name_short+"\");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
-				html += "<i class='material-icons'>delete</i>";
-				html += "</a>";
-				
-				html += "<p><strong>"+events[i].name+"</strong></p>";
-				html += "<p><strong>Start: </strong>"+events[i].start_date+"</p>";
-				html += "<p>"+events[i].start_date+"<strong> days.</strong></p>";
-				
-				html += "</div>";
-				html += "</div>";
+				html += this.getEventUnit(events[i]);
 			}
 			
+			return html;
+		},
+		
+		getEventUnit: function(event){
+			var html = "<div id='aaa_event_"+event.date+"_"+event.name_short+"' class='aaa-events-item'>";
+			//html += "<h2>"+seasons.name+"</h2>";
+			html += "<div class='aaa-list-item-circle mdl-color-text--accent-contrast mdl-color--accent'>"+event.name_short+"</div>";
+			
+			html += "<div class='aaa-list-item-content'>";
+			
+			html += "<a onClick='ProfilePage.removeEvent(\""+event.date+"\",\""+event.name_short+"\");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+			html += "<i class='material-icons'>delete</i>";
+			html += "</a>";
+			
+			html += "<p><strong>"+event.name+"</strong></p>";
+			html += "<p><strong>Start: </strong>"+event.start_date+"</p>";
+			html += "<p>"+event.start_date+"<strong> days.</strong></p>";
+			
+			html += "</div>";
+			html += "</div>";
 			return html;
 		},
 		

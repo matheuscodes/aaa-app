@@ -113,18 +113,51 @@ var API = {
 	},
 	
 	getEvents: function(){
-		var string = '[';
-		string += '{"date":"2015-09-03","days":2,"name":"Deutsche Meisterschaft","name_short":"DM"},';
-		string += '{"date":"2015-09-04","days":1,"name":"Verein Meisterschaft","name_short":"VM"}';
-		string += ']';
-		return JSON.parse(string);
+		//TODO review blocking requests
+		var xmlhttp = new XMLHttpRequest();
+		var url = "/events/";
+
+		xmlhttp.onreadystatechange = function() {
+		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		    	var download = JSON.parse(""+xmlhttp.responseText);
+		    	if(download){
+		    		User.events = download;
+		    	}
+		    }
+		}
+
+		xmlhttp.open("GET", url, false); //Review the way downloads are made.
+		xmlhttp.send();
+		return User.events;
 	},
 	
-	deleteEvent: function(id,success){
+	addEvent: function(event,success){
+		var xmlhttp = new XMLHttpRequest();
+		var url = "/events/";
+
+		xmlhttp.onreadystatechange = function() {
+		    if (xmlhttp.readyState == 4 && xmlhttp.status == 201) {
+		    	success(event);
+		    }
+		}
+
+		xmlhttp.open("POST", url, true); //Review the way downloads are made.
+		xmlhttp.send(JSON.stringify(event));
+	},
+	
+	deleteEvent: function(date,name_short,success){
 		//TODO with callback function
 		//TODO review all with UI calls to make callback
-		console.log("Deleted "+id);
-		success();
+		var xmlhttp = new XMLHttpRequest();
+		var url = "/events/"+date+"/"+name_short+"/";
+
+		xmlhttp.onreadystatechange = function() {
+		    if (xmlhttp.readyState == 4 && xmlhttp.status == 204) {
+				success();
+		    }
+		}
+		xmlhttp.open("DELETE", url, true); //Review the way downloads are made.
+		xmlhttp.send();
 	},
 	
 	getTasks: function(){
@@ -172,7 +205,7 @@ var API = {
 				success();
 		    }
 		}
-		xmlhttp.open("DELETE", url, false); //Review the way downloads are made.
+		xmlhttp.open("DELETE", url, true); //Review the way downloads are made.
 		xmlhttp.send();
 	},
 	
