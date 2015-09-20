@@ -127,7 +127,7 @@ public class Tasks extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doDelete(HttpServletRequest request, HttpServletResponse
+	 * @see HttpServlet#doPut(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
 	@Override
