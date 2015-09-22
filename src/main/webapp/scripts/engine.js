@@ -228,32 +228,49 @@ var API = {
 	},
 	
 	getStrengthTrainings: function(){
-		var string = '{';
-		string += '"2015-09-04":1,';
-		string += '"2015-08-26":1,';
-		string += '"2015-06-02":1,';
-		string += '"2015-07-11":1,';
-		string += '"2015-07-15":1';
-		string += '}';
-		if(User.strength_trainings){
-			return User.strength_trainings;
+		var xmlhttp = new XMLHttpRequest();
+		var url = "/strengths/";
+
+		xmlhttp.onreadystatechange = function() {
+		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		    	var download = JSON.parse(""+xmlhttp.responseText);
+		    	if(download){
+		    		User.strength_trainings = download;
+		    	}
+		    }
 		}
-		else{
-			User.strength_trainings = {};
-			return JSON.parse(string);
-		}
-		
+
+		xmlhttp.open("GET", url, false); //Review the way downloads are made.
+		xmlhttp.send();
+		return User.strength_trainings;
 	},
 	
 	toggleStrengthTraining: function(date,success){
+		var xmlhttp = new XMLHttpRequest();
+		var url = "/strengths/"+date+"/";
+
+		
 		if(!User.strength_trainings[date]){
-			User.strength_trainings[date] = 1;
+			xmlhttp.open("POST", url, true); //Review the way downloads are made.
+			xmlhttp.onreadystatechange = function() {
+			    if (xmlhttp.readyState == 4 && xmlhttp.status == 201) {
+			    	User.strength_trainings[date] = true;
+					success();
+			    }
+			}
 		}
 		else{
-			delete User.strength_trainings[date];
+			xmlhttp.open("DELETE", url, true); //Review the way downloads are made.
+			xmlhttp.onreadystatechange = function() {
+			    if (xmlhttp.readyState == 4 && xmlhttp.status == 204) {
+					delete User.strength_trainings[date];
+					success();
+			    }
+			}
 		}
-		success();
-	},
+		
+		xmlhttp.send();
+	}
 }
 
 

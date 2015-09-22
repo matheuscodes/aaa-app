@@ -25,6 +25,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 
 /**
  * Controls the Database connection.
@@ -43,6 +44,9 @@ public class Database {
 	static private String PASSWORD = "1234";
 	/** Static connection to the database **/
 	static Connection link = null;
+	/** Date format for Saving/Using DB-Dates **/
+	// TODO make everyone use this one.
+	static public final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 	/**
 	 * Simply executes a query in the database.
