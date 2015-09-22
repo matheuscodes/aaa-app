@@ -282,18 +282,21 @@ var User = {
 		xmlhttp.setRequestHeader("Connection", "close");
 		xmlhttp.onreadystatechange = function() {
 			if(xmlhttp.readyState == 4){
+				var download = JSON.parse(""+xmlhttp.responseText);
 			    if (xmlhttp.status == 201) {
 			    	console.log("LOGGED.");
-			    	user.logged_in = true;
+			    	User.logged_in = true;
+			    	User.email = download.email;
 			    }
 			    else{
 			    	if (xmlhttp.status == 200){
 			    		console.log("ALREADY LOGGED.");
-			    		user.logged_in = true;
+			    		User.logged_in = true;
+				    	User.email = download.email;
 			    	}
 			    	else{
 				    	console.log("ERROR.");
-				    	user.logged_in = false;
+				    	User.logged_in = false;
 			    	}
 			    }
 		    }

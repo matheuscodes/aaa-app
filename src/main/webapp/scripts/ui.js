@@ -18,9 +18,9 @@ function getHeader(title){
 function getFooter(){
 	var html =  "<footer class='mdl-mini-footer'>";
 	html += "<div class='mdl-mini-footer__left-section'>";
-	html += "<div class='mdl-logo'>Title</div>";
+	html += "<div class='mdl-logo'>Matheus Borges Teixeira &copy; 2015</div>";
 	html += "<ul class='mdl-mini-footer__link-list'>";
-	html += "<li><a href='coisa'>Help</a></li>";
+	html += "<li><a href='coisa'>"+Text['help']+"</a></li>";
 	html += "<li><a href='#'>Privacy & Terms</a></li>";
 	html += "</ul>";
 	html += "</div>";
@@ -121,6 +121,8 @@ function buildLoginPage(){
 }
 
 function buildHomePage(){
+	$("#aaa_sidebar_header").prepend("<img src='/avatar' />");
+	$("#aaa_sidebar_header_dropdown").prepend("<span>"+User['email']+"</span>");
 	if($("#aaa_header_title").html() == "") $("#aaa_header_title").html(Text['home']);
 	$("#aaa_header_title").fadeIn(2000);
 	$("#aaa_header_logout").fadeIn(3000);
@@ -153,13 +155,12 @@ function destroyCurrentPage(next){
 
 
 function getAvatarHeader(){
-	var html = "<header class='aaa-drawer-header mdl-layout__header'>";
-	html += "<img src='/avatar' />";
-	html += "<div class='aaa-options-dropdown'>";
-	html += "<span>"+User['email']+"</span>";
+	var html = "<header id='aaa_sidebar_header' class='aaa-drawer-header mdl-layout__header'>";
+	
+	html += "<div id='aaa_sidebar_header_dropdown' class='aaa-options-dropdown'>";
 	
 	html += "<div class='mdl-layout-spacer'></div>";
-	
+	//TODO make hierarchy visible in the id (missing aaa_sidebar)
 	html += "<button id='aaa_user_options' class='mdl-button mdl-js-button mdl-button--icon'>";
 	html += "<i class='material-icons'>arrow_drop_down</i>";
 	html += "</button>";

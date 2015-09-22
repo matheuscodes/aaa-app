@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.arkanos.aaa.controllers.Database;
 import org.arkanos.aaa.controllers.HTTP;
 import org.arkanos.aaa.controllers.Security;
+import org.arkanos.aaa.controllers.Security.TokenInfo;
 import org.arkanos.aaa.data.Archer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -66,7 +67,8 @@ public class Login extends HttpServlet {
 			Login.last_deletion = System.currentTimeMillis();
 		}
 		// TODO relogin
-		if (Security.authenticateToken(request) == null) {
+		TokenInfo requester = Security.authenticateToken(request);
+		if (requester == null) {
 			if ((email == null) || (hashed_password == null)) {
 				response.sendError(400, "Email and password are required.");
 				return;
@@ -78,6 +80,7 @@ public class Login extends HttpServlet {
 						c = new Cookie(Security.TOKEN_COOKIE_NAME, token);
 					}
 					response.addCookie(c);
+					response.getWriter().println("{\"email\":\"" + email + "\"}");
 					response.setStatus(201);
 					return;
 				} else {
@@ -86,6 +89,7 @@ public class Login extends HttpServlet {
 				}
 			}
 		}
+		response.getWriter().println("{\"email\":\"" + requester.getUsername() + "\"}");
 		response.setStatus(200);
 	}
 }
