@@ -1460,12 +1460,12 @@ var ProfilePage = {
 				$("#aaa_new_season_week_arrows_"+i).parent().addClass("is-dirty");
 				$("#aaa_new_season_week_target_"+i).val(season.targets[i]);
 				$("#aaa_new_season_week_target_"+i).parent().addClass("is-dirty");
-				$("#aaa_new_season_start").val(season.start_date);
-				$("#aaa_new_season_start").parent().addClass("is-dirty");
-				$("#aaa_new_season_name").val(season.name);
-				$("#aaa_new_season_name").parent().addClass("is-dirty");
-				$("#aaa_new_season_id").val(season.id);
 			}
+			$("#aaa_new_season_start").val(season.start_date);
+			$("#aaa_new_season_start").parent().addClass("is-dirty");
+			$("#aaa_new_season_name").val(season.name);
+			$("#aaa_new_season_name").parent().addClass("is-dirty");
+			$("#aaa_new_season_id").val(season.id);
 		}
 	},
 	
@@ -1621,6 +1621,8 @@ var ProfilePage = {
 				var newnode = $(html).hide();
 				$('#aaa_tasks_content').prepend(newnode);
 				$("#aaa_new_task_description").val(null);
+				//TODO check if works
+				$("#aaa_new_task_description").parent().removeClass("is-dirty");
 				$("#aaa_new_task_button").removeAttr('disabled');
 				makeFreakingMDLwork();
 				$("#aaa_task_"+t.id).fadeIn(500);
@@ -1690,8 +1692,8 @@ var ProfilePage = {
 	createNewItem: function(){
 		var html = "<form onSubmit='ProfilePage.submitItem();return false'>";
 		html += "<div class='aaa-field-small mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
-		html += "<input class='mdl-textfield__input' type='text' id='aaa_inventory_bow' />";
-		html += "<label class='mdl-textfield__label' for='aaa_inventory_bow'>"+Text['inventory_bow']+"</label>";
+		html += "<input class='mdl-textfield__input' type='text' id='aaa_inventory_name' />";
+		html += "<label class='mdl-textfield__label' for='aaa_inventory_name'>"+Text['inventory_name']+"</label>";
 		html += "<span class='mdl-textfield__error'>error</span>";
 		html += "</div>";
 		
@@ -1744,12 +1746,106 @@ var ProfilePage = {
 		html += "</button>";
 		html += "</div>";
 		
+		html += "<input type='hidden' id='aaa_inventory_id' />";
+		
 		html += "</form>";
 		
 		$("#aaa_new_item_content").html(html);
 		makeFreakingMDLwork();
 		
 		$("#aaa_new_item_content").show("slide", { direction: "up" }, 1000);
+	},
+	
+	submitItem: function(){
+		var bow = {};
+		if(bow){
+			//TODO maybe modularize this sequence (will be used often, shall save lots of code)
+			if($("#aaa_inventory_name").val()){
+				bow['name'] = $("#aaa_inventory_name").val();
+			}
+			else{
+				$("#aaa_inventory_name").attr('required','required');
+				return;
+			}
+			if($("#aaa_inventory_arms").val()){
+				bow['arms'] = $("#aaa_inventory_arms").val();
+			}
+			else{
+				$("#aaa_inventory_arms").attr('required','required');
+				return;
+			}
+			if($("#aaa_inventory_weight").val()){
+				bow['weight'] = $("#aaa_inventory_weight").val();
+			}
+			else{
+				$("#aaa_inventory_weight").attr('required','required');
+				return;
+			}
+			if($("#aaa_inventory_arrow").val()){
+				bow['arrow'] = $("#aaa_inventory_arrow").val();
+			}
+			else{
+				$("#aaa_inventory_arrow").attr('required','required');
+				return;
+			}
+			if($("#aaa_inventory_arrows").val()){
+				bow['arrows'] = $("#aaa_inventory_arrows").val();
+			}
+			else{
+				$("#aaa_inventory_arrows").attr('required','required');
+				return;
+			}
+			if($("#aaa_inventory_id").val()){
+				bow['id'] = $("#aaa_inventory_id").val();
+			}
+			bow['type'] = $("#aaa_inventory_type input[type='radio']:checked").val();
+			
+			var HTML = this.HTML;
+			API.placeItem(bow, function(b){
+				$("#aaa_new_item_content").hide("slide", { direction: "up" }, 500);
+				var html = HTML.getInventoryContent(b);
+				var newnode = $(html).hide();
+				if($("#aaa_inventory_item_"+b['id']).length){
+					$("#aaa_inventory_item_"+b['id']).html(newnode.html());
+				}
+				else{
+					$('#aaa_inventory_content').prepend(newnode);
+					makeFreakingMDLwork();
+					$("#aaa_inventory_item_"+b['id']).fadeIn(500);
+				}
+			});
+		}
+	},
+	
+	updateItem: function(id){
+		var item = API.getItems(id);
+		this.createNewItem();
+		for(var i in item){
+			if(i != "type"){
+				$("#aaa_inventory_"+i).val(item[i]);
+				$("#aaa_inventory_"+i).parent().addClass("is-dirty");
+			}
+		}
+		$("#aaa_option_1").parent().removeClass("is-checked");
+		if(item['type'] == "recurve"){
+			$("#aaa_option_1").attr('checked', 'checked');
+			$("#aaa_option_1").parent().addClass("is-checked");
+		}
+		if(item['type'] == "compound"){
+			$("#aaa_option_2").attr('checked', 'checked');
+			$("#aaa_option_2").parent().addClass("is-checked");
+		}
+		if(item['type'] == "longbow"){
+			$("#aaa_option_3").attr('checked', 'checked');
+			$("#aaa_option_3").parent().addClass("is-checked");
+		}
+		makeFreakingMDLwork();
+	},
+	
+	removeItem: function(id){
+		API.deleteItem(id,function(){
+			$("#aaa_inventory_item_"+id).fadeOut(500);
+		});
 	},
 	
 	HTML: {
@@ -1928,7 +2024,7 @@ var ProfilePage = {
 			return html;
 		},
 		
-		getTasksContent: function(){
+		getTasksContent: function(){ //TODO remove this, merge to parent(see getInventory)
 			var tasks = API.getTasks();
 			var html = "";
 			for(var i = 0; i < tasks.length; i++){
@@ -2023,7 +2119,11 @@ var ProfilePage = {
 			
 			html += "<div id='aaa_inventory_content'>";
 			
-			html += this.getInventoryContent();
+			var bows = API.getItems();
+			for(var i in bows){
+				//TODO change all this.xx to BlablaPage.HTML.xx
+				html += this.getInventoryContent(bows[i]);
+			}
 			
 			html += "</div>";
 			
@@ -2035,19 +2135,19 @@ var ProfilePage = {
 			return html;
 		},
 		
-		getInventoryContent: function(){
-			var html = "<div class='aaa-inventory-item'>";
-			html += "<img src='/img/bow/recurve.png' />";
-			html += "<p><strong>ID:</strong></p>";
-			html += "<p><strong>Name:</strong></p>";
-			html += "<p><strong>Arms:</strong></p>";
-			html += "<p><strong>Weight:</strong></p>";
-			html += "<p><strong>Arrow:</strong></p>";
-			html += "<p>x arrows in quiver.</p>";
-			html += "<p class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effec'>";
+		getInventoryContent: function(bow){
+			var html = "<div id='aaa_inventory_item_"+bow['id']+"'class='aaa-inventory-item'>";
+			html += "<img src='/img/bow/"+bow['type']+".png' />";
+			html += "<p><strong>ID: </strong>"+bow['id']+"</p>";
+			html += "<p><strong>Name: </strong>"+bow['name']+"</p>";
+			html += "<p><strong>Arms: </strong>"+bow['arms']+"</p>";
+			html += "<p><strong>Weight: </strong>"+bow['weight']+" lbs</p>";
+			html += "<p><strong>Arrow: </strong>"+bow['arrow']+"</p>";
+			html += "<p>"+bow['arrows']+" arrows in quiver.</p>";
+			html += "<p onClick='ProfilePage.updateItem("+bow['id']+")' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effec'>";
 			html += "<i class='material-icons'>edit</i>";
 			html += "</p>";
-			html += "<p  class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+			html += "<p onClick='ProfilePage.removeItem("+bow['id']+")' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
 			html += "<i class='material-icons'>delete</i>";
 			html += "</p>";
 			html += "</div>";

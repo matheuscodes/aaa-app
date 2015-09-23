@@ -270,6 +270,76 @@ var API = {
 		}
 		
 		xmlhttp.send();
+	},
+	
+	getItems: function(id){
+		//TODO review blocking requests
+		var xmlhttp = new XMLHttpRequest();
+		var url = "/inventory/";
+
+		xmlhttp.onreadystatechange = function() {
+		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		    	var download = JSON.parse(""+xmlhttp.responseText);
+		    	if(download){
+		    		User.items = download;
+		    	}
+		    }
+		}
+
+		xmlhttp.open("GET", url, false); //Review the way downloads are made.
+		xmlhttp.send();
+		if(id){
+			return User.items[id];
+		}
+		else{
+			return User.items;
+		}
+	},
+	
+	placeItem: function(bow,success){
+		//TODO review blocking requests
+		var xmlhttp = new XMLHttpRequest();
+		var url = "/inventory/";
+
+		xmlhttp.onreadystatechange = function() {
+		    if (xmlhttp.readyState == 4) {
+		    	if(xmlhttp.status == 201){
+			    	console.log("Added " + bow)
+			    	var download = JSON.parse(""+xmlhttp.responseText);
+			    	bow.id = download.id;
+			    	success(bow);
+		    	}
+		    	if(xmlhttp.status == 204){
+			    	console.log("Updated " + bow)
+			    	success(bow);
+		    	}
+		    }
+		}
+		if(bow.id){
+			url += bow.id+"/";
+			xmlhttp.open("PUT", url, true);
+		}
+		else{
+			xmlhttp.open("POST", url, true);
+		}
+		xmlhttp.send(JSON.stringify(bow));
+	},
+	
+	deleteItem: function(id,success){
+		//TODO with callback function
+		//TODO review all with UI calls to make callback
+		var xmlhttp = new XMLHttpRequest();
+		var url = "/inventory/"+id+"/";
+
+		xmlhttp.onreadystatechange = function() {
+		    if (xmlhttp.readyState == 4 && xmlhttp.status == 204) {				
+				console.log("Deleted "+id);
+				success(id);
+		    }
+		}
+
+		xmlhttp.open("DELETE", url, true);
+		xmlhttp.send();
 	}
 }
 
