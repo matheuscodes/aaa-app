@@ -111,6 +111,7 @@ public class Seasons extends HttpServlet {
 			JSONParser parser = new JSONParser();
 			JSONObject json = (JSONObject) parser.parse(request.getReader().readLine());
 			if (Season.createSeason(requester.getUsername(), json)) {
+				response.getWriter().print(Season.getRecentAddedSeason(requester.getUsername(), json));
 				response.setStatus(201); // TODO send content created
 				return;
 			} else {

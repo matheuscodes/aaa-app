@@ -75,12 +75,13 @@ var API = {
 		xmlhttp.onreadystatechange = function() {
 		    if (xmlhttp.readyState == 4) {
 		    	if(xmlhttp.status == 201){
-			    	console.log("Added " + season)
-			    	success();
+			    	var download = JSON.parse(""+xmlhttp.responseText);
+			    	//FIXME super lazy fix with double download, please redo.
+			    	success(API.getSeasons(download.id));
 		    	}
 		    	if(xmlhttp.status == 204){
-			    	console.log("Updated " + season)
-			    	success();
+			    	//FIXME super lazy fix with double download, please redo.
+			    	success(API.getSeasons(season.id));
 		    	}
 		    }
 		}

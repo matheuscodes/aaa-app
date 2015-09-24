@@ -264,7 +264,7 @@ public class Season {
 					Date start = sdf.parse(json.get(FIELD_START_DATE).toString());
 					Date end = sdf.parse(json.get(FIELD_END_DATE).toString());
 					LinkedList<Integer> weeks = new LinkedList<Integer>();
-					for (long i = start.getTime(); i < end.getTime(); i += 7 * 24 * 60 * 60 * 1000) {
+					for (long i = start.getTime(); i <= end.getTime(); i += 7 * 24 * 60 * 60 * 1000) {
 						gc.setTimeInMillis(i);
 						weeks.add(gc.get(Calendar.WEEK_OF_YEAR));
 					}
@@ -319,7 +319,7 @@ public class Season {
 				Date start = sdf.parse(json.get(FIELD_START_DATE).toString());
 				Date end = sdf.parse(json.get(FIELD_END_DATE).toString());
 				LinkedList<Integer> weeks = new LinkedList<Integer>();
-				for (long i = start.getTime(); i < end.getTime(); i += 7 * 24 * 60 * 60 * 1000) {
+				for (long i = start.getTime(); i <= end.getTime(); i += 7 * 24 * 60 * 60 * 1000) {
 					gc.setTimeInMillis(i);
 					weeks.add(gc.get(Calendar.WEEK_OF_YEAR));
 				}
@@ -359,7 +359,6 @@ public class Season {
 			PreparedStatement ps = Database.prepare(query);
 
 			for (int i = 0; i < weeks.length; i++) {
-				System.out.println(weeks[i]);
 				ps.setLong(1, (Long) arrows[i]);
 				ps.setLong(2, (Long) targets[i]);
 				ps.setLong(3, id);
@@ -379,6 +378,34 @@ public class Season {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	static public String getRecentAddedSeason(String archer, JSONObject json) {
+		try {
+			String query = "SELECT MAX(" + FIELD_ID + ") as " + FIELD_ID + " ";
+			query += "FROM " + TABLE_NAME + " ";
+			query += "WHERE " + FIELD_ARCHER + " = ?;";
+
+			PreparedStatement ps = Database.prepare(query);
+			ps.setString(1, archer);
+
+			ResultSet rs = ps.executeQuery();
+			String result = "{";
+			if (rs.next()) {
+				// TODO return the proper full object...
+				int id = rs.getInt(FIELD_ID);
+				// TODO maybe reduce this to json.put()
+				result += "\"" + FIELD_ID + "\":" + id + "";
+			}
+			result += "}";
+			rs.close();
+			ps.close();
+			return result;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

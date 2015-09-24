@@ -1506,9 +1506,21 @@ var ProfilePage = {
 			if($("#aaa_new_season_id").val()){
 				season['id'] = $("#aaa_new_season_id").val();
 			}
-			console.log(JSON.stringify(season));
-			API.placeSeason(season,function(){
-				//TODO do ui stuff.
+			var HTML = this.HTML;
+			console.log(season);
+			API.placeSeason(season,function(s){
+				console.log(s);
+				$("#aaa_new_season_content").hide("slide", { direction: "up" }, 500);
+				var html = HTML.getSeasonContent(s);
+				var newnode = $(html).hide();
+				if($("#aaa_season_"+s['id']).length){
+					$("#aaa_season_"+s['id']).html(newnode.html());
+				}
+				else{
+					$('#aaa_seasons_content').prepend(newnode);
+					makeFreakingMDLwork();
+					$("#aaa_season_"+s['id']).fadeIn(500);
+				}
 			});
 		}
 	},
@@ -1819,27 +1831,29 @@ var ProfilePage = {
 	
 	updateItem: function(id){
 		var item = API.getItems(id);
-		this.createNewItem();
-		for(var i in item){
-			if(i != "type"){
-				$("#aaa_inventory_"+i).val(item[i]);
-				$("#aaa_inventory_"+i).parent().addClass("is-dirty");
+		if(item){
+			this.createNewItem();
+			for(var i in item){
+				if(i != "type"){
+					$("#aaa_inventory_"+i).val(item[i]);
+					$("#aaa_inventory_"+i).parent().addClass("is-dirty");
+				}
 			}
+			$("#aaa_option_1").parent().removeClass("is-checked");
+			if(item['type'] == "recurve"){
+				$("#aaa_option_1").attr('checked', 'checked');
+				$("#aaa_option_1").parent().addClass("is-checked");
+			}
+			if(item['type'] == "compound"){
+				$("#aaa_option_2").attr('checked', 'checked');
+				$("#aaa_option_2").parent().addClass("is-checked");
+			}
+			if(item['type'] == "longbow"){
+				$("#aaa_option_3").attr('checked', 'checked');
+				$("#aaa_option_3").parent().addClass("is-checked");
+			}
+			makeFreakingMDLwork();
 		}
-		$("#aaa_option_1").parent().removeClass("is-checked");
-		if(item['type'] == "recurve"){
-			$("#aaa_option_1").attr('checked', 'checked');
-			$("#aaa_option_1").parent().addClass("is-checked");
-		}
-		if(item['type'] == "compound"){
-			$("#aaa_option_2").attr('checked', 'checked');
-			$("#aaa_option_2").parent().addClass("is-checked");
-		}
-		if(item['type'] == "longbow"){
-			$("#aaa_option_3").attr('checked', 'checked');
-			$("#aaa_option_3").parent().addClass("is-checked");
-		}
-		makeFreakingMDLwork();
 	},
 	
 	removeItem: function(id){
@@ -1914,7 +1928,7 @@ var ProfilePage = {
 			var seasons = API.getSeasons();
 			
 			for(var i in seasons){
-				html += this.getSingleSeason(seasons[i]);
+				html += this.getSeasonContent(seasons[i]);
 			}
 			
 			html += "</div>";
@@ -1925,7 +1939,7 @@ var ProfilePage = {
 			return html;
 		},
 		
-		getSingleSeason: function(season){
+		getSeasonContent: function(season){
 			var html = "<div id='aaa_season_"+season.id+"' class='aaa-seasons-item'>";
 			html += "<h2>"+season.name+"</h2>";
 			
