@@ -43,6 +43,10 @@ public class Reports extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String bla = getHomeScreenData("matheus.bt@gmail.com");
+		response.getWriter().print(bla);
+		if (bla != null)
+			return;
 		TokenInfo requester = Security.authenticateToken(request);
 		if (requester == null) {
 			response.sendError(403); // TODO better message and logging.
@@ -264,15 +268,12 @@ public class Reports extends HttpServlet {
 		response.addHeader("Content-Type", "application/json");
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+	private String getHomeScreenData(String archer) {
+		String json = "{";
+		json += "\"arrows_total\":" + Training.getWeeksArrows(archer) + ",";
+		json += "\"year_summary\":" + Training.getYearSummary(archer);
+		json += "}";
+		return json;
 	}
 
 }

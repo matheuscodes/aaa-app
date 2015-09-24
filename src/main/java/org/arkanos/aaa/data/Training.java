@@ -3,10 +3,14 @@ package org.arkanos.aaa.data;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Locale;
 
 import org.arkanos.aaa.controllers.Database;
 
@@ -422,5 +426,186 @@ public class Training {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	private static HashMap<String, Integer> compileDailyArrowsSince(String archer, Date time) {
+		try {
+			HashMap<String, Integer> data = new HashMap<String, Integer>();
+			String query = "SELECT " + FIELD_DATE + ",SUM(arrow_count) AS arrow_count FROM (";
+			query += "SELECT " + FIELD_DATE + ",COUNT(" + FIELD_VALUE + ") AS arrow_count FROM ";
+			query += TABLE_NAME_ARROW + " LEFT JOIN " + TABLE_NAME_GAUGE + " ON " + FIELD_ID + " = " + FIELD_TRAINING_ID
+					+ " ";
+			query += "WHERE " + FIELD_ARCHER + " = ? ";
+			query += "AND " + FIELD_DATE + " >= ? ";
+			query += "GROUP BY " + FIELD_DATE + " ";
+			query += "UNION SELECT " + FIELD_DATE + ",SUM(" + FIELD_ARROWS + ") as arrow_count FROM " + TABLE_NAME
+					+ " ";
+			query += "WHERE " + FIELD_ARCHER + " = ? ";
+			query += "AND " + FIELD_DATE + " >= ? ";
+			query += "GROUP BY " + FIELD_DATE + ") AS everyone ";
+			query += "GROUP BY " + FIELD_DATE + ";";
+
+			PreparedStatement ps = Database.prepare(query);
+			ps.setString(1, archer);
+			ps.setString(2, Database.sdf.format(time));
+			ps.setString(3, archer);
+			ps.setString(4, Database.sdf.format(time));
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				int count = rs.getInt("arrow_count");
+				String date = Database.sdf.format(rs.getDate(FIELD_DATE));
+				data.put(date, count);
+			}
+			rs.close();
+			ps.close();
+			return data;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private static HashMap<String, Float[]> compileDailyGaugeSince(String archer, Date time) {
+		try {
+			HashMap<String, Float[]> data = new HashMap<String, Float[]>();
+			String query = "SELECT " + FIELD_DATE + ",COUNT(" + FIELD_VALUE + ") AS arrow_count,SUM(" + FIELD_VALUE
+					+ ") AS value_sum FROM ";
+			query += TABLE_NAME_ARROW + " LEFT JOIN " + TABLE_NAME_GAUGE + " ON " + FIELD_ID + " = " + FIELD_TRAINING_ID
+					+ " ";
+			query += "WHERE " + FIELD_ARCHER + " = ? ";
+			query += "AND " + FIELD_DATE + " >= ? ";
+			query += "GROUP BY " + FIELD_DATE + ";";
+
+			PreparedStatement ps = Database.prepare(query);
+			ps.setString(1, archer);
+			ps.setString(2, Database.sdf.format(time));
+
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				float count = rs.getFloat("arrow_count");
+				float sum = rs.getFloat("value_sum");
+				Float[] pair = new Float[] { count, sum };
+				String date = Database.sdf.format(rs.getDate(FIELD_DATE));
+				data.put(date, pair);
+
+			}
+			rs.close();
+			ps.close();
+			return data;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private static HashMap<String, Integer> compileDailyValueSince(String archer, Date time) {
+		// TODO SELECT value,COUNT(value) as value_count FROM arrow LEFT JOIN
+		// gauge ON id = training_id GROUP BY value
+		return null;
+	}
+
+	private static HashMap<String, Float[]> compileDailyEndSince(String archer, Date time) {
+		// TODO SELECT end,COUNT(value),AVG(value) FROM arrow LEFT JOIN gauge ON
+		// id = training_id GROUP BY end
+		return null;
+	}
+
+	private static final Date getWeekAgo() {
+		return new Date(System.currentTimeMillis() - 7L * 24 * 60 * 60 * 1000);
+	}
+
+	private static final Date getMonthAgo() {
+		return new Date(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000);
+	}
+
+	private static final Date getYearAgo() {
+		// TODO move all this Gregorian stuff to some controller...
+		GregorianCalendar gc = new GregorianCalendar(Locale.UK);
+		Date year_ago = new Date(System.currentTimeMillis() - 365L * 24 * 60 * 60 * 1000);
+		gc.setTime(year_ago);
+		gc.set(Calendar.DATE, 1);
+		return gc.getTime();
+	}
+
+	public static String getWeeksArrows(String archer) {
+		HashMap<String, Integer> arrows = compileDailyArrowsSince(archer, getWeekAgo());
+		String json = "{";
+		for (String day : arrows.keySet()) {
+			json += "\"" + day + "\":" + arrows.get(day) + ",";
+		}
+
+		if (json.endsWith(","))
+			json = json.substring(0, json.length() - 1);
+
+		json += "}";
+
+		return json;
+	}
+
+	public static String getYearSummary(String archer) {
+		HashMap<String, Float[]> performance = compileDailyGaugeSince(archer, getYearAgo());
+		HashMap<Integer, Integer> counts = new HashMap<Integer, Integer>();
+		HashMap<Integer, Float> sums = new HashMap<Integer, Float>();
+
+		for (String day : performance.keySet()) {
+			GregorianCalendar gc = new GregorianCalendar();
+			try {
+				gc.setTime(Database.sdf.parse(day));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			int month = gc.get(Calendar.MONTH);
+			Integer i = counts.get(month);
+			if (i != null)
+				counts.put(month, i + performance.get(day)[0].intValue());
+			else
+				counts.put(month, performance.get(day)[0].intValue());
+
+			Float f = sums.get(month);
+			if (f != null)
+				sums.put(month, f + performance.get(day)[1]);
+			else
+				sums.put(month, performance.get(day)[1]);
+		}
+
+		HashMap<String, Integer> arrows = compileDailyArrowsSince(archer, getYearAgo());
+		HashMap<Integer, Integer> totals = new HashMap<Integer, Integer>();
+		for (String day : arrows.keySet()) {
+			GregorianCalendar gc = new GregorianCalendar();
+			try {
+				gc.setTime(Database.sdf.parse(day));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			int month = gc.get(Calendar.MONTH);
+			Integer i = totals.get(month);
+			if (i != null)
+				totals.put(month, i + arrows.get(day));
+			else
+				totals.put(month, arrows.get(day));
+		}
+
+		String json = "{";
+		for (Integer month : totals.keySet()) {
+			json += "\"" + month + "\":";
+			json += "{";
+			if (counts.get(month) != null)
+				json += "\"average_value\":" + sums.get(month) / counts.get(month) + ",";
+			if (counts.get(month) != null)
+				json += "\"target_count\":" + counts.get(month) + ",";
+			json += "\"total_count\":" + totals.get(month) + "";
+			json += "},";
+		}
+
+		if (json.endsWith(","))
+			json = json.substring(0, json.length() - 1);
+
+		json += "}";
+
+		return json;
 	}
 }
