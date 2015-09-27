@@ -488,7 +488,6 @@ public class Training {
 				Float[] pair = new Float[] { count, sum };
 				String date = Database.sdf.format(rs.getDate(FIELD_DATE));
 				data.put(date, pair);
-
 			}
 			rs.close();
 			ps.close();
@@ -500,15 +499,66 @@ public class Training {
 		return null;
 	}
 
-	private static HashMap<String, Integer> compileDailyValueSince(String archer, Date time) {
-		// TODO SELECT value,COUNT(value) as value_count FROM arrow LEFT JOIN
-		// gauge ON id = training_id GROUP BY value
+	private static HashMap<Integer, Integer> compileValuesSince(String archer, Date time) {
+		try {
+			HashMap<Integer, Integer> data = new HashMap<Integer, Integer>();
+			String query = "SELECT " + FIELD_VALUE + ",COUNT(" + FIELD_VALUE + ") AS arrow_count FROM ";
+			query += TABLE_NAME_ARROW + " LEFT JOIN " + TABLE_NAME_GAUGE + " ON " + FIELD_ID + " = " + FIELD_TRAINING_ID
+					+ " ";
+			query += "WHERE " + FIELD_ARCHER + " = ? ";
+			query += "AND " + FIELD_DATE + " >= ? ";
+			query += "GROUP BY " + FIELD_VALUE + ";";
+
+			PreparedStatement ps = Database.prepare(query);
+			ps.setString(1, archer);
+			ps.setString(2, Database.sdf.format(time));
+
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				int count = rs.getInt("arrow_count");
+				int value = rs.getInt(FIELD_VALUE);
+				data.put(value, count);
+			}
+			rs.close();
+			ps.close();
+			return data;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
-	private static HashMap<String, Float[]> compileDailyEndSince(String archer, Date time) {
-		// TODO SELECT end,COUNT(value),AVG(value) FROM arrow LEFT JOIN gauge ON
-		// id = training_id GROUP BY end
+	private static HashMap<Integer, Float[]> compileEndsSince(String archer, Date time) {
+		try {
+			HashMap<Integer, Float[]> data = new HashMap<Integer, Float[]>();
+			String query = "SELECT " + FIELD_END + ",COUNT(" + FIELD_VALUE + ") AS arrow_count,";
+			query += "AVG(" + FIELD_VALUE + ") AS value_avg FROM ";
+			query += TABLE_NAME_ARROW + " LEFT JOIN " + TABLE_NAME_GAUGE + " ON " + FIELD_ID + " = " + FIELD_TRAINING_ID
+					+ " ";
+			query += "WHERE " + FIELD_ARCHER + " = ? ";
+			query += "AND " + FIELD_DATE + " >= ? ";
+			query += "GROUP BY " + FIELD_END + ";";
+
+			PreparedStatement ps = Database.prepare(query);
+			ps.setString(1, archer);
+			ps.setString(2, Database.sdf.format(time));
+
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				float count = rs.getFloat("arrow_count");
+				float avg = rs.getFloat("value_avg");
+				Float[] pair = new Float[] { count, avg };
+				int end = rs.getInt(FIELD_END);
+				data.put(end, pair);
+			}
+			rs.close();
+			ps.close();
+			return data;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -606,6 +656,121 @@ public class Training {
 
 		json += "}";
 
+		return json;
+	}
+
+	public static String getValueDistribution(String archer) {
+		HashMap<Integer, Integer> week = compileValuesSince(archer, getWeekAgo());
+		HashMap<Integer, Integer> month = compileValuesSince(archer, getMonthAgo());
+		HashMap<Integer, Integer> year = compileValuesSince(archer, getYearAgo());
+		float total_week = 0;
+		float total_month = 0;
+		float total_year = 0;
+
+		for (Integer i : week.keySet()) {
+			total_week += week.get(i);
+		}
+
+		for (Integer i : month.keySet()) {
+			total_month += month.get(i);
+		}
+
+		for (Integer i : year.keySet()) {
+			total_year += year.get(i);
+		}
+		String json = "{";
+		for (int i = 0; i <= 10; i++) {
+			json += "\"" + i + "\":{";
+			json += "\"week\":";
+			if (total_week > 0 && week.get(i) != null) {
+				json += week.get(i) / total_week + ",";
+			} else {
+				json += "0,";
+			}
+			json += "\"month\":";
+			if (total_month > 0 && month.get(i) != null) {
+				json += month.get(i) / total_month + ",";
+			} else {
+				json += "0,";
+			}
+			json += "\"year\":";
+			if (total_year > 0 && year.get(i) != null) {
+				json += year.get(i) / total_year;
+			} else {
+				json += "0";
+			}
+			json += "},";
+		}
+		json = json.substring(0, json.length() - 1);
+		json += "}";
+
+		return json;
+	}
+
+	public static String getEndDistribution(String archer) {
+		HashMap<Integer, Float[]> week = compileEndsSince(archer, getWeekAgo());
+		HashMap<Integer, Float[]> month = compileEndsSince(archer, getMonthAgo());
+		int max_end = 0;
+		float max_value = 0;
+		int max_count = 0;
+		for (int i : week.keySet()) {
+			if (i > max_end)
+				max_end = i;
+			if (week.get(i) != null) {
+				if (week.get(i)[0] > max_count)
+					max_count = week.get(i)[0].intValue();
+				if (week.get(i)[1] > max_value)
+					max_value = week.get(i)[1];
+			}
+		}
+		for (int i : month.keySet()) {
+			if (i > max_end)
+				max_end = i;
+			if (month.get(i) != null) {
+				if (month.get(i)[0] > max_count)
+					max_count = month.get(i)[0].intValue();
+				if (month.get(i)[1] > max_value)
+					max_value = month.get(i)[1];
+			}
+		}
+
+		String json_counts = "{";
+		for (int i = 0; i <= max_end; i++) {
+			json_counts += "\"" + i + "\":{\"week\":";
+			if (week.get(i) != null) {
+				json_counts += week.get(i)[0] + ",";
+			} else {
+				json_counts += "0,";
+			}
+			json_counts += "\"month\":";
+			if (month.get(i) != null) {
+				json_counts += month.get(i)[0] + "},";
+			} else {
+				json_counts += "0},";
+			}
+		}
+		if (json_counts.endsWith(","))
+			json_counts = json_counts.substring(0, json_counts.length() - 1);
+		json_counts += "}";
+
+		String json_values = "{\"week\":{";
+		for (int i : week.keySet()) {
+			json_values += "\"" + i + "\":" + week.get(i)[1] + ",";
+		}
+		if (json_values.endsWith(","))
+			json_values = json_values.substring(0, json_values.length() - 1);
+		json_values += "},\"month\":{";
+		for (int i : month.keySet()) {
+			json_values += "\"" + i + "\":" + month.get(i)[1] + ",";
+		}
+		if (json_values.endsWith(","))
+			json_values = json_values.substring(0, json_values.length() - 1);
+		json_values += "}}";
+
+		String json = "{";
+		json += "\"counts\":" + json_counts + ",";
+		json += "\"values\":" + json_values;
+		json += "}";
 		return json;
 	}
 }

@@ -271,6 +271,8 @@ public class Reports extends HttpServlet {
 	private String getHomeScreenData(String archer) {
 		String json = "{";
 		json += "\"arrows_total\":" + Training.getWeeksArrows(archer) + ",";
+		json += "\"value_distribution\":" + Training.getValueDistribution(archer) + ",";
+		json += "\"end_distribution\":" + Training.getEndDistribution(archer) + ",";
 		json += "\"year_summary\":" + Training.getYearSummary(archer);
 		json += "}";
 		return json;
