@@ -169,6 +169,7 @@ public class Training {
 		query += "GROUP BY " + FIELD_DISTANCE + "," + FIELD_DATE + ";";
 		ps = Database.prepare(query);
 		ps.setString(1, user);
+		// TODO use this in all dates (avoid Database.sdf)
 		ps.setDate(2, Database.java2sql(from));
 		ps.setDate(3, Database.java2sql(to));
 		rs = ps.executeQuery();
@@ -566,7 +567,7 @@ public class Training {
 		return new Date(System.currentTimeMillis() - 7L * 24 * 60 * 60 * 1000);
 	}
 
-	private static final Date getMonthAgo() {
+	public static final Date getMonthAgo() {
 		return new Date(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000);
 	}
 

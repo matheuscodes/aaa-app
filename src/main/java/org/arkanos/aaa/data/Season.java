@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 import org.arkanos.aaa.controllers.Database;
@@ -55,6 +56,7 @@ public class Season {
 		public int size;
 		public int start;
 		public String name;
+		public long id;
 
 		public WeeklyPerformance(int weeks) {
 			results = new int[weeks];
@@ -69,6 +71,7 @@ public class Season {
 
 	static public WeeklyPerformance compileWeekly(Date when, String user) throws SQLException {
 		// TODO initialize
+		// TODO delete this and use compileWeeklies();
 
 		String season_name = "";
 		int season_max = 0;
@@ -406,6 +409,134 @@ public class Season {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	static private List<WeeklyPerformance> compileWeeklies(String archer, Date when) {
+		try {
+			String season_name = "";
+			int season_max = 0;
+			int season_start = 0;
+			int season_size = 0;
+			Date start = null;
+			Date end = null;
+			int id = 0;
+			String query = "SELECT " + FIELD_ID + "," + FIELD_START + "," + FIELD_END + ",";
+			;
+			query += FIELD_NAME + ",COUNT(" + FIELD_WEEK + ") AS weeks,MIN(" + FIELD_WEEK + ") AS start_week, ";
+			query += "MAX(" + FIELD_ARROW_COUNT + ") AS max_count FROM " + TABLE_NAME + " ";
+			query += "LEFT JOIN " + TABLE_NAME_GOALS + " ON " + FIELD_ID + " = " + FIELD_SEASON_ID + " ";
+			query += "WHERE " + FIELD_ARCHER + " = ? ";
+			query += "AND " + FIELD_START + " <= ? ";
+			query += "AND " + FIELD_END + " >= ? ";
+			query += "GROUP BY " + FIELD_ID + ";";
+			PreparedStatement ps = Database.prepare(query);
+			ps.setString(1, archer);
+			ps.setString(2, Database.sdf.format(when));
+			ps.setString(3, Database.sdf.format(when));
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				season_size = rs.getInt("weeks");
+				season_name = rs.getString(FIELD_NAME);
+				season_max = rs.getInt("max_count");
+				season_start = rs.getInt("start_week");
+				start = rs.getDate(FIELD_START);
+				end = rs.getDate(FIELD_END);
+				id = rs.getInt(FIELD_ID);
+				// TODO actually get multiple seasons, requires full refactoring
+			}
+			rs.close();
+			ps.close();
+
+			WeeklyPerformance weekly = factory.new WeeklyPerformance(season_size);
+			weekly.max = season_max;
+			weekly.start = season_start;
+			weekly.name = season_name;
+			weekly.id = id;
+
+			// TODO select only a couple fields?
+			query = "SELECT * FROM " + TABLE_NAME + " LEFT JOIN " + TABLE_NAME_GOALS + " ";
+			query += "ON " + FIELD_ID + " = " + FIELD_SEASON_ID + " WHERE " + FIELD_ID + " = ?;";
+			ps = Database.prepare(query);
+			ps.setLong(1, id);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				weekly.plan[rs.getInt("week") - season_start] = rs.getInt("arrow_count");
+				weekly.gauged[rs.getInt("week") - season_start] = rs.getInt("target_share");
+			}
+			rs.close();
+
+			DailyPerformance dr = Training.compileDaily(start, end, archer);
+
+			GregorianCalendar gc = new GregorianCalendar(Locale.UK);
+
+			for (String d : dr.technique_totals.keySet()) {
+				gc.clear();
+				gc.setTime(sdf.parse(d));
+				weekly.technique[gc.get(Calendar.WEEK_OF_YEAR) - season_start] += dr.technique_totals.get(d);
+			}
+			for (String d : dr.totals.keySet()) {
+				gc.clear();
+				gc.setTime(sdf.parse(d));
+				weekly.totals[gc.get(Calendar.WEEK_OF_YEAR) - season_start] += dr.totals.get(d);
+			}
+			for (String d : dr.gauged_trainings.keySet()) {
+				gc.clear();
+				gc.setTime(sdf.parse(d));
+				weekly.sum[gc.get(Calendar.WEEK_OF_YEAR) - season_start] += (dr.average_sum.get(d)
+						/ dr.gauged_trainings.get(d));
+				weekly.results[gc.get(Calendar.WEEK_OF_YEAR) - season_start]++;
+			}
+
+			LinkedList<WeeklyPerformance> all = new LinkedList<WeeklyPerformance>();
+			all.add(weekly);
+			return all;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return null;
+	}
+
+	static public String getActiveSeasonsPerformance(String archer) {
+		Date now = new Date(System.currentTimeMillis());
+		List<WeeklyPerformance> seasons = compileWeeklies(archer, now);
+
+		String json = "{";
+		if (seasons != null) {
+			for (WeeklyPerformance season : seasons) {
+				if (season.id <= 0)
+					break;
+				json += "\"" + season.id + "\":";
+				// TODO modularize this composition (used already in 3 places)
+				json += "{";
+				json += "\"name\":\"" + season.name + "\",";
+				json += "\"size\":" + season.size + ",";
+				json += "\"start\":" + season.start + ",";
+				for (int i = 0; i < season.size; i++) {
+					json += "\"" + (season.start + i) + "\":";
+					json += "{"; // TODO make names uniform...
+					json += "\"total_plan\":" + season.plan[i] + ",";
+					json += "\"gauged_plan\":" + season.gauged[i] + ",";
+					json += "\"technique_total\":" + season.technique[i] + ",";
+					if (season.results[i] > 0)
+						json += "\"result_total\":" + (season.sum[i] / season.results[i]) + ",";
+					json += "\"total\":" + season.totals[i];
+					if (season.totals[i] > season.max)
+						season.max = season.totals[i];
+					json += "},";
+				}
+				json += "\"max\":" + season.max;
+				json += "},";
+			}
+			if (json.endsWith(","))
+				json = json.substring(0, json.length() - 1);
+		}
+		json += "}";
+
+		return json;
 	}
 
 }

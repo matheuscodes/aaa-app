@@ -13,7 +13,11 @@ public class Task {
 	static public final String FIELD_ID = "id";
 	static public final String FIELD_STATUS = "status";
 	static public final String FIELD_DESCRIPTION = "description";
+	static public final String FIELD_CREATED = "created";
 	static public final String FIELD_ARCHER = "archer";
+
+	static public final String STATUS_OPEN = "open";
+	static public final String STATUS_CLOSED = "closed";
 
 	static public String getAllTasksJSON(String archer) {
 		try {
@@ -144,6 +148,46 @@ public class Task {
 			rs.close();
 			ps.close();
 			return result;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	static public String getActiveRecentTasks(String archer) {
+		try {
+			String query = "SELECT * FROM " + TABLE_NAME + " ";
+			query += "WHERE " + FIELD_ARCHER + " = ? AND ";
+			query += "(" + FIELD_STATUS + " = '" + STATUS_OPEN + "' ";
+			query += "OR " + FIELD_CREATED + " >= ?) ";
+			query += "ORDER BY " + FIELD_CREATED + " ASC;";
+
+			String array = "{";
+			PreparedStatement ps = Database.prepare(query);
+			ps.setString(1, archer);
+			// TODO WTF remove this dependency from Training
+			ps.setDate(2, Database.java2sql(Training.getMonthAgo()));
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt(FIELD_ID);
+				String status = rs.getString(FIELD_STATUS);
+				String description = rs.getString(FIELD_DESCRIPTION);
+
+				String json = "\"" + id + "\":{";
+				json += "\"" + FIELD_ID + "\":" + id + ",";
+				json += "\"" + FIELD_STATUS + "\":\"" + status + "\",";
+				json += "\"" + FIELD_DESCRIPTION + "\":\"" + description + "\"";
+				json += "}";
+
+				array += json + ",";
+			}
+			rs.close();
+			ps.close();
+			if (array.endsWith(","))
+				array = array.substring(0, array.length() - 1);
+			array += "}";
+			return array;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

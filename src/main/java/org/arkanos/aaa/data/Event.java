@@ -114,4 +114,48 @@ public class Event {
 		return false;
 	}
 
+	static public String getUpcomingEvents(String archer, int limit) {
+		try {
+			Date when = new Date(System.currentTimeMillis());
+			String query = "SELECT * FROM " + TABLE_NAME + " ";
+			query += "WHERE " + FIELD_ARCHER + " = ? ";
+			query += "AND " + FIELD_DATE + " >= ? ";
+			query += "ORDER BY " + FIELD_DATE + " ASC ";
+			query += "LIMIT ?;";
+			String array = "[";
+			PreparedStatement ps = Database.prepare(query);
+			ps.setString(1, archer);
+			ps.setDate(2, Database.java2sql(when));
+			ps.setInt(3, limit);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				int days = rs.getInt(FIELD_DAYS);
+				String name = rs.getString(FIELD_NAME);
+				String name_short = rs.getString(FIELD_NAME_SHORT);
+				Date date = rs.getDate(FIELD_DATE);
+				String color = rs.getString(FIELD_COLOR);
+
+				String json = "{";
+				json += "\"" + FIELD_DATE + "\":\"" + sdf.format(date) + "\",";
+				json += "\"" + FIELD_NAME + "\":\"" + name + "\",";
+				json += "\"" + FIELD_NAME_SHORT + "\":\"" + name_short + "\",";
+				json += "\"" + FIELD_COLOR + "\":\"" + color + "\",";
+				json += "\"" + FIELD_DAYS + "\":" + days + "";
+				json += "}";
+
+				array += json + ",";
+			}
+			rs.close();
+			ps.close();
+			if (array.endsWith(","))
+				array = array.substring(0, array.length() - 1);
+			array += "]";
+			return array;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }

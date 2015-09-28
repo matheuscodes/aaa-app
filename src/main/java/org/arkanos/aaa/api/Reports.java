@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.arkanos.aaa.controllers.Security;
 import org.arkanos.aaa.controllers.Security.TokenInfo;
+import org.arkanos.aaa.data.Event;
 import org.arkanos.aaa.data.Season;
+import org.arkanos.aaa.data.Task;
 import org.arkanos.aaa.data.Training;
 
 /**
@@ -273,6 +275,9 @@ public class Reports extends HttpServlet {
 		json += "\"arrows_total\":" + Training.getWeeksArrows(archer) + ",";
 		json += "\"value_distribution\":" + Training.getValueDistribution(archer) + ",";
 		json += "\"end_distribution\":" + Training.getEndDistribution(archer) + ",";
+		json += "\"seasons\":" + Season.getActiveSeasonsPerformance(archer) + ",";
+		json += "\"events\":" + Event.getUpcomingEvents(archer, 2) + ",";
+		json += "\"tasks\":" + Task.getActiveRecentTasks(archer) + ",";
 		json += "\"year_summary\":" + Training.getYearSummary(archer);
 		json += "}";
 		return json;
