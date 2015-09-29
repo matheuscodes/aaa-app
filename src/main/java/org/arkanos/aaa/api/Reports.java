@@ -73,6 +73,7 @@ public class Reports extends HttpServlet {
 			response.addHeader("Content-Type", "application/json");
 			response.getWriter().print(getHomeScreenData(requester.getUsername()));
 			response.setStatus(200);
+			return;
 		}
 		// TODO throw error, treat exceptions
 
