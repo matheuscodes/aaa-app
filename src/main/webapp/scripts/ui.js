@@ -221,7 +221,7 @@ function buildApplication(){
 }
 
 function initializeApplication(){
-	var browser_language = navigator.languages[0] || navigator.userLanguage;
+	var browser_language =  navigator.userLanguage || navigator.languages[0];
 	User.processLogin();
 	var language = browser_language;
 	if(localStorage.getItem("aaa-last-language")){
@@ -2171,6 +2171,87 @@ var ProfilePage = {
 }
 
 var SVG = {
+	getSeasonGraph: function(season){
+		
+		var weeks = season.size;
+		var max = Math.ceil(season.max/50)*50+50;
+		
+		var general_width = (weeks*100+700+150);
+		var general_height = max + 150 + 50;
+		var width = 20.2/(100/general_width);
+		
+		var html = "<svg xmlns='http://www.w3.org/2000/svg'";
+		html += " id='aaa_report_season_graph'";
+		html += " version='1.1'";
+		html += " viewBox='0 "+(-general_height)+" "+(general_width+2)+" "+(general_height+2)+"'";
+		html += " preserveAspectRatio='xMidYMid meet'";
+		html += " width='"+width+"pt'>";
+		
+		html += SVG.getStyle();
+		
+		html += "<g id='main'>";
+		
+		html += SVG.getLabels(max);
+		
+		html += "<g id='data' transform='translate(700,-150)'>";
+		
+		html += SVG.getGrid(max,weeks);
+		
+		html += SVG.getBottomWeeks(season.start,season.start+season.size);
+		html += SVG.getLeftAxis(0,max,"arrow_count",max);
+		
+		var estimate = false;
+		var estimations = [];
+		var bullets = {};
+		var min_result = 10;
+		var max_result = 0;
+		for(i in season){
+			if(!isNaN(i)){
+				html += SVG.getPlan(season[i].total_plan,i-season.start);
+				html += SVG.getActual(season[i].total-season[i].technique_total,season[i].technique_total,i-season.start);
+				html += SVG.getShare(season[i].total_plan-season[i].gauged_plan,i-season.start);
+				if(season[i].result_total){
+					bullets[i] = season[i].result_total;
+					estimations.push(season[i].result_total);
+					if(season[i].result_total > max_result) max_result = season[i].result_total;
+					if(season[i].result_total < min_result) min_result = season[i].result_total;
+					estimate = true;
+				}
+				else{
+					if(estimate && i > 1){
+						//TODO test this... probably not working.
+						estimate = (estimations[i-season.start-1]+estimations[i-season.start-2])/2;
+						estimations.push(estimate);
+						if(estimate > max_result) max_result = estimate;
+						if(estimate < min_result) min_result = estimate;
+					}
+					else{
+						estimations.push(-1);
+					}
+				}
+			}
+		}
+		
+		var difference = max_result - min_result;
+		max_result += 0.1*difference;
+		min_result -= 0.1*difference;
+		html += SVG.getEstimations(estimations,max,min_result,max_result);
+		
+		html += SVG.getRightAxis(10-min_result,10-max_result,"results",max,weeks*100);
+		
+		for(bullet in bullets){
+			html += SVG.getResult(bullets[bullet],bullet-season.start,max,min_result,max_result);
+		}
+		
+		html += "</g>";
+		
+		html += "</g>";
+		
+		html += "</svg>";
+		
+		return html;
+	},
+	
 	getStyle: function(){
 		var html = "<style>";
 		
