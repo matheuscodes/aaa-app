@@ -51,6 +51,7 @@ public class Season {
 		public int[] totals;
 		public int[] plan;
 		public int[] gauged;
+		public HashMap<Integer, Integer> weeks;
 
 		public int max;
 		public int size;
@@ -415,14 +416,12 @@ public class Season {
 		try {
 			String season_name = "";
 			int season_max = 0;
-			int season_start = 0;
 			int season_size = 0;
 			Date start = null;
 			Date end = null;
 			int id = 0;
 			String query = "SELECT " + FIELD_ID + "," + FIELD_START + "," + FIELD_END + ",";
-			;
-			query += FIELD_NAME + ",COUNT(" + FIELD_WEEK + ") AS weeks,MIN(" + FIELD_WEEK + ") AS start_week, ";
+			query += FIELD_NAME + ",COUNT(" + FIELD_WEEK + ") AS weeks, ";
 			query += "MAX(" + FIELD_ARROW_COUNT + ") AS max_count FROM " + TABLE_NAME + " ";
 			query += "LEFT JOIN " + TABLE_NAME_GOALS + " ON " + FIELD_ID + " = " + FIELD_SEASON_ID + " ";
 			query += "WHERE " + FIELD_ARCHER + " = ? ";
@@ -438,7 +437,6 @@ public class Season {
 				season_size = rs.getInt("weeks");
 				season_name = rs.getString(FIELD_NAME);
 				season_max = rs.getInt("max_count");
-				season_start = rs.getInt("start_week");
 				start = rs.getDate(FIELD_START);
 				end = rs.getDate(FIELD_END);
 				id = rs.getInt(FIELD_ID);
@@ -447,11 +445,26 @@ public class Season {
 			rs.close();
 			ps.close();
 
+			// TODO centralize all Gregorian calendars
+			GregorianCalendar gc = new GregorianCalendar(Locale.UK);
+			gc.setTime(start);
+
 			WeeklyPerformance weekly = factory.new WeeklyPerformance(season_size);
 			weekly.max = season_max;
-			weekly.start = season_start;
+			weekly.start = gc.get(Calendar.WEEK_OF_YEAR);
 			weekly.name = season_name;
 			weekly.id = id;
+
+			weekly.weeks = new HashMap<Integer, Integer>(weekly.size);
+			int k = weekly.start;
+			gc.set(Calendar.MONTH, Calendar.DECEMBER);
+			gc.set(Calendar.DATE, 31);
+			int year_end = gc.get(Calendar.WEEK_OF_YEAR);
+			for (int i = 0; i < weekly.size; i++) {
+				weekly.weeks.put(k++, i);
+				if (k > year_end)
+					k = 1;
+			}
 
 			// TODO select only a couple fields?
 			query = "SELECT * FROM " + TABLE_NAME + " LEFT JOIN " + TABLE_NAME_GOALS + " ";
@@ -460,31 +473,30 @@ public class Season {
 			ps.setLong(1, id);
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				weekly.plan[rs.getInt("week") - season_start] = rs.getInt("arrow_count");
-				weekly.gauged[rs.getInt("week") - season_start] = rs.getInt("target_share");
+				// TODO winter seasons break this, with two sets of week ranges
+				weekly.plan[weekly.weeks.get(rs.getInt("week"))] = rs.getInt("arrow_count");
+				weekly.gauged[weekly.weeks.get(rs.getInt("week"))] = rs.getInt("target_share");
 			}
 			rs.close();
 
 			DailyPerformance dr = Training.compileDaily(start, end, archer);
 
-			GregorianCalendar gc = new GregorianCalendar(Locale.UK);
-
 			for (String d : dr.technique_totals.keySet()) {
 				gc.clear();
 				gc.setTime(sdf.parse(d));
-				weekly.technique[gc.get(Calendar.WEEK_OF_YEAR) - season_start] += dr.technique_totals.get(d);
+				weekly.technique[weekly.weeks.get(gc.get(Calendar.WEEK_OF_YEAR))] += dr.technique_totals.get(d);
 			}
 			for (String d : dr.totals.keySet()) {
 				gc.clear();
 				gc.setTime(sdf.parse(d));
-				weekly.totals[gc.get(Calendar.WEEK_OF_YEAR) - season_start] += dr.totals.get(d);
+				weekly.totals[weekly.weeks.get(gc.get(Calendar.WEEK_OF_YEAR))] += dr.totals.get(d);
 			}
 			for (String d : dr.gauged_trainings.keySet()) {
 				gc.clear();
 				gc.setTime(sdf.parse(d));
-				weekly.sum[gc.get(Calendar.WEEK_OF_YEAR) - season_start] += (dr.average_sum.get(d)
+				weekly.sum[weekly.weeks.get(gc.get(Calendar.WEEK_OF_YEAR))] += (dr.average_sum.get(d)
 						/ dr.gauged_trainings.get(d));
-				weekly.results[gc.get(Calendar.WEEK_OF_YEAR) - season_start]++;
+				weekly.results[weekly.weeks.get(gc.get(Calendar.WEEK_OF_YEAR))]++;
 			}
 
 			LinkedList<WeeklyPerformance> all = new LinkedList<WeeklyPerformance>();
@@ -528,6 +540,18 @@ public class Season {
 						season.max = season.totals[i];
 					json += "},";
 				}
+				json += "\"weeks\":[";
+				// TODO maybe optimize this
+				HashMap<Integer, Integer> inversion = new HashMap<Integer, Integer>(season.size);
+				for (int i : season.weeks.keySet()) {
+					inversion.put(season.weeks.get(i), i);
+				}
+				for (int i : inversion.keySet()) {
+					json += inversion.get(i) + ",";
+				}
+				if (json.endsWith(","))
+					json = json.substring(0, json.length() - 1);
+				json += "],";
 				json += "\"max\":" + season.max;
 				json += "},";
 			}
