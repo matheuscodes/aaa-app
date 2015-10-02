@@ -667,6 +667,7 @@ public class Training {
 		float total_week = 0;
 		float total_month = 0;
 		float total_year = 0;
+		float max = 0;
 
 		for (Integer i : week.keySet()) {
 			total_week += week.get(i);
@@ -685,24 +686,32 @@ public class Training {
 			json += "\"week\":";
 			if (total_week > 0 && week.get(i) != null) {
 				json += week.get(i) / total_week + ",";
+				if (week.get(i) / total_week > max)
+					max = week.get(i) / total_week;
 			} else {
 				json += "0,";
 			}
 			json += "\"month\":";
 			if (total_month > 0 && month.get(i) != null) {
 				json += month.get(i) / total_month + ",";
+				if (month.get(i) / total_month > max)
+					max = month.get(i) / total_month;
 			} else {
 				json += "0,";
 			}
 			json += "\"year\":";
 			if (total_year > 0 && year.get(i) != null) {
 				json += year.get(i) / total_year;
+				if (year.get(i) / total_year > max)
+					max = year.get(i) / total_year;
 			} else {
 				json += "0";
 			}
 			json += "},";
 		}
+		// FIXME should be an if here?
 		json = json.substring(0, json.length() - 1);
+		json += ",\"max\":" + max;
 		json += "}";
 
 		return json;
@@ -770,7 +779,10 @@ public class Training {
 
 		String json = "{";
 		json += "\"counts\":" + json_counts + ",";
-		json += "\"values\":" + json_values;
+		json += "\"values\":" + json_values + ",";
+		json += "\"max_value\":" + max_value + ",";
+		json += "\"max_count\":" + max_count + ",";
+		json += "\"max_end\":" + max_end;
 		json += "}";
 		return json;
 	}

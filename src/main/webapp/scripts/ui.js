@@ -119,7 +119,7 @@ function buildLoginPage(){
 	document.getElementById("aaa_content").innerHTML = getLoginCard();
 	$("#aaa_content").show("slide", { direction: "left" }, 1000);
 }
-
+//TODO rename/delete this
 function buildHomePage(){
 	$("#aaa_sidebar_header").prepend("<img src='/avatar' />");
 	$("#aaa_sidebar_header_dropdown").prepend("<span>"+User['email']+"</span>");
@@ -183,7 +183,7 @@ function getDrawerMenu(){
 	//document.getElementById("aaa_drawer").className = document.getElementById("aaa_drawer").className.replace(" is-visible","");
 	html += getAvatarHeader();
 	html += "<nav class='mdl-navigation'>";
-	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick=''><i class='material-icons'>home</i> "+Text['home']+"</a>";
+	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick='HomePage.buildHomePage();'><i class='material-icons'>home</i> "+Text['home']+"</a>";
 	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick='ProfilePage.buildProfilePage();'><i class='material-icons'>assignment_ind</i> "+Text['manage_profile']+"</a>";
 	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick='TrainingPage.buildTrainingsPage();'><i class='material-icons'>create</i> "+Text['manage_trainings']+"</a>";
 	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick='Report.buildPerformancePage();'><i class='material-icons'>history</i> "+Text['performance_history']+"</a>";
@@ -1351,6 +1351,105 @@ var Report = {
 	}
 }
 
+var HTML = {
+	getEventUnit: function(event){
+		var html = "<div id='aaa_event_"+event.date+"_"+event.name_short+"' class='aaa-events-item'>";
+		//html += "<h2>"+seasons.name+"</h2>";
+		html += "<div class='aaa-list-item-circle mdl-color-text--accent-contrast mdl-color--accent'>"+event.name_short+"</div>";
+		
+		html += "<div class='aaa-list-item-content'>";
+		
+		html += "<a onClick='ProfilePage.removeEvent(\""+event.date+"\",\""+event.name_short+"\");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+		html += "<i class='material-icons'>delete</i>";
+		html += "</a>";
+		
+		html += "<p><strong>"+event.name+"</strong></p>";
+		html += "<p><strong>Start: </strong>"+event.start_date+"</p>";
+		html += "<p>"+event.start_date+"<strong> days.</strong></p>";
+		
+		html += "</div>";
+		html += "</div>";
+		return html;
+	}
+}
+
+var HomePage = {
+	buildHomePage: function(){
+		destroyCurrentPage(Text['home']);
+		//TODO remove mdl-card crap from all previous cells *facepalm* I overwritten CSS (See TODO there)
+		var html = "";
+
+		html += HomePage.HTML.getTotalArrowsCard();
+		html += HomePage.HTML.getTotalPerformanceCard();
+		html += HomePage.HTML.getEventsCard();
+		html += HomePage.HTML.getTasksCard();
+		html += HomePage.HTML.getValueDistributionCard();
+		html += HomePage.HTML.getEndDistributionCard();
+		html += HomePage.HTML.getYearOverviewCard();
+		html += HomePage.HTML.getSeasonsCard();
+		
+		$("#aaa_content").html(html);
+		makeFreakingMDLwork();
+
+		$("#aaa_content").show("slide", { direction: "left" }, 1000);
+	},
+	
+	HTML: {
+			getTotalArrowsCard: function(){
+				var html = "<div class='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>asd</div>";
+				return html;
+			},
+			getTotalPerformanceCard: function(){
+				var html = "<div class='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>asd</div>";
+				return html;
+			},
+			getEventsCard: function(){
+				var html = "<div class='mdl-cell--4-col mdl-cell mdl-shadow--2dp'>asd</div>";
+				return html;
+			},
+			getTasksCard: function(){
+				var html = "<div class='mdl-cell--4-col mdl-cell mdl-shadow--2dp'>asd</div>";
+				return html;
+			},
+			getValueDistributionCard: function(){
+				var html = "<div id='aaa_home_values' class='mdl-cell--4-col mdl-cell mdl-shadow--2dp'>";
+				API.Reports.getHomescreen('value_distribution',function(download){
+					var html = "";
+					html += SVG.getValueDistributionGraph(download);
+					$("#aaa_home_values").html(html);
+				});
+				html += "</div>";
+				return html;
+			},
+			getEndDistributionCard: function(){
+				var html = "<div id='aaa_home_ends' class='mdl-cell--4-col mdl-cell mdl-shadow--2dp'>";
+				API.Reports.getHomescreen('end_distribution',function(download){
+					var html = "";
+					html += SVG.getEndDistributionGraph(download);
+					$("#aaa_home_ends").html(html);
+				});
+				html += "</div>";
+				return html;
+			},
+			getYearOverviewCard: function(){
+				var html = "<div class='mdl-cell--4-col mdl-cell mdl-shadow--2dp'>asd</div>";
+				return html;
+			},
+			getSeasonsCard: function(){
+				var html = "<div id='aaa_home_seasons' class='mdl-cell--12-col mdl-cell mdl-shadow--2dp'>";
+				API.Reports.getHomescreen('seasons',function(download){
+					var html = "";
+					for(var i in download){
+						html += SVG.getSeasonGraph(download[i]);
+					}
+					$("#aaa_home_seasons").html(html);
+				});
+				html += "</div>";
+				return html;
+			}
+	}
+}
+
 var ProfilePage = {
 	buildProfilePage: function(){
 		destroyCurrentPage(Text['manage_profile']);
@@ -2171,8 +2270,191 @@ var ProfilePage = {
 }
 
 var SVG = {
-	getSeasonGraph: function(season){
+	getValueDistributionGraph: function(distribution){
+		var size = 11;
+		var max = Math.ceil((distribution.max*110)/10)*0.1;
+		console.log(">>> "+max);
+		console.log(distribution)
+		var unit = 1000/max;
 		
+		var general_width = (size*100+100+150);
+		var general_height = 1000 + 150 + 50 + 100;
+		var width = 20.2/(100/general_width);
+		
+		var html = "<svg xmlns='http://www.w3.org/2000/svg'";
+		html += " id='aaa_home_values_graph'";
+		html += " version='1.1'";
+		html += " viewBox='0 "+(-general_height)+" "+(general_width+2)+" "+(general_height+2)+"'";
+		html += " preserveAspectRatio='xMidYMid meet'";
+		html += " width='100%'>";
+		
+		html += SVG.getStyle();
+		
+		html += "<g id='main'>";
+		
+		html += SVG.getValueLabels(666);
+		
+		html += "<g id='data' transform='translate(150,-250)'>";
+		
+		html += SVG.getGrid(1000,size);
+		
+		
+		html += SVG.getLeftAxis(0,max,"arrow_count",1000,100,"%");
+		
+		var estimate = false;
+		var estimations = [];
+		var bullets = {};
+		var min_result = 10;
+		var max_result = 0;
+		var values = [];
+		for(i in distribution){
+			if(!isNaN(i)){
+				html += SVG.getBar(distribution[i].week*unit,i,0,3,"week");
+				html += SVG.getBar(distribution[i].month*unit,i,1,3,"month");
+				html += SVG.getBar(distribution[i].year*unit,i,2,3,"year");
+				values.push(i);
+			}
+		}
+		//TODO rename to get bottom labels
+		html += SVG.getBottomWeeks(values);
+		
+		html += "</g>";
+		
+		html += "</g>";
+		
+		html += "</svg>";
+		
+		return html;
+	},
+	getValueLabels: function(max){
+		var html = "<g id='labels' transform='translate(100,-220)'>";
+		
+		html += "<rect class='week' x='0' y='"+(1*max/10-25)+"' height='20' width='100' />";
+		html += "<text class='graph_label' x='125' y='"+(1*max/10-2)+"'>"+Text['distribution_week']+"</text>"
+		
+		html += "<rect class='month' x='0' y='"+(2*max/10-25)+"' height='20' width='100' />";
+		html += "<text class='graph_label' x='125' y='"+(2*max/10-2)+"'>"+Text['distribution_month']+"</text>"
+		
+		html += "<rect class='year' x='0' y='"+(3*max/10-25)+"' height='20' width='100' />";
+		html += "<text class='graph_label' x='125' y='"+(3*max/10-2)+"'>"+Text['distribution_year']+"</text>"
+		
+		html += "</g>";
+		
+		return html;
+	},
+	getEndDistributionGraph: function(distribution){
+		var size = distribution.max_end+1;
+		var max = Math.ceil((distribution.max_count*1.1)/50)*50;
+		var unit = 1000/max;
+		
+		var general_width = (size*100+100+150);
+		var general_height = 1000 + 150 + 50 + 100;
+		var width = 20.2/(100/general_width);
+		
+		var html = "<svg xmlns='http://www.w3.org/2000/svg'";
+		html += " id='aaa_home_ends_graph'";
+		html += " version='1.1'";
+		html += " viewBox='0 "+(-general_height)+" "+(general_width+2)+" "+(general_height+2)+"'";
+		html += " preserveAspectRatio='xMidYMid meet'";
+		html += " width='100%'>";
+		
+		html += SVG.getStyle();
+		
+		html += "<g id='main'>";
+		
+		html += SVG.getEndLabels(1000);
+		
+		html += "<g id='data' transform='translate(150,-250)'>";
+		
+		html += SVG.getGrid(1000,size);
+		
+		var ends = [];
+		for(var i = 0; i <= distribution.max_end; i++){
+			ends.push(i+1);
+		}
+		html += SVG.getBottomWeeks(ends);
+		html += SVG.getLeftAxis(0,max,"arrow_count",1000);
+		
+		var estimate = false;
+		var estimations = [];
+		var bullets = {};
+		var min_result = 10;
+		var max_result = 0;
+		for(i in distribution.counts){
+			if(!isNaN(i)){
+				html += SVG.getBar(distribution.counts[i].week*unit,i,0,2,"week");
+				html += SVG.getBar(distribution.counts[i].month*unit,i,1,2,"month");
+				/*
+				if(season[i].result_total){
+					bullets[i] = season[i].result_total;
+					estimations.push(season[i].result_total);
+					if(season[i].result_total > max_result) max_result = season[i].result_total;
+					if(season[i].result_total < min_result) min_result = season[i].result_total;
+					estimate = true;
+				}
+				else{
+					if(estimate && i > 1){
+						//TODO test this... probably not working.
+						estimate = (estimations[i-season.start-1]+estimations[i-season.start-2])/2;
+						estimations.push(estimate);
+						if(estimate > max_result) max_result = estimate;
+						if(estimate < min_result) min_result = estimate;
+					}
+					else{
+						estimations.push(-1);
+					}
+				}
+				*/
+			}
+		}
+		/*
+		var difference = max_result - min_result;
+		max_result += 0.1*difference;
+		min_result -= 0.1*difference;
+		html += SVG.getEstimations(estimations,max,min_result,max_result);
+		
+		html += SVG.getRightAxis(10-min_result,10-max_result,"results",max,size*100);
+		
+		for(bullet in bullets){
+			html += SVG.getResult(bullets[bullet],bullet-season.start,max,min_result,max_result);
+		}
+		*/
+		
+		html += "</g>";
+		
+		html += "</g>";
+		
+		html += "</svg>";
+		
+		return html;
+	},
+	getEndLabels: function(max){
+		var html = "<g id='labels' transform='translate(100,-220)'>";
+		
+		html += "<rect class='week' x='0' y='"+(1*max/10-25)+"' height='20' width='100' />";
+		html += "<text class='graph_label' x='125' y='"+(1*max/10-2)+"'>"+Text['count_week']+"</text>"
+		
+		html += "<rect class='month' x='0' y='"+(2*max/10-25)+"' height='20' width='100' />";
+		html += "<text class='graph_label' x='125' y='"+(2*max/10-2)+"'>"+Text['count_month']+"</text>"
+		
+		html += "</g>";
+		
+		html += "<g id='labels' transform='translate(600,-220)'>";
+		
+		html += "<path class='estimation' d='M 0,"+(1*max/10-12.5)+" l 100,0'/>";
+		html += "<circle class='result' cx='50' cy='"+(1*max/10-12.5)+"' r='10'/>";
+		html += "<text class='graph_label' x='125' y='"+(1*max/10-2)+"'>"+Text['value_week']+"</text>"
+		
+		html += "<path class='estimation' d='M 0,"+(2*max/10-12.5)+" l 100,0'/>";
+		html += "<circle class='result' cx='50' cy='"+(2*max/10-12.5)+"' r='10'/>";
+		html += "<text class='graph_label' x='125' y='"+(2*max/10-2)+"'>"+Text['value_month']+"</text>"
+		
+		html += "</g>";
+		
+		return html;
+	},
+	
+	getSeasonGraph: function(season){
 		var weeks = season.size;
 		var max = Math.ceil(season.max/50)*50+50;
 		
@@ -2197,7 +2479,7 @@ var SVG = {
 		
 		html += SVG.getGrid(max,weeks);
 		
-		html += SVG.getBottomWeeks(season.start,season.start+season.size);
+		html += SVG.getBottomWeeks(season.weeks,Text['wk']);
 		html += SVG.getLeftAxis(0,max,"arrow_count",max);
 		
 		var estimate = false;
@@ -2258,6 +2540,9 @@ var SVG = {
 		html += ".border {fill:none;stroke:#00F;stroke-width:1;stroke-opacity:1}";
 		
 		html += ".plan {fill:#FFF;stroke:#000;stroke-opacity:1}";
+		html += ".week {fill:#4C4;stroke:#000;stroke-opacity:1}";
+		html += ".month {fill:#44C;stroke:#000;stroke-opacity:1}";
+		html += ".year {fill:#C44;stroke:#000;stroke-opacity:1}";
 		html += ".training {fill:#CCFFFF;stroke:#000;stroke-opacity:1}";
 		html += ".target {fill:#FFCC99;stroke:#000;stroke-opacity:1}";
 		html += ".result {fill:#33CCCC;stroke:#000;stroke-opacity:1}";
@@ -2268,7 +2553,7 @@ var SVG = {
 		
 		html += ".share {fill:#777}";
 		html += ".share-shadow {fill:#000}";
-		
+		//TODO replace for - instead of _
 		html += ".graph_scale {}";
 		html += ".graph_label {font-size:30pt}";
 		
@@ -2290,6 +2575,14 @@ var SVG = {
 		for(var i = height; i > 0; i -= height/10){
 			s += "<path class='grid' d='m 0,"+(-i)+" "+(columns*100)+",0  ' />";
 		}
+		s += "</g>";
+		return s;
+	},
+	
+	getBar: function(value, column, position, size, type){
+		var s = "<g transform='translate(0,"+(-value)+")'>";
+		s += "<rect class='"+type+"' x='"+(10+column*100+(80*position/size))+"' ";
+		s += "height='"+value+"' width='"+(80/size)+"' />";
 		s += "</g>";
 		return s;
 	},
@@ -2356,16 +2649,29 @@ var SVG = {
 		return html;
 	},
 
-	getLeftAxis: function(min, max,title,size){
-		var html = "<g id='left' transform='translate(0,0)'>";
+	getLeftAxis: function(min, max,title,size, multiplier,suffix){
+		var html = ["<g id='left' transform='translate(0,0)'>"];
 		var unit = (max - min) / 10;
-		var block = (size/10);
-		for(var i = min,j = 0; i <= max; i+=unit,j+=block){
-			html += "<text class='left' x='-10' y='-"+j+"'>"+Math.floor(i)+"</text>";
+		if(unit <= 0) return "<g id='left' transform='translate(0,0)'></g>";
+		if(multiplier) {
+			unit *= multiplier;
+			max *= multiplier;
 		}
-		html += "<text transform='translate("+(-10-60)+",0) rotate(-90)' class='title' x='0' y='0'>"+Text[title]+"</text>";
-		html += "</g>";
-		return html;
+		var block = (size/10);
+		var j = 0;
+		for(var i = min; i <= max; i+=unit){
+			html.push("<text class='left' x='-10' y='-"+j+"'>"+Math.floor(i));
+			if(suffix){
+				html.push(suffix);
+			}
+			html.push("</text>");
+			j+=block;
+		}
+		html.push("<text transform='translate("+(-10-60)+",0) rotate(-90)' class='title' x='0' y='0'>"+Text[title]+"</text>");
+		html.push("</g>");
+		//TODO use this technique EVERYWHERE, this is JS memory optimization
+		//FIXME URGENT!
+		return html.join("");
 	},
 
 	getBottomDays: function(min, max){
@@ -2380,12 +2686,16 @@ var SVG = {
 		return html;
 	},
 
-	getBottomWeeks: function(weeks){
+	getBottomWeeks: function(weeks,prefix){
 		var html = "<g id='bottom'>";
 		for(var i = 0; i < weeks.length; i++){
 			html += "<g transform=translate("+((i)*100+50)+",50)>";
-			html += "<text class='bottom' x='0' y='0'>"+Text['wk']+"</text>";
-			html += "<text class='bottom' x='0' y='45'>"+weeks[i]+"</text>";
+			html += "<text class='bottom' x='0' y='0'>"
+			if(prefix){
+				html += prefix+"</text>";
+				html += "<text class='bottom' x='0' y='45'>"
+			}
+			html += weeks[i]+"</text>";
 			html += "</g>";
 		}
 		html += "</g>";

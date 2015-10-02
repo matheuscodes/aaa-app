@@ -1,4 +1,23 @@
 var API = {
+	//TODO modularize this shit ;) (all API)
+	//TODO break this call into smaller blocks (multiple downloads)
+	Reports: {
+		getHomescreen: function(report,builder){
+			var xmlhttp = new XMLHttpRequest();
+			var url = "/reports/homescreen/";
+			
+			xmlhttp.onreadystatechange = function() {
+			    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			    	var download = JSON.parse(xmlhttp.responseText);
+			        builder(download[report]);
+			    }
+			}
+
+			xmlhttp.open("GET", url, true); //Review the way downloads are made.
+			xmlhttp.send();
+		}
+	},
+	
 	postTraining: function(string,type){
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/trainings";
