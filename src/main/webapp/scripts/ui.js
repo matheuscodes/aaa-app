@@ -107,6 +107,7 @@ function doLogin(){
 		});
 		$("#aaa_header_title").fadeIn(2000);
 		buildHomePage();
+		HomePage.buildHomePage();
 	}
 	else{
 		alert("Error!");
@@ -214,6 +215,7 @@ function buildApplication(){
 
 	if(User.isLoggedIn()){
 		buildHomePage();
+		HomePage.buildHomePage();
 	}
 	else{
 		buildLoginPage();
@@ -1352,41 +1354,88 @@ var Report = {
 }
 
 var HTML = {
-	getEventUnit: function(event){
-		var html = "<div id='aaa_event_"+event.date+"_"+event.name_short+"' class='aaa-events-item'>";
-		//html += "<h2>"+seasons.name+"</h2>";
-		html += "<div class='aaa-list-item-circle mdl-color-text--accent-contrast mdl-color--accent'>"+event.name_short+"</div>";
+		getEventUnit: function(event,operate){
+			var html = "<div id='aaa_event_"+event['date']+"_"+event['name_short']+"' class='aaa-events-item'>";
+			//html += "<h2>"+seasons.name+"</h2>";
+			html += "<div class='aaa-list-item-circle mdl-color-text--accent-contrast mdl-color--accent'>"+event['name_short']+"</div>";
+			
+			html += "<div class='aaa-list-item-content'>";
+			if(operate){
+				html += "<a onClick='ProfilePage.removeEvent(\""+event['date']+"\",\""+event['name_short']+"\");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+				html += "<i class='material-icons'>delete</i>";
+				html += "</a>";
+			}
+			html += "<p><strong>"+event['name']+"</strong></p>";
+			html += "<p><strong>Start: </strong>"+event['date']+"</p>";
+			html += "<p>"+event['days']+"<strong> days.</strong></p>";
+			
+			html += "</div>";
+			html += "</div>";
+			return html;
+		},
 		
-		html += "<div class='aaa-list-item-content'>";
-		
-		html += "<a onClick='ProfilePage.removeEvent(\""+event.date+"\",\""+event.name_short+"\");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
-		html += "<i class='material-icons'>delete</i>";
-		html += "</a>";
-		
-		html += "<p><strong>"+event.name+"</strong></p>";
-		html += "<p><strong>Start: </strong>"+event.start_date+"</p>";
-		html += "<p>"+event.start_date+"<strong> days.</strong></p>";
-		
-		html += "</div>";
-		html += "</div>";
-		return html;
-	}
+		getTaskUnit: function(task){
+			var html = "<tr id='aaa_task_"+task['id']+"' >";
+			html += "<td>"
+			if(task['status'] == 'done'){
+				html += "<i class='material-icons'>done</i>";
+			}
+			if(task['status'] == 'open'){
+				html += "<i class='material-icons'>code</i>";
+			}
+			html += "</td>"
+			html += "<td>"+task['description']+"</td>";
+			html += "</tr>"
+			return html;
+		},
+		getYearUnit: function(unit,year,month){
+			var html = "<tr>";
+			html += "<td>"+year+"</td>";
+			console.log(month);
+			html += "<td>"+Text['month_full_'+month]+"</td>";
+			html += "<td>"+unit['total_count']+"</td>";
+			html += "<td>"
+			if(unit['average_value']){
+				html += unit['average_value'].toPrecision(3);
+			}
+			html += "</td>"
+			html += "</tr>"
+			return html;
+		},
+		getDayUnit: function(day,count,max){
+			var html = "<tr>";
+			html += "<td><b>"+day+"</b></td>";
+			html += "<td width='100%'>";
+			html += "<div style='width:"+((count/max)*100)+"%' class='aaa-home-arrows-day mdl-color-text--accent-contrast mdl-color--accent'>";
+			html += count;
+			html += "</div></td></tr>";
+			return html;
+		}
 }
 
 var HomePage = {
 	buildHomePage: function(){
 		destroyCurrentPage(Text['home']);
 		//TODO remove mdl-card crap from all previous cells *facepalm* I overwritten CSS (See TODO there)
-		var html = "";
+		var html = "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet'></div>";
 
 		html += HomePage.HTML.getTotalArrowsCard();
-		html += HomePage.HTML.getTotalPerformanceCard();
 		html += HomePage.HTML.getEventsCard();
 		html += HomePage.HTML.getTasksCard();
+		html += HomePage.HTML.getYearOverviewCard();
+		
+		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet'></div>";
+		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet'></div>";
+		
 		html += HomePage.HTML.getValueDistributionCard();
 		html += HomePage.HTML.getEndDistributionCard();
-		html += HomePage.HTML.getYearOverviewCard();
+		
+		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet'></div>";
+		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet'></div>";
+		
 		html += HomePage.HTML.getSeasonsCard();
+		
+		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet'></div>";
 		
 		$("#aaa_content").html(html);
 		makeFreakingMDLwork();
@@ -1396,19 +1445,43 @@ var HomePage = {
 	
 	HTML: {
 			getTotalArrowsCard: function(){
-				var html = "<div class='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>asd</div>";
-				return html;
-			},
-			getTotalPerformanceCard: function(){
-				var html = "<div class='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>asd</div>";
+				var html = "<div id='aaa_home_arrows' class='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>";
+				API.Reports.getHomescreen('arrows_total',function(download){
+					var html = "<table>";
+					for(var i in download){
+						if(i != "max"){
+							html += HTML.getDayUnit(i,download[i],download['max']);
+						}
+					}
+					html += "</table>";
+					$("#aaa_home_arrows").html(html);
+				});
+				html += "</div>";
 				return html;
 			},
 			getEventsCard: function(){
-				var html = "<div class='mdl-cell--4-col mdl-cell mdl-shadow--2dp'>asd</div>";
+				var html = "<div id='aaa_home_events' class='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>";
+				API.Reports.getHomescreen('events',function(download){
+					var html = "";
+					for(var i = 0; i < download.length; i++){
+						html += HTML.getEventUnit(download[i]);
+					}
+					$("#aaa_home_events").html(html);
+				});
+				html += "</div>";
 				return html;
 			},
 			getTasksCard: function(){
-				var html = "<div class='mdl-cell--4-col mdl-cell mdl-shadow--2dp'>asd</div>";
+				var html = "<div id='aaa_home_tasks' class='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>";
+				API.Reports.getHomescreen('tasks',function(download){
+					var html = "<table>";
+					for(var i in download){
+						html += HTML.getTaskUnit(download[i]);
+					}
+					html += "</table>";
+					$("#aaa_home_tasks").html(html);
+				});
+				html += "</div>";
 				return html;
 			},
 			getValueDistributionCard: function(){
@@ -1432,15 +1505,25 @@ var HomePage = {
 				return html;
 			},
 			getYearOverviewCard: function(){
-				var html = "<div class='mdl-cell--4-col mdl-cell mdl-shadow--2dp'>asd</div>";
+				var html = "<div id='aaa_home_year_summary' class='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>";
+				API.Reports.getHomescreen('year_summary',function(download){
+					var html = "<table width='96%'>";
+					for(var i in download){
+						console.log(i);
+						html += HTML.getYearUnit(download[i],i.substring(0,4),i.substring(5));
+					}
+					html += "</table>";
+					$("#aaa_home_year_summary").html(html);
+				});
+				html += "</div>";
 				return html;
 			},
 			getSeasonsCard: function(){
-				var html = "<div id='aaa_home_seasons' class='mdl-cell--12-col mdl-cell mdl-shadow--2dp'>";
+				var html = "<div id='aaa_home_seasons' class='mdl-cell--8-col mdl-cell mdl-shadow--2dp'>";
 				API.Reports.getHomescreen('seasons',function(download){
 					var html = "";
 					for(var i in download){
-						html += SVG.getSeasonGraph(download[i]);
+						html += SVG.getSeasonGraph(download[i],"aaa_home_seasons_graph");
 					}
 					$("#aaa_home_seasons").html(html);
 				});
@@ -1702,9 +1785,8 @@ var ProfilePage = {
 			}
 			event['days'] = $("#aaa_new_event_days").html();
 			event['color'] = $("#aaa_new_event_color").val();
-			var HTML = this.HTML;
 			API.addEvent(event, function(e){
-				var html = HTML.getEventUnit(e);
+				var html = HTML.getEventUnit(e,true);
 				var newnode = $(html).hide();
 				$("#aaa_new_event_content").hide("slide", { direction: "up" }, 500);
 				$('#aaa_events_content').append(newnode);
@@ -2079,29 +2161,9 @@ var ProfilePage = {
 			var events = API.getEvents();
 			var html = "<h5>"+Text['profile_upcoming_events']+"</h5>";
 			for(var i = 0; i < events.length; i++){
-				html += this.getEventUnit(events[i]);
+				html += HTML.getEventUnit(events[i],true);
 			}
 			
-			return html;
-		},
-		
-		getEventUnit: function(event){
-			var html = "<div id='aaa_event_"+event.date+"_"+event.name_short+"' class='aaa-events-item'>";
-			//html += "<h2>"+seasons.name+"</h2>";
-			html += "<div class='aaa-list-item-circle mdl-color-text--accent-contrast mdl-color--accent'>"+event.name_short+"</div>";
-			
-			html += "<div class='aaa-list-item-content'>";
-			
-			html += "<a onClick='ProfilePage.removeEvent(\""+event.date+"\",\""+event.name_short+"\");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
-			html += "<i class='material-icons'>delete</i>";
-			html += "</a>";
-			
-			html += "<p><strong>"+event.name+"</strong></p>";
-			html += "<p><strong>Start: </strong>"+event.start_date+"</p>";
-			html += "<p>"+event.start_date+"<strong> days.</strong></p>";
-			
-			html += "</div>";
-			html += "</div>";
 			return html;
 		},
 		
@@ -2273,8 +2335,6 @@ var SVG = {
 	getValueDistributionGraph: function(distribution){
 		var size = 11;
 		var max = Math.ceil((distribution.max*110)/10)*0.1;
-		console.log(">>> "+max);
-		console.log(distribution)
 		var unit = 1000/max;
 		
 		var general_width = (size*100+100+150);
@@ -2454,33 +2514,34 @@ var SVG = {
 		return html;
 	},
 	
-	getSeasonGraph: function(season){
+	getSeasonGraph: function(season,id){
 		var weeks = season.size;
 		var max = Math.ceil(season.max/50)*50+50;
+		var unit = 1000/max;
 		
 		var general_width = (weeks*100+700+150);
-		var general_height = max + 150 + 50;
+		var general_height = 1000 + 150 + 50;
 		var width = 20.2/(100/general_width);
 		
 		var html = "<svg xmlns='http://www.w3.org/2000/svg'";
-		html += " id='aaa_report_season_graph'";
+		html += " id='"+id+"'";
 		html += " version='1.1'";
 		html += " viewBox='0 "+(-general_height)+" "+(general_width+2)+" "+(general_height+2)+"'";
 		html += " preserveAspectRatio='xMidYMid meet'";
-		html += " width='"+width+"pt'>";
+		html += " width='100%'>";
 		
 		html += SVG.getStyle();
 		
 		html += "<g id='main'>";
 		
-		html += SVG.getLabels(max);
+		html += SVG.getSeasonLabels(1000);
 		
 		html += "<g id='data' transform='translate(700,-150)'>";
 		
-		html += SVG.getGrid(max,weeks);
+		html += SVG.getGrid(1000,weeks);
 		
 		html += SVG.getBottomWeeks(season.weeks,Text['wk']);
-		html += SVG.getLeftAxis(0,max,"arrow_count",max);
+		html += SVG.getLeftAxis(0,max,"arrow_count",1000);
 		
 		var estimate = false;
 		var estimations = [];
@@ -2489,9 +2550,9 @@ var SVG = {
 		var max_result = 0;
 		for(i in season){
 			if(!isNaN(i)){
-				html += SVG.getPlan(season[i].total_plan,i-season.start);
-				html += SVG.getActual(season[i].total-season[i].technique_total,season[i].technique_total,i-season.start);
-				html += SVG.getShare(season[i].total_plan-season[i].gauged_plan,i-season.start);
+				html += SVG.getPlan(season[i].total_plan*unit,i-season.start);
+				html += SVG.getActual(season[i].total*unit-season[i].technique_total*unit,season[i].technique_total*unit,i-season.start);
+				html += SVG.getShare(season[i].total_plan*unit-season[i].gauged_plan*unit,i-season.start);
 				if(season[i].result_total){
 					bullets[i] = season[i].result_total;
 					estimations.push(season[i].result_total);
@@ -2517,12 +2578,12 @@ var SVG = {
 		var difference = max_result - min_result;
 		max_result += 0.1*difference;
 		min_result -= 0.1*difference;
-		html += SVG.getEstimations(estimations,max,min_result,max_result);
+		html += SVG.getEstimations(estimations,1000,min_result,max_result);
 		
-		html += SVG.getRightAxis(10-min_result,10-max_result,"results",max,weeks*100);
+		html += SVG.getRightAxis(10-min_result,10-max_result,"results",1000,weeks*100);
 		
 		for(bullet in bullets){
-			html += SVG.getResult(bullets[bullet],bullet-season.start,max,min_result,max_result);
+			html += SVG.getResult(bullets[bullet],bullet-season.start,1000,min_result,max_result);
 		}
 		
 		html += "</g>";
@@ -2530,6 +2591,34 @@ var SVG = {
 		html += "</g>";
 		
 		html += "</svg>";
+		
+		return html;
+	},
+
+	getSeasonLabels: function(max){
+		var html = "<g id='labels' transform='translate(5,-"+max+")'>";
+		
+		html += "<rect class='plan' x='0' y='"+(1*max/10-25)+"' height='20' width='100' />";
+		html += "<text class='graph_label' x='125' y='"+(1*max/10-2)+"'>"+Text['total_plan']+"</text>"
+		
+		html += "<rect class='training' x='0' y='"+(2*max/10-25)+"' height='20' width='100' />";
+		html += "<text class='graph_label' x='125' y='"+(2*max/10-2)+"'>"+Text['technique_totals']+"</text>"
+		
+		html += "<rect class='target' x='0' y='"+(3*max/10-25)+"' height='20' width='100' />";
+		html += "<text class='graph_label' x='125' y='"+(3*max/10-2)+"'>"+Text['target_totals']+"</text>"
+		
+		html += "<rect class='share-shadow' x='5' y='"+(4*max/10-25)+"' height='20' width='100' />";
+		html += "<rect class='share' y='"+(4*max/10-5-25)+"' height='20' width='100' />";
+		html += "<text class='graph_label' x='125' y='"+(4*max/10-2)+"'>"+Text['technique_share']+"</text>"
+		
+		html += "<path class='estimation' d='M 0,"+(5*max/10-12.5)+" l 100,0'/>";
+		html += "<circle class='result' cx='50' cy='"+(5*max/10-12.5)+"' r='10'/>";
+		html += "<text class='graph_label' x='125' y='"+(5*max/10-2)+"'>"+Text['result_totals']+"</text>"
+		
+		html += "<circle class='strength' cx='50' cy='"+(6*max/10-12.5)+"' r='10'/>";
+		html += "<text class='graph_label' x='125' y='"+(6*max/10-2)+"'>"+Text['strength_training']+"</text>"
+		
+		html += "</g>";
 		
 		return html;
 	},
@@ -2699,34 +2788,6 @@ var SVG = {
 			html += "</g>";
 		}
 		html += "</g>";
-		return html;
-	},
-
-	getLabels: function(max){
-		var html = "<g id='labels' transform='translate(0,-"+max+")'>";
-		
-		html += "<rect class='plan' x='0' y='"+(1*max/10-25)+"' height='20' width='100' />";
-		html += "<text class='graph_label' x='125' y='"+(1*max/10-2)+"'>"+Text['total_plan']+"</text>"
-		
-		html += "<rect class='training' x='0' y='"+(2*max/10-25)+"' height='20' width='100' />";
-		html += "<text class='graph_label' x='125' y='"+(2*max/10-2)+"'>"+Text['technique_totals']+"</text>"
-		
-		html += "<rect class='target' x='0' y='"+(3*max/10-25)+"' height='20' width='100' />";
-		html += "<text class='graph_label' x='125' y='"+(3*max/10-2)+"'>"+Text['target_totals']+"</text>"
-		
-		html += "<rect class='share-shadow' x='5' y='"+(4*max/10-25)+"' height='20' width='100' />";
-		html += "<rect class='share' y='"+(4*max/10-5-25)+"' height='20' width='100' />";
-		html += "<text class='graph_label' x='125' y='"+(4*max/10-2)+"'>"+Text['technique_share']+"</text>"
-		
-		html += "<path class='estimation' d='M 0,"+(5*max/10-12.5)+" l 100,0'/>";
-		html += "<circle class='result' cx='50' cy='"+(5*max/10-12.5)+"' r='10'/>";
-		html += "<text class='graph_label' x='125' y='"+(5*max/10-2)+"'>"+Text['result_totals']+"</text>"
-		
-		html += "<circle class='strength' cx='50' cy='"+(6*max/10-12.5)+"' r='10'/>";
-		html += "<text class='graph_label' x='125' y='"+(6*max/10-2)+"'>"+Text['strength_training']+"</text>"
-		
-		html += "</g>";
-		
 		return html;
 	}
 }

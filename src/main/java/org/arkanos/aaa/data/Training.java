@@ -429,28 +429,32 @@ public class Training {
 		return false;
 	}
 
-	private static HashMap<String, Integer> compileDailyArrowsSince(String archer, Date time) {
+	private static HashMap<String, Integer> compileDailyArrowsSince(String archer, Date start, Date end) {
 		try {
 			HashMap<String, Integer> data = new HashMap<String, Integer>();
 			String query = "SELECT " + FIELD_DATE + ",SUM(arrow_count) AS arrow_count FROM (";
 			query += "SELECT " + FIELD_DATE + ",COUNT(" + FIELD_VALUE + ") AS arrow_count FROM ";
-			query += TABLE_NAME_ARROW + " LEFT JOIN " + TABLE_NAME_GAUGE + " ON " + FIELD_ID + " = " + FIELD_TRAINING_ID
-					+ " ";
+			query += TABLE_NAME_ARROW + " LEFT JOIN " + TABLE_NAME_GAUGE + " ON ";
+			query += FIELD_ID + " = " + FIELD_TRAINING_ID + " ";
 			query += "WHERE " + FIELD_ARCHER + " = ? ";
 			query += "AND " + FIELD_DATE + " >= ? ";
+			query += "AND " + FIELD_DATE + " <= ? ";
 			query += "GROUP BY " + FIELD_DATE + " ";
-			query += "UNION SELECT " + FIELD_DATE + ",SUM(" + FIELD_ARROWS + ") as arrow_count FROM " + TABLE_NAME
-					+ " ";
+			query += "UNION SELECT " + FIELD_DATE + ",SUM(" + FIELD_ARROWS + ") AS arrow_count FROM " + TABLE_NAME
+					+ " "; // TODO bla
 			query += "WHERE " + FIELD_ARCHER + " = ? ";
 			query += "AND " + FIELD_DATE + " >= ? ";
+			query += "AND " + FIELD_DATE + " <= ? ";
 			query += "GROUP BY " + FIELD_DATE + ") AS everyone ";
 			query += "GROUP BY " + FIELD_DATE + ";";
 
 			PreparedStatement ps = Database.prepare(query);
 			ps.setString(1, archer);
-			ps.setString(2, Database.sdf.format(time));
-			ps.setString(3, archer);
-			ps.setString(4, Database.sdf.format(time));
+			ps.setString(2, Database.sdf.format(start));
+			ps.setString(3, Database.sdf.format(end));
+			ps.setString(4, archer);
+			ps.setString(5, Database.sdf.format(start));
+			ps.setString(6, Database.sdf.format(end));
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				int count = rs.getInt("arrow_count");
@@ -563,6 +567,10 @@ public class Training {
 		return null;
 	}
 
+	private static final Date getNow() {
+		return new Date(System.currentTimeMillis());
+	}
+
 	private static final Date getWeekAgo() {
 		return new Date(System.currentTimeMillis() - 7L * 24 * 60 * 60 * 1000);
 	}
@@ -581,14 +589,17 @@ public class Training {
 	}
 
 	public static String getWeeksArrows(String archer) {
-		HashMap<String, Integer> arrows = compileDailyArrowsSince(archer, getWeekAgo());
+		HashMap<String, Integer> arrows = compileDailyArrowsSince(archer, getWeekAgo(), getNow());
+		int max = 0;
 		String json = "{";
 		for (String day : arrows.keySet()) {
 			json += "\"" + day + "\":" + arrows.get(day) + ",";
+			if (arrows.get(day) > max) {
+				max = arrows.get(day);
+			}
 		}
 
-		if (json.endsWith(","))
-			json = json.substring(0, json.length() - 1);
+		json += "\"max\":" + max;
 
 		json += "}";
 
@@ -597,8 +608,8 @@ public class Training {
 
 	public static String getYearSummary(String archer) {
 		HashMap<String, Float[]> performance = compileDailyGaugeSince(archer, getYearAgo());
-		HashMap<Integer, Integer> counts = new HashMap<Integer, Integer>();
-		HashMap<Integer, Float> sums = new HashMap<Integer, Float>();
+		HashMap<String, Integer> counts = new HashMap<String, Integer>();
+		HashMap<String, Float> sums = new HashMap<String, Float>();
 
 		for (String day : performance.keySet()) {
 			GregorianCalendar gc = new GregorianCalendar();
@@ -608,7 +619,7 @@ public class Training {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			int month = gc.get(Calendar.MONTH);
+			String month = gc.get(Calendar.YEAR) + "-" + gc.get(Calendar.MONTH);
 			Integer i = counts.get(month);
 			if (i != null)
 				counts.put(month, i + performance.get(day)[0].intValue());
@@ -622,8 +633,8 @@ public class Training {
 				sums.put(month, performance.get(day)[1]);
 		}
 
-		HashMap<String, Integer> arrows = compileDailyArrowsSince(archer, getYearAgo());
-		HashMap<Integer, Integer> totals = new HashMap<Integer, Integer>();
+		HashMap<String, Integer> arrows = compileDailyArrowsSince(archer, getYearAgo(), getNow());
+		HashMap<String, Integer> totals = new HashMap<String, Integer>();
 		for (String day : arrows.keySet()) {
 			GregorianCalendar gc = new GregorianCalendar();
 			try {
@@ -632,7 +643,7 @@ public class Training {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			int month = gc.get(Calendar.MONTH);
+			String month = gc.get(Calendar.YEAR) + "-" + gc.get(Calendar.MONTH);
 			Integer i = totals.get(month);
 			if (i != null)
 				totals.put(month, i + arrows.get(day));
@@ -641,7 +652,7 @@ public class Training {
 		}
 
 		String json = "{";
-		for (Integer month : totals.keySet()) {
+		for (String month : totals.keySet()) {
 			json += "\"" + month + "\":";
 			json += "{";
 			if (counts.get(month) != null)

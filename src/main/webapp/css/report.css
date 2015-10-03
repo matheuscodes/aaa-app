@@ -1,9 +1,48 @@
+#aaa_home_seasons_graph {
+	margin: 5pt;
+	width: calc(100% - 10pt);
+}
+
 #aaa_home_values_graph {
+	width: calc(100% - 10pt);
 	max-height: 220pt;
+	margin: 5pt;
 }
 
 #aaa_home_ends_graph {
+	width: calc(100% - 10pt);
 	max-height: 220pt;
+	margin: 5pt;
+}
+
+#aaa_home_tasks table tr td {
+	vertical-align: top;
+	text-align: left;
+}
+
+#aaa_home_tasks table {
+	margin: 5pt;
+}
+
+#aaa_home_year_summary table tr td {
+	font-size: 8pt;
+	border-bottom: solid 1pt #000;
+}
+
+#aaa_home_year_summary table {
+	margin: 2%;
+}
+
+#aaa_home_arrows table {
+	margin: 10pt;
+}
+
+.aaa-home-arrows-day {
+	text-align: left;
+	font-weight: bold;
+	border: 1pt solid #CCC;
+	font-size: 8pt;
+	padding: 1pt;
 }
 
 #aaa_report_selector {
