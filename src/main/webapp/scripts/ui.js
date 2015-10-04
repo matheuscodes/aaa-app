@@ -1417,25 +1417,25 @@ var HomePage = {
 	buildHomePage: function(){
 		destroyCurrentPage(Text['home']);
 		//TODO remove mdl-card crap from all previous cells *facepalm* I overwritten CSS (See TODO there)
-		var html = "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet'></div>";
+		var html = "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
 
 		html += HomePage.HTML.getTotalArrowsCard();
 		html += HomePage.HTML.getEventsCard();
 		html += HomePage.HTML.getTasksCard();
 		html += HomePage.HTML.getYearOverviewCard();
 		
-		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet'></div>";
-		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet'></div>";
+		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
+		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
 		
 		html += HomePage.HTML.getValueDistributionCard();
 		html += HomePage.HTML.getEndDistributionCard();
 		
-		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet'></div>";
-		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet'></div>";
+		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
+		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
 		
 		html += HomePage.HTML.getSeasonsCard();
 		
-		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet'></div>";
+		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
 		
 		$("#aaa_content").html(html);
 		makeFreakingMDLwork();
@@ -1447,7 +1447,8 @@ var HomePage = {
 			getTotalArrowsCard: function(){
 				var html = "<div id='aaa_home_arrows' class='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>";
 				API.Reports.getHomescreen('arrows_total',function(download){
-					var html = "<table>";
+					var html = "<h6>"+Text['home_arrows']+"</h6>";
+					html += "<table>";
 					for(var i in download){
 						if(i != "max"){
 							html += HTML.getDayUnit(i,download[i],download['max']);
@@ -1462,7 +1463,7 @@ var HomePage = {
 			getEventsCard: function(){
 				var html = "<div id='aaa_home_events' class='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>";
 				API.Reports.getHomescreen('events',function(download){
-					var html = "";
+					var html = "<h6>"+Text['home_events']+"</h6>";
 					for(var i = 0; i < download.length; i++){
 						html += HTML.getEventUnit(download[i]);
 					}
@@ -1474,7 +1475,8 @@ var HomePage = {
 			getTasksCard: function(){
 				var html = "<div id='aaa_home_tasks' class='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>";
 				API.Reports.getHomescreen('tasks',function(download){
-					var html = "<table>";
+					var html = "<h6>"+Text['home_tasks']+"</h6>";
+					html += "<table>";
 					for(var i in download){
 						html += HTML.getTaskUnit(download[i]);
 					}
@@ -1487,7 +1489,7 @@ var HomePage = {
 			getValueDistributionCard: function(){
 				var html = "<div id='aaa_home_values' class='mdl-cell--4-col mdl-cell mdl-shadow--2dp'>";
 				API.Reports.getHomescreen('value_distribution',function(download){
-					var html = "";
+					var html = "<h6>"+Text['home_values']+"</h6>";
 					html += SVG.getValueDistributionGraph(download);
 					$("#aaa_home_values").html(html);
 				});
@@ -1497,7 +1499,7 @@ var HomePage = {
 			getEndDistributionCard: function(){
 				var html = "<div id='aaa_home_ends' class='mdl-cell--4-col mdl-cell mdl-shadow--2dp'>";
 				API.Reports.getHomescreen('end_distribution',function(download){
-					var html = "";
+					var html = "<h6>"+Text['home_ends']+"</h6>";
 					html += SVG.getEndDistributionGraph(download);
 					$("#aaa_home_ends").html(html);
 				});
@@ -1507,7 +1509,8 @@ var HomePage = {
 			getYearOverviewCard: function(){
 				var html = "<div id='aaa_home_year_summary' class='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>";
 				API.Reports.getHomescreen('year_summary',function(download){
-					var html = "<table width='96%'>";
+					var html = "<h6>"+Text['home_year_summary']+"</h6>";
+					html += "<table width='96%'>";
 					for(var i in download){
 						console.log(i);
 						html += HTML.getYearUnit(download[i],i.substring(0,4),i.substring(5));
@@ -1521,7 +1524,7 @@ var HomePage = {
 			getSeasonsCard: function(){
 				var html = "<div id='aaa_home_seasons' class='mdl-cell--8-col mdl-cell mdl-shadow--2dp'>";
 				API.Reports.getHomescreen('seasons',function(download){
-					var html = "";
+					var html = "<h6>"+Text['home_seasons']+"</h6>";
 					for(var i in download){
 						html += SVG.getSeasonGraph(download[i],"aaa_home_seasons_graph");
 					}

@@ -92,6 +92,14 @@ public class English extends Base {
 		put("month_short_9", "Oct");
 		put("month_short_10", "Nov");
 		put("month_short_11", "Dec");
+
+		put("home_arrows", "Recent arrows history");
+		put("home_events", "Upcoming events");
+		put("home_tasks", "Active and recent tasks");
+		put("home_values", "Distribution of arrows per value");
+		put("home_ends", "Arrow count and average points per end");
+		put("home_year_summary", "Year's summary");
+		put("home_seasons", "Active seasons");
 	}
 
 }

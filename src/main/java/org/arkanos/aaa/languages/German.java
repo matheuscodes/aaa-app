@@ -92,6 +92,14 @@ public class German extends Base {
 		put("month_short_9", "Okt");
 		put("month_short_10", "Nov");
 		put("month_short_11", "Dez");
+
+		put("home_arrows", "Pfeil Verlauf");
+		put("home_events", "Demnächste Events");
+		put("home_tasks", "Ungelöste Aufgaben");
+		put("home_values", "Aufteilung der Pfeile pro Wert");
+		put("home_ends", "Pfeil Zahl und durchschnittliche Punkte pro Ende");
+		put("home_year_summary", "Zusammenfassung");
+		put("home_seasons", "Aktuelle Saisons");
 	}
 
 }

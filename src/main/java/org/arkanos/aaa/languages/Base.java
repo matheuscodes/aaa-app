@@ -99,6 +99,14 @@ public class Base extends HashMap<String, String> {
 		put("month_short_10", "Month name short");
 		put("month_short_11", "Month name short");
 
+		put("home_arrows", "Last week's arrows title");
+		put("home_events", "Upcoming events title");
+		put("home_tasks", "Active and recently closed tasks title");
+		put("home_values", "Distribution per value title");
+		put("home_ends", "Distribution per end title");
+		put("home_year_summary", "Year summary title");
+		put("home_seasons", "Active Seasons title");
+
 	}
 
 	protected Base(String code, String name) {
