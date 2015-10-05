@@ -70,7 +70,7 @@ public class Season {
 		}
 	}
 
-	static public WeeklyPerformance compileWeekly(Date when, String user) throws SQLException {
+	static private WeeklyPerformance compileWeekly(Date when, String user) throws SQLException {
 		// TODO initialize
 		// TODO delete this and use compileWeeklies();
 
@@ -412,7 +412,7 @@ public class Season {
 		return null;
 	}
 
-	static private List<WeeklyPerformance> compileWeeklies(String archer, Date when) {
+	static public List<WeeklyPerformance> compileWeeklies(String archer, Date when) {
 		try {
 			String season_name = "";
 			int season_max = 0;

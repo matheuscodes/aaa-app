@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -121,7 +122,7 @@ public class Reports extends HttpServlet {
 		Season.WeeklyPerformance season = null;
 		Training.DailyPerformance report = null;
 		try {
-			season = Season.compileWeekly(start, archer);
+			season = Season.compileWeeklies(archer, start).get(0);
 			report = Training.compileDaily(start, end, archer);
 		} catch (SQLException e) {
 			// TODO
@@ -249,8 +250,21 @@ public class Reports extends HttpServlet {
 
 		json += "},";
 
-		json += "\"season\":";
-		json += "{";
+		json += "\"season\":{";
+
+		json += "\"weeks\":[";
+		// TODO maybe optimize this
+		HashMap<Integer, Integer> inversion = new HashMap<Integer, Integer>(season.size);
+		for (int i : season.weeks.keySet()) {
+			inversion.put(season.weeks.get(i), i);
+		}
+		for (int i : inversion.keySet()) {
+			json += inversion.get(i) + ",";
+		}
+		if (json.endsWith(","))
+			json = json.substring(0, json.length() - 1);
+		json += "],";
+
 		json += "\"name\":\"" + season.name + "\",";
 		json += "\"size\":" + season.size + ",";
 		json += "\"start\":" + season.start + ",";

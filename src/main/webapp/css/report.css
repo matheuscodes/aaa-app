@@ -1,3 +1,11 @@
+#aaa_report_season_graph{
+	float: left;
+}
+
+#aaa_report_daily_graph{
+	float: left;
+}
+
 #aaa_home_seasons_graph {
 	margin: 5pt;
 	width: calc(100% - 10pt);

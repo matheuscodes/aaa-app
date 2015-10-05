@@ -744,11 +744,11 @@ var PerformancePage = {
 		html += "<div class='mdl-card mdl-shadow--2dp'>";
 		
 		var now = new Date();
-		if(!this.month){
-			this.month = now.getMonth();
+		if(!PerformancePage.month){
+			PerformancePage.month = now.getMonth();
 		}
-		if(!this.year){
-			this.year = 1900+now.getYear();
+		if(!PerformancePage.year){
+			PerformancePage.year = 1900+now.getYear();
 		}
 		html += "<div id='aaa_report_selector'>";
 		html += "<div class='mdl-layout-spacer'></div>";
@@ -765,7 +765,7 @@ var PerformancePage = {
 		}
 		html+= "</ul>";
 		
-		html += "<p id='aaa_report_year'>"+this.year+"</p>";
+		html += "<p id='aaa_report_year'>"+PerformancePage.year+"</p>";
 		
 		html+= "<button id='aaa_report_set_year' class='mdl-button mdl-js-button mdl-button--icon'>";
 		html+= "<i class='material-icons'>expand_more</i>";
@@ -1154,208 +1154,13 @@ var PerformancePage = {
 			$("#aaa_report_week_data_"+week).html(html);
 		}
 		$("#aaa_report_content").append("<h2>"+Text['overview_title']+"</h2>");
-		$("#aaa_report_content").append(this.HTML.getDailyGraph(download));
+		$("#aaa_report_content").append(SVG.getDailySeasonGraph(download));
 		$("#aaa_report_content").append("<h2>"+Text['season_title']+"</h2>");
-		$("#aaa_report_content").append(this.HTML.getSeasonGraph(download));
+		console.log(download);
+		$("#aaa_report_content").append(SVG.getSeasonGraph(download.season,"aaa_report_season_graph"));
 		
 		$("#aaa_report_viewport").width($("#aaa_report_daily_graph").width());
 		$("#aaa_content").show("slide", { direction: "left" }, 1000);
-	},
-	
-	HTML:{
-		//TODO maybe move calls from HTML to HTML.SVG
-		getDailyGraph: function(download){
-
-			var days = (new Date(download.end) - new Date(download.start))/(1000*60*60*24);
-			var season = download.season;
-			var max = Math.ceil(download.season.max/50)*50+50;
-			
-			var general_width = (days*100+700+150);
-			var general_height = max+100+50;
-			var width = 20.2/(100/general_width);
-			
-			var html = "<svg xmlns='http://www.w3.org/2000/svg'";
-			html += " id='aaa_report_daily_graph'";
-			html += " version='1.1'";
-			html += " viewBox='0 "+(-general_height)+" "+(general_width+2)+" "+(general_height+1)+"'";
-			html += " preserveAspectRatio='xMidYMid meet'";
-			html += " width='"+width+"pt'>";
-			
-			html += SVG.getStyle();
-			
-			html += "<g id='main'>";
-			
-			html += SVG.getLabels(max);
-			
-			html += "<g id='data' transform='translate(700,-100) scale(1,1)'>";
-			
-			html += SVG.getGrid(max,days);
-			
-			html += SVG.getBottomDays(download.start,download.end);
-			html += SVG.getLeftAxis(0,max,"arrow_count",max);
-			
-			var estimate = false;
-			var estimations = [];
-			var bullets = {};
-			
-			var current = new Date(download.start);
-			var week = download.week_start;
-			var stop = new Date(download.end);
-			var i = 0;
-			var estimate = false;
-			var estimations = [];
-			var bullets = {};
-			var min_result = 10;
-			var max_result = 0;
-			while(current < stop){
-				var now = current.toJSON().substring(0,10);
-				var technique = 0;
-				var gauged = 0;
-				
-				if(download.arrow_counts.totals[now]){
-					if(download.arrow_counts.technique_totals[now]){
-						technique = download.arrow_counts.technique_totals[now];
-						gauged = download.arrow_counts.totals[now] - technique;
-					}
-					else{
-						gauged = download.arrow_counts.totals[now];
-					}
-				}
-				
-				if(gauged > 0 || technique > 0){
-					html += SVG.getActual(gauged,technique,i);
-				}
-				
-				if(download.results.result_totals[now]){
-					bullets[i] = download.results.result_totals[now];
-					estimations.push(download.results.result_totals[now]);
-					if(download.results.result_totals[now] > max_result) max_result = download.results.result_totals[now];
-					if(download.results.result_totals[now] < min_result) min_result = download.results.result_totals[now];
-					estimate = true;
-				}
-				else{
-					if(estimate && i > 1){
-						//TODO test this... probably not working.
-						var estimate = (estimations[i-1]+estimations[i-2])/2;
-						estimations.push(estimate);
-						if(estimate > max_result) max_result = estimate;
-						if(estimate < min_result) min_result = estimate;
-					}
-					else{
-						//TODO fix the bug of the second item being -1 if there is only the first item.
-						//TODO fetch previous performance instead of estimating always.
-						//TODO keep an eye on the formation of the weeks... something nasty was going on.
-						estimations.push(-1);
-					}
-				}
-
-					
-				current.setDate(current.getDate() + 1);
-				i++
-			}
-			
-			var difference = max_result - min_result;
-			max_result += 0.1*difference;
-			min_result -= 0.1*difference;
-			html += SVG.getEstimations(estimations,max,min_result,max_result);
-			
-			html += SVG.getRightAxis(10-min_result,10-max_result,"results",max,days*100);
-			
-			for(bullet in bullets){
-				html += SVG.getResult(bullets[bullet],bullet,max,min_result,max_result);
-			}
-			
-			
-			html += "</g>";
-			
-			html += "</g>";
-			
-			html += "</svg>";
-			
-			return html;
-		},
-		
-		getSeasonGraph: function(download){
-			
-			var weeks = download.season.size;
-			var season = download.season;
-			var max = Math.ceil(download.season.max/50)*50+50;
-			
-			var general_width = (weeks*100+700+150);
-			var general_height = max + 150 + 50;
-			var width = 20.2/(100/general_width);
-			
-			var html = "<svg xmlns='http://www.w3.org/2000/svg'";
-			html += " id='aaa_report_season_graph'";
-			html += " version='1.1'";
-			html += " viewBox='0 "+(-general_height)+" "+(general_width+2)+" "+(general_height+2)+"'";
-			html += " preserveAspectRatio='xMidYMid meet'";
-			html += " width='"+width+"pt'>";
-			
-			html += SVG.getStyle();
-			
-			html += "<g id='main'>";
-			
-			html += SVG.getLabels(max);
-			
-			html += "<g id='data' transform='translate(700,-150)'>";
-			
-			html += SVG.getGrid(max,weeks);
-			
-			html += SVG.getBottomWeeks(season.start,season.start+season.size);
-			html += SVG.getLeftAxis(0,max,"arrow_count",max);
-			
-			var estimate = false;
-			var estimations = [];
-			var bullets = {};
-			var min_result = 10;
-			var max_result = 0;
-			for(i in season){
-				if(!isNaN(i)){
-					html += SVG.getPlan(season[i].total_plan,i-season.start);
-					html += SVG.getActual(season[i].total-season[i].technique_total,season[i].technique_total,i-season.start);
-					html += SVG.getShare(season[i].total_plan-season[i].gauged_plan,i-season.start);
-					if(season[i].result_total){
-						bullets[i] = season[i].result_total;
-						estimations.push(season[i].result_total);
-						if(season[i].result_total > max_result) max_result = season[i].result_total;
-						if(season[i].result_total < min_result) min_result = season[i].result_total;
-						estimate = true;
-					}
-					else{
-						if(estimate && i > 1){
-							//TODO test this... probably not working.
-							estimate = (estimations[i-season.start-1]+estimations[i-season.start-2])/2;
-							estimations.push(estimate);
-							if(estimate > max_result) max_result = estimate;
-							if(estimate < min_result) min_result = estimate;
-						}
-						else{
-							estimations.push(-1);
-						}
-					}
-				}
-			}
-			
-			var difference = max_result - min_result;
-			max_result += 0.1*difference;
-			min_result -= 0.1*difference;
-			html += SVG.getEstimations(estimations,max,min_result,max_result);
-			
-			html += SVG.getRightAxis(10-min_result,10-max_result,"results",max,weeks*100);
-			
-			for(bullet in bullets){
-				html += SVG.getResult(bullets[bullet],bullet-season.start,max,min_result,max_result);
-			}
-			
-			html += "</g>";
-			
-			html += "</g>";
-			
-			html += "</svg>";
-			
-			return html;
-		}
 	}
 }
 
@@ -2519,6 +2324,138 @@ var SVG = {
 		return html;
 	},
 	
+	getDailySeasonGraph: function(download){
+
+		var days = (new Date(download.end) - new Date(download.start))/(1000*60*60*24);
+		var season = download.season;
+		var max = Math.ceil(download.season.max/50)*50+50;
+		
+		var general_width = (days*100+700+150);
+		var general_height = max+100+50;
+		var width = 20.2/(100/general_width);
+		
+		var html = "<svg xmlns='http://www.w3.org/2000/svg'";
+		html += " id='aaa_report_daily_graph'";
+		html += " version='1.1'";
+		html += " viewBox='0 "+(-general_height)+" "+(general_width+2)+" "+(general_height+1)+"'";
+		html += " preserveAspectRatio='xMidYMid meet'";
+		html += " width='"+width+"pt'>";
+		
+		html += SVG.getStyle();
+		
+		html += "<g id='main'>";
+		
+		html += SVG.getDailyLabels(max);
+		
+		html += "<g id='data' transform='translate(700,-100) scale(1,1)'>";
+		
+		html += SVG.getGrid(max,days);
+		
+		html += SVG.getBottomDays(download.start,download.end);
+		html += SVG.getLeftAxis(0,max,"arrow_count",max);
+		
+		var estimate = false;
+		var estimations = [];
+		var bullets = {};
+		
+		var current = new Date(download.start);
+		var week = download.week_start;
+		var stop = new Date(download.end);
+		var i = 0;
+		var estimate = false;
+		var estimations = [];
+		var bullets = {};
+		var min_result = 10;
+		var max_result = 0;
+		while(current < stop){
+			var now = current.toJSON().substring(0,10);
+			var technique = 0;
+			var gauged = 0;
+			
+			if(download.arrow_counts.totals[now]){
+				if(download.arrow_counts.technique_totals[now]){
+					technique = download.arrow_counts.technique_totals[now];
+					gauged = download.arrow_counts.totals[now] - technique;
+				}
+				else{
+					gauged = download.arrow_counts.totals[now];
+				}
+			}
+			
+			if(gauged > 0 || technique > 0){
+				html += SVG.getActual(gauged,technique,i);
+			}
+			
+			if(download.results.result_totals[now]){
+				bullets[i] = download.results.result_totals[now];
+				estimations.push(download.results.result_totals[now]);
+				if(download.results.result_totals[now] > max_result) max_result = download.results.result_totals[now];
+				if(download.results.result_totals[now] < min_result) min_result = download.results.result_totals[now];
+				estimate = true;
+			}
+			else{
+				if(estimate && i > 1){
+					//TODO test this... probably not working.
+					var estimate = (estimations[i-1]+estimations[i-2])/2;
+					estimations.push(estimate);
+					if(estimate > max_result) max_result = estimate;
+					if(estimate < min_result) min_result = estimate;
+				}
+				else{
+					//TODO fix the bug of the second item being -1 if there is only the first item.
+					//TODO fetch previous performance instead of estimating always.
+					//TODO keep an eye on the formation of the weeks... something nasty was going on.
+					estimations.push(-1);
+				}
+			}
+
+				
+			current.setDate(current.getDate() + 1);
+			i++
+		}
+		
+		var difference = max_result - min_result;
+		max_result += 0.1*difference;
+		min_result -= 0.1*difference;
+		html += SVG.getEstimations(estimations,max,min_result,max_result);
+		
+		html += SVG.getRightAxis(10-min_result,10-max_result,"results",max,days*100);
+		
+		for(bullet in bullets){
+			html += SVG.getResult(bullets[bullet],bullet,max,min_result,max_result);
+		}
+		
+		
+		html += "</g>";
+		
+		html += "</g>";
+		
+		html += "</svg>";
+		
+		return html;
+	},
+
+	getDailyLabels: function(max){
+		var html = "<g id='labels' transform='translate(5,-"+max+")'>";
+		
+		html += "<rect class='training' x='0' y='"+(1*max/10-25)+"' height='20' width='100' />";
+		html += "<text class='graph_label' x='125' y='"+(1*max/10-2)+"'>"+Text['technique_totals']+"</text>"
+		
+		html += "<rect class='target' x='0' y='"+(2*max/10-25)+"' height='20' width='100' />";
+		html += "<text class='graph_label' x='125' y='"+(2*max/10-2)+"'>"+Text['target_totals']+"</text>"
+		
+		html += "<path class='estimation' d='M 0,"+(3*max/10-12.5)+" l 100,0'/>";
+		html += "<circle class='result' cx='50' cy='"+(3*max/10-12.5)+"' r='10'/>";
+		html += "<text class='graph_label' x='125' y='"+(3*max/10-2)+"'>"+Text['result_totals']+"</text>"
+		
+		html += "<circle class='strength' cx='50' cy='"+(4*max/10-12.5)+"' r='10'/>";
+		html += "<text class='graph_label' x='125' y='"+(4*max/10-2)+"'>"+Text['strength_training']+"</text>"
+		
+		html += "</g>";
+		
+		return html;
+	},
+	
 	getSeasonGraph: function(season,id){
 		var weeks = season.size;
 		var max = Math.ceil(season.max/50)*50+50;
@@ -2527,13 +2464,13 @@ var SVG = {
 		var general_width = (weeks*100+700+150);
 		var general_height = 1000 + 150 + 50;
 		var width = 20.2/(100/general_width);
-		
+
 		var html = "<svg xmlns='http://www.w3.org/2000/svg'";
 		html += " id='"+id+"'";
 		html += " version='1.1'";
 		html += " viewBox='0 "+(-general_height)+" "+(general_width+2)+" "+(general_height+2)+"'";
 		html += " preserveAspectRatio='xMidYMid meet'";
-		html += " width='100%'>";
+		html += " width='"+width+"pt'>";
 		
 		html += SVG.getStyle();
 		
