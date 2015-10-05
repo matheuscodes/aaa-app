@@ -107,6 +107,37 @@ public class Base extends HashMap<String, String> {
 		put("home_year_summary", "Year summary title");
 		put("home_seasons", "Active Seasons title");
 
+		put("profile_seasons", "Seasons title for profile card");
+		put("profile_new_season_size", "Indicates the size of the season to be created");
+		put("weeks", "Word 'weeks'");
+		put("profile_season_name", "Name in the season profile form");
+		put("profile_season_start", "Start date in the season profile form");
+		put("profile_season_end", "End date in the season profile form");
+		put("days", "Word 'days'");
+
+		put("profile_events", "Events title for profile card");
+		put("profile_event_name", "Name in the event profile form");
+		put("profile_event_start", "Start date in the event profile form");
+		put("profile_event_name_short", "Abbreviation of the name in the event profile form");
+		put("color", "Word 'Color'");
+
+		put("profile_inventory", "Inventory title for profile card");
+		put("profile_inventory_name", "Name in the inventory profile form");
+		put("profile_inventory_arms", "Bow arms in the inventory profile form");
+		put("profile_inventory_weight", "Bow weight in the inventory profile form");
+		put("profile_inventory_arrow", "Arrow description in the inventory profile form");
+		put("profile_inventory_arrows", "Arrow count in the inventory profile form");
+		put("profile_inventory_quiver", "'arrows in the quiver' sentence in invetory item");
+		put("compound", "Compound bow");
+		put("recurve", "Recurve bow");
+		put("longbow", "Longbow bow");
+
+		put("profile_tasks", "Tasks title for profile card");
+		put("profile_tasks_description", "Description for task form");
+		put("profile_tasks_close", "Submit tasks for completion button");
+
+		put("profile_calendar", "Calendar title for profile card");
+
 	}
 
 	protected Base(String code, String name) {

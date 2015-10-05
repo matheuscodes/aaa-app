@@ -141,9 +141,17 @@ function buildHomePage(){
 	}
 }
 
-function destroyCurrentPage(next){
-	$("#aaa_content").hide("slide", { direction: "right" }, 1000);
-	$("#aaa_content").html(""); //TODO fix this, disappears all at once, async
+function destroyCurrentPage(next,loader,afterall){
+	console.log(Date.now());
+	$("#aaa_content").hide("slide", { direction: "right"}, 1000,function(){
+		console.log(Date.now());
+		var html = loader();
+		$("#aaa_content").hide(); //TODO remove this
+		$("#aaa_content").html(html);
+		makeFreakingMDLwork();
+		$("#aaa_content").show("slide", { direction: "left" }, 1000);
+		if(afterall) afterall();
+	});
 	$("#aaa_drawer").removeClass("is-visible");
 	$("#aaa_header_title").fadeOut(1000,function(){
 		$("#aaa_header_title").html(next);
@@ -187,7 +195,7 @@ function getDrawerMenu(){
 	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick='HomePage.buildHomePage();'><i class='material-icons'>home</i> "+Text['home']+"</a>";
 	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick='ProfilePage.buildProfilePage();'><i class='material-icons'>assignment_ind</i> "+Text['manage_profile']+"</a>";
 	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick='TrainingPage.buildTrainingsPage();'><i class='material-icons'>create</i> "+Text['manage_trainings']+"</a>";
-	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick='Report.buildPerformancePage();'><i class='material-icons'>history</i> "+Text['performance_history']+"</a>";
+	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick='PerformancePage.buildPerformancePage();'><i class='material-icons'>history</i> "+Text['performance_history']+"</a>";
 	html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick=''><i class='material-icons'>help_outline</i> "+Text['help']+"</a>";
 	html += "</nav>";
 	html += "</div>";
@@ -257,8 +265,9 @@ function makeFreakingMDLwork() {
 //TODO rename to TrainingsPage
 var TrainingPage = {
 	buildTrainingsPage: function(){
-		destroyCurrentPage(Text['manage_trainings']);
-		
+		destroyCurrentPage(Text['manage_trainings'],TrainingPage.getTrainingsPage);
+	},
+	getTrainingsPage: function(){
 		var html = "<div class='mdl-cell--12-col'>"; 
 		html += "<button id='aaa_new_training' onClick='TrainingPage.openTraining();' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect'>";
 		html += "<i class='material-icons'>add gps_off</i>";
@@ -275,9 +284,8 @@ var TrainingPage = {
 		html += "</div>";
 		
 		html += "<div id='aaa_training_page_content' class='mdl-grid mdl-cell--12-col'></div>";
-		$("#aaa_content").html(html);
-		makeFreakingMDLwork();
-		$("#aaa_content").show("slide", { direction: "left" }, 1000);
+
+		return html;
 	},
 	
 	addTraining: function(){
@@ -709,25 +717,27 @@ var TrainingPage = {
 }
 
 
-var Report = {
+var PerformancePage = {
 	setMonth: function(month){
-		this.month = month;
-		this.updateReport();
+		PerformancePage.month = month;
+		PerformancePage.updateReport();
 	},
 	
 	setYear: function(year){
-		this.year = year;
-		this.updateReport();
+		PerformancePage.year = year;
+		PerformancePage.updateReport();
 	},
 
 	updateReport: function(){
-		$("#aaa_report_month").html(Text["month_full_"+this.month]);
-		$("#aaa_report_year").html(this.year);
-		API.getCompleteReport(this.month,this.year);
+		$("#aaa_report_month").html(Text["month_full_"+PerformancePage.month]);
+		$("#aaa_report_year").html(PerformancePage.year);
+		API.getCompleteReport(PerformancePage.month,PerformancePage.year);
 	},
 	
 	buildPerformancePage: function(){
-		destroyCurrentPage(Text['performance_history']);
+		destroyCurrentPage(Text['performance_history'],PerformancePage.getPerformancePage, PerformancePage.updateReport);
+	},
+	getPerformancePage: function(){
 		//TODO fix fix transition bug
 		var html = "<div class='mdl-grid mdl-cell--12-col'>";
 		//TODO remove demo card class from examples (search for demo)
@@ -751,7 +761,7 @@ var Report = {
 
 		html+= "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='aaa_report_set_month'>";
 		for(var i = 0; i < 12; i++){
-			html+= "<li class='mdl-menu__item' onClick='Report.setMonth("+i+")'>"+Text["month_full_"+i]+"</li>";
+			html+= "<li class='mdl-menu__item' onClick='PerformancePage.setMonth("+i+")'>"+Text["month_full_"+i]+"</li>";
 		}
 		html+= "</ul>";
 		
@@ -763,7 +773,7 @@ var Report = {
 
 		html+= "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='aaa_report_set_year'>";
 		for(var i = now.getYear()+1900; i > now.getYear()+1900-10; i--){
-			html+= "<li class='mdl-menu__item' onClick='Report.setYear("+i+")'>"+i+"</li>";
+			html+= "<li class='mdl-menu__item' onClick='PerformancePage.setYear("+i+")'>"+i+"</li>";
 		}
 		html+= "</ul>";
 		
@@ -774,11 +784,7 @@ var Report = {
 		
 		html += "<div class='mdl-layout-spacer'></div>";
 		
-		
-		$("#aaa_content").html(html);
-		makeFreakingMDLwork();
-		
-		this.updateReport();
+		return html;
 	},
 	
 	buildMonthlyReport: function(download){
@@ -1366,8 +1372,8 @@ var HTML = {
 				html += "</a>";
 			}
 			html += "<p><strong>"+event['name']+"</strong></p>";
-			html += "<p><strong>Start: </strong>"+event['date']+"</p>";
-			html += "<p>"+event['days']+"<strong> days.</strong></p>";
+			html += "<p><strong>"+Text['profile_event_start']+": </strong>"+event['date']+"</p>";
+			html += "<p>"+event['days']+"<strong> "+Text['days']+".</strong></p>";
 			
 			html += "</div>";
 			html += "</div>";
@@ -1415,7 +1421,9 @@ var HTML = {
 
 var HomePage = {
 	buildHomePage: function(){
-		destroyCurrentPage(Text['home']);
+		destroyCurrentPage(Text['home'],HomePage.getHomePage);
+	},
+	getHomePage: function(){
 		//TODO remove mdl-card crap from all previous cells *facepalm* I overwritten CSS (See TODO there)
 		var html = "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
 
@@ -1437,10 +1445,7 @@ var HomePage = {
 		
 		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
 		
-		$("#aaa_content").html(html);
-		makeFreakingMDLwork();
-
-		$("#aaa_content").show("slide", { direction: "left" }, 1000);
+		return html;
 	},
 	
 	HTML: {
@@ -1538,38 +1543,38 @@ var HomePage = {
 
 var ProfilePage = {
 	buildProfilePage: function(){
-		destroyCurrentPage(Text['manage_profile']);
+		destroyCurrentPage(Text['manage_profile'],ProfilePage.getProfilePage, function(){
+			$("#aaa_new_season_content").hide();
+			$("#aaa_new_event_content").hide();
+			$("#aaa_new_item_content").hide();
+		});
+	},
+	getProfilePage: function(){
 		//TODO remove mdl-card crap from all previous cells *facepalm* I overwritten CSS (See TODO there)
 		var html = "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet'></div>";
 
-		html += this.HTML.getTasksCard();
+		html += ProfilePage.HTML.getTasksCard();
 		
-		html += this.HTML.getEventsCard();
+		html += ProfilePage.HTML.getEventsCard();
 			
 		
-		html += this.HTML.getCalendarCard();
+		html += ProfilePage.HTML.getCalendarCard();
 		
 		html += "<div class='mdl-cell--2-col mdl-cell mdl-cell--hide-tablet'></div>";
 		
 		html += "<div class='mdl-cell--2-col mdl-cell mdl-cell--hide-tablet'></div>";
 		
-		html += this.HTML.getInventoryCard();
+		html += ProfilePage.HTML.getInventoryCard();
 		
 		
 		html += "<div class='mdl-cell--2-col mdl-cell mdl-cell--hide-tablet'></div>";
 		html += "<div class='mdl-cell--2-col mdl-cell mdl-cell--hide-tablet'></div>";
 		
-		html += this.HTML.getSeasonsCard();
+		html += ProfilePage.HTML.getSeasonsCard();
 		
 		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet'></div>";
 		
-		$("#aaa_content").html(html);
-		makeFreakingMDLwork();
-
-		$("#aaa_new_season_content").hide();
-		$("#aaa_new_event_content").hide();
-		$("#aaa_new_item_content").hide();
-		$("#aaa_content").show("slide", { direction: "left" }, 1000);
+		return html;
 	},
 	
 	createNewSeason: function(weeks,week_labels){
@@ -1602,13 +1607,13 @@ var ProfilePage = {
 		
 		html += "<div class='aaa-field-medium mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 		html += "<input class='mdl-textfield__input' type='text' id='aaa_new_season_name' />";
-		html += "<label class='mdl-textfield__label' for='aaa_new_season_name'>"+Text['season_name']+"</label>";
+		html += "<label class='mdl-textfield__label' for='aaa_new_season_name'>"+Text['profile_season_name']+"</label>";
 		html += "<span class='mdl-textfield__error'>error</span>";
 		html += "</div>";
 		
 		html += "<div class='aaa-field-small mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 		html += "<input class='mdl-textfield__input' type='text' id='aaa_new_season_start' />";
-		html += "<label class='mdl-textfield__label' for='aaa_new_season_start'>"+Text['season_start']+"</label>";
+		html += "<label class='mdl-textfield__label' for='aaa_new_season_start'>"+Text['profile_season_start']+"</label>";
 		html += "<span class='mdl-textfield__error'>error</span>";
 		html += "</div>";
 		
@@ -1715,19 +1720,19 @@ var ProfilePage = {
 		
 		html += "<div class='aaa-field-large mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 		html += "<input class='mdl-textfield__input' type='text' id='aaa_new_event_name' />";
-		html += "<label class='mdl-textfield__label' for='aaa_new_event_name'>"+Text['event_name']+"</label>";
+		html += "<label class='mdl-textfield__label' for='aaa_new_event_name'>"+Text['profile_event_name']+"</label>";
 		html += "<span class='mdl-textfield__error'>error</span>";
 		html += "</div>";
 		
 		html += "<div class='aaa-field-medium mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 		html += "<input class='mdl-textfield__input' type='text' id='aaa_new_event_start' />";
-		html += "<label class='mdl-textfield__label' for='aaa_new_event_start'>"+Text['event_start']+"</label>";
+		html += "<label class='mdl-textfield__label' for='aaa_new_event_start'>"+Text['profile_event_start']+"</label>";
 		html += "<span class='mdl-textfield__error'>error</span>";
 		html += "</div>";
 		
 		html += "<div class='aaa-field-medium mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 		html += "<input class='mdl-textfield__input' type='text' id='aaa_new_event_name_short' />";
-		html += "<label class='mdl-textfield__label' for='aaa_new_event_name_short'>"+Text['event_name_short']+"</label>";
+		html += "<label class='mdl-textfield__label' for='aaa_new_event_name_short'>"+Text['profile_event_name_short']+"</label>";
 		html += "<span class='mdl-textfield__error'>error</span>";
 		html += "</div>";
 		
@@ -1736,11 +1741,11 @@ var ProfilePage = {
 		html += "</div>"
 			
 		html += "<div class='aaa-field-small'>";
-		html += "<p><span id='aaa_new_event_days'>1</span> days.</p>";
+		html += "<p><span id='aaa_new_event_days'>1</span> "+Text['days']+".</p>";
 		html += "</div>";
 			
 		html += "<div class='aaa-field-small'>";
-		html += "Color:";
+		html += Text['color']+":";
 		html += "<input id='aaa_new_event_color' type='color' value='#0000FF'>";
 		html += "</div>";
 		
@@ -1889,31 +1894,31 @@ var ProfilePage = {
 		var html = "<form onSubmit='ProfilePage.submitItem();return false'>";
 		html += "<div class='aaa-field-small mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 		html += "<input class='mdl-textfield__input' type='text' id='aaa_inventory_name' />";
-		html += "<label class='mdl-textfield__label' for='aaa_inventory_name'>"+Text['inventory_name']+"</label>";
+		html += "<label class='mdl-textfield__label' for='aaa_inventory_name'>"+Text['profile_inventory_name']+"</label>";
 		html += "<span class='mdl-textfield__error'>error</span>";
 		html += "</div>";
 		
 		html += "<div class='aaa-field-small mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 		html += "<input class='mdl-textfield__input' type='text' id='aaa_inventory_arms' />";
-		html += "<label class='mdl-textfield__label' for='aaa_inventory_arms'>"+Text['inventory_arms']+"</label>";
+		html += "<label class='mdl-textfield__label' for='aaa_inventory_arms'>"+Text['profile_inventory_arms']+"</label>";
 		html += "<span class='mdl-textfield__error'>error</span>";
 		html += "</div>";
 		
 		html += "<div class='aaa-field-small mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 		html += "<input class='mdl-textfield__input' type='text' id='aaa_inventory_weight' />";
-		html += "<label class='mdl-textfield__label' for='aaa_inventory_weight'>"+Text['inventory_weight']+"</label>";
+		html += "<label class='mdl-textfield__label' for='aaa_inventory_weight'>"+Text['profile_inventory_weight']+"</label>";
 		html += "<span class='mdl-textfield__error'>error</span>";
 		html += "</div>";
 		
 		html += "<div class='aaa-field-small mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 		html += "<input class='mdl-textfield__input' type='text' id='aaa_inventory_arrow' />";
-		html += "<label class='mdl-textfield__label' for='aaa_inventory_arrow'>"+Text['inventory_arrow']+"</label>";
+		html += "<label class='mdl-textfield__label' for='aaa_inventory_arrow'>"+Text['profile_inventory_arrow']+"</label>";
 		html += "<span class='mdl-textfield__error'>error</span>";
 		html += "</div>";
 		
 		html += "<div class='aaa-field-small mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 		html += "<input class='mdl-textfield__input' type='text' id='aaa_inventory_arrows' />";
-		html += "<label class='mdl-textfield__label' for='aaa_inventory_arrows'>"+Text['inventory_arrows']+"</label>";
+		html += "<label class='mdl-textfield__label' for='aaa_inventory_arrows'>"+Text['profile_inventory_arrows']+"</label>";
 		html += "<span class='mdl-textfield__error'>error</span>";
 		html += "</div>";
 		
@@ -2047,47 +2052,6 @@ var ProfilePage = {
 	},
 	
 	HTML: {
-		SVG: {
-			getSeasonGraph: function(season){
-				var max = Math.ceil(season.max/50)*50+50;
-				
-				var general_width = (season.weeks.length*100+110+150);
-				var general_height = max + 150 + 50;
-				var width = 20.2/(100/general_width);
-				
-				var html = "<svg xmlns='http://www.w3.org/2000/svg'";
-				html += " id='aaa_report_season_graph'";
-				html += " version='1.1'";
-				html += " viewBox='0 "+(-general_height)+" "+(general_width+2)+" "+(general_height+2)+"'";
-				html += " preserveAspectRatio='xMidYMid meet'";
-				html += " width='"+width+"pt'>";
-				
-				html += SVG.getStyle();
-				
-				html += "<g id='main'>";
-				
-				html += "<g id='data' transform='translate(140,-150)'>";
-				
-				html += SVG.getGrid(max,season.weeks.length);
-				
-				html += SVG.getBottomWeeks(season.weeks);
-				html += SVG.getLeftAxis(0,max,"arrow_count",max);
-				
-				for(var i = 0; i < season.arrows.length; i++){
-					html += SVG.getPlan(season.arrows[i],i);
-					html += SVG.getShare(season.arrows[i]-season.targets[i],i);
-				}
-				
-				html += "</g>";
-				
-				html += "</g>";
-				
-				html += "</svg>";
-				
-				return html;
-			}
-		},
-		
 		getSeasonsCard: function(){
 			var html = "<div id='aaa_profile_seasons' class='mdl-cell mdl-cell--8-col mdl-shadow--2dp'>";
 			html += "<h1>"+Text['profile_seasons'];
@@ -2101,7 +2065,7 @@ var ProfilePage = {
 			html += "<button id='aaa_new_season' onClick='ProfilePage.createNewSeason($(\"#aaa_new_season_size\").html());' class='mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored'>";
 			html += "<i class='material-icons'>library_add</i>";
 			html += "</button>";
-			html += "<p>"+Text['new_season_size']+" <span id='aaa_new_season_size'>26</span> "+Text['weeks']+".</p>";
+			html += "<p>"+Text['profile_new_season_size']+" <span id='aaa_new_season_size'>26</span> "+Text['weeks']+".</p>";
 			html += "</h1>";
 			
 			html += "<div id='aaa_new_season_content' class='aaa-downslider'></div>";
@@ -2127,10 +2091,10 @@ var ProfilePage = {
 			var html = "<div id='aaa_season_"+season.id+"' class='aaa-seasons-item'>";
 			html += "<h2>"+season.name+"</h2>";
 			
-			html += this.SVG.getSeasonGraph(season);
+			html += SVG.getEmptySeasonGraph(season);
 			
-			html += "<p><strong>Start: </strong>"+season.start_date+"</p>";
-			html += "<p><strong>End: </strong>"+season.end_date+"</p>";
+			html += "<p><strong>"+Text['profile_season_start']+": </strong>"+season.start_date+"</p>";
+			html += "<p><strong>"+Text['profile_season_end']+": </strong>"+season.end_date+"</p>";
 			
 			html += "<p onClick='ProfilePage.updateSeason("+season.id+");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effec'>";
 			html += "<i class='material-icons'>edit</i>";
@@ -2154,7 +2118,7 @@ var ProfilePage = {
 			
 			html += "<div id='aaa_new_event_content'class='aaa-downslider'></div>";
 			
-			html += "<div id='aaa_events_content'>"+this.getEventsContent()+"</div>";
+			html += "<div id='aaa_events_content'>"+ProfilePage.HTML.getEventsContent()+"</div>";
 			
 			html += "</div>";
 			return html;
@@ -2162,7 +2126,7 @@ var ProfilePage = {
 		
 		getEventsContent: function(){
 			var events = API.getEvents();
-			var html = "<h5>"+Text['profile_upcoming_events']+"</h5>";
+			var html = "";
 			for(var i = 0; i < events.length; i++){
 				html += HTML.getEventUnit(events[i],true);
 			}
@@ -2179,7 +2143,7 @@ var ProfilePage = {
 			
 			html += "<div id='aaa_new_task' class='aaa-field-large mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 			html += "<input class='mdl-textfield__input' type='text' id='aaa_new_task_description' />";
-			html += "<label class='mdl-textfield__label' for='aaa_new_description'>"+Text['task_description']+"</label>";
+			html += "<label class='mdl-textfield__label' for='aaa_new_description'>"+Text['profile_tasks_description']+"</label>";
 			html += "<span class='mdl-textfield__error'>error</span>";
 			html += "</div>";
 			
@@ -2191,11 +2155,11 @@ var ProfilePage = {
 			html += "</form>"
 			
 			html += "<div id='aaa_tasks_content'>";
-			html += this.getTasksContent();
+			html += ProfilePage.HTML.getTasksContent();
 			html += "</div>";
 
 			html += "<button onClick='ProfilePage.checkTasks()' class='mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effec'>";
-			html += Text['close_tasks']+" <i class='material-icons'>done</i>";
+			html += Text['profile_tasks_close']+" <i class='material-icons'>done</i>";
 			html += "</button>";
 			
 			html += "</div>";
@@ -2207,7 +2171,7 @@ var ProfilePage = {
 			var html = "";
 			for(var i = 0; i < tasks.length; i++){
 				if(tasks[i].status != "done"){
-					html += this.getTaskCheckbox(tasks[i].id,tasks[i].description);
+					html += ProfilePage.HTML.getTaskCheckbox(tasks[i].id,tasks[i].description);
 				}
 			}
 			
@@ -2246,7 +2210,7 @@ var ProfilePage = {
 			
 			html += "</div>";
 			html += "<div id='aaa_calendar_content'>";
-			html += this.getCalendarContent();
+			html += ProfilePage.HTML.getCalendarContent();
 			html += "</div>";
 
 			html += "</div>";
@@ -2300,7 +2264,7 @@ var ProfilePage = {
 			var bows = API.getItems();
 			for(var i in bows){
 				//TODO change all this.xx to BlablaPage.HTML.xx
-				html += this.getInventoryContent(bows[i]);
+				html += ProfilePage.HTML.getInventoryContent(bows[i]);
 			}
 			
 			html += "</div>";
@@ -2317,11 +2281,11 @@ var ProfilePage = {
 			var html = "<div id='aaa_inventory_item_"+bow['id']+"'class='aaa-inventory-item'>";
 			html += "<img src='/img/bow/"+bow['type']+".png' />";
 			html += "<p><strong>ID: </strong>"+bow['id']+"</p>";
-			html += "<p><strong>Name: </strong>"+bow['name']+"</p>";
-			html += "<p><strong>Arms: </strong>"+bow['arms']+"</p>";
-			html += "<p><strong>Weight: </strong>"+bow['weight']+" lbs</p>";
-			html += "<p><strong>Arrow: </strong>"+bow['arrow']+"</p>";
-			html += "<p>"+bow['arrows']+" arrows in quiver.</p>";
+			html += "<p><strong>"+Text['profile_inventory_name']+": </strong>"+bow['name']+"</p>";
+			html += "<p><strong>"+Text['profile_inventory_arms']+": </strong>"+bow['arms']+"</p>";
+			html += "<p><strong>"+Text['profile_inventory_weight']+": </strong>"+bow['weight']+" lbs</p>";
+			html += "<p><strong>"+Text['profile_inventory_arrow']+": </strong>"+bow['arrow']+"</p>";
+			html += "<p>"+bow['arrows']+" "+Text['profile_inventory_quiver']+".</p>";
 			html += "<p onClick='ProfilePage.updateItem("+bow['id']+")' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effec'>";
 			html += "<i class='material-icons'>edit</i>";
 			html += "</p>";
@@ -2335,6 +2299,44 @@ var ProfilePage = {
 }
 
 var SVG = {
+	getEmptySeasonGraph: function(season){
+		var max = Math.ceil(season.max/50)*50+50;
+		
+		var general_width = (season.weeks.length*100+110+150);
+		var general_height = max + 150 + 50;
+		var width = 20.2/(100/general_width);
+		
+		var html = "<svg xmlns='http://www.w3.org/2000/svg'";
+		html += " id='aaa_report_season_graph'";
+		html += " version='1.1'";
+		html += " viewBox='0 "+(-general_height)+" "+(general_width+2)+" "+(general_height+2)+"'";
+		html += " preserveAspectRatio='xMidYMid meet'";
+		html += " width='"+width+"pt'>";
+		
+		html += SVG.getStyle();
+		
+		html += "<g id='main'>";
+		
+		html += "<g id='data' transform='translate(140,-150)'>";
+		
+		html += SVG.getGrid(max,season.weeks.length);
+		
+		html += SVG.getBottomWeeks(season.weeks);
+		html += SVG.getLeftAxis(0,max,"arrow_count",max);
+		
+		for(var i = 0; i < season.arrows.length; i++){
+			html += SVG.getPlan(season.arrows[i],i);
+			html += SVG.getShare(season.arrows[i]-season.targets[i],i);
+		}
+		
+		html += "</g>";
+		
+		html += "</g>";
+		
+		html += "</svg>";
+		
+		return html;
+	},
 	getValueDistributionGraph: function(distribution){
 		var size = 11;
 		var max = Math.ceil((distribution.max*110)/10)*0.1;

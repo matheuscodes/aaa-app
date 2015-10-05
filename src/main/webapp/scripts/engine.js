@@ -54,7 +54,7 @@ var API = {
 		xmlhttp.onreadystatechange = function() {
 		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 		    	var download = JSON.parse(xmlhttp.responseText);
-		        Report.buildMonthlyReport(download);
+		        PerformancePage.buildMonthlyReport(download);
 		    }
 		}
 

@@ -100,6 +100,37 @@ public class English extends Base {
 		put("home_ends", "Arrow count and average points per end");
 		put("home_year_summary", "Year's summary");
 		put("home_seasons", "Active seasons");
+
+		put("profile_seasons", "Seasons");
+		put("profile_new_season_size", "Season size:");
+		put("weeks", "weeks");
+		put("profile_season_name", "Name");
+		put("profile_season_start", "Start date");
+		put("profile_season_end", "End date");
+		put("days", "days");
+
+		put("profile_events", "Events");
+		put("profile_event_name", "Name");
+		put("profile_event_start", "Start date");
+		put("profile_event_name_short", "Abbreviation");
+		put("color", "Color");
+
+		put("profile_inventory", "Inventory");
+		put("profile_inventory_name", "Bow description");
+		put("profile_inventory_arms", "Bow arm description");
+		put("profile_inventory_weight", "Bow weight");
+		put("profile_inventory_arrow", "Arrow description");
+		put("profile_inventory_arrows", "Arrow count");
+		put("profile_inventory_quiver", "arrows in the quiver");
+		put("compound", "Compound Bow");
+		put("recurve", "Recurve Bow");
+		put("longbow", "Longbow");
+
+		put("profile_tasks", "Tasks");
+		put("profile_tasks_description", "Description");
+		put("profile_tasks_close", "Close Tasks");
+
+		put("profile_calendar", "Weight Trainings");
 	}
 
 }

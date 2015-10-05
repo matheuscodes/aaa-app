@@ -100,6 +100,36 @@ public class German extends Base {
 		put("home_ends", "Pfeil Zahl und durchschnittliche Punkte pro Ende");
 		put("home_year_summary", "Zusammenfassung");
 		put("home_seasons", "Aktuelle Saisons");
-	}
 
+		put("profile_seasons", "Seaisons");
+		put("profile_new_season_size", "Saison Größe:");
+		put("weeks", "Wochen");
+		put("profile_season_name", "Name");
+		put("profile_season_start", "Saisonsanfang");
+		put("profile_season_end", "Saisonende");
+		put("days", "Tage");
+
+		put("profile_events", "Events");
+		put("profile_event_name", "Name");
+		put("profile_event_start", "Anfangstermin");
+		put("profile_event_name_short", "Kürzel");
+		put("color", "Farbe");
+
+		put("profile_inventory", "Ausrüstung");
+		put("profile_inventory_name", "Bogen Beschreibung");
+		put("profile_inventory_arms", "Wurfarme Beschreibung");
+		put("profile_inventory_weight", "Zuggewicht");
+		put("profile_inventory_arrow", "Pfeil Beschreibung");
+		put("profile_inventory_arrows", "Pfeil Zahl");
+		put("profile_inventory_quiver", "Pfeile im Köcher");
+		put("compound", "Compoundbogen");
+		put("recurve", "Recurvebogen");
+		put("longbow", "Langbogen");
+
+		put("profile_tasks", "Aufgaben");
+		put("profile_tasks_description", "Beschreibung");
+		put("profile_tasks_close", "Aufgaben schlißen");
+
+		put("profile_calendar", "Krafttrainings");
+	}
 }
