@@ -32,11 +32,11 @@ public class Bow {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				int id = rs.getInt(FIELD_ID); // TODO make it long
-				String name = rs.getString(FIELD_NAME);
-				String type = rs.getString(FIELD_TYPE);
-				String arms = rs.getString(FIELD_ARMS);
+				String name = rs.getString(FIELD_NAME).replace("\"", "\\\"");
+				String type = rs.getString(FIELD_TYPE).replace("\"", "\\\"");
+				String arms = rs.getString(FIELD_ARMS).replace("\"", "\\\"");
 				float weight = rs.getFloat(FIELD_WEIGHT);
-				String arrow = rs.getString(FIELD_ARROW);
+				String arrow = rs.getString(FIELD_ARROW).replace("\"", "\\\"");
 				int arrows = rs.getInt(FIELD_ARROWS);
 
 				String json = "\"" + id + "\":{"; // TODO verify all entities
@@ -168,12 +168,13 @@ public class Bow {
 			String result = "{";
 			if (rs.next()) {
 				int id = rs.getInt(FIELD_ID);
-				String name = json.get(FIELD_NAME).toString();
-				String type = json.get(FIELD_TYPE).toString();
-				String arms = json.get(FIELD_ARMS).toString();
-				String weight = json.get(FIELD_WEIGHT).toString();
-				String arrow = json.get(FIELD_ARROW).toString();
-				String arrows = json.get(FIELD_ARROWS).toString();
+				String name = json.get(FIELD_NAME).toString().replace("\"", "\\\"");
+				String type = json.get(FIELD_TYPE).toString().replace("\"", "\\\"");
+				String arms = json.get(FIELD_ARMS).toString().replace("\"", "\\\"");
+				String weight = json.get(FIELD_WEIGHT).toString().replace("\"", "\\\"");
+				String arrow = json.get(FIELD_ARROW).toString().replace("\"", "\\\"");
+				String arrows = json.get(FIELD_ARROWS).toString().replace("\"", "\\\"");
+
 				// TODO maybe reduce this to json.put()
 				result += "\"" + FIELD_ID + "\":" + id + ",";
 				result += "\"" + FIELD_NAME + "\":\"" + name + "\",";
