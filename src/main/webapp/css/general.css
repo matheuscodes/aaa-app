@@ -6,6 +6,7 @@
 .mdl-card {
 	width: unset;
 	min-height: unset;
+	overflow: visible; /*Must be*/
 }
 
 #aaa_new_event_color {

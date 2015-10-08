@@ -845,7 +845,7 @@ var PerformancePage = {
 				if(i > 4) html += " aaa-report-weekend";
 				if(current.getMonth() + 1 != download.month) html += " aaa-report-offtime";
 				html += "'>";
-				if(download.arrow_counts.warmup[current.toJSON().substring(0,10)]){
+				if(download.arrow_counts.warmup && download.arrow_counts.warmup[current.toJSON().substring(0,10)]){
 					html += download.arrow_counts.warmup[current.toJSON().substring(0,10)];
 				}
 				else{
@@ -922,7 +922,7 @@ var PerformancePage = {
 				if(i > 4) html += " aaa-report-weekend";
 				if(current.getMonth() + 1 != download.month) html += " aaa-report-offtime";
 				html += "'>";
-				if(download.arrow_counts.warmout[current.toJSON().substring(0,10)]){
+				if(download.arrow_counts.warmout && download.arrow_counts.warmout[current.toJSON().substring(0,10)]){
 					html += download.arrow_counts.warmout[current.toJSON().substring(0,10)];
 				}
 				else{
