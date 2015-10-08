@@ -612,7 +612,7 @@ public class Training {
 		HashMap<String, Float> sums = new HashMap<String, Float>();
 
 		for (String day : performance.keySet()) {
-			GregorianCalendar gc = new GregorianCalendar();
+			GregorianCalendar gc = new GregorianCalendar(Locale.UK);
 			try {
 				gc.setTime(Database.sdf.parse(day));
 			} catch (ParseException e) {
@@ -636,7 +636,7 @@ public class Training {
 		HashMap<String, Integer> arrows = compileDailyArrowsSince(archer, getYearAgo(), getNow());
 		HashMap<String, Integer> totals = new HashMap<String, Integer>();
 		for (String day : arrows.keySet()) {
-			GregorianCalendar gc = new GregorianCalendar();
+			GregorianCalendar gc = new GregorianCalendar(Locale.UK);
 			try {
 				gc.setTime(Database.sdf.parse(day));
 			} catch (ParseException e) {

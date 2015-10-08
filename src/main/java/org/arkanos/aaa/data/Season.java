@@ -112,7 +112,7 @@ public class Season {
 
 		DailyPerformance dr = Training.compileDaily(start, end, user);
 
-		GregorianCalendar gc = new GregorianCalendar();
+		GregorianCalendar gc = new GregorianCalendar(Locale.UK);
 		try {
 			for (String d : dr.technique_totals.keySet()) {
 				gc.clear();

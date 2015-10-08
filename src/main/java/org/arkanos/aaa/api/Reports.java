@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -92,7 +93,7 @@ public class Reports extends HttpServlet {
 		// (dislocated by one day)
 		// FIXME force week to start on monday.
 		String json = "";
-		GregorianCalendar gc = new GregorianCalendar();
+		GregorianCalendar gc = new GregorianCalendar(Locale.UK);
 		gc.clear();
 		gc.set(Calendar.YEAR, year);
 		gc.set(Calendar.MONTH, month - 1);
