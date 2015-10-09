@@ -228,9 +228,9 @@
 	float: left;
 	margin: 2pt;
 	font-size: 7pt;
-	width: 6%;
-	height: 6%;
-	line-height: 100%;
+	width: 8pt;
+	height: 8pt;
+	line-height: 8pt;
 	border-radius: 50%;
 	padding: 3pt;
 	text-align: center;
@@ -250,7 +250,8 @@
 }
 
 .aaa-calendar {
-	width: calc(7 * ( 12pt + 6%));
+	min-width: calc(7 * (8pt + 6pt + 4pt + 1.5pt));
+	width: calc(7 * (8pt + 6pt + 4pt + 1.5pt));
 	display: inline-block;
 }
 

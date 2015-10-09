@@ -1356,28 +1356,28 @@ var ProfilePage = {
 	},
 	getProfilePage: function(){
 		//TODO remove mdl-card crap from all previous cells *facepalm* I overwritten CSS (See TODO there)
-		var html = "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet'></div>";
+		var html = "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
 
-		html += ProfilePage.HTML.getTasksCard();
 		
 		html += ProfilePage.HTML.getEventsCard();
-			
+		
+		html += ProfilePage.HTML.getTasksCard();
 		
 		html += ProfilePage.HTML.getCalendarCard();
 		
-		html += "<div class='mdl-cell--2-col mdl-cell mdl-cell--hide-tablet'></div>";
+		html += "<div class='mdl-cell--2-col mdl-cell mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
 		
-		html += "<div class='mdl-cell--2-col mdl-cell mdl-cell--hide-tablet'></div>";
+		html += "<div class='mdl-cell--2-col mdl-cell mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
 		
 		html += ProfilePage.HTML.getInventoryCard();
 		
 		
-		html += "<div class='mdl-cell--2-col mdl-cell mdl-cell--hide-tablet'></div>";
-		html += "<div class='mdl-cell--2-col mdl-cell mdl-cell--hide-tablet'></div>";
+		html += "<div class='mdl-cell--2-col mdl-cell mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
+		html += "<div class='mdl-cell--2-col mdl-cell mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
 		
 		html += ProfilePage.HTML.getSeasonsCard();
 		
-		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet'></div>";
+		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
 		
 		return html;
 	},
@@ -1915,7 +1915,7 @@ var ProfilePage = {
 		},
 		
 		getEventsCard: function(){
-			var html = "<div id='aaa_profile_events' class='mdl-cell mdl-cell--3-col mdl-shadow--2dp'>";
+			var html = "<div id='aaa_profile_events' class='mdl-cell mdl-cell--3-col mdl-cell--4-col-phone mdl-shadow--2dp'>";
 			html += "<h1>"+Text['profile_events'];
 			html += "<button id='aaa_new_event' onClick='ProfilePage.createNewEvent();' class='mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored'>";
 			html += "<i class='material-icons'>library_add</i>";
@@ -1941,7 +1941,7 @@ var ProfilePage = {
 		},
 		
 		getTasksCard: function(){
-			var html = "<div id='aaa_profile_tasks' class='mdl-cell mdl-cell--3-col mdl-shadow--2dp'>";
+			var html = "<div id='aaa_profile_tasks' class='mdl-cell mdl-cell--3-col mdl-cell--2-col-phone mdl-shadow--2dp'>";
 			html += "<h1>"+Text['profile_tasks']+"</h1>";
 			
 			html += "<form onSubmit='ProfilePage.submitTask(); return false;'>"
@@ -2035,7 +2035,7 @@ var ProfilePage = {
 			for(var i = 0,date = new Date(start); date.getMonth() == start.getMonth(); i++){
 				var string = date.toJSON().substring(0,10);
 				html += "<div class='aaa-calendar-day";
-				if(i >= start.getDay()){
+				if(i >= start.getDay() - 1){
 					if(days[string]){
 						html += " aaa-calendar-filled";
 					}
