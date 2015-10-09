@@ -1898,8 +1898,6 @@ var ProfilePage = {
 			
 			html += SVG.getEmptySeasonGraph(season);
 			
-			html += "<p><strong>"+Text['profile_season_start']+": </strong>"+season.start_date+"</p>";
-			html += "<p><strong>"+Text['profile_season_end']+": </strong>"+season.end_date+"</p>";
 			
 			html += "<p onClick='ProfilePage.updateSeason("+season.id+");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effec'>";
 			html += "<i class='material-icons'>edit</i>";
@@ -1908,6 +1906,9 @@ var ProfilePage = {
 			html += "<p onClick='ProfilePage.removeSeason("+season.id+");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
 			html += "<i class='material-icons'>delete</i>";
 			html += "</p>";
+			
+			html += "<p><strong>"+Text['profile_season_start']+": </strong>"+season.start_date+"</p>";
+			html += "<p><strong>"+Text['profile_season_end']+": </strong>"+season.end_date+"</p>";
 			
 			html += "</div>";
 			return html;
