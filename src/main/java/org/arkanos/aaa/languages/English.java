@@ -101,6 +101,16 @@ public class English extends Base {
 		put("home_year_summary", "Year's summary");
 		put("home_seasons", "Active seasons");
 
+		put("distribution", "Distribution");
+		put("distribution_week", "Recent week");
+		put("distribution_month", "Recent month");
+		put("distribution_year", "Recent year");
+
+		put("count_week", "Arrows last week");
+		put("count_month", "Arrows last month");
+		put("value_week", "Average last week");
+		put("value_month", "Average last month");
+
 		put("profile_seasons", "Seasons");
 		put("profile_new_season_size", "Season size:");
 		put("weeks", "weeks");

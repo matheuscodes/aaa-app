@@ -101,6 +101,16 @@ public class German extends Base {
 		put("home_year_summary", "Zusammenfassung");
 		put("home_seasons", "Aktuelle Saisons");
 
+		put("distribution_week", "Letzten Woche");
+		put("distribution_month", "Letzten Monat");
+		put("distribution_year", "Letzten Jahr");
+
+		put("distribution", "Verteilung");
+		put("count_week", "Pfeile letzten Woche");
+		put("count_month", "Pfeile letzten Monat");
+		put("value_week", "Durschnitt letzten Woche");
+		put("value_month", "Durschnitt letzten Monat");
+
 		put("profile_seasons", "Seaisons");
 		put("profile_new_season_size", "Saison Größe:");
 		put("weeks", "Wochen");

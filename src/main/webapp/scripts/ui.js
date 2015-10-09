@@ -2170,7 +2170,7 @@ var SVG = {
 		html += SVG.getGrid(1000,size);
 		
 		
-		html += SVG.getLeftAxis(0,max,"arrow_count",1000,100,"%");
+		html += SVG.getLeftAxis(0,max,"distribution",1000,100,"%");
 		
 		var estimate = false;
 		var estimations = [];
@@ -2247,49 +2247,55 @@ var SVG = {
 		html += SVG.getLeftAxis(0,max,"arrow_count",1000);
 		
 		var estimate = false;
-		var estimations = [];
-		var bullets = {};
+		var estimations_week = [];
+		var estimations_month = [];
+		var bullets_week = {};
+		var bullets_month = {};
 		var min_result = 10;
 		var max_result = 0;
 		for(i in distribution.counts){
 			if(!isNaN(i)){
 				html += SVG.getBar(distribution.counts[i].week*unit,i,0,2,"week");
 				html += SVG.getBar(distribution.counts[i].month*unit,i,1,2,"month");
-				/*
-				if(season[i].result_total){
-					bullets[i] = season[i].result_total;
-					estimations.push(season[i].result_total);
-					if(season[i].result_total > max_result) max_result = season[i].result_total;
-					if(season[i].result_total < min_result) min_result = season[i].result_total;
-					estimate = true;
+				
+				if(distribution.values.week[i]){
+					bullets_week[i] = distribution.values.week[i];
+					estimations_week.push(distribution.values.week[i]);
+					if(distribution.values.week[i] > max_result) max_result = distribution.values.week[i];
+					if(distribution.values.week[i] < min_result) min_result = distribution.values.week[i];
 				}
 				else{
-					if(estimate && i > 1){
-						//TODO test this... probably not working.
-						estimate = (estimations[i-season.start-1]+estimations[i-season.start-2])/2;
-						estimations.push(estimate);
-						if(estimate > max_result) max_result = estimate;
-						if(estimate < min_result) min_result = estimate;
-					}
-					else{
-						estimations.push(-1);
-					}
+					estimations_week.push(-1);
 				}
-				*/
+				
+				if(distribution.values.month[i]){
+					bullets_month[i] = distribution.values.month[i];
+					estimations_month.push(distribution.values.month[i]);
+					if(distribution.values.month[i] > max_result) max_result = distribution.values.month[i];
+					if(distribution.values.month[i] < min_result) min_result = distribution.values.month[i];
+				}
+				else{
+					estimations_month.push(-1);
+				}
 			}
 		}
-		/*
+		
 		var difference = max_result - min_result;
 		max_result += 0.1*difference;
 		min_result -= 0.1*difference;
-		html += SVG.getEstimations(estimations,max,min_result,max_result);
+		html += SVG.getEstimations(estimations_week,1000,min_result,max_result,"estimation-week");
+		html += SVG.getEstimations(estimations_month,1000,min_result,max_result,"estimation-month");
 		
-		html += SVG.getRightAxis(10-min_result,10-max_result,"results",max,size*100);
+		html += SVG.getRightAxis(10-min_result,10-max_result,"results",1000,size*100);
 		
-		for(bullet in bullets){
-			html += SVG.getResult(bullets[bullet],bullet-season.start,max,min_result,max_result);
+		for(bullet in bullets_week){
+			html += SVG.getResult(bullets_week[bullet],bullet,1000,min_result,max_result,"result-week");
 		}
-		*/
+		
+		for(bullet in bullets_month){
+			html += SVG.getResult(bullets_month[bullet],bullet,1000,min_result,max_result,"result-month");
+		}
+		
 		
 		html += "</g>";
 		
@@ -2312,12 +2318,12 @@ var SVG = {
 		
 		html += "<g id='labels' transform='translate(600,-220)'>";
 		
-		html += "<path class='estimation' d='M 0,"+(1*max/10-12.5)+" l 100,0'/>";
-		html += "<circle class='result' cx='50' cy='"+(1*max/10-12.5)+"' r='10'/>";
+		html += "<path class='estimation-week' d='M 0,"+(1*max/10-12.5)+" l 100,0'/>";
+		html += "<circle class='result-week' cx='50' cy='"+(1*max/10-12.5)+"' r='10'/>";
 		html += "<text class='graph_label' x='125' y='"+(1*max/10-2)+"'>"+Text['value_week']+"</text>"
 		
-		html += "<path class='estimation' d='M 0,"+(2*max/10-12.5)+" l 100,0'/>";
-		html += "<circle class='result' cx='50' cy='"+(2*max/10-12.5)+"' r='10'/>";
+		html += "<path class='estimation-month' d='M 0,"+(2*max/10-12.5)+" l 100,0'/>";
+		html += "<circle class='result-month' cx='50' cy='"+(2*max/10-12.5)+"' r='10'/>";
 		html += "<text class='graph_label' x='125' y='"+(2*max/10-2)+"'>"+Text['value_month']+"</text>"
 		
 		html += "</g>";
@@ -2418,12 +2424,12 @@ var SVG = {
 		var difference = max_result - min_result;
 		max_result += 0.1*difference;
 		min_result -= 0.1*difference;
-		html += SVG.getEstimations(estimations,max,min_result,max_result);
+		html += SVG.getEstimations(estimations,max,min_result,max_result,"estimation");
 		
 		html += SVG.getRightAxis(10-min_result,10-max_result,"results",max,days*100);
 		
 		for(bullet in bullets){
-			html += SVG.getResult(bullets[bullet],bullet,max,min_result,max_result);
+			html += SVG.getResult(bullets[bullet],bullet,max,min_result,max_result,"result");
 		}
 		
 		
@@ -2521,12 +2527,12 @@ var SVG = {
 		var difference = max_result - min_result;
 		max_result += 0.1*difference;
 		min_result -= 0.1*difference;
-		html += SVG.getEstimations(estimations,1000,min_result,max_result);
+		html += SVG.getEstimations(estimations,1000,min_result,max_result,"estimation");
 		
 		html += SVG.getRightAxis(10-min_result,10-max_result,"results",1000,weeks*100);
 		
 		for(bullet in bullets){
-			html += SVG.getResult(bullets[bullet],bullet-season.start,1000,min_result,max_result);
+			html += SVG.getResult(bullets[bullet],bullet-season.start,1000,min_result,max_result,"result");
 		}
 		
 		html += "</g>";
@@ -2595,6 +2601,12 @@ var SVG = {
 		html += ".right {font-size:20pt; text-anchor:start}";
 		html += ".title {font-size:30pt;font-weight:bold; text-anchor:start}";
 		
+		html += ".result-week {fill:#33CC33;stroke:#000;stroke-opacity:1}";
+		html += ".estimation-week {fill:none;stroke:#0F0;stroke-opacity:1;stroke-width:2}";
+		html += ".result-month {fill:#33CCCC;stroke:#000;stroke-opacity:1}";
+		html += ".estimation-month {fill:none;stroke:#00F;stroke-opacity:1;stroke-width:2}";
+		
+		
 		html += "</style>";
 		return html;
 	},
@@ -2642,16 +2654,16 @@ var SVG = {
 		return s;
 	},
 
-	getResult: function(value,position,size,min,max) {
+	getResult: function(value,position,size,min,max,what) {
 		var s = "<g>";
 		var k = -((value-min)/(max-min));
-		s+= "<circle class='result' cx='"+(position*100+50)+"' cy='"+(k*size)+"' r='10'/>";
+		s+= "<circle class='"+what+"' cx='"+(position*100+50)+"' cy='"+(k*size)+"' r='10'/>";
 		s+="</g>";
 		return s;
 	},
 
-	getEstimations: function(data, size,min,max) {
-		var s = "<g><path class='estimation' d='M ";
+	getEstimations: function(data, size,min,max,what) {
+		var s = "<g><path class='"+what+"' d='M ";
 		var first = true;
 		for(var i = 0; i < data.length;i++){ //TODO improve this
 			var k = -((data[i]-min)/(max-min));

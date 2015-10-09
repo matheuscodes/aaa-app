@@ -107,6 +107,16 @@ public class Base extends HashMap<String, String> {
 		put("home_year_summary", "Year summary title");
 		put("home_seasons", "Active Seasons title");
 
+		put("distribution", "Label for distribution graph.");
+		put("distribution_week", "Label for distribution graph.");
+		put("distribution_month", "Label for distribution graph.");
+		put("distribution_year", "Label for distribution graph.");
+
+		put("count_week", "Label for the count per end graph.");
+		put("count_month", "Label for the count per end graph.");
+		put("value_week", "Label for the count per end graph.");
+		put("value_month", "Label for the count per end graph.");
+
 		put("profile_seasons", "Seasons title for profile card");
 		put("profile_new_season_size", "Indicates the size of the season to be created");
 		put("weeks", "Word 'weeks'");

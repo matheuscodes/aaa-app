@@ -13,13 +13,13 @@
 
 #aaa_home_values_graph {
 	width: calc(100% - 10pt);
-	max-height: 220pt;
+	max-height: 300pt;
 	margin: 5pt;
 }
 
 #aaa_home_ends_graph {
 	width: calc(100% - 10pt);
-	max-height: 220pt;
+	max-height: 300pt;
 	margin: 5pt;
 }
 
