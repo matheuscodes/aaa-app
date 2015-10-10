@@ -412,6 +412,21 @@ var User = {
 		return this.isLoggedIn();
 	},
 	
+	processLogout: function(callback){
+		var xmlhttp = new XMLHttpRequest();
+		var url = "/logout";
+		xmlhttp.open("POST", url, false);
+	
+		xmlhttp.setRequestHeader("Connection", "close");
+		xmlhttp.onreadystatechange = function() {
+			if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+				callback();
+		    }
+		}
+		xmlhttp.send();
+		return;
+	},
+	
 	isLoggedIn: function(){
 		return this.logged_in;
 	},
