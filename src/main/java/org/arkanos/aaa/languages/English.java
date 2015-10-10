@@ -42,7 +42,7 @@ public class English extends Base {
 
 		put("upload_gauge", "Upload gauged training");
 		put("discard_gauge", "Discard draft");
-		put("add_gauge_end", "Add new end");
+		put("add_close_end", "Add new end");
 		put("remove_end_arrow", "Remove last arrow");
 		put("add_new_gauge", "New gauged training");
 		put("end", "End");

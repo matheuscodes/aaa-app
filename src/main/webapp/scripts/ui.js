@@ -90,19 +90,10 @@ var Application = {
 
 var LoginPage = {
 	doLogin: function(){
-		//TODO use as callback function.
-		if(User.processLogin()){
-			$("#aaa_content").hide("slide", { direction: "right" }, 1000);
-			$("#aaa_header_title").fadeOut(1000,function(){
-				$("#aaa_header_title").html(Text['home']);
-				$("#aaa_header_title").fadeIn(2000);
-				Application.loadUserData();
-				HomePage.buildHomePage();
-			});
-		}
-		else{
-			alert("Error!");
-		}
+		User.processLogin(function(){
+			Application.loadUserData();
+			HomePage.buildHomePage();
+		});
 	},
 	
 	doLogout: function(){
@@ -166,20 +157,19 @@ var LoginPage = {
 	}
 }
 
-//TODO rename to TrainingsPage
-var TrainingPage = {
+var TrainingsPage = {
 	buildTrainingsPage: function(){
-		Application.destroyCurrentPage(Text['manage_trainings'],TrainingPage.getTrainingsPage);
+		Application.destroyCurrentPage(Text['manage_trainings'],TrainingsPage.getTrainingsPage);
 	},
 	getTrainingsPage: function(){
 		var html = "<div class='mdl-cell--12-col'>"; 
-		html += "<button id='aaa_new_training' onClick='TrainingPage.openTraining();' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect'>";
+		html += "<button id='aaa_new_training' onClick='TrainingsPage.openTraining();' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect'>";
 		html += "<i class='material-icons'>add gps_off</i>";
 		html += "</button>";
 		
 		html += "<div class='mdl-tooltip' for='aaa_new_training'>"+Text['add_new_training']+"</div>";
 		
-		html += "<button id='aaa_new_gauge' onClick='TrainingPage.openGauge();' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect'>";
+		html += "<button id='aaa_new_gauge' onClick='TrainingsPage.openGauge();' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect'>";
 		html += "<i class='material-icons'>add gps_fixed</i>";
 		html += "</button>";
 		
@@ -216,7 +206,7 @@ var TrainingPage = {
 			User.pushGaugeDraft(arrows);
 			//TODO block user input during transition, otherwise... shit will happen.
 			$( "#aaa_gauge_ends" ).fadeOut(500,function(){
-				$("#aaa_gauge_ends").html(TrainingPage.HTML.getGaugeEnds(User.getGaugeDraft().ends));
+				$("#aaa_gauge_ends").html(TrainingsPage.HTML.getGaugeEnds(User.getGaugeDraft().ends));
 				makeFreakingMDLwork();
 				$("#aaa_gauge_ends").fadeIn(500);
 			});
@@ -358,7 +348,7 @@ var TrainingPage = {
 		getTrainingCard: function(){
 			var html = "<div class='mdl-layout-spacer'></div>";
 			html += "<div id='aaa_training_card' class='mdl-cell mdl-cell--4-col'>";
-			html += "<div class='demo-card-wide mdl-card mdl-shadow--2dp'>";
+			html += "<div class='mdl-card mdl-shadow--2dp'>";
 			html += "<div class='mdl-card__title'>";
 			html += "<h1 class='mdl-card__title-text'>"+Text['add_new_training']+"</h1>";
 			html += "</div>";
@@ -373,7 +363,7 @@ var TrainingPage = {
 			html += "</div>";
 			
 			html += "<div id='aaa_training_content' class='mdl-card__supporting-text'>";
-			html += this.getTrainingDraft();
+			html += TrainingsPage.HTML.getTrainingDraft();
 			html += "</div>";
 			
 			html += "<div class='mdl-card__actions mdl-card--border'>";
@@ -396,7 +386,7 @@ var TrainingPage = {
 			html += "</div>";
 			html += "</div>";
 			
-			html += "<button id='aaa_add_training' onClick='TrainingPage.addTraining();' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'>";
+			html += "<button id='aaa_add_training' onClick='TrainingsPage.addTraining();' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'>";
 			html += "<i class='material-icons'>add</i>";
 			html += "</button>";
 			
@@ -434,13 +424,13 @@ var TrainingPage = {
 			html += "</div>";
 			
 			html += "<div class='mdl-card__menu'>";
-			html += "<button id='aaa_upload_training' onClick='TrainingPage.submitTraining();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+			html += "<button id='aaa_upload_training' onClick='TrainingsPage.submitTraining();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
 			html += "<i class='material-icons'>backup</i>";
 			html += "</button>";
 			
 			html += "<div class='mdl-tooltip' for='aaa_upload_training'>"+Text['upload_training']+"</div>";
 			
-			html += "<button id='aaa_discard_training' onClick='TrainingPage.discardTraining();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+			html += "<button id='aaa_discard_training' onClick='TrainingsPage.discardTraining();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
 			html += "<i class='material-icons'>delete</i>";
 			html += "</button>";
 			
@@ -460,12 +450,12 @@ var TrainingPage = {
 		getGaugeCard: function(){
 			var html = "<div class='mdl-layout-spacer'></div>";
 			html += "<div id='aaa_gauge_card' class='mdl-cell mdl-cell--8-col'>";
-			html += "<div class='demo-card-wide mdl-card mdl-shadow--2dp'>";
+			html += "<div class='mdl-card mdl-shadow--2dp'>";
 			html += "<div class='mdl-card__title'>";
 			html += "<h1 class='mdl-card__title-text'>"+Text['add_new_gauge']+"</h1>";
 			html += "</div>";
 			html += "<div id='aaa_gauge_content' class='mdl-card__supporting-text'>";
-			html += this.getGaugeDraft();
+			html += TrainingsPage.HTML.getGaugeDraft();
 			html += "</div>";
 			html += "<div class='mdl-card__actions mdl-card--border'>";
 			
@@ -475,16 +465,15 @@ var TrainingPage = {
 			
 			html += "<div id='aaa_gauge_end' class='aaa-arrows'></div>";
 			
-			html += "<button id='aaa_close_end' onClick='TrainingPage.closeEnd();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--colored'>";
+			html += "<button id='aaa_close_end' onClick='TrainingsPage.closeEnd();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--colored'>";
 			html += "<i class='material-icons'>done</i>";
 			html += "</button>";
-			//TODO rename the text to match id
-			html += "<div class='mdl-tooltip' for='aaa_close_end'>"+Text['add_gauge_end']+"</div>";
+			html += "<div class='mdl-tooltip' for='aaa_close_end'>"+Text['add_close_end']+"</div>";
 			
 			html += "<div class='aaa-arrows'>";
 			
 			for(var i = 0; i <= 10; i++){
-				html += "<button id='aaa_arrow_"+i+"' onClick='TrainingPage.addArrow("+i+");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect aaa-arrow-input'>";
+				html += "<button id='aaa_arrow_"+i+"' onClick='TrainingsPage.addArrow("+i+");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect aaa-arrow-input'>";
 				html += "<strong>"+i+"</strong>";
 				html += "</button>";
 			}
@@ -492,7 +481,7 @@ var TrainingPage = {
 			html += "</div>";
 			
 			
-			html += "<button id='aaa_remove_arrow' onClick='TrainingPage.removeArrow();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--colored'>";
+			html += "<button id='aaa_remove_arrow' onClick='TrainingsPage.removeArrow();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--colored'>";
 			html += "<i class='material-icons'>undo</i>";
 			html += "</button>";
 			
@@ -506,13 +495,13 @@ var TrainingPage = {
 			html += "</div>";
 			
 			html += "<div class='mdl-card__menu'>";
-			html += "<button id='aaa_upload_gauge' onClick='TrainingPage.submitGauge();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+			html += "<button id='aaa_upload_gauge' onClick='TrainingsPage.submitGauge();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
 			html += "<i class='material-icons'>backup</i>";
 			html += "</button>";
 			
 			html += "<div class='mdl-tooltip' for='aaa_upload_gauge'>"+Text['upload_gauge']+"</div>";
 			
-			html += "<button id='aaa_discard_gauge' onClick='TrainingPage.discardGauge();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
+			html += "<button id='aaa_discard_gauge' onClick='TrainingsPage.discardGauge();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
 			html += "<i class='material-icons'>delete</i>";
 			html += "</button>";
 			
@@ -561,7 +550,7 @@ var TrainingPage = {
 			
 			html += "<div id='aaa_gauge_ends'>";
 			if(User.getGaugeDraft()){
-				html += this.getGaugeEnds(User.getGaugeDraft().ends);
+				html += TrainingsPage.HTML.getGaugeEnds(User.getGaugeDraft().ends);
 			}
 			html += "</div>";
 			return html;
@@ -643,9 +632,7 @@ var PerformancePage = {
 	},
 	getPerformancePage: function(){
 		//TODO fix fix transition bug
-		var html = "<div class='mdl-grid mdl-cell--12-col'>";
-		//TODO remove demo card class from examples (search for demo)
-		html += "<div class='mdl-card mdl-shadow--2dp'>";
+		var html = "<div class='mdl-grid mdl-cell--12-col mdl-shadow--2dp'>";
 		
 		var now = new Date();
 		if(!PerformancePage.month){
@@ -657,7 +644,7 @@ var PerformancePage = {
 		html += "<div id='aaa_report_selector'>";
 		html += "<div class='mdl-layout-spacer'></div>";
 		
-		html += "<p id='aaa_report_month'>"+Text["month_full_"+this.month]+"</p>";
+		html += "<p id='aaa_report_month'>"+Text["month_full_"+PerformancePage.month]+"</p>";
 		
 		html+= "<button id='aaa_report_set_month' class='mdl-button mdl-js-button mdl-button--icon'>";
 		html+= "<i class='material-icons'>expand_more</i>";
@@ -680,13 +667,13 @@ var PerformancePage = {
 			html+= "<li class='mdl-menu__item' onClick='PerformancePage.setYear("+i+")'>"+i+"</li>";
 		}
 		html+= "</ul>";
-		
+		html += "<div class='mdl-layout-spacer'></div>";
 		html += "</div>";
-		
+		//TODO fix bug with ghost scroll bar when displaying the menu and closing.
 		html += "<div id='aaa_report_content'></div>";
 		html += "</div>";
 		
-		html += "<div class='mdl-layout-spacer'></div>";
+		
 		
 		return html;
 	},
@@ -1073,7 +1060,6 @@ var HomePage = {
 		Application.destroyCurrentPage(Text['home'],HomePage.getHomePage);
 	},
 	getHomePage: function(){
-		//TODO remove mdl-card crap from all previous cells *facepalm* I overwritten CSS (See TODO there)
 		var html = "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
 
 		html += HomePage.HTML.getTotalArrowsCard();
@@ -1200,7 +1186,6 @@ var ProfilePage = {
 	},
 	
 	getProfilePage: function(){
-		//TODO remove mdl-card crap from all previous cells *facepalm* I overwritten CSS (See TODO there)
 		var html = "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
 
 		
@@ -1294,7 +1279,7 @@ var ProfilePage = {
 	updateSeason: function(id){
 		var season = API.getSeasons(id);
 		if(season){
-			this.createNewSeason(season.weeks.length,season.weeks);
+			ProfilePage.createNewSeason(season.weeks.length,season.weeks);
 			for(var i = 0; i < season.weeks.length; i++){
 				$("#aaa_new_season_week_arrows_"+i).val(season.arrows[i]);
 				$("#aaa_new_season_week_arrows_"+i).parent().addClass("is-dirty");
@@ -1346,7 +1331,7 @@ var ProfilePage = {
 			if($("#aaa_new_season_id").val()){
 				season['id'] = $("#aaa_new_season_id").val();
 			}
-			var HTML = this.HTML;
+			var HTML = ProfilePage.HTML;
 			console.log(season);
 			API.placeSeason(season,function(s){
 				console.log(s);
@@ -1466,13 +1451,12 @@ var ProfilePage = {
 		if($("#aaa_new_task_description").val()){
 			task['description'] = $("#aaa_new_task_description").val();
 			$("#aaa_new_task_button").attr('disabled','disabled');
-			var HTML = this.HTML;
+			var HTML = ProfilePage.HTML;
 			API.addTask(task, function(t){
 				var html = HTML.getTaskCheckbox(t.id,t.description);
 				var newnode = $(html).hide();
 				$('#aaa_tasks_content').prepend(newnode);
 				$("#aaa_new_task_description").val(null);
-				//TODO check if works
 				$("#aaa_new_task_description").parent().removeClass("is-dirty");
 				$("#aaa_new_task_button").removeAttr('disabled');
 				makeFreakingMDLwork();
@@ -1585,7 +1569,7 @@ var ProfilePage = {
 		html += "</label>";
 		
 		html += "<label class='mdl-radio mdl-js-radio mdl-js-ripple-effect' for='aaa_option_3'>";
-		html += "<input type='radio' id='aaa_option_3' class='mdl-radio__button' name='options' value='longbow' />"; //TODO rename png to longbow
+		html += "<input type='radio' id='aaa_option_3' class='mdl-radio__button' name='options' value='longbow' />";
 		html += "<span class='mdl-radio__label'>"+Text['longbow']+"</span>";
 		html += "</label>";
 		
@@ -1651,7 +1635,7 @@ var ProfilePage = {
 			}
 			bow['type'] = $("#aaa_inventory_type input[type='radio']:checked").val();
 			
-			var HTML = this.HTML;
+			var HTML = ProfilePage.HTML;
 			API.placeItem(bow, function(b){
 				$("#aaa_new_item_content").hide("slide", { direction: "up" }, 500);
 				var html = HTML.getInventoryContent(b);
@@ -1671,7 +1655,7 @@ var ProfilePage = {
 	updateItem: function(id){
 		var item = API.getItems(id);
 		if(item){
-			this.createNewItem();
+			ProfilePage.createNewItem();
 			for(var i in item){
 				if(i != "type"){
 					$("#aaa_inventory_"+i).val(item[i]);
@@ -1726,7 +1710,7 @@ var ProfilePage = {
 			var seasons = API.getSeasons();
 			
 			for(var i in seasons){
-				html += this.getSeasonContent(seasons[i]);
+				html += ProfilePage.HTML.getSeasonContent(seasons[i]);
 			}
 			
 			html += "</div>";
@@ -1914,7 +1898,6 @@ var ProfilePage = {
 			
 			var bows = API.getItems();
 			for(var i in bows){
-				//TODO change all this.xx to BlablaPage.HTML.xx
 				html += ProfilePage.HTML.getInventoryContent(bows[i]);
 			}
 			
@@ -1956,14 +1939,13 @@ var HTML = {
 			html += "<div id='aaa_sidebar_header_dropdown' class='aaa-options-dropdown'>";
 			html += "<span id='aaa_sidebar_header_email'></span>";
 			html += "<div class='mdl-layout-spacer'></div>";
-			//TODO make hierarchy visible in the id (missing aaa_sidebar)
-			html += "<button id='aaa_user_options' class='mdl-button mdl-js-button mdl-button--icon'>";
+			html += "<button id='aaa_sidebar_user_options' class='mdl-button mdl-js-button mdl-button--icon'>";
 			html += "<i class='material-icons'>arrow_drop_down</i>";
 			html += "</button>";
 
-			html += "<div class='mdl-tooltip' for='aaa_user_options'>"+Text['options']+"</div>"; //TODO fix that it is too low.
+			html += "<div class='mdl-tooltip' for='aaa_sidebar_user_options'>"+Text['options']+"</div>"; //TODO fix that it is too low.
 			
-			html += "<ul class='mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect' for='aaa_user_options'>";
+			html += "<ul class='mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect' for='aaa_sidebar_user_options'>";
 			html += "<li class='mdl-menu__item'><i class='material-icons'>settings</i> "+Text['settings']+"</li>";
 			html += "<li onClick='LoginPage.doLogout()' class='mdl-menu__item'><i class='material-icons'>exit_to_app</i> "+Text['logout']+"</li>";
 			html += "</ul>";
@@ -2034,7 +2016,7 @@ var HTML = {
 			html += "<nav class='mdl-navigation'>";
 			html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick='HomePage.buildHomePage();'><i class='material-icons'>home</i> "+Text['home']+"</a>";
 			html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick='ProfilePage.buildProfilePage();'><i class='material-icons'>assignment_ind</i> "+Text['manage_profile']+"</a>";
-			html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick='TrainingPage.buildTrainingsPage();'><i class='material-icons'>create</i> "+Text['manage_trainings']+"</a>";
+			html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick='TrainingsPage.buildTrainingsPage();'><i class='material-icons'>create</i> "+Text['manage_trainings']+"</a>";
 			html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick='PerformancePage.buildPerformancePage();'><i class='material-icons'>history</i> "+Text['performance_history']+"</a>";
 			html += "<a class='mdl-navigation__link mdl-color-text--primary-dark' onClick=''><i class='material-icons'>help_outline</i> "+Text['help']+"</a>";
 			html += "</nav>";
@@ -2124,8 +2106,8 @@ var SVG = {
 		html += "<g id='data' transform='translate(140,-150)'>";
 		
 		html += SVG.getGrid(max,season.weeks.length);
-		
-		html += SVG.getBottomWeeks(season.weeks);
+		//FIXME order of the weeks in empty seasons.
+		html += SVG.getBottomLabels(season.weeks,Text['wk']);
 		html += SVG.getLeftAxis(0,max,"arrow_count",max);
 		
 		for(var i = 0; i < season.arrows.length; i++){
@@ -2184,8 +2166,7 @@ var SVG = {
 				values.push(i);
 			}
 		}
-		//TODO rename to get bottom labels
-		html += SVG.getBottomWeeks(values);
+		html += SVG.getBottomLabels(values);
 		
 		html += "</g>";
 		
@@ -2241,7 +2222,7 @@ var SVG = {
 		for(var i = 0; i <= distribution.max_end; i++){
 			ends.push(i+1);
 		}
-		html += SVG.getBottomWeeks(ends);
+		html += SVG.getBottomLabels(ends);
 		html += SVG.getLeftAxis(0,max,"arrow_count",1000);
 		
 		var estimate = false;
@@ -2487,7 +2468,7 @@ var SVG = {
 		
 		html += SVG.getGrid(1000,weeks);
 		
-		html += SVG.getBottomWeeks(season.weeks,Text['wk']);
+		html += SVG.getBottomLabels(season.weeks,Text['wk']);
 		html += SVG.getLeftAxis(0,max,"arrow_count",1000);
 		
 		var estimate = false;
@@ -2663,7 +2644,7 @@ var SVG = {
 	getEstimations: function(data, size,min,max,what) {
 		var s = "<g><path class='"+what+"' d='M ";
 		var first = true;
-		for(var i = 0; i < data.length;i++){ //TODO improve this
+		for(var i = 0; i < data.length;i++){
 			var k = -((data[i]-min)/(max-min));
 			if(k <= 0){
 				if(first){
@@ -2728,7 +2709,7 @@ var SVG = {
 		return html;
 	},
 
-	getBottomWeeks: function(weeks,prefix){
+	getBottomLabels: function(weeks,prefix){
 		var html = "<g id='bottom'>";
 		for(var i = 0; i < weeks.length; i++){
 			html += "<g transform=translate("+((i)*100+50)+",50)>";

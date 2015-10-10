@@ -42,7 +42,7 @@ public class German extends Base {
 
 		put("upload_gauge", "Leistungskontrolle hochladen");
 		put("discard_gauge", "Entwurf löschen");
-		put("add_gauge_end", "Daten hinzufügen");
+		put("add_close_end", "Daten hinzufügen");
 		put("remove_end_arrow", "Das Letzte zurücknehmen");
 		put("add_new_gauge", "Neue Leistungskontrolle");
 		put("end", "End");

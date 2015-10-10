@@ -63,7 +63,8 @@ var API = {
 	},
 	
 	getSeasons: function(id){
-		//TODO review blocking requests
+		//TODO review blocking requests.
+		//TODO use callbacks.
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/seasons/";
 
@@ -87,7 +88,6 @@ var API = {
 	},
 	
 	placeSeason: function(season,success){
-		//TODO review blocking requests
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/seasons/";
 
@@ -115,16 +115,14 @@ var API = {
 		xmlhttp.send(JSON.stringify(season));
 	},
 	
-	deleteSeason: function(id,callback){
-		//TODO with callback function
-		//TODO review all with UI calls to make callback
+	deleteSeason: function(id,success){
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/seasons/"+id+"/";
 
 		xmlhttp.onreadystatechange = function() {
 		    if (xmlhttp.readyState == 4 && xmlhttp.status == 204) {				
 				console.log("Deleted "+id);
-				callback();
+				success();
 		    }
 		}
 
@@ -133,7 +131,8 @@ var API = {
 	},
 	
 	getEvents: function(){
-		//TODO review blocking requests
+		//TODO review blocking requests.
+		//TODO use callbacks.
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/events/";
 
@@ -166,8 +165,6 @@ var API = {
 	},
 	
 	deleteEvent: function(date,name_short,success){
-		//TODO with callback function
-		//TODO review all with UI calls to make callback
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/events/"+date+"/"+name_short+"/";
 
@@ -181,7 +178,8 @@ var API = {
 	},
 	
 	getTasks: function(){
-		//TODO review blocking requests
+		//TODO review blocking requests.
+		//TODO use callbacks.
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/tasks/";
 
@@ -215,8 +213,6 @@ var API = {
 	},
 	
 	deleteTask: function(id,success){
-		//TODO with callback function
-		//TODO review all with UI calls to make callback
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/tasks/"+id;
 
@@ -230,8 +226,6 @@ var API = {
 	},
 	
 	closeTasks: function(ids,success){
-		//TODO with callback function
-		//TODO review all with UI calls to make callback
 		for(var i = 0; i < ids.length; i++){
 			var xmlhttp = new XMLHttpRequest();
 			var url = "/tasks/"+ids[i];
@@ -293,7 +287,8 @@ var API = {
 	},
 	
 	getItems: function(id){
-		//TODO review blocking requests
+		//TODO review blocking requests.
+		//TODO use callbacks.
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/inventory/";
 
@@ -317,7 +312,6 @@ var API = {
 	},
 	
 	placeItem: function(bow,success){
-		//TODO review blocking requests
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/inventory/";
 
@@ -346,8 +340,6 @@ var API = {
 	},
 	
 	deleteItem: function(id,success){
-		//TODO with callback function
-		//TODO review all with UI calls to make callback
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/inventory/"+id+"/";
 
@@ -366,7 +358,7 @@ var API = {
 
 var User = {
 	logged_in: false,
-	processLogin: function(){
+	processLogin: function(callback){
 		var content = {};
 		if(document.getElementById("email")){
 			content['email'] = document.getElementById("email").value;
@@ -394,16 +386,19 @@ var User = {
 			    	console.log("LOGGED.");
 			    	User.logged_in = true;
 			    	User.email = download.email;
+			    	callback();
 			    }
 			    else{
 			    	if (xmlhttp.status == 200){
 			    		console.log("ALREADY LOGGED.");
 			    		User.logged_in = true;
 				    	User.email = download.email;
+				    	callback();
 			    	}
 			    	else{
 				    	console.log("ERROR.");
 				    	User.logged_in = false;
+				    	alert("Error!");
 			    	}
 			    }
 		    }

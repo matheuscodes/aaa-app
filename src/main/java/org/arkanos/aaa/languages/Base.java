@@ -48,7 +48,7 @@ public class Base extends HashMap<String, String> {
 
 		put("upload_gauge", "Tooltip of the gauge upload button");
 		put("discard_gauge", "Tooltip of the gauge trash button");
-		put("add_gauge_end", "Tooltip of the end add button");
+		put("add_close_end", "Tooltip of the end add button");
 		put("remove_end_arrow", "Tooltip of the end undo button");
 		put("add_new_gauge", "Title of the gauge card");
 		put("end", "Name of the round of arrows");
