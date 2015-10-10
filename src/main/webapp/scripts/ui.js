@@ -5,8 +5,8 @@ function makeFreakingMDLwork() {
 
 var Application = {
 	loadUserData: function(){
-		$("#aaa_sidebar_header").prepend("<img src='/avatar' />");
-		$("#aaa_sidebar_header_dropdown").prepend("<span>"+User['email']+"</span>");
+		$("#aaa_sidebar_header_avatar").html("<img id='aaa_avatar' src='/avatar' />");
+		$("#aaa_sidebar_header_email").html(User['email']);
 		makeFreakingMDLwork();
 		$("#aaa_header_logout").fadeIn(3000);
 		$(".mdl-layout__drawer-button").fadeIn(3000);
@@ -1952,9 +1952,9 @@ var ProfilePage = {
 var HTML = {
 		getAvatarHeader: function(){
 			var html = "<header id='aaa_sidebar_header' class='aaa-drawer-header mdl-layout__header'>";
-			
+			html += "<div id='aaa_sidebar_header_avatar'></div>";
 			html += "<div id='aaa_sidebar_header_dropdown' class='aaa-options-dropdown'>";
-			
+			html += "<span id='aaa_sidebar_header_email'></span>";
 			html += "<div class='mdl-layout-spacer'></div>";
 			//TODO make hierarchy visible in the id (missing aaa_sidebar)
 			html += "<button id='aaa_user_options' class='mdl-button mdl-js-button mdl-button--icon'>";
