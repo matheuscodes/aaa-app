@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.arkanos.aaa.controllers.Database;
 import org.arkanos.aaa.controllers.HTTP;
 import org.arkanos.aaa.controllers.Security;
+import org.arkanos.aaa.controllers.Security.TokenInfo;
 import org.arkanos.aaa.data.Archer;
 
 /**
@@ -40,10 +41,12 @@ public class Avatar extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		byte[] content = null;
-		if (Security.authenticateToken(request) != null) {
+		TokenInfo who = Security.authenticateToken(request);
+		if (who != null) {
 			try {
+				// TODO use prepare statement or add this to TokenInfo
 				ResultSet rs = Database.query("SELECT " + Archer.FIELD_AVATAR + " FROM " + Archer.TABLE_NAME + " WHERE "
-						+ Archer.FIELD_EMAIL + "= 'matheus.bt@gmail.com';");
+						+ Archer.FIELD_EMAIL + "= '" + who.getUsername() + "';");
 				while (rs.next()) {
 					Blob b = rs.getBlob(Archer.FIELD_AVATAR);
 					content = b.getBytes(1, (int) b.length());
