@@ -67,7 +67,7 @@ public class Trainings extends HttpServlet {
 
 			System.out.println(json.toJSONString());
 
-			String email = requester.getUsername(); // TODO rename method to
+			String email = requester.getEmail(); // TODO rename method to
 			// getEmail
 			String type = Database.sanitizeString((String) json.get("type"));
 			boolean success = true;

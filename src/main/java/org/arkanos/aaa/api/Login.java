@@ -89,7 +89,7 @@ public class Login extends HttpServlet {
 				}
 			}
 		}
-		response.getWriter().println("{\"email\":\"" + requester.getUsername() + "\"}");
+		response.getWriter().println("{\"email\":\"" + requester.getEmail() + "\"}");
 		response.setStatus(200);
 	}
 }

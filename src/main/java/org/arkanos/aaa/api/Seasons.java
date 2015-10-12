@@ -49,7 +49,7 @@ public class Seasons extends HttpServlet {
 			resource += "/";
 		if (resource.equals("/seasons/")) {
 			HTTP.setUpDefaultHeaders(response);
-			response.getWriter().println(Season.getAllSeasonsJSON(requester.getUsername()));
+			response.getWriter().println(Season.getAllSeasonsJSON(requester.getEmail()));
 			response.setStatus(200);
 		} else {
 			// TODO specific season
@@ -75,7 +75,7 @@ public class Seasons extends HttpServlet {
 		resource = resource.replace("/seasons/", "");
 		if (resource.length() > 0) {
 			int id = Integer.parseInt(resource.substring(0, resource.length() - 1));
-			if (Season.deleteSeason(requester.getUsername(), id)) {
+			if (Season.deleteSeason(requester.getEmail(), id)) {
 				response.setStatus(204);
 				return;
 			}
@@ -110,8 +110,8 @@ public class Seasons extends HttpServlet {
 			}
 			JSONParser parser = new JSONParser();
 			JSONObject json = (JSONObject) parser.parse(request.getReader().readLine());
-			if (Season.createSeason(requester.getUsername(), json)) {
-				response.getWriter().print(Season.getRecentAddedSeason(requester.getUsername(), json));
+			if (Season.createSeason(requester.getEmail(), json)) {
+				response.getWriter().print(Season.getRecentAddedSeason(requester.getEmail(), json));
 				response.setStatus(201); // TODO send content created
 				return;
 			} else {
@@ -147,7 +147,7 @@ public class Seasons extends HttpServlet {
 				JSONParser parser = new JSONParser();
 				JSONObject json = (JSONObject) parser.parse(request.getReader().readLine());
 
-				if (Season.updateSeason(requester.getUsername(), id, json)) {
+				if (Season.updateSeason(requester.getEmail(), id, json)) {
 					response.setStatus(204);
 					return;
 				}

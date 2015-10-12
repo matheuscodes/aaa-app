@@ -48,7 +48,7 @@ public class Strenghts extends HttpServlet {
 			return; // TODO set error message
 		}
 		HTTP.setUpDefaultHeaders(response);
-		response.getWriter().println(Strength.getAllStrengthsJSON(requester.getUsername()));
+		response.getWriter().println(Strength.getAllStrengthsJSON(requester.getEmail()));
 		response.setStatus(200);
 		return;
 	}
@@ -71,7 +71,7 @@ public class Strenghts extends HttpServlet {
 		resource = resource.replace("/strengths/", "");
 		if (resource.length() > 10) {
 			String date = resource.substring(0, 11);
-			if (Strength.addStrength(requester.getUsername(), date)) {
+			if (Strength.addStrength(requester.getEmail(), date)) {
 				response.setStatus(201);
 				return;
 			}
@@ -100,7 +100,7 @@ public class Strenghts extends HttpServlet {
 		resource = resource.replace("/strengths/", "");
 		if (resource.length() > 10) {
 			String date = resource.substring(0, 11);
-			if (Strength.deleteStrength(requester.getUsername(), date)) {
+			if (Strength.deleteStrength(requester.getEmail(), date)) {
 				response.setStatus(204);
 				return;
 			}

@@ -51,7 +51,7 @@ public class Events extends HttpServlet {
 			return; // TODO set error message
 		}
 		HTTP.setUpDefaultHeaders(response);
-		response.getWriter().println(Event.getAllEventsJSON(requester.getUsername()));
+		response.getWriter().println(Event.getAllEventsJSON(requester.getEmail()));
 		response.setStatus(200);
 		return;
 	}
@@ -78,7 +78,7 @@ public class Events extends HttpServlet {
 			}
 			JSONParser parser = new JSONParser();
 			JSONObject json = (JSONObject) parser.parse(request.getReader().readLine());
-			if (Event.addEvent(requester.getUsername(), json)) {
+			if (Event.addEvent(requester.getEmail(), json)) {
 				response.setStatus(201); // TODO send content created
 				return;
 			} else {
@@ -111,7 +111,7 @@ public class Events extends HttpServlet {
 		if (resource.length() > 11) {
 			String date = resource.substring(0, 10);
 			String name_short = resource.substring(11, resource.length() - 1);
-			if (Event.deleteEvent(requester.getUsername(), date, name_short)) {
+			if (Event.deleteEvent(requester.getEmail(), date, name_short)) {
 				response.setStatus(204);
 				return;
 			}

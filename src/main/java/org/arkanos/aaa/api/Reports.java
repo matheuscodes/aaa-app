@@ -66,14 +66,14 @@ public class Reports extends HttpServlet {
 			// TODO error if there is still BS in the URI.
 			// TODO check if all API sets header correctly
 			response.addHeader("Content-Type", "application/json");
-			response.getWriter().print(getMonthlyReport(requester.getUsername(), year, month));
+			response.getWriter().print(getMonthlyReport(requester.getEmail(), year, month));
 			response.setStatus(200);
 			return;
 		} else if (to_parse.substring(0, to_parse.indexOf("/")).equals("homescreen")) {
 			to_parse = to_parse.replaceAll("/homescreen/", "");
 			// TODO eliminate BS in the URI or return bad request.
 			response.addHeader("Content-Type", "application/json");
-			response.getWriter().print(getHomeScreenData(requester.getUsername()));
+			response.getWriter().print(getHomeScreenData(requester.getEmail()));
 			response.setStatus(200);
 			return;
 		}

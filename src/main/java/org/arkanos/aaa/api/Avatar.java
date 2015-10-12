@@ -46,7 +46,7 @@ public class Avatar extends HttpServlet {
 			try {
 				// TODO use prepare statement or add this to TokenInfo
 				ResultSet rs = Database.query("SELECT " + Archer.FIELD_AVATAR + " FROM " + Archer.TABLE_NAME + " WHERE "
-						+ Archer.FIELD_EMAIL + "= '" + who.getUsername() + "';");
+						+ Archer.FIELD_EMAIL + "= '" + who.getEmail() + "';");
 				while (rs.next()) {
 					Blob b = rs.getBlob(Archer.FIELD_AVATAR);
 					content = b.getBytes(1, (int) b.length());

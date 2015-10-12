@@ -26,19 +26,19 @@ public class Security {
 		/** Time until when the token is valid **/
 		private long expiration;
 		/** User to whom the token was granted **/
-		private final String user_name;
+		private final String email;
 
 		/**
 		 * Simple token constructor.
 		 * 
 		 * @param token
 		 *            string with the token key.
-		 * @param user_name
+		 * @param email
 		 *            user to whom the token was granted.
 		 */
-		TokenInfo(String token, String user_name) {
+		TokenInfo(String token, String email) {
 			this.token = token;
-			this.user_name = user_name;
+			this.email = email;
 			/** Expires in one day. */
 			this.expiration = System.currentTimeMillis() + (1000 * 60 * 60 * 24);
 		}
@@ -51,8 +51,8 @@ public class Security {
 			return this.token;
 		}
 
-		public String getUsername() {
-			return this.user_name;
+		public String getEmail() {
+			return this.email;
 		}
 
 		public void setExpiration(long when) {
@@ -231,15 +231,15 @@ public class Security {
 	/**
 	 * Creates a token for a user.
 	 * 
-	 * @param user_name
+	 * @param email
 	 *            of the user to be granted the token.
 	 * @return a key of the token created for the user.
 	 */
-	static public String createToken(String user_name) {
+	static public String createToken(String email) {
 		// TODO: Find a way of going around this without creating a new
 		// TokenInfo class.
 		Security builder = new Security();
-		TokenInfo info = builder.new TokenInfo(user_name + "_" + Math.random(), user_name);
+		TokenInfo info = builder.new TokenInfo(email + "_" + Math.random(), email);
 
 		Security.getTokens().put(info.getToken(), info);
 

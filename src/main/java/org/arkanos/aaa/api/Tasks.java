@@ -52,7 +52,7 @@ public class Tasks extends HttpServlet {
 			return; // TODO set error message
 		}
 		HTTP.setUpDefaultHeaders(response);
-		response.getWriter().println(Task.getAllTasksJSON(requester.getUsername()));
+		response.getWriter().println(Task.getAllTasksJSON(requester.getEmail()));
 		response.setStatus(200);
 		return;
 
@@ -81,8 +81,8 @@ public class Tasks extends HttpServlet {
 			}
 			JSONParser parser = new JSONParser();
 			JSONObject json = (JSONObject) parser.parse(request.getReader().readLine());
-			if (Task.addTask(requester.getUsername(), json)) {
-				response.getWriter().println(Task.getRecentAddedTask(requester.getUsername(), json));
+			if (Task.addTask(requester.getEmail(), json)) {
+				response.getWriter().println(Task.getRecentAddedTask(requester.getEmail(), json));
 				response.setStatus(201); // TODO send content created
 				return;
 			} else {
@@ -114,7 +114,7 @@ public class Tasks extends HttpServlet {
 		resource = resource.replace("/tasks/", "");
 		if (resource.length() > 0) {
 			int id = Integer.parseInt(resource.substring(0, resource.length() - 1));
-			if (Task.deleteTask(requester.getUsername(), id)) {
+			if (Task.deleteTask(requester.getEmail(), id)) {
 				response.setStatus(204);
 				return;
 			}
@@ -149,7 +149,7 @@ public class Tasks extends HttpServlet {
 				JSONParser parser = new JSONParser();
 				JSONObject json = (JSONObject) parser.parse(request.getReader().readLine());
 
-				if (Task.updateTask(requester.getUsername(), id, json)) {
+				if (Task.updateTask(requester.getEmail(), id, json)) {
 					response.setStatus(204);
 					return;
 				}
