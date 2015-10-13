@@ -144,6 +144,7 @@ public class Season {
 			HashMap<Integer, String> prejsons = new HashMap<Integer, String>();
 			PreparedStatement ps = Database.prepare(query);
 			ps.setString(1, archer);
+			HashMap<Integer, Integer> startweeks = new HashMap<Integer, Integer>();
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				int id = rs.getInt(FIELD_ID);
@@ -160,6 +161,9 @@ public class Season {
 						+ ((sdf.parse(end).getTime() - sdf.parse(start).getTime()) / (7 * 24 * 60 * 60 * 1000) + 1)
 						+ ",";
 				prejsons.put(id, json);
+				GregorianCalendar gc = new GregorianCalendar(Locale.UK);
+				gc.setTime(sdf.parse(start));
+				startweeks.put(id, gc.get(Calendar.WEEK_OF_YEAR));
 			}
 			rs.close();
 			ps.close();
@@ -173,16 +177,25 @@ public class Season {
 				ps = Database.prepare(query);
 				ps.setInt(1, id);
 				rs = ps.executeQuery();
-				LinkedList<Integer> arrows = new LinkedList<Integer>();
-				LinkedList<Integer> targets = new LinkedList<Integer>();
-				LinkedList<Integer> weeks = new LinkedList<Integer>();
+				LinkedList<Integer> arrows_a = new LinkedList<Integer>();
+				LinkedList<Integer> targets_a = new LinkedList<Integer>();
+				LinkedList<Integer> weeks_a = new LinkedList<Integer>();
+				LinkedList<Integer> arrows_b = new LinkedList<Integer>();
+				LinkedList<Integer> targets_b = new LinkedList<Integer>();
+				LinkedList<Integer> weeks_b = new LinkedList<Integer>();
 				while (rs.next()) {
 					int ac = rs.getInt(FIELD_ARROW_COUNT);
 					int tc = rs.getInt(FIELD_TARGET_SHARE);
 					int w = rs.getInt(FIELD_WEEK);
-					arrows.add(ac);
-					targets.add(tc);
-					weeks.add(w);
+					if (w >= startweeks.get(id)) {
+						arrows_a.add(ac);
+						targets_a.add(tc);
+						weeks_a.add(w);
+					} else {
+						arrows_b.add(ac);
+						targets_b.add(tc);
+						weeks_b.add(w);
+					}
 					if (ac > max)
 						max = ac;
 					if (tc > max)
@@ -192,9 +205,12 @@ public class Season {
 				ps.close();
 				String json = prejsons.get(id);
 				json += "\"" + FIELD_MAX + "\":" + max + ",";
-				json += "\"" + FIELD_ARROWS + "\":" + arrows.toString() + ",";
-				json += "\"" + FIELD_TARGETS + "\":" + targets.toString() + ",";
-				json += "\"" + FIELD_WEEKS + "\":" + weeks.toString();
+				arrows_b.addAll(0, arrows_a);
+				targets_b.addAll(0, targets_a);
+				weeks_b.addAll(0, weeks_a);
+				json += "\"" + FIELD_ARROWS + "\":" + arrows_b.toString() + ",";
+				json += "\"" + FIELD_TARGETS + "\":" + targets_b.toString() + ",";
+				json += "\"" + FIELD_WEEKS + "\":" + weeks_b.toString();
 				final_json += "\"" + id + "\":" + "{" + json + "},";
 			}
 			final_json = final_json.substring(0, final_json.length() - 1) + "}";
