@@ -339,7 +339,10 @@ public class Season {
 				Date start = sdf.parse(json.get(FIELD_START_DATE).toString());
 				Date end = sdf.parse(json.get(FIELD_END_DATE).toString());
 				LinkedList<Integer> weeks = new LinkedList<Integer>();
-				for (long i = start.getTime(); i <= end.getTime(); i += 7 * 24 * 60 * 60 * 1000) {
+				// FIXME generating duplicates if just rounded +1 day in
+				// daylight savings time change. The + 12*60*60*1000 is just a
+				// hack around.
+				for (long i = start.getTime() + 12 * 60 * 60 * 1000; i <= end.getTime(); i += 7 * 24 * 60 * 60 * 1000) {
 					gc.setTimeInMillis(i);
 					weeks.add(gc.get(Calendar.WEEK_OF_YEAR));
 				}
