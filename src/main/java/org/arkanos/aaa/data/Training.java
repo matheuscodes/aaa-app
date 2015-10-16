@@ -204,13 +204,14 @@ public class Training {
 		query += FIELD_DATE + ",";
 		query += FIELD_ID + ",";
 		query += FIELD_TARGET + ",";
+		query += FIELD_ROUND + ",";
 		query += FIELD_DISTANCE + " FROM " + TABLE_NAME_GAUGE + " ";
 		query += "LEFT JOIN " + TABLE_NAME_ARROW + " ";
 		query += "ON " + FIELD_ID + " = " + FIELD_TRAINING_ID + " ";
 		query += "WHERE " + FIELD_ARCHER + " = ? ";
 		query += "AND " + FIELD_DATE + " >= ? ";
 		query += "AND " + FIELD_DATE + " < ? ";
-		query += "GROUP BY " + FIELD_ID + ";";
+		query += "GROUP BY " + FIELD_ID + "," + FIELD_ROUND + ";";
 		ps = Database.prepare(query);
 		ps.setString(1, user);
 		ps.setDate(2, Database.java2sql(from));
@@ -220,12 +221,12 @@ public class Training {
 		// training_target LEFT JOIN arrow ON id = training_id WHERE
 		// archer='"+user+"' AND date >= '"+sdf.format(from)+"' AND date <
 		// '"+sdf.format(to)+"' GROUP BY id;"
-		HashMap<String, Integer> result_order = new HashMap<String, Integer>();
 		while (rs.next()) {
 			int distance = rs.getInt(FIELD_DISTANCE);
 			String target = rs.getString(FIELD_TARGET);
 			String date = sdf.format(rs.getDate(FIELD_DATE));
 			int result = rs.getInt("result");
+			int round = rs.getInt(FIELD_ROUND);
 
 			HashMap<String, HashMap<Integer, HashMap<String, Integer>>> greatgrandparent = dp.results.get(distance);
 			if (greatgrandparent == null) {
@@ -238,19 +239,11 @@ public class Training {
 				greatgrandparent.put(target, grandparent);
 			}
 
-			/** ID to order magic **/
-			Integer order = result_order.get(distance + target + date);
-			if (order == null) {
-				order = 1;
-			}
-
-			result_order.put(distance + target + date, order);
-			HashMap<String, Integer> parent = grandparent.get(order);
+			HashMap<String, Integer> parent = grandparent.get(round);
 			if (parent == null) {
 				parent = new HashMap<String, Integer>();
-				grandparent.put(order, parent);
+				grandparent.put(round, parent);
 			}
-			order += 1;
 			parent.put(date, result);
 		}
 		rs.close();
