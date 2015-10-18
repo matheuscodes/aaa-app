@@ -493,8 +493,10 @@ public class Season {
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				// TODO winter seasons break this, with two sets of week ranges
-				weekly.plan[weekly.weeks.get(rs.getInt("week"))] = rs.getInt("arrow_count");
-				weekly.gauged[weekly.weeks.get(rs.getInt("week"))] = rs.getInt("target_share");
+				if (weekly.weeks.get(rs.getInt(FIELD_WEEK)) != null) {
+					weekly.plan[weekly.weeks.get(rs.getInt(FIELD_WEEK))] = rs.getInt("arrow_count");
+					weekly.gauged[weekly.weeks.get(rs.getInt(FIELD_WEEK))] = rs.getInt("target_share");
+				}
 			}
 			rs.close();
 
