@@ -505,19 +505,23 @@ public class Season {
 			for (String d : dr.technique_totals.keySet()) {
 				gc.clear();
 				gc.setTime(sdf.parse(d));
-				weekly.technique[weekly.weeks.get(gc.get(Calendar.WEEK_OF_YEAR))] += dr.technique_totals.get(d);
+				if (weekly.weeks.get(gc.get(Calendar.WEEK_OF_YEAR)) != null)
+					weekly.technique[weekly.weeks.get(gc.get(Calendar.WEEK_OF_YEAR))] += dr.technique_totals.get(d);
 			}
 			for (String d : dr.totals.keySet()) {
 				gc.clear();
 				gc.setTime(sdf.parse(d));
-				weekly.totals[weekly.weeks.get(gc.get(Calendar.WEEK_OF_YEAR))] += dr.totals.get(d);
+				if (weekly.weeks.get(gc.get(Calendar.WEEK_OF_YEAR)) != null)
+					weekly.totals[weekly.weeks.get(gc.get(Calendar.WEEK_OF_YEAR))] += dr.totals.get(d);
 			}
 			for (String d : dr.gauged_trainings.keySet()) {
 				gc.clear();
 				gc.setTime(sdf.parse(d));
-				weekly.sum[weekly.weeks.get(gc.get(Calendar.WEEK_OF_YEAR))] += (dr.average_sum.get(d)
-						/ dr.gauged_trainings.get(d));
-				weekly.results[weekly.weeks.get(gc.get(Calendar.WEEK_OF_YEAR))]++;
+				if (weekly.weeks.get(gc.get(Calendar.WEEK_OF_YEAR)) != null) {
+					weekly.sum[weekly.weeks.get(gc.get(Calendar.WEEK_OF_YEAR))] += (dr.average_sum.get(d)
+							/ dr.gauged_trainings.get(d));
+					weekly.results[weekly.weeks.get(gc.get(Calendar.WEEK_OF_YEAR))]++;
+				}
 			}
 
 			LinkedList<WeeklyPerformance> all = new LinkedList<WeeklyPerformance>();
