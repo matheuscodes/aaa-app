@@ -1725,9 +1725,6 @@ var ProfilePage = {
 			var html = "<div id='aaa_season_"+season.id+"' class='aaa-seasons-item'>";
 			html += "<h2>"+season.name+"</h2>";
 			
-			html += SVG.getEmptySeasonGraph(season);
-			
-			
 			html += "<p onClick='ProfilePage.updateSeason("+season.id+");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effec'>";
 			html += "<i class='material-icons'>edit</i>";
 			html += "</p>";
@@ -1736,8 +1733,11 @@ var ProfilePage = {
 			html += "<i class='material-icons'>delete</i>";
 			html += "</p>";
 			
+			html += SVG.getEmptySeasonGraph(season);
+			
 			html += "<p><strong>"+Text['profile_season_start']+": </strong>"+season.start_date+"</p>";
 			html += "<p><strong>"+Text['profile_season_end']+": </strong>"+season.end_date+"</p>";
+			
 			
 			html += "</div>";
 			return html;
@@ -2089,7 +2089,7 @@ var SVG = {
 		var max = Math.ceil(season.max/50)*50+50;
 		
 		var general_width = (season.weeks.length*100+110+150);
-		var general_height = max + 150 + 50;
+		var general_height = 400 + 150 + 50;
 		var width = 20.2/(100/general_width);
 		
 		var html = "<svg xmlns='http://www.w3.org/2000/svg'";
