@@ -352,9 +352,14 @@ var TrainingsPage = {
 			html += "<div class='mdl-card__title'>";
 			html += "<h1 class='mdl-card__title-text'>"+Text['add_new_training']+"</h1>";
 			html += "</div>";
+
+
+			html += "<form onsubmit='return false'>";
+			html += "<div class='mdl-card__supporting-text mdl-grid'>";
+
 			
 			var now = new Date().toJSON().substring(0,10);
-			html += "<div class='aaa-training-field'>";
+			html += "<div class='mdl-cell mdl-cell--4-col mdl-cell--2-col-phone'>";
 			html += "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 			html += "<input class='mdl-textfield__input' type='text' pattern='[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])' id='aaa_training_date' value='"+now+"'/>";
 			html += "<label class='mdl-textfield__label' for='aaa_training_date'>"+Text['date']+"</label>";
@@ -362,15 +367,9 @@ var TrainingsPage = {
 			html += "</div>";
 			html += "</div>";
 			
-			html += "<div id='aaa_training_content' class='mdl-card__supporting-text'>";
-			html += TrainingsPage.HTML.getTrainingDraft();
-			html += "</div>";
+			html += "<div class='mdl-cell mdl-cell--1-col'></div>";
 			
-			html += "<div class='mdl-card__actions mdl-card--border'>";
-			
-			html += "<form onsubmit='return false'>";
-			
-			html += "<div class='aaa-training-field'>";
+			html += "<div class='mdl-cell mdl-cell--4-col mdl-cell--2-col-phone'>";
 			html += "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 			html += "<input class='mdl-textfield__input' type='text' pattern='^[0-9]+$' id='aaa_training_arrow_count' />";
 			html += "<label class='mdl-textfield__label' for='aaa_training_arrow_count'>"+Text['arrow_count']+"</label>";
@@ -378,7 +377,7 @@ var TrainingsPage = {
 			html += "</div>";
 			html += "</div>";
 			
-			html += "<div class='aaa-training-field'>";
+			html += "<div class='mdl-cell mdl-cell--4-col mdl-cell--2-col-phone'>";
 			html += "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 			html += "<input class='mdl-textfield__input' type='text' pattern='-?[0-9]*(\.[0-9]+)?' id='aaa_training_distance' />";
 			html += "<label class='mdl-textfield__label' for='aaa_training_distance'>"+Text['distance']+"</label>";
@@ -386,14 +385,7 @@ var TrainingsPage = {
 			html += "</div>";
 			html += "</div>";
 			
-			html += "<button id='aaa_add_training' onClick='TrainingsPage.addTraining();' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'>";
-			html += "<i class='material-icons'>add</i>";
-			html += "</button>";
-			
-			html += "<div class='mdl-tooltip' for='aaa_add_training'>"+Text['add_training']+"</div>";
-			
-			
-			html += "<div id='aaa_training_options'>";
+			html += "<div id='aaa_training_options' class='mdl-cell mdl-cell--11-col mdl-cell--7-col-tablet mdl-cell--3-col-phone'>";
 			
 			html += "<label class='mdl-radio mdl-js-radio mdl-js-ripple-effect' for='aaa_option_1'>";
 			html += "<input type='radio' id='aaa_option_1' class='mdl-radio__button' name='options' value='warmup' checked />";
@@ -417,11 +409,23 @@ var TrainingsPage = {
 			
 			html += "</div>";
 			
+			html += "<button id='aaa_add_training' onClick='TrainingsPage.addTraining();' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored mdl-cell mdl-cell--2-col'>";
+			html += "<i class='material-icons'>add</i>";
+			html += "</button>";
 			
+			html += "<div class='mdl-tooltip' for='aaa_add_training'>"+Text['add_training']+"</div>";
 			
-			html += "</form>";
 			
 			html += "</div>";
+
+			html += "</form>";
+			
+			html += "<div id='aaa_training_content' class='mdl-card__actions mdl-card--border'>";
+
+			html += TrainingsPage.HTML.getTrainingDraft();
+			
+			html += "</div>";
+			
 			
 			html += "<div class='mdl-card__menu'>";
 			html += "<button id='aaa_upload_training' onClick='TrainingsPage.submitTraining();' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
@@ -454,10 +458,11 @@ var TrainingsPage = {
 			html += "<div class='mdl-card__title'>";
 			html += "<h1 class='mdl-card__title-text'>"+Text['add_new_gauge']+"</h1>";
 			html += "</div>";
-			html += "<div id='aaa_gauge_content' class='mdl-card__supporting-text'>";
+			html += "<div id='aaa_gauge_content' class='mdl-card__supporting-text mdl-grid'>";
+			
 			html += TrainingsPage.HTML.getGaugeDraft();
-			html += "</div>";
-			html += "<div class='mdl-card__actions mdl-card--border'>";
+			
+			html += "<div class='mdl-cell mdl-cell--12-col'>";
 			
 			html += "<form onsubmit='return false'>";
 			
@@ -490,6 +495,19 @@ var TrainingsPage = {
 			
 			html += "</form>";
 			
+
+			html += "</div>";
+			
+			html += "</div>";
+			html += "<div class='mdl-card__actions mdl-card--border'>";
+			
+			html += "<div id='aaa_gauge_ends'>";
+			if(User.getGaugeDraft()){
+				html += TrainingsPage.HTML.getGaugeEnds(User.getGaugeDraft().ends);
+			}
+			html += "</div>";
+			
+			
 			html += "</div>";
 			
 			html += "</div>";
@@ -520,7 +538,7 @@ var TrainingsPage = {
 		
 		getGaugeDraft: function(){
 			var now = new Date().toJSON().substring(0,10);
-			var html = "<div class='aaa-training-field'>";
+			var html = "<div class='mdl-cell mdl-cell--2-col'>";
 			//TODO rename training field class (Both cards use it)
 			html += "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 			html += "<input class='mdl-textfield__input' type='text' pattern='[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])' id='aaa_gauge_date' value='"+now+"'/>";
@@ -529,7 +547,7 @@ var TrainingsPage = {
 			html += "</div>";
 			html += "</div>";
 			
-			html += "<div class='aaa-training-field'>";
+			html += "<div class='mdl-cell mdl-cell--2-col'>";
 			html += "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>";
 			html += "<input class='mdl-textfield__input' type='text' pattern='-?[0-9]*(\.[0-9]+)?' id='aaa_gauge_distance' />";
 			html += "<label class='mdl-textfield__label' for='aaa_gauge_distance'>"+Text['distance']+"</label>";
@@ -537,10 +555,10 @@ var TrainingsPage = {
 			html += "</div>";
 			html += "</div>";
 			
-			html += "<div id='aaa_gauge_targets'>";
+			html += "<div id='aaa_gauge_targets' class='mdl-cell mdl-cell--8-col mdl-grid'>";
 			
 			for(var i = 0; i < Text['targets'].length;i++){
-				html += "<label class='mdl-radio mdl-js-radio mdl-js-ripple-effect' for='aaa_option_"+i+"'>";
+				html += "<label class='mdl-radio mdl-js-radio mdl-js-ripple-effect mdl-cell mdl-cell--2-col' for='aaa_option_"+i+"'>";
 				html += "<input type='radio' id='aaa_option_"+i+"' class='mdl-radio__button' name='targets' value='"+Text['targets'][i]+"' checked />";
 				html += "<span class='mdl-radio__label'>"+Text['targets'][i]+"</span>";
 				html += "</label>";
@@ -548,17 +566,12 @@ var TrainingsPage = {
 			
 			html += "</div>";
 			
-			html += "<div id='aaa_gauge_ends'>";
-			if(User.getGaugeDraft()){
-				html += TrainingsPage.HTML.getGaugeEnds(User.getGaugeDraft().ends);
-			}
-			html += "</div>";
 			return html;
 		},
 		
 		getGaugeEnds: function(ends){
 			var html = "<div>";
-			for(var i = 0; i < ends.length; i++){
+			for(var i = ends.length-1; i >= 0; i--){
 				html += "<br/><strong>"+Text['end']+" "+(i+1)+":</strong>";
 				for(var j = 0; j < ends[i].length; j++){
 					html += "<div class='aaa-arrow-input aaa-arrow-end ";
@@ -589,21 +602,25 @@ var TrainingsPage = {
 		},
 
 		getTrainingDraft: function(){
-			var html = "";
+			var html = "<table><tr>";
+			var columns = [];
 			if(User.getTrainingDraft()){
 				var draft = User.getTrainingDraft();
 				for(type in draft){
 					if(Text[type] && type != 'date'){
-						html+="<h2>"+Text[type]+"</h2>";
+						html += "<td>";
+						html += "<h2>"+Text[type]+"</h2>";
 						for(distance in draft[type]){
 							var number = parseInt(distance);
 							if(number > 0){
 								html+="<p><strong>"+distance+"m:</strong> "+draft[type][distance]+"</p>";
 							}
 						}
+						html += "</td>";
 					}
 				}
 			}
+			html += "</tr></table>";
 			return html;
 		}
 	}
@@ -1048,7 +1065,9 @@ var PerformancePage = {
 		$("#aaa_report_content").append(SVG.getDailySeasonGraph(download));
 		$("#aaa_report_content").append("<h2>"+Text['season_title']+"</h2>");
 		console.log(download);
-		$("#aaa_report_content").append(SVG.getSeasonGraph(download.season,"aaa_report_season_graph"));
+		for(season in download.seasons){
+			$("#aaa_report_content").append(SVG.getSeasonGraph(download.seasons[season],"aaa_report_season_graph"));
+		}
 		
 		$("#aaa_report_viewport").width($("#aaa_report_daily_graph").width());
 		$("#aaa_content").show("slide", { direction: "left" }, 1000);
@@ -2311,10 +2330,14 @@ var SVG = {
 	},
 	
 	getDailySeasonGraph: function(download){
-
+		var season_id;//FIXME this crap workaround is not required.
+		for(var i in download.seasons){
+			season_id = i; //FIXME this crap workaround is not required.
+		}
+		var season = download.seasons[season_id];
+		var max = Math.ceil(download.seasons[season_id].max/50)*50+50;
+		
 		var days = (new Date(download.end) - new Date(download.start))/(1000*60*60*24);
-		var season = download.season;
-		var max = Math.ceil(download.season.max/50)*50+50;
 		
 		var general_width = (days*100+700+150);
 		var general_height = max+100+50;
