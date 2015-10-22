@@ -612,7 +612,11 @@ public class Training {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			String month = gc.get(Calendar.YEAR) + "-" + gc.get(Calendar.MONTH);
+			String month = gc.get(Calendar.YEAR) + "-";
+			if (gc.get(Calendar.MONTH) < 9) {
+				month += "0";
+			}
+			month += (gc.get(Calendar.MONTH) + 1);
 			Integer i = counts.get(month);
 			if (i != null)
 				counts.put(month, i + performance.get(day)[0].intValue());
@@ -637,17 +641,16 @@ public class Training {
 				e.printStackTrace();
 			}
 			String month = gc.get(Calendar.YEAR) + "-";
-			if (gc.get(Calendar.MONTH) < 10) {
+			if (gc.get(Calendar.MONTH) < 9) {
 				month += "0";
 			}
-			month += gc.get(Calendar.MONTH);
+			month += (gc.get(Calendar.MONTH) + 1);
 			Integer i = totals.get(month);
 			if (i != null)
 				totals.put(month, i + arrows.get(day));
 			else
 				totals.put(month, arrows.get(day));
 		}
-
 		String json = "{";
 		for (String month : totals.keySet()) {
 			json += "\"" + month + "\":";

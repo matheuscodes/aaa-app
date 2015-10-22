@@ -2081,8 +2081,7 @@ var HTML = {
 		getYearUnit: function(unit,year,month){
 			var html = "<tr>";
 			html += "<td>"+year+"</td>";
-			console.log(month);
-			html += "<td>"+Text['month_full_'+month]+"</td>";
+			html += "<td>"+Text['month_full_'+(parseInt(month)-1)]+"</td>";
 			html += "<td>"+unit['total_count']+"</td>";
 			html += "<td>"
 			if(unit['average_value']){
