@@ -636,7 +636,11 @@ public class Training {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			String month = gc.get(Calendar.YEAR) + "-" + gc.get(Calendar.MONTH);
+			String month = gc.get(Calendar.YEAR) + "-";
+			if (gc.get(Calendar.MONTH) < 10) {
+				month += "0";
+			}
+			month += gc.get(Calendar.MONTH);
 			Integer i = totals.get(month);
 			if (i != null)
 				totals.put(month, i + arrows.get(day));
