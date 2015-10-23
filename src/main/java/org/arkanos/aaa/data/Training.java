@@ -652,7 +652,12 @@ public class Training {
 				totals.put(month, arrows.get(day));
 		}
 		String json = "{";
-		for (String month : totals.keySet()) {
+		LinkedList<String> sorted = new LinkedList<String>();
+		for (String m : totals.keySet()) {
+			sorted.add(m);
+		}
+		sorted.sort(null);
+		for (String month : sorted) {
 			json += "\"" + month + "\":";
 			json += "{";
 			if (counts.get(month) != null)
