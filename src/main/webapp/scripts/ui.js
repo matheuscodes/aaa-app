@@ -649,7 +649,7 @@ var PerformancePage = {
 	},
 	getPerformancePage: function(){
 		//TODO fix fix transition bug
-		var html = "<div class='mdl-grid mdl-cell--12-col mdl-shadow--2dp'>";
+		var html = "<div id='aaa_full_report' class='mdl-grid'>";
 		
 		var now = new Date();
 		if(!PerformancePage.month){

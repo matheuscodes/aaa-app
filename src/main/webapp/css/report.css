@@ -64,7 +64,6 @@
 }
 
 #aaa_report_content {
-	overflow: auto;
 	margin: 10pt;
 	-webkit-user-select: none; /* Chrome/Safari */
 	-moz-user-select: none; /* Firefox */

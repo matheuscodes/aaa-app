@@ -478,13 +478,15 @@ public class Season {
 			int k = weekly.start;
 			gc.set(Calendar.MONTH, Calendar.DECEMBER);
 			gc.set(Calendar.DATE, 31);
-			int year_end = gc.get(Calendar.WEEK_OF_YEAR);
+			int year_end = 52;
+			if (gc.get(Calendar.WEEK_OF_YEAR) > 52) {
+				year_end = gc.get(Calendar.WEEK_OF_YEAR);
+			}
 			for (int i = 0; i < weekly.size; i++) {
 				weekly.weeks.put(k++, i);
 				if (k > year_end)
 					k = 1;
 			}
-
 			// TODO select only a couple fields?
 			query = "SELECT * FROM " + TABLE_NAME + " LEFT JOIN " + TABLE_NAME_GOALS + " ";
 			query += "ON " + FIELD_ID + " = " + FIELD_SEASON_ID + " WHERE " + FIELD_ID + " = ?;";
@@ -537,9 +539,8 @@ public class Season {
 		return null;
 	}
 
-	static public String getActiveSeasonsPerformance(String archer) {
-		Date now = new Date(System.currentTimeMillis());
-		List<WeeklyPerformance> seasons = compileWeeklies(archer, now);
+	static public String getSeasonsPerformance(String archer, Date when) {
+		List<WeeklyPerformance> seasons = compileWeeklies(archer, when);
 
 		String json = "{";
 		if (seasons != null) {
@@ -565,18 +566,19 @@ public class Season {
 						season.max = season.totals[i];
 					json += "},";
 				}
-				json += "\"weeks\":[";
-				// TODO maybe optimize this
-				HashMap<Integer, Integer> inversion = new HashMap<Integer, Integer>(season.size);
+
+				// TODO modularize this, second time in the code.
+				LinkedList<Integer> weeks_a = new LinkedList<Integer>();
+				LinkedList<Integer> weeks_b = new LinkedList<Integer>();
 				for (int i : season.weeks.keySet()) {
-					inversion.put(season.weeks.get(i), i);
+					if (i >= season.start) {
+						weeks_a.add(i);
+					} else {
+						weeks_b.add(i);
+					}
 				}
-				for (int i : inversion.keySet()) {
-					json += inversion.get(i) + ",";
-				}
-				if (json.endsWith(","))
-					json = json.substring(0, json.length() - 1);
-				json += "],";
+				weeks_b.addAll(weeks_a);
+				json += "\"weeks\":" + weeks_b.toString() + ",";
 				json += "\"max\":" + season.max;
 				json += "},";
 			}

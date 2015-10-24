@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Locale;
 
 import javax.servlet.ServletException;
@@ -237,13 +236,14 @@ public class Reports extends HttpServlet {
 		json += "{";
 		// TODO Reestructure this JSON so that report uses this duplication
 		// from Season.
-		for (int i = week_start; i <= week_end; i++) {
+		for (int i : season.weeks.keySet()) {
 			json += "\"" + i + "\":";
 			json += "{";
-			json += "\"technique_total\":" + season.technique[i - season.start] + ",";
-			if (season.results[i - season.start] > 0)
-				json += "\"result_total\":" + (season.sum[i - season.start] / season.results[i - season.start]) + ",";
-			json += "\"total\":" + season.totals[i - season.start];
+			json += "\"technique_total\":" + season.technique[season.weeks.get(i)] + ",";
+			if (season.results[season.weeks.get(i)] > 0)
+				json += "\"result_total\":" + (season.sum[season.weeks.get(i)] / season.results[season.weeks.get(i)])
+						+ ",";
+			json += "\"total\":" + season.totals[season.weeks.get(i)];
 			json += "},";
 		}
 		if (json.endsWith(","))
@@ -251,39 +251,9 @@ public class Reports extends HttpServlet {
 
 		json += "},";
 
-		json += "\"season\":{";
-
-		json += "\"weeks\":[";
-		// TODO maybe optimize this
-		HashMap<Integer, Integer> inversion = new HashMap<Integer, Integer>(season.size);
-		for (int i : season.weeks.keySet()) {
-			inversion.put(season.weeks.get(i), i);
-		}
-		for (int i : inversion.keySet()) {
-			json += inversion.get(i) + ",";
-		}
-		if (json.endsWith(","))
-			json = json.substring(0, json.length() - 1);
-		json += "],";
-
-		json += "\"name\":\"" + season.name + "\",";
-		json += "\"size\":" + season.size + ",";
-		json += "\"start\":" + season.start + ",";
-		for (int i = 0; i < season.size; i++) {
-			json += "\"" + (season.start + i) + "\":";
-			json += "{"; // TODO make names uniform...
-			json += "\"total_plan\":" + season.plan[i] + ",";
-			json += "\"gauged_plan\":" + season.gauged[i] + ",";
-			json += "\"technique_total\":" + season.technique[i] + ",";
-			if (season.results[i] > 0)
-				json += "\"result_total\":" + (season.sum[i] / season.results[i]) + ",";
-			json += "\"total\":" + season.totals[i];
-			if (season.totals[i] > season.max)
-				season.max = season.totals[i];
-			json += "},";
-		}
-		json += "\"max\":" + season.max;
-		json += "},";
+		/** Adding a week to be sure not to be in the end of previous month **/
+		json += "\"seasons\":"
+				+ Season.getSeasonsPerformance(archer, new Date(start.getTime() + 7 * 24 * 60 * 60 * 1000)) + ",";
 
 		json += "\"start\":\"" + sdf.format(start) + "\",";
 		json += "\"end\":\"" + sdf.format(end) + "\",";
@@ -300,7 +270,7 @@ public class Reports extends HttpServlet {
 		json += "\"arrows_total\":" + Training.getWeeksArrows(archer) + ",";
 		json += "\"value_distribution\":" + Training.getValueDistribution(archer) + ",";
 		json += "\"end_distribution\":" + Training.getEndDistribution(archer) + ",";
-		json += "\"seasons\":" + Season.getActiveSeasonsPerformance(archer) + ",";
+		json += "\"seasons\":" + Season.getSeasonsPerformance(archer, new Date(System.currentTimeMillis())) + ",";
 		json += "\"events\":" + Event.getUpcomingEvents(archer, 2) + ",";
 		json += "\"tasks\":" + Task.getActiveRecentTasks(archer) + ",";
 		json += "\"year_summary\":" + Training.getYearSummary(archer);
