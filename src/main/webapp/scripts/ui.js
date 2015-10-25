@@ -700,7 +700,8 @@ var PerformancePage = {
 		var stop = new Date(download.end);
 		var request = download.month;
 		var week = download.week_start;
-		
+		current.setHours(1);
+		stop.setHours(1);
 		var html = "<h2>"+Text['statistics_title']+"</h2>";
 		
 		html += "<div id='aaa_report_viewport'>";
@@ -802,8 +803,9 @@ var PerformancePage = {
 						week++;				
 					}
 				}
-				for(var i = download.week_start;i < week; i++){
+				for(var i = download.week_start;i < download.week_end; i++){
 					//TODO improve this with JQuery
+					console.log('aaa_report_week_data_'+i);
 					var element = document.getElementById('aaa_report_week_data_'+i).getElementsByClassName('aaa-report-day');
 					var length = element.length;
 					for(var j = 0; j < 7; j++){
@@ -2367,8 +2369,10 @@ var SVG = {
 		var bullets = {};
 		
 		var current = new Date(download.start);
+		current.setHours(1);
 		var week = download.week_start;
 		var stop = new Date(download.end);
+		stop.setHours(1);
 		var i = 0;
 		var estimate = false;
 		var estimations = [];
@@ -2722,10 +2726,14 @@ var SVG = {
 	getBottomDays: function(min, max){
 		var html = "<g id='bottom'>";
 		var end =  new Date(max);
-		for(var i = new Date(min), j = 0; i < end; i.setDate(i.getDate() + 1,j++) ){
+		var i = new Date(min)
+		end.setHours(23);
+		i.setHours(23)
+		for(var j = 0; i < end; i.setDate(i.getDate() + 1),j++ ){
 			html += "<g transform=translate("+(j*100+50)+",50)>";
 			html += "<text class='bottom' x='0' y='0'>"+i.toJSON().substring(8,10)+"</text>";
 			html += "</g>";
+			console.log(i);
 		}
 		html += "</g>";
 		return html;
