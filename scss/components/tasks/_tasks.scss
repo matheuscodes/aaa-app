@@ -1,0 +1,34 @@
+#aaa_new_task {
+	width: calc(100% - 54pt);
+	vertical-align: middle;
+}
+
+#aaa_new_task_content button {
+	margin: 5pt;
+	height: 20pt !important;
+	width: 20pt !important;
+	min-width: 20pt !important;
+}
+
+
+.aaa-tasks-item {
+	margin: 5pt;
+	display: block;
+	vertical-align: top;
+}
+
+.aaa-tasks-item span {
+	vertical-align: top;
+}
+
+.aaa-tasks-item button {
+	min-width: 15pt;
+	width: 15pt;
+	max-height: 15pt;
+	float: right;
+}
+
+.aaa-task-done {
+	font-size: 7pt;
+	margin: 2pt;
+}

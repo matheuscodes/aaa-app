@@ -1,0 +1,36 @@
+.aaa-field-tiny {
+	width: calc(7.5% - 6pt);
+	margin: 3pt;
+	font-size: 8pt;
+	min-width: 33pt;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.aaa-field-small {
+	width: calc(25% - 24pt);
+	margin: 12pt;
+	font-size: 10pt;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.aaa-field-medium {
+	width: calc(50% - 24pt);
+	margin: 12pt;
+	font-size: 10pt;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.aaa-field-large {
+	width: calc(100% - 24pt);
+	margin: 12pt;
+	font-size: 10pt;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.aaa-field-small input {
+	font-size: 10pt;
+}

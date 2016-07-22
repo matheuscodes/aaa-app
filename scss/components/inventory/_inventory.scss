@@ -1,0 +1,29 @@
+#aaa_new_inventory {
+	float: right;
+	height: 30pt;
+	width: 30pt;
+	min-width: 30pt;
+}
+
+#aaa_inventory_type label {
+	margin: 5pt;
+}
+
+.aaa-inventory-item {
+	margin: 5pt;
+	width: 220pt;
+	display: inline-block;
+}
+
+.aaa-inventory-item p {
+	line-height: 10pt;
+	font-size: 8pt;
+	padding: 0pt;
+	margin: 2pt;
+	text-align: left;
+}
+
+.aaa-inventory-item img {
+	height: 100pt;
+	float: left;
+}

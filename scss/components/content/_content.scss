@@ -1,0 +1,26 @@
+#aaa_content {
+	overflow: auto;
+	text-align: center;
+}
+
+#aaa_content h1 p {
+	float: right;
+	margin: 5pt;
+}
+
+#aaa_content h2 p {
+	margin: 0;
+}
+
+#aaa_content h1 {
+	font-size: 24pt;
+	margin: 12pt;
+	display: block;
+}
+
+#aaa_content h2 {
+	font-size: 16pt;
+	margin: 12pt;
+	display: block;
+	line-height: 0pt;
+}

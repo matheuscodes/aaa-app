@@ -1,0 +1,21 @@
+@import "./node_modules/material-design-lite/material.min";
+
+.mdl-layout__drawer {
+	width: 200pt;
+	left: -100pt;
+}
+
+.mdl-layout__drawer.is-visible {
+	left: 0;
+}
+
+.mdl-mini-footer {
+	padding: 0 10pt;
+}
+
+/*TODO review this... causing issues*/
+.mdl-card {
+	width: unset;
+	min-height: unset;
+	overflow: visible; /*Must be*/
+}
