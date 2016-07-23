@@ -5,7 +5,7 @@ var API = {
 		getHomescreen: function(report,builder){
 			var xmlhttp = new XMLHttpRequest();
 			var url = "/reports/homescreen/";
-			
+
 			xmlhttp.onreadystatechange = function() {
 			    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 			    	var download = JSON.parse(xmlhttp.responseText);
@@ -17,12 +17,12 @@ var API = {
 			xmlhttp.send();
 		}
 	},
-	
+
 	postTraining: function(string,type){
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/trainings";
 		xmlhttp.open("POST", url, true);
-	
+
 		xmlhttp.setRequestHeader("Content-type", "application/x-json");
 		xmlhttp.setRequestHeader("Content-length", string.length);
 		xmlhttp.setRequestHeader("Connection", "close");
@@ -40,7 +40,7 @@ var API = {
 		}
 		xmlhttp.send(string);
 	},
-	
+
 	getCompleteReport: function(month,year){
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/reports/monthly/"+year;
@@ -61,7 +61,7 @@ var API = {
 		xmlhttp.open("GET", url, true); //Review the way downloads are made.
 		xmlhttp.send();
 	},
-	
+
 	getSeasons: function(id){
 		//TODO review blocking requests.
 		//TODO use callbacks.
@@ -86,7 +86,7 @@ var API = {
 			return User.seasons;
 		}
 	},
-	
+
 	placeSeason: function(season,success){
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/seasons/";
@@ -114,13 +114,13 @@ var API = {
 		}
 		xmlhttp.send(JSON.stringify(season));
 	},
-	
+
 	deleteSeason: function(id,success){
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/seasons/"+id+"/";
 
 		xmlhttp.onreadystatechange = function() {
-		    if (xmlhttp.readyState == 4 && xmlhttp.status == 204) {				
+		    if (xmlhttp.readyState == 4 && xmlhttp.status == 204) {
 				console.log("Deleted "+id);
 				success();
 		    }
@@ -129,7 +129,7 @@ var API = {
 		xmlhttp.open("DELETE", url, true);
 		xmlhttp.send();
 	},
-	
+
 	getEvents: function(){
 		//TODO review blocking requests.
 		//TODO use callbacks.
@@ -149,7 +149,7 @@ var API = {
 		xmlhttp.send();
 		return User.events;
 	},
-	
+
 	addEvent: function(event,success){
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/events/";
@@ -163,7 +163,7 @@ var API = {
 		xmlhttp.open("POST", url, true); //Review the way downloads are made.
 		xmlhttp.send(JSON.stringify(event));
 	},
-	
+
 	deleteEvent: function(date,name_short,success){
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/events/"+date+"/"+name_short+"/";
@@ -176,7 +176,7 @@ var API = {
 		xmlhttp.open("DELETE", url, true); //Review the way downloads are made.
 		xmlhttp.send();
 	},
-	
+
 	getTasks: function(){
 		//TODO review blocking requests.
 		//TODO use callbacks.
@@ -196,7 +196,7 @@ var API = {
 		xmlhttp.send();
 		return User.tasks;
 	},
-	
+
 	addTask: function(task,success){
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/tasks/";
@@ -211,7 +211,7 @@ var API = {
 		xmlhttp.open("POST", url, false); //Review the way downloads are made.
 		xmlhttp.send(JSON.stringify(task));
 	},
-	
+
 	deleteTask: function(id,success){
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/tasks/"+id;
@@ -224,7 +224,7 @@ var API = {
 		xmlhttp.open("DELETE", url, true); //Review the way downloads are made.
 		xmlhttp.send();
 	},
-	
+
 	closeTasks: function(ids,success){
 		for(var i = 0; i < ids.length; i++){
 			var xmlhttp = new XMLHttpRequest();
@@ -240,7 +240,7 @@ var API = {
 			xmlhttp.send('{"status":"done"}');
 		}
 	},
-	
+
 	getStrengthTrainings: function(){
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/strengths/";
@@ -258,12 +258,12 @@ var API = {
 		xmlhttp.send();
 		return User.strength_trainings;
 	},
-	
+
 	toggleStrengthTraining: function(date,success){
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/strengths/"+date+"/";
 
-		
+
 		if(!User.strength_trainings[date]){
 			xmlhttp.open("POST", url, true); //Review the way downloads are made.
 			xmlhttp.onreadystatechange = function() {
@@ -282,10 +282,10 @@ var API = {
 			    }
 			}
 		}
-		
+
 		xmlhttp.send();
 	},
-	
+
 	getItems: function(id){
 		//TODO review blocking requests.
 		//TODO use callbacks.
@@ -310,7 +310,7 @@ var API = {
 			return User.items;
 		}
 	},
-	
+
 	placeItem: function(bow,success){
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/inventory/";
@@ -338,13 +338,13 @@ var API = {
 		}
 		xmlhttp.send(JSON.stringify(bow));
 	},
-	
+
 	deleteItem: function(id,success){
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/inventory/"+id+"/";
 
 		xmlhttp.onreadystatechange = function() {
-		    if (xmlhttp.readyState == 4 && xmlhttp.status == 204) {				
+		    if (xmlhttp.readyState == 4 && xmlhttp.status == 204) {
 				console.log("Deleted "+id);
 				success(id);
 		    }
@@ -363,18 +363,18 @@ var User = {
 		if(document.getElementById("email")){
 			content['email'] = document.getElementById("email").value;
 		}
-		
+
 		if(document.getElementById("password")){
 			var password = document.getElementById("password").value;
 			content['hashed_password'] = ""+CryptoJS.MD5(password);
 		}
-		
+
 		var string = JSON.stringify(content);
-		
+
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/login";
 		xmlhttp.open("POST", url, false);
-	
+
 		var user = this;
 		xmlhttp.setRequestHeader("Content-type", "application/x-json");
 		xmlhttp.setRequestHeader("Content-length", string.length);
@@ -406,12 +406,12 @@ var User = {
 		xmlhttp.send(string);
 		return this.isLoggedIn();
 	},
-	
+
 	processLogout: function(callback){
 		var xmlhttp = new XMLHttpRequest();
 		var url = "/logout";
 		xmlhttp.open("POST", url, false);
-	
+
 		xmlhttp.setRequestHeader("Connection", "close");
 		xmlhttp.onreadystatechange = function() {
 			if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
@@ -421,49 +421,49 @@ var User = {
 		xmlhttp.send();
 		return;
 	},
-	
+
 	isLoggedIn: function(){
 		return this.logged_in;
 	},
-	
+
 	setLanguage: function(code){
 		this.language = code;
 	},
-	
+
 	getLanguage: function(){
 		return this.language;
 	},
-	
+
 	getTrainingDraft: function(){
 		return this.training_draft;
 	},
-	
+
 	discardTrainingDraft: function(){
 		if(this.training_draft) delete this.training_draft;
 	},
-	
+
 	pushTrainingDraft: function(distance,type,count){
 		if(!this.training_draft) this.training_draft = {type:"training"};
 		if(!this.training_draft[""+type]) this.training_draft[""+type] = {};
 		this.training_draft[""+type][""+distance] = count;
 	},
-	
+
 	getGaugeDraft: function(){
 		return this.gauge_draft;
 	},
-	
+
 	pushGaugeDraft: function(arrows){
 		if(!this.gauge_draft) this.gauge_draft = {ends:[],type:"gauge"};
 		this.gauge_draft.ends.push(arrows);
 	},
-	
+
 	setGaugeDraft: function(date,distance,target){
 		if(!this.gauge_draft) this.gauge_draft = {ends:[],type:"gauge"};
 		this.gauge_draft.date = date;
 		this.gauge_draft.distance = distance;
 		this.gauge_draft.target = target;
 	},
-	
+
 	discardGaugeDraft: function(){
 		if(this.gauge_draft) delete this.gauge_draft;
 	}
@@ -479,9 +479,9 @@ var Text = {
 		if(this.language_code != code){
 			var caller = this;
 			caller.loaded = false;
-			
+
 			var xmlhttp = new XMLHttpRequest();
-			var url = "/languages/"+code+"/";
+			var url = "/languages/"+code+"";
 			xmlhttp.open("GET", url, false);
 			xmlhttp.onreadystatechange = function() {
 				if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
@@ -493,7 +493,7 @@ var Text = {
 			    }
 			}
 			xmlhttp.send();
-			
+
 			//TODO think whether this stays here or move somewhere as "constant"
 			this.targets.push("FITA 40cm");
 			this.targets.push("FITA 60cm");
@@ -507,10 +507,10 @@ var Text = {
 			this.targets.push("Field 40cm");
 			this.targets.push("Field 60cm");
 			this.targets.push("Field 80cm");
-			
+
 		}
 	},
-	
+
 	isLoaded: function(){
 		return this.loaded;
 	},
@@ -518,8 +518,8 @@ var Text = {
 	allLanguages: function(){
 		return this.language_all;
 	},
-	
+
 	getLanguageCode: function(){
 		return this.language_code;
 	}
-} 
+}
