@@ -5,6 +5,7 @@ var TotalArrowsCard = require('app/homescreen/cards/TotalArrowsCard.jsx');
 var EventsCard = require('app/homescreen/cards/EventsCard.jsx');
 var TasksCard = require('app/homescreen/cards/TasksCard.jsx');
 var YearOverviewCard = require('app/homescreen/cards/YearOverviewCard.jsx');
+var ValueDistributionCard = require('app/homescreen/cards/ValueDistributionCard.jsx');
 
 module.exports = React.createClass({
   render: function() {
@@ -17,8 +18,8 @@ module.exports = React.createClass({
         <YearOverviewCard />
         <div className='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>
         <div className='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>
-        {/*<ValueDistributionCard />
-        <EndDistributionCard />
+        <ValueDistributionCard />
+        {/*<EndDistributionCard />
         <div className='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>
         <div className='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>
         <SeasonsCard />

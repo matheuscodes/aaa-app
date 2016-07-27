@@ -1181,13 +1181,13 @@ var HomePage = {
 				return html;
 			},
 			getValueDistributionCard: function(){
-				var html = "<div id='aaa_home_values' class='mdl-cell--4-col mdl-cell mdl-shadow--2dp'>";
+				var html = "";
 				API.Reports.getHomescreen('value_distribution',function(download){
-					var html = "<h6>"+Text['home_values']+"</h6>";
-					html += SVG.getValueDistributionGraph(download);
+					var html = "";
+					html += "SVG.getValueDistributionGraph(download)";
 					$("#aaa_home_values").html(html);
 				});
-				html += "</div>";
+				html += "";
 				return html;
 			},
 			getEndDistributionCard: function(){
@@ -2150,25 +2150,25 @@ var SVG = {
 		var general_height = 1000 + 150 + 50 + 100;
 		var width = 20.2/(100/general_width);
 
-		var html = "<svg xmlns='http://www.w3.org/2000/svg'";
-		html += " id='aaa_home_values_graph'";
-		html += " version='1.1'";
-		html += " viewBox='0 "+(-general_height)+" "+(general_width+2)+" "+(general_height+2)+"'";
-		html += " preserveAspectRatio='xMidYMid meet'";
-		html += " width='100%'>";
+		var html = "";
+		html += "";
+		html += "";
+		html += "";
+		html += "";
+		html += "";
 
-		html += SVG.getStyle();
+		html += "SVG.getStyle()";
 
-		html += "<g id='main'>";
+		html += "";
 
-		html += SVG.getValueLabels(666);
+		html += "SVG.getValueLabels(666)";
 
-		html += "<g id='data' transform='translate(150,-250)'>";
+		html += "";
 
-		html += SVG.getGrid(1000,size);
+		html += "SVG.getGrid(1000,size)";
 
 
-		html += SVG.getLeftAxis(0,max,"distribution",1000,100,"%");
+		html += 'SVG.getLeftAxis(0,max,"distribution",1000,100,"%")';
 
 		var estimate = false;
 		var estimations = [];
@@ -2178,35 +2178,35 @@ var SVG = {
 		var values = [];
 		for(i in distribution){
 			if(!isNaN(i)){
-				html += SVG.getBar(distribution[i].week*unit,i,0,3,"week");
-				html += SVG.getBar(distribution[i].month*unit,i,1,3,"month");
-				html += SVG.getBar(distribution[i].year*unit,i,2,3,"year");
+				html += 'SVG.getBar(distribution[i].week*unit,i,0,3,"week")';
+				html += 'SVG.getBar(distribution[i].month*unit,i,1,3,"month")';
+				html += 'SVG.getBar(distribution[i].year*unit,i,2,3,"year")';
 				values.push(i);
 			}
 		}
-		html += SVG.getBottomLabels(values);
+		html += "SVG.getBottomLabels(values)";
 
-		html += "</g>";
+		html += "";
 
-		html += "</g>";
+		html += "";
 
-		html += "</svg>";
+		html += "";
 
 		return html;
 	},
 	getValueLabels: function(max){
-		var html = "<g id='labels' transform='translate(100,-220)'>";
+		var html = "";
 
-		html += "<rect class='week' x='0' y='"+(1*max/10-25)+"' height='20' width='100' />";
-		html += "<text class='graph_label' x='125' y='"+(1*max/10-2)+"'>"+Text['distribution_week']+"</text>"
+		html += "";
+		html += ""
 
-		html += "<rect class='month' x='0' y='"+(2*max/10-25)+"' height='20' width='100' />";
-		html += "<text class='graph_label' x='125' y='"+(2*max/10-2)+"'>"+Text['distribution_month']+"</text>"
+		html += "";
+		html += ""
 
-		html += "<rect class='year' x='0' y='"+(3*max/10-25)+"' height='20' width='100' />";
-		html += "<text class='graph_label' x='125' y='"+(3*max/10-2)+"'>"+Text['distribution_year']+"</text>"
+		html += "";
+		html += ""
 
-		html += "</g>";
+		html += "";
 
 		return html;
 	},
@@ -2576,61 +2576,60 @@ var SVG = {
 	},
 
 	getStyle: function(){
-		var html = "<style>";
+		var html = "";
 
-		html += ".border {fill:none;stroke:#00F;stroke-width:1;stroke-opacity:1}";
+		html += "";
 
-		html += ".plan {fill:#FFF;stroke:#000;stroke-opacity:1}";
-		html += ".week {fill:#4C4;stroke:#000;stroke-opacity:1}";
-		html += ".month {fill:#44C;stroke:#000;stroke-opacity:1}";
-		html += ".year {fill:#C44;stroke:#000;stroke-opacity:1}";
-		html += ".training {fill:#CCFFFF;stroke:#000;stroke-opacity:1}";
-		html += ".target {fill:#FFCC99;stroke:#000;stroke-opacity:1}";
-		html += ".result {fill:#33CCCC;stroke:#000;stroke-opacity:1}";
-		html += ".estimation {fill:none;stroke:#00F;stroke-opacity:1;stroke-width:2}";
-		html += ".strength {fill:#FFCC00;stroke:#000;stroke-opacity:1}";
+		html += "";
+		html += "";
+		html += "";
+		html += "";
+		html += "";
+		html += "";
+		html += "";
+		html += "";
+		html += "";
 
-		html += ".grid {fill:none;stroke:#000;stroke-opacity:1;stroke-dasharray: 10 5;stroke-width:2}";
+		html += "";
 
-		html += ".share {fill:#777}";
-		html += ".share-shadow {fill:#000}";
-		//TODO replace for - instead of _
-		html += ".graph_scale {}";
-		html += ".graph_label {font-size:30pt}";
-
-
-		html += ".bottom {font-size:30pt; text-anchor:middle}";
-		html += ".left {font-size:20pt; text-anchor:end}";
-		html += ".right {font-size:20pt; text-anchor:start}";
-		html += ".title {font-size:30pt;font-weight:bold; text-anchor:start}";
-
-		html += ".result-week {fill:#33CC33;stroke:#000;stroke-opacity:1}";
-		html += ".estimation-week {fill:none;stroke:#0F0;stroke-opacity:1;stroke-width:2}";
-		html += ".result-month {fill:#33CCCC;stroke:#000;stroke-opacity:1}";
-		html += ".estimation-month {fill:none;stroke:#00F;stroke-opacity:1;stroke-width:2}";
+		html += "";
+		html += "";
+		html += "";
+		html += "";
 
 
-		html += "</style>";
+		html += "";
+		html += "";
+		html += "";
+		html += "";
+
+		html += "";
+		html += "";
+		html += "";
+		html += "";
+
+
+		html += "";
 		return html;
 	},
 
 	getGrid: function(height, columns){
-		var s = "<g>";
+		var s = "";
 		for(var i = 0; i <= columns; i++){
-			s += "<path class='grid' d='m "+100*i+",0 0,"+(-height)+"  ' />";
+			s += "";
 		}
 		for(var i = height; i > 0; i -= height/10){
-			s += "<path class='grid' d='m 0,"+(-i)+" "+(columns*100)+",0  ' />";
+			s += "";
 		}
-		s += "</g>";
+		s += "";
 		return s;
 	},
 
 	getBar: function(value, column, position, size, type){
-		var s = "<g transform='translate(0,"+(-value)+")'>";
-		s += "<rect class='"+type+"' x='"+(10+column*100+(80*position/size))+"' ";
-		s += "height='"+value+"' width='"+(80/size)+"' />";
-		s += "</g>";
+		var s = "";
+		s += "";
+		s += "";
+		s += "";
 		return s;
 	},
 
@@ -2697,9 +2696,9 @@ var SVG = {
 	},
 
 	getLeftAxis: function(min, max,title,size, multiplier,suffix){
-		var html = ["<g id='left' transform='translate(0,0)'>"];
+		var html = [""];
 		var unit = (max - min) / 10;
-		if(unit <= 0) return "<g id='left' transform='translate(0,0)'></g>";
+		if(unit <= 0) return "";
 		if(multiplier) {
 			unit *= multiplier;
 			max *= multiplier;
@@ -2707,15 +2706,15 @@ var SVG = {
 		var block = (size/10);
 		var j = 0;
 		for(var i = min; i <= max; i+=unit){
-			html.push("<text class='left' x='-10' y='-"+j+"'>"+Math.floor(i));
+			html.push(""+Math.floor(i));
 			if(suffix){
 				html.push(suffix);
 			}
-			html.push("</text>");
+			html.push("");
 			j+=block;
 		}
-		html.push("<text transform='translate("+(-10-60)+",0) rotate(-90)' class='title' x='0' y='0'>"+Text[title]+"</text>");
-		html.push("</g>");
+		html.push("");
+		html.push("");
 		//TODO use this technique EVERYWHERE, this is JS memory optimization
 		//FIXME URGENT!
 		return html.join("");
@@ -2738,18 +2737,18 @@ var SVG = {
 	},
 
 	getBottomLabels: function(weeks,prefix){
-		var html = "<g id='bottom'>";
+		var html = "";
 		for(var i = 0; i < weeks.length; i++){
-			html += "<g transform=translate("+((i)*100+50)+",50)>";
-			html += "<text class='bottom' x='0' y='0'>"
+			html += "";
+			html += ""
 			if(prefix){
-				html += prefix+"</text>";
-				html += "<text class='bottom' x='0' y='45'>"
+				html += prefix+"";
+				html += ""
 			}
-			html += weeks[i]+"</text>";
-			html += "</g>";
+			html += weeks[i]+"";
+			html += "";
 		}
-		html += "</g>";
+		html += "";
 		return html;
 	}
 }
