@@ -1,5 +1,4 @@
 var React = require('react');
-var ReactDOMServer = require('react-dom/server');
 var BaseLayout = require('app/common/BaseLayout.jsx');
 
 var LoginCard = require('app/login/LoginCard.jsx');

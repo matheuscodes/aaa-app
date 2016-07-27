@@ -1114,70 +1114,70 @@ var HomePage = {
 		Application.destroyCurrentPage(Text['home'],HomePage.getHomePage);
 	},
 	getHomePage: function(){
-		var html = "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
+		var html = "";
 
-		html += HomePage.HTML.getTotalArrowsCard();
-		html += HomePage.HTML.getEventsCard();
-		html += HomePage.HTML.getTasksCard();
-		html += HomePage.HTML.getYearOverviewCard();
+		html += "HomePage.HTML.getTotalArrowsCard()";
+		html += "HomePage.HTML.getEventsCard()";
+		html += "HomePage.HTML.getTasksCard()";
+		html += "HomePage.HTML.getYearOverviewCard()";
 
-		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
-		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
+		html += "";
+		html += "";
 
-		html += HomePage.HTML.getValueDistributionCard();
-		html += HomePage.HTML.getEndDistributionCard();
+		html += "HomePage.HTML.getValueDistributionCard()";
+		html += "HomePage.HTML.getEndDistributionCard()";
 
-		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
-		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
+		html += "";
+		html += "";
 
-		html += HomePage.HTML.getSeasonsCard();
+		html += "HomePage.HTML.getSeasonsCard()";
 
-		html += "<div class='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>";
+		html += "";
 
 		return html;
 	},
 
 	HTML: {
 			getTotalArrowsCard: function(){
-				var html = "<div id='aaa_home_arrows' class='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>";
+				var html = "";
 				API.Reports.getHomescreen('arrows_total',function(download){
-					var html = "<h6>"+Text['home_arrows']+"</h6>";
-					html += "<table>";
+					var html = "";
+					html += "";
 					for(var i in download){
 						if(i != "max"){
-							html += HTML.getDayUnit(i,download[i],download['max']);
+							html += "HTML.getDayUnit(i,download[i],download['max'])";
 						}
 					}
-					html += "</table>";
+					html += "";
 					$("#aaa_home_arrows").html(html);
 				});
-				html += "</div>";
+				html += "";
 				return html;
 			},
 			getEventsCard: function(){
-				var html = "<div id='aaa_home_events' class='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>";
+				var html = "";
 				API.Reports.getHomescreen('events',function(download){
-					var html = "<h6>"+Text['home_events']+"</h6>";
+					var html = "";
 					for(var i = 0; i < download.length; i++){
-						html += HTML.getEventUnit(download[i]);
+						html += "HTML.getEventUnit(download[i])";
 					}
 					$("#aaa_home_events").html(html);
 				});
-				html += "</div>";
+				html += "";
 				return html;
 			},
 			getTasksCard: function(){
-				var html = "<div id='aaa_home_tasks' class='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>";
+				var html = "";
 				API.Reports.getHomescreen('tasks',function(download){
-					var html = "<h6>"+Text['home_tasks']+"</h6>";
-					html += "<table>";
+					var html = "";
+					html += "";
 					for(var i in download){
-						html += HTML.getTaskUnit(download[i]);
+						html += "HTML.getTaskUnit(download[i])";
 					}
-					html += "</table>";
+					html += "";
 					$("#aaa_home_tasks").html(html);
 				});
-				html += "</div>";
+				html += "";
 				return html;
 			},
 			getValueDistributionCard: function(){
@@ -1201,18 +1201,18 @@ var HomePage = {
 				return html;
 			},
 			getYearOverviewCard: function(){
-				var html = "<div id='aaa_home_year_summary' class='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>";
+				var html = "";
 				API.Reports.getHomescreen('year_summary',function(download){
-					var html = "<h6>"+Text['home_year_summary']+"</h6>";
-					html += "<table width='96%'>";
+					var html = "";
+					html += "";
 					for(var i in download){
 						console.log(i);
-						html += HTML.getYearUnit(download[i],i.substring(0,4),i.substring(5));
+						html += "HTML.getYearUnit(download[i],i.substring(0,4),i.substring(5))";
 					}
-					html += "</table>";
+					html += "";
 					$("#aaa_home_year_summary").html(html);
 				});
-				html += "</div>";
+				html += "";
 				return html;
 			},
 			getSeasonsCard: function(){
@@ -2045,59 +2045,59 @@ var HTML = {
 		},
 
 		getEventUnit: function(event,operate){
-			var html = "<div id='aaa_event_"+event['date']+"_"+event['name_short']+"' class='aaa-events-item'>";
+			var html = "";
 			//html += "<h2>"+seasons.name+"</h2>";
-			html += "<div class='aaa-list-item-circle mdl-color-text--accent-contrast mdl-color--accent'>"+event['name_short']+"</div>";
+			html += "";
 
-			html += "<div class='aaa-list-item-content'>";
+			html += "";
 			if(operate){
-				html += "<a onClick='ProfilePage.removeEvent(\""+event['date']+"\",\""+event['name_short']+"\");' class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>";
-				html += "<i class='material-icons'>delete</i>";
-				html += "</a>";
+				html += "";
+				html += "";
+				html += "";
 			}
-			html += "<p><strong>"+event['name']+"</strong></p>";
-			html += "<p><strong>"+Text['profile_event_start']+": </strong>"+event['date']+"</p>";
-			html += "<p>"+event['days']+"<strong> "+Text['days']+".</strong></p>";
+			html += "";
+			html += "";
+			html += "";
 
-			html += "</div>";
-			html += "</div>";
+			html += "";
+			html += "";
 			return html;
 		},
 
 		getTaskUnit: function(task){
-			var html = "<tr id='aaa_task_"+task['id']+"' >";
-			html += "<td>"
+			var html = "";
+			html += ""
 			if(task['status'] == 'done'){
-				html += "<i class='material-icons'>done</i>";
+				html += "";
 			}
 			if(task['status'] == 'open'){
-				html += "<i class='material-icons'>code</i>";
+				html += "";
 			}
-			html += "</td>"
-			html += "<td>"+task['description']+"</td>";
-			html += "</tr>"
+			html += ""
+			html += "";
+			html += ""
 			return html;
 		},
 		getYearUnit: function(unit,year,month){
-			var html = "<tr>";
-			html += "<td>"+year+"</td>";
-			html += "<td>"+Text['month_full_'+(parseInt(month)-1)]+"</td>";
-			html += "<td>"+unit['total_count']+"</td>";
-			html += "<td>"
+			var html = "";
+			html += "";
+			html += "";
+			html += "";
+			html += ""
 			if(unit['average_value']){
-				html += unit['average_value'].toPrecision(3);
+				html += "unit['average_value'].toPrecision(3)";
 			}
-			html += "</td>"
-			html += "</tr>"
+			html += ""
+			html += ""
 			return html;
 		},
 		getDayUnit: function(day,count,max){
-			var html = "<tr>";
-			html += "<td><b>"+day+"</b></td>";
-			html += "<td width='100%'>";
-			html += "<div style='width:"+((count/max)*100)+"%' class='aaa-home-arrows-day mdl-color-text--accent-contrast mdl-color--accent'>";
-			html += count;
-			html += "</div></td></tr>";
+			var html = "";
+			html += "";
+			html += "";
+			html += "";
+			html += "count";
+			html += "";
 			return html;
 		}
 }

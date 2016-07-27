@@ -10,6 +10,7 @@ var jsx = require('node-jsx');
 jsx.install();
 
 var loginPage = require('./app/login/LoginPage.jsx');
+var homePage = require('./app/homescreen/HomePage.jsx');
 
 var app = express();
 
@@ -22,6 +23,13 @@ app.get("/",function(req,res){
     languages: [{code:"de",name:"Deutsch"},{code:"en",name:"English"}]
   }
   res.send(ReactDOMServer.renderToString(React.createElement(loginPage,props)));
+});
+
+app.get("/home",function(req,res){
+  var props = {
+    languages: [{code:"de",name:"Deutsch"},{code:"en",name:"English"}]
+  }
+  res.send(ReactDOMServer.renderToString(React.createElement(homePage,props)));
 });
 
 var server = http.createServer(app)

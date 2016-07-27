@@ -5,9 +5,9 @@ module.exports = React.createClass({
     return (
       <header id='aaa_header' className='mdl-layout__header'>
         <div className='mdl-layout__header-row'>
-          <this.props.headerIcon.primary globalStyle={{fill:"#FFFFFF"}} width="32pt" height="32pt"/>
+          {this.props.headerIcon ? <this.props.headerIcon.primary globalStyle={{fill:"#FFFFFF"}} width="32pt" height="32pt"/>: null}
           <span id='aaa_header_title' className='mdl-layout-title' style={{display:'inline'}}>{this.props.title}</span>
-          <this.props.headerIcon.secondary globalStyle={{fill:"#FFFFFF"}} width="32pt" height="32pt"/>
+          {this.props.headerIcon ? <this.props.headerIcon.secondary globalStyle={{fill:"#FFFFFF"}} width="32pt" height="32pt"/>: null}
           <div className='mdl-layout-spacer'></div>
           <button onClick='LoginPage.doLogout()' id='aaa_header_logout' className='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-color-text--accent-contrast'>
             <i className='material-icons'>exit_to_app</i>
