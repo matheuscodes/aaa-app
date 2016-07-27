@@ -1,4 +1,5 @@
 var React = require('react');
+var LanguagesIcon = require('icons/Languages.jsx');
 
 module.exports = React.createClass({
   render: function() {
@@ -24,7 +25,8 @@ module.exports = React.createClass({
         <div className='mdl-layout-spacer'></div>
         <button id='aaa_languages' className='mdl-button mdl-js-button mdl-button--icon aaa-languages'>
           EN
-        </button> //TODO fix this and add the language icon again
+        </button>
+        <LanguagesIcon />
         <ul className='mdl-menu mdl-menu--top-right mdl-js-menu mdl-js-ripple-effect' htmlFor='aaa_languages'>
           {languageNodes}
         </ul>

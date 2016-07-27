@@ -1,3 +1,6 @@
+//require('app-module-path').addPath(__dirname + '/src/app');
+require('app-module-path').addPath(__dirname);
+
 var express = require('express');
 var http = require('http');
 var React = require('react');
@@ -6,7 +9,7 @@ var jsx = require('node-jsx');
 
 jsx.install();
 
-var loginPage = require('./app/login/LoginPage');
+var loginPage = require('./app/login/LoginPage.jsx');
 
 var app = express();
 
