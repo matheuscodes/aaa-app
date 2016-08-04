@@ -3,16 +3,25 @@ var React = require('react');
 module.exports = React.createClass({
   render: function() {
 		var estimations = [];
-		var min_result = 10;
-		var max_result = 0;
+		var min_result = this.props.min ? this.props.min : 10;
+		var max_result = this.props.max ? this.props.max : 0;
 		for(let i = 0; i < this.props.data.length; i++){
-			if(this.props.data[i]){
+			if(typeof this.props.data[i] !== 'undefined'){
 				estimations.push(this.props.data[i]);
 				if(this.props.data[i] > max_result) max_result = this.props.data[i];
 				if(this.props.data[i] < min_result) min_result = this.props.data[i];
 			}
 			else{
-				estimations.push(-1);
+        if(estimate && i > 1){
+          //TODO test this... probably not working.
+          estimate = (estimations[i-1]+estimations[i-2])/2;
+          estimations.push(estimate);
+          if(estimate > max_result) max_result = estimate;
+          if(estimate < min_result) min_result = estimate;
+        }
+        else{
+          estimations.push(-1);
+        }
 			}
 		}
 
@@ -33,7 +42,7 @@ module.exports = React.createClass({
 
     var bullets = this.props.data.map(function(value,index){
       return(
-        <circle className={'result-'+this.props.contentName}
+        <circle className={'result' + (this.props.contentName ? '-'+this.props.contentName: '')}
                 cx={index*100+50}
                 cy={-((value-min_result)/(max_result-min_result))*this.props.size}
                 r='10'/>
@@ -42,7 +51,7 @@ module.exports = React.createClass({
 
     return (
       <g>
-        <path className={'estimation-'+this.props.contentName} d={path.join("")} />
+        <path className={'estimation' + (this.props.contentName ? '-'+this.props.contentName: '')} d={path.join("")} />
         {bullets}
       </g>
     );

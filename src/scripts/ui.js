@@ -1216,15 +1216,15 @@ var HomePage = {
 				return html;
 			},
 			getSeasonsCard: function(){
-				var html = "<div id='aaa_home_seasons' class='mdl-cell--8-col mdl-cell mdl-shadow--2dp'>";
+				var html = "";
 				API.Reports.getHomescreen('seasons',function(download){
-					var html = "<h6>"+Text['home_seasons']+"</h6>";
+					var html = "";
 					for(var i in download){
 						html += SVG.getSeasonGraph(download[i],"aaa_home_seasons_graph");
 					}
 					$("#aaa_home_seasons").html(html);
 				});
-				html += "</div>";
+				html += "";
 				return html;
 			}
 	}
@@ -2476,25 +2476,20 @@ var SVG = {
 		var general_height = 1000 + 150 + 50;
 		var width = 20.2/(100/general_width);
 
-		var html = "<svg xmlns='http://www.w3.org/2000/svg'";
-		html += " id='"+id+"'";
-		html += " version='1.1'";
-		html += " viewBox='0 "+(-general_height)+" "+(general_width+2)+" "+(general_height+2)+"'";
-		html += " preserveAspectRatio='xMidYMid meet'";
-		html += " width='"+width+"pt'>";
+		var html = "";
 
-		html += SVG.getStyle();
+		html += 'SVG.getStyle()';
 
-		html += "<g id='main'>";
+		html += "";
 
-		html += SVG.getSeasonLabels(1000);
+		html +=' SVG.getSeasonLabels(1000)';
 
-		html += "<g id='data' transform='translate(700,-150)'>";
+		html += "";
 
-		html += SVG.getGrid(1000,weeks);
+		html += 'SVG.getGrid(1000,weeks)';
 
-		html += SVG.getBottomLabels(season.weeks,Text['wk']);
-		html += SVG.getLeftAxis(0,max,"arrow_count",1000);
+		html +=" SVG.getBottomLabels(season.weeks,Text['wk']");
+		html += 'SVG.getLeftAxis(0,max,"arrow_count",1000)';
 
 		var estimate = false;
 		var estimations = [];
@@ -2503,9 +2498,9 @@ var SVG = {
 		var max_result = 0;
 		for(i in season){
 			if(!isNaN(i)){
-				html += SVG.getPlan(season[i].total_plan*unit,i-season.start);
-				html += SVG.getActual(season[i].total*unit-season[i].technique_total*unit,season[i].technique_total*unit,i-season.start);
-				html += SVG.getShare(season[i].total_plan*unit-season[i].gauged_plan*unit,i-season.start);
+				html += 'SVG.getPlan(season[i].total_plan*unit,i-season.start)';
+				html += 'SVG.getActual(season[i].total*unit-season[i].technique_total*unit,season[i].technique_total*unit,i-season.start)';
+				html += 'SVG.getShare(season[i].total_plan*unit-season[i].gauged_plan*unit,i-season.start)';
 				if(season[i].result_total){
 					bullets[i] = season[i].result_total;
 					estimations.push(season[i].result_total);
@@ -2531,47 +2526,47 @@ var SVG = {
 		var difference = max_result - min_result;
 		max_result += 0.1*difference;
 		min_result -= 0.1*difference;
-		html += SVG.getEstimations(estimations,1000,min_result,max_result,"estimation");
+		html += 'SVG.getEstimations(estimations,1000,min_result,max_result,"estimation")';
 
-		html += SVG.getRightAxis(10-min_result,10-max_result,"results",1000,weeks*100);
+		html += 'SVG.getRightAxis(10-min_result,10-max_result,"results",1000,weeks*100)';
 
 		for(bullet in bullets){
-			html += SVG.getResult(bullets[bullet],bullet-season.start,1000,min_result,max_result,"result");
+			html += 'SVG.getResult(bullets[bullet],bullet-season.start,1000,min_result,max_result,"result")';
 		}
 
-		html += "</g>";
+		html += "";
 
-		html += "</g>";
+		html += "";
 
-		html += "</svg>";
+		html += "";
 
 		return html;
 	},
 
 	getSeasonLabels: function(max){
-		var html = "<g id='labels' transform='translate(5,-"+max+")'>";
+		var html = "";
 
-		html += "<rect class='plan' x='0' y='"+(1*max/10-25)+"' height='20' width='100' />";
-		html += "<text class='graph_label' x='125' y='"+(1*max/10-2)+"'>"+Text['total_plan']+"</text>"
+		html += "";
+		html += ""
 
-		html += "<rect class='training' x='0' y='"+(2*max/10-25)+"' height='20' width='100' />";
-		html += "<text class='graph_label' x='125' y='"+(2*max/10-2)+"'>"+Text['technique_totals']+"</text>"
+		html += "";
+		html += ""
 
-		html += "<rect class='target' x='0' y='"+(3*max/10-25)+"' height='20' width='100' />";
-		html += "<text class='graph_label' x='125' y='"+(3*max/10-2)+"'>"+Text['target_totals']+"</text>"
+		html += "";
+		html += ""
 
-		html += "<rect class='share-shadow' x='5' y='"+(4*max/10-25)+"' height='20' width='100' />";
-		html += "<rect class='share' y='"+(4*max/10-5-25)+"' height='20' width='100' />";
-		html += "<text class='graph_label' x='125' y='"+(4*max/10-2)+"'>"+Text['technique_share']+"</text>"
+		html += "";
+		html += "";
+		html += ""
 
-		html += "<path class='estimation' d='M 0,"+(5*max/10-12.5)+" l 100,0'/>";
-		html += "<circle class='result' cx='50' cy='"+(5*max/10-12.5)+"' r='10'/>";
-		html += "<text class='graph_label' x='125' y='"+(5*max/10-2)+"'>"+Text['result_totals']+"</text>"
+		html += "";
+		html += "";
+		html += ""
 
-		html += "<circle class='strength' cx='50' cy='"+(6*max/10-12.5)+"' r='10'/>";
-		html += "<text class='graph_label' x='125' y='"+(6*max/10-2)+"'>"+Text['strength_training']+"</text>"
+		html += "";
+		html += ""
 
-		html += "</g>";
+		html += "";
 
 		return html;
 	},
@@ -2635,25 +2630,25 @@ var SVG = {
 	},
 
 	getPlan: function(value, column){
-		var s = "<g transform='translate(0,"+(-value)+")'>";
-		s += "<rect class='plan' x='"+(10+column*100)+"' height='"+value+"' width='80' />";
-		s += "</g>";
+		var s = "";
+		s += "";
+		s += "";
 		return s;
 	},
 
 	getActual: function(target, training, column){
-		var s = "<g transform='translate(0,"+(-target-training)+")'>";
-		s += "<rect class='target' x='"+(10+column*100)+"' height='"+ target +"' width='80' />";
-		s += "<rect class='training' x='"+(10+column*100)+"' y='"+target+"' height='"+ training +"' width='80' />";
-		s += "</g>";
+		var s = "";
+		s += "";
+		s += "";
+		s += "";
 		return s;
 	},
 
 	getShare: function(value, column){
-		var s = "<g transform='translate("+(column*100)+","+(-value)+")'>";
-		s += "<rect class='share-shadow' x='5' y='0' height='20' width='100' />";
-		s += "<rect class='share' y='-5' height='20' width='100' />";
-		s += "</g>";
+		var s = "";
+		s += "";
+		s += "";
+		s += "";
 		return s;
 	},
 
