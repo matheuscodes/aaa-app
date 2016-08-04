@@ -1191,13 +1191,13 @@ var HomePage = {
 				return html;
 			},
 			getEndDistributionCard: function(){
-				var html = "<div id='aaa_home_ends' class='mdl-cell--4-col mdl-cell mdl-shadow--2dp'>";
+				var html = "";
 				API.Reports.getHomescreen('end_distribution',function(download){
-					var html = "<h6>"+Text['home_ends']+"</h6>";
-					html += SVG.getEndDistributionGraph(download);
+					var html = "";
+					html += "SVG.getEndDistributionGraph(download)";
 					$("#aaa_home_ends").html(html);
 				});
-				html += "</div>";
+				html += "";
 				return html;
 			},
 			getYearOverviewCard: function(){
@@ -2219,29 +2219,30 @@ var SVG = {
 		var general_height = 1000 + 150 + 50 + 100;
 		var width = 20.2/(100/general_width);
 
-		var html = "<svg xmlns='http://www.w3.org/2000/svg'";
-		html += " id='aaa_home_ends_graph'";
-		html += " version='1.1'";
-		html += " viewBox='0 "+(-general_height)+" "+(general_width+2)+" "+(general_height+2)+"'";
-		html += " preserveAspectRatio='xMidYMid meet'";
-		html += " width='100%'>";
+		var html = "";
+		html += " ";
+		html += " ";
+		html += " ";
+		html += " ";
+		html += " ";
 
-		html += SVG.getStyle();
+		html += "SVG.getStyle()";
 
-		html += "<g id='main'>";
+		html += "";
 
-		html += SVG.getEndLabels(1000);
+		html += "SVG.getEndLabels(1000)";
+    //VOLTAQUI
 
-		html += "<g id='data' transform='translate(150,-250)'>";
+		html += "";
 
-		html += SVG.getGrid(1000,size);
+		html += "SVG.getGrid(1000,size)";
 
 		var ends = [];
 		for(var i = 0; i <= distribution.max_end; i++){
 			ends.push(i+1);
 		}
-		html += SVG.getBottomLabels(ends);
-		html += SVG.getLeftAxis(0,max,"arrow_count",1000);
+		html += "SVG.getBottomLabels(ends)";
+		html += 'SVG.getLeftAxis(0,max,"arrow_count",1000)';
 
 		var estimate = false;
 		var estimations_week = [];
@@ -2280,50 +2281,50 @@ var SVG = {
 		var difference = max_result - min_result;
 		max_result += 0.1*difference;
 		min_result -= 0.1*difference;
-		html += SVG.getEstimations(estimations_week,1000,min_result,max_result,"estimation-week");
-		html += SVG.getEstimations(estimations_month,1000,min_result,max_result,"estimation-month");
+		html += 'SVG.getEstimations(estimations_week,1000,min_result,max_result,"estimation-week")';
+		html += 'SVG.getEstimations(estimations_month,1000,min_result,max_result,"estimation-month")';
 
-		html += SVG.getRightAxis(10-min_result,10-max_result,"results",1000,size*100);
+		html += 'SVG.getRightAxis(10-min_result,10-max_result,"results",1000,size*100)';
 
 		for(bullet in bullets_week){
-			html += SVG.getResult(bullets_week[bullet],bullet,1000,min_result,max_result,"result-week");
+			html += 'SVG.getResult(bullets_week[bullet],bullet,1000,min_result,max_result,"result-week")';
 		}
 
 		for(bullet in bullets_month){
-			html += SVG.getResult(bullets_month[bullet],bullet,1000,min_result,max_result,"result-month");
+			html += 'SVG.getResult(bullets_month[bullet],bullet,1000,min_result,max_result,"result-month")';
 		}
 
 
-		html += "</g>";
+		html += "";
 
-		html += "</g>";
+		html += "";
 
-		html += "</svg>";
+		html += "";
 
 		return html;
 	},
 	getEndLabels: function(max){
-		var html = "<g id='labels' transform='translate(100,-220)'>";
+		var html = "";
 
-		html += "<rect class='week' x='0' y='"+(1*max/10-25)+"' height='20' width='100' />";
-		html += "<text class='graph_label' x='125' y='"+(1*max/10-2)+"'>"+Text['count_week']+"</text>"
+		html += "";
+		html += ""
 
-		html += "<rect class='month' x='0' y='"+(2*max/10-25)+"' height='20' width='100' />";
-		html += "<text class='graph_label' x='125' y='"+(2*max/10-2)+"'>"+Text['count_month']+"</text>"
+		html += "";
+		html += ""
 
-		html += "</g>";
+		html += "";
 
-		html += "<g id='labels' transform='translate(600,-220)'>";
+		html += "";
 
-		html += "<path class='estimation-week' d='M 0,"+(1*max/10-12.5)+" l 100,0'/>";
-		html += "<circle class='result-week' cx='50' cy='"+(1*max/10-12.5)+"' r='10'/>";
-		html += "<text class='graph_label' x='125' y='"+(1*max/10-2)+"'>"+Text['value_week']+"</text>"
+		html += "";
+		html += "";
+		html += ""
 
-		html += "<path class='estimation-month' d='M 0,"+(2*max/10-12.5)+" l 100,0'/>";
-		html += "<circle class='result-month' cx='50' cy='"+(2*max/10-12.5)+"' r='10'/>";
-		html += "<text class='graph_label' x='125' y='"+(2*max/10-2)+"'>"+Text['value_month']+"</text>"
+		html += "";
+		html += "";
+		html += ""
 
-		html += "</g>";
+		html += "";
 
 		return html;
 	},
@@ -2657,41 +2658,17 @@ var SVG = {
 	},
 
 	getResult: function(value,position,size,min,max,what) {
-		var s = "<g>";
-		var k = -((value-min)/(max-min));
-		s+= "<circle class='"+what+"' cx='"+(position*100+50)+"' cy='"+(k*size)+"' r='10'/>";
-		s+="</g>";
+		var s = "";
 		return s;
 	},
 
 	getEstimations: function(data, size,min,max,what) {
-		var s = "<g><path class='"+what+"' d='M ";
-		var first = true;
-		for(var i = 0; i < data.length;i++){
-			var k = -((data[i]-min)/(max-min));
-			if(k <= 0){
-				if(first){
-					s += (50+i*100)+" "+(k*size)+" C "+ (i*100+100) +","+(k*size)+" ";
-					first = false;
-				}
-				else {
-					s += (50+i*100-50)+","+(k*size)+" "+(i*100+50)+" "+(k*size)+" S ";
-				}
-			}
-		}
-		s+="'/></g>";
+		var s = "";
 		return s;
 	},
 
 	getRightAxis: function(min, max,title,size,offset){
-		var html = "<g id='right' transform='translate(0,0)'>";
-		var unit = (max - min) / 10;
-		var block = (size/10);
-		for(var i = min,j = 0; j <= size; i+=unit,j+=block){
-			html += "<text class='right' x='"+(offset+10)+"' y='-"+j+"'>"+(i).toPrecision(3)+"</text>";
-		}
-		html += "<text transform='translate("+(offset+10+90)+",0) rotate(-90)' class='title' x='0' y='0'>"+Text[title]+"</text>";
-		html += "</g>";
+		var html = "";
 		return html;
 	},
 

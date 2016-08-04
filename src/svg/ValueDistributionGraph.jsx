@@ -3,7 +3,7 @@ var React = require('react');
 var GraphStyle = require('svg/common/GraphStyle.jsx');
 var GraphBar = require('svg/common/GraphBar.jsx');
 var GraphBottomLabels = require('svg/common/GraphBottomLabels.jsx');
-var GraphLeftAxis = require('svg/common/GraphLeftAxis.jsx');
+var GraphAxisLabels = require('svg/common/GraphAxisLabels.jsx');
 var GraphGrid = require('svg/common/GraphGrid.jsx');
 
 module.exports = React.createClass({
@@ -46,7 +46,7 @@ module.exports = React.createClass({
 
           <g id='data' transform='translate(150,-250)'>
             <GraphGrid height='1000' columns='11' />
-            <GraphLeftAxis min='0' max={this.props.data.max} title='distribution' size='1000' multiplier='100' suffix='%' />
+            <GraphAxisLabels type='left' min='0' max={this.props.data.max} title='distribution' size='1000' suffix='%' />
               {bars}
             <GraphBottomLabels content={values} />
           </g>
