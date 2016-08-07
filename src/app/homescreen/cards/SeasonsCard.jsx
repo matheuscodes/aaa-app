@@ -29,7 +29,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -37,7 +37,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -45,7 +45,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -53,7 +53,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -61,7 +61,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -69,7 +69,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -77,7 +77,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -85,7 +85,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -93,7 +93,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -101,7 +101,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -109,7 +109,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -117,7 +117,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -125,7 +125,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -133,7 +133,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -141,7 +141,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -149,7 +149,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -157,7 +157,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -165,7 +165,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -173,7 +173,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -181,7 +181,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -189,7 +189,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -197,7 +197,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.674
         },
         {
@@ -205,7 +205,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 6.5
         },
         {
@@ -213,7 +213,7 @@ module.exports = React.createClass({
           gauge_plan: 120,
           shots: 64,
           technique_shots: 20,
-          week: 01,
+          week: 1,
           value: 2.1
         }
       ],

@@ -4,7 +4,21 @@
   "description": "AAA - Advanced Archery Application",
   "main": "src/server.js",
   "scripts": {
-    "sass": "node-sass --output-style compressed -o build/css/ scss/"
+    "sass": "node-sass --output-style compressed -o build/css/ scss/",
+    "bundle": "browserify src/app.js -o build/app.js",
+    "start": "npm run bundle | node src/server.js"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "react"
+          ]
+        }
+      ]
+    ]
   },
   "repository": {
     "type": "git",
@@ -28,5 +42,11 @@
     "node-sass": "^3.8.0",
     "react": "^15.2.1",
     "react-dom": "^15.2.1"
+  },
+  "devDependencies": {
+    "babel-preset-react": "^6.11.1",
+    "babelify": "^7.3.0",
+    "browserify": "^13.1.0",
+    "react-mdl": "^1.6.1"
   }
 }

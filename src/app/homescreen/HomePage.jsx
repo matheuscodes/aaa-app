@@ -12,7 +12,7 @@ var SeasonsCard = require('app/homescreen/cards/SeasonsCard.jsx');
 module.exports = React.createClass({
   render: function() {
     return (
-      <BaseLayout languages={this.props.languages} title='Text["Home title"]' >
+      <BaseLayout layoutName='homePage' languages={this.props.languages} title='Text["Home title"]' >
         <div className='mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone'></div>
         <TotalArrowsCard />
         <EventsCard />

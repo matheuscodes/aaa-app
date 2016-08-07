@@ -11,11 +11,12 @@ jsx.install();
 
 var loginPage = require('./app/login/LoginPage.jsx');
 var homePage = require('./app/homescreen/HomePage.jsx');
+var trainingsPage = require('./app/trainings/TrainingsPage.jsx');
 
 var app = express();
 
-app.use(express.static('src'));
 app.use(express.static('build'));
+app.use(express.static('src'));
 app.use(express.static('content'));
 
 app.get("/",function(req,res){
@@ -32,5 +33,13 @@ app.get("/home",function(req,res){
   res.send(ReactDOMServer.renderToString(React.createElement(homePage,props)));
 });
 
+app.get("/trainings",function(req,res){
+  var props = {
+    languages: [{code:"de",name:"Deutsch"},{code:"en",name:"English"}]
+  }
+  res.send(ReactDOMServer.renderToString(React.createElement(trainingsPage,props)));
+});
+
 var server = http.createServer(app)
 server.listen(9090);
+console.log("Listening to 9090");

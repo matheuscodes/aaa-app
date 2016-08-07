@@ -5,7 +5,7 @@ module.exports = React.createClass({
   render: function() {
     var languageNodes = this.props.languages.map(function(language) {
       return (
-        <li key={language.code} className='mdl-menu__item' onClick={'Application.swapLanguage(' + language.code + ')'} >
+        <li key={language.code} className='mdl-menu__item' >
           <button className='mdl-button mdl-js-button mdl-button--icon aaa-languages'>
             {language.code}
           </button>

@@ -14,7 +14,7 @@ module.exports = React.createClass({
           <div className='mdl-tooltip' htmlFor='aaa_sidebar_user_options'>Text['options']</div>
           <ul className='mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect' htmlFor='aaa_sidebar_user_options'>
             <li className='mdl-menu__item'><i className='material-icons'>settings</i>Text['settings']</li>
-            <li onClick='LoginPage.doLogout()' className='mdl-menu__item'><i className='material-icons'>exit_to_app</i> Text['logout']</li>
+            <li className='mdl-menu__item'><i className='material-icons'>exit_to_app</i> Text['logout']</li>
           </ul>
         </div>
       </header>
