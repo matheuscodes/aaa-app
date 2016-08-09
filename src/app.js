@@ -1,5 +1,12 @@
 'use strict'
 
+//process.env.NODE_ENV = 'production'
+
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+var injectTapEventPlugin = require('react-tap-event-plugin');
+injectTapEventPlugin();
+
 console.log("Loading");
 
 var React = require('react');

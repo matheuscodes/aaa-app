@@ -1,20 +1,51 @@
 var React = require('react');
 
+var MUI = require('app/common/MaterialUI');
+
 module.exports = React.createClass({
+  getInitialState: function(){
+    return {open:false};
+  },
+  handleToggle: function(){
+    this.setState({open: !this.state.open});
+  },
+  handleClose: function(){
+    this.setState({open: false});
+  },
   render: function() {
     return (
-      <header id='aaa_header' className='mdl-layout__header is-casting-shadow'>
-        <div className='mdl-layout__header-row'>
-          {this.props.headerIcon ? <this.props.headerIcon.primary globalStyle={{fill:"#FFFFFF"}} width="32pt" height="32pt"/>: null}
-          <span id='aaa_header_title' className='mdl-layout-title' style={{display:'inline'}}>{this.props.title}</span>
-          {this.props.headerIcon ? <this.props.headerIcon.secondary globalStyle={{fill:"#FFFFFF"}} width="32pt" height="32pt"/>: null}
-          <div className='mdl-layout-spacer'></div>
-          <button id='aaa_header_logout' className='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-color-text--accent-contrast'>
-            <i className='material-icons'>exit_to_app</i>
-          </button>
-          <div className='mdl-tooltip' htmlFor='aaa_header_logout'>Text['logout']</div>
-        </div>
-      </header>
+      <div>
+        <MUI.AppBar
+            title={this.props.title}
+            iconElementRight={<MUI.IconButton><MUI.icons.action.exit_to_app /></MUI.IconButton>}
+            iconElementLeft={<MUI.IconButton onTouchTap={this.handleToggle}><MUI.icons.navigation.menu /></MUI.IconButton> }
+          />
+        <MUI.Drawer
+            docked={false}
+            width={400}
+            open={this.state.open}
+            onRequestChange={this.handleClose} >
+            <MUI.List>
+              <MUI.Subheader inset={true}>Advanced Archery App</MUI.Subheader>
+              <MUI.ListItem
+                primaryText="John Doe"
+                secondaryText="john@gmail.com"
+                disabled={true}
+                nestedItems={[
+                  <MUI.ListItem primaryText="Text['Settings']" leftIcon={<MUI.icons.action.settings />} />,
+                  <MUI.ListItem onTouchTap={this.handleClose} primaryText="Text['logout']" leftIcon={<MUI.icons.action.exit_to_app />} />
+                ]}
+              />
+            </MUI.List>
+            <MUI.Menu>
+            <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.home />}>Text['home']</MUI.MenuItem>
+            <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.assignment_ind />}>Text['manage_profile']</MUI.MenuItem>
+            <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.content.create />}>Text['manage_trainings']</MUI.MenuItem>
+            <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.history />}>Text['performance_history']</MUI.MenuItem>
+            <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.help_outline />}>Text['help']</MUI.MenuItem>
+            </MUI.Menu>
+        </MUI.Drawer>
+      </div>
     );
   }
 });

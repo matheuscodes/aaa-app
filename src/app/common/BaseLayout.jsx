@@ -1,36 +1,37 @@
-var React = require('react');
-var Footer = require('./Footer.jsx');
-var Header = require('./Header.jsx');
-var DrawerMenu = require('./DrawerMenu.jsx');
+'use strict'
 
+var React = require('react');
+
+var MUI = require('app/common/MaterialUI');
+
+var Header = require('app/common/Header.jsx');
+
+/**
+ * Base layout for page rendering
+ * Props:
+ *    userAgent - configuration for checksum on browser and server renderToString
+ *    title - header title
+ */
 module.exports = React.createClass({
   render: function() {
+    var muiTheme = MUI.getTheme({
+      userAgent: this.props.userAgent
+    });
     return (
-      <html>
-        <head>
-          <link href="https://fonts.googleapis.com/icon?family=Material+Icons"	rel="stylesheet" />
-          <script	src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js" />
-          <link rel="stylesheet" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
-          <script src="https://code.jquery.com/jquery-2.1.4.js" />
-          <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js" />
-          <link rel="stylesheet"	href="css/app.css" />
-        </head>
-        <body className={'aaa-baseLayout-'+this.props.layoutName}>
-          <div className='mdl-layout__container'>
-            <div className='mdl-layout mdl-js-layout mdl-layout--fixed-header is-upgraded' data-upgraded=',MaterialLayout' >
-              <Header title={this.props.title} headerIcon={this.props.headerIcon} />
-              <DrawerMenu />
-              <main className='mdl-layout__content'>
-                <div id='aaa_content' className='page-content mdl-grid'>
-                  {this.props.children}
-                </div>
-              </main>
-              <Footer languages={this.props.languages} />
-            </div>
-          </div>
-          <script async defer src="app.js" />
-        </body>
-      </html>
+        <html>
+          <head>
+            <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css' />
+            <link rel="stylesheet"	href="css/app.css" />
+          </head>
+          <body className={'aaa-baseLayout-'+this.props.layoutName}>
+            <MUI.ThemeProvider muiTheme={muiTheme}>
+              <div>
+                <Header title={this.props.title} />
+              </div>
+            </MUI.ThemeProvider>
+            <script async defer src="app.js" />
+          </body>
+        </html>
     );
   }
 });
