@@ -2,8 +2,8 @@ var React = require('react');
 var BaseLayout = require('app/common/BaseLayout.jsx');
 
 var LoginCard = require('app/login/LoginCard.jsx');
-var ArcherStanding = require('icons/ArcherStanding.jsx');
-var ArcherWheelchair = require('icons/ArcherWheelChair.jsx');
+var ArcherStanding = require('svg/icon/ArcherStanding.jsx');
+var ArcherWheelchair = require('svg/icon/ArcherWheelChair.jsx');
 
 module.exports = React.createClass({
   render: function() {

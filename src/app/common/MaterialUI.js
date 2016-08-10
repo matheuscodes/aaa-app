@@ -10,7 +10,8 @@ var MUI = {
   getTheme: require('material-ui/styles/getMuiTheme').default,
   AppBar: require('material-ui/AppBar').default,
   Drawer: require('material-ui/Drawer').default,
-  Divider: require('material-ui/Drawer').default,
+  Divider: require('material-ui/Divider').default,
+  DropDownMenu: require('material-ui/DropDownMenu').default,
   IconMenu: require('material-ui/IconMenu').default,
   IconButton: require('material-ui/IconButton').default,
   Menu: require('material-ui/Menu').default,
@@ -20,7 +21,7 @@ var MUI = {
   ListItem: require('material-ui/List/ListItem').default
 }
 
-var icons = {
+MUI.icons = {
   action:{
     home: require('material-ui/svg-icons/action/home').default,
     assignment_ind: require('material-ui/svg-icons/action/assignment-ind').default,
@@ -37,6 +38,9 @@ var icons = {
   }
 }
 
-MUI.icons = icons;
-
+MUI.palette = require('material-ui/styles/baseThemes/lightBaseTheme').default.palette;
+MUI.palette.accent3Color = require('material-ui/styles/colors').grey600;
+MUI.palette.darkAccent1Color = require('material-ui/styles/colors').grey500;
+MUI.palette.darkAccent2Color = require('material-ui/styles/colors').grey700;
+MUI.palette.darkAccent3Color = require('material-ui/styles/colors').grey900;
 module.exports = MUI

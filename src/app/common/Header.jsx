@@ -34,15 +34,15 @@ module.exports = React.createClass({
                 nestedItems={[
                   <MUI.ListItem primaryText="Text['Settings']" leftIcon={<MUI.icons.action.settings />} />,
                   <MUI.ListItem onTouchTap={this.handleClose} primaryText="Text['logout']" leftIcon={<MUI.icons.action.exit_to_app />} />
-                ]}
-              />
+                ]} />
             </MUI.List>
+            <MUI.Divider />
             <MUI.Menu>
-            <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.home />}>Text['home']</MUI.MenuItem>
-            <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.assignment_ind />}>Text['manage_profile']</MUI.MenuItem>
-            <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.content.create />}>Text['manage_trainings']</MUI.MenuItem>
-            <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.history />}>Text['performance_history']</MUI.MenuItem>
-            <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.help_outline />}>Text['help']</MUI.MenuItem>
+              <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.home />}>Text['home']</MUI.MenuItem>
+              <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.assignment_ind />}>Text['manage_profile']</MUI.MenuItem>
+              <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.content.create />}>Text['manage_trainings']</MUI.MenuItem>
+              <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.history />}>Text['performance_history']</MUI.MenuItem>
+              <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.help_outline />}>Text['help']</MUI.MenuItem>
             </MUI.Menu>
         </MUI.Drawer>
       </div>

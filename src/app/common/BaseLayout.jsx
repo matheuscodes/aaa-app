@@ -5,6 +5,7 @@ var React = require('react');
 var MUI = require('app/common/MaterialUI');
 
 var Header = require('app/common/Header.jsx');
+var Footer = require('app/common/Footer.jsx');
 
 /**
  * Base layout for page rendering
@@ -18,7 +19,7 @@ module.exports = React.createClass({
       userAgent: this.props.userAgent
     });
     return (
-        <html>
+        <html style={{fontFamily:'Roboto, sans-serif'}}>
           <head>
             <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css' />
             <link rel="stylesheet"	href="css/app.css" />
@@ -27,6 +28,7 @@ module.exports = React.createClass({
             <MUI.ThemeProvider muiTheme={muiTheme}>
               <div>
                 <Header title={this.props.title} />
+                <Footer />
               </div>
             </MUI.ThemeProvider>
             <script async defer src="app.js" />
