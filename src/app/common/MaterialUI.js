@@ -3,6 +3,8 @@
  * Material UI wrapper
  * This helps reduce the sizes of imports and centralizes configuration
  * TODO: Switch to "import <> from <>" once Node.js implements it.
+ * @author Matheus
+ * @since 1.0.0
  */
 
 var MUI = {

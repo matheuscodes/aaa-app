@@ -8,10 +8,11 @@ var Header = require('app/common/Header.jsx');
 var Footer = require('app/common/Footer.jsx');
 
 /**
- * Base layout for page rendering
- * Props:
- *    userAgent - configuration for checksum on browser and server renderToString
- *    title - header title
+ * Base layout for page rendering.
+ * @prop userAgent: configuration for checksum on browser and server renderToString
+ * @prop title: header title
+ * @author Matheus
+ * @since 1.0.0
  */
 module.exports = React.createClass({
   render: function() {

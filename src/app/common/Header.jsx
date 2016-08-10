@@ -2,6 +2,12 @@ var React = require('react');
 
 var MUI = require('app/common/MaterialUI');
 
+/**
+ * Header with an undocked drawer and a logout button.
+ * @prop title: header title
+ * @author Matheus
+ * @since 1.0.0
+ */
 module.exports = React.createClass({
   getInitialState: function(){
     return {open:false};

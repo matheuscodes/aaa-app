@@ -1,3 +1,5 @@
+'use strict'
+
 var React = require('react');
 
 var MUI = require('app/common/MaterialUI');
@@ -5,6 +7,7 @@ var LanguageIcon = require('svg/icon/Languages.jsx');
 
 var languages = require('constants/Languages');
 
+/* Styles used in the footer*/
 var footerStyle = {
   position: 'absolute',
   left: 0,
@@ -43,6 +46,12 @@ var iconStyle = {
   margin: '20px 0 0 0'
 }
 
+
+/**
+ * Footer with language selection.
+ * @author Matheus
+ * @since 1.0.0
+ */
 var languageNodes = languages.map(function(language) {
   return (
     <MUI.MenuItem value={language.code} key={language.code} primaryText={language.name} />
