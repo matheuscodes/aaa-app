@@ -39,7 +39,7 @@ var linkStyle = {
 var iconStyle = {
   float:'right',
   display:'inline-block',
-  lineHeight: '56px',
+  lineHeight: '48pt',
   width: '24pt',
   height: '24pt',
   fill: '#FFF',

@@ -20,15 +20,18 @@ module.exports = React.createClass({
       userAgent: this.props.userAgent
     });
     return (
-        <html style={{fontFamily:'Roboto, sans-serif'}}>
+        <html style={{fontFamily:'Roboto, sans-serif',minHeight:'100%',position: 'relative'}}>
           <head>
             <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css' />
             <link rel="stylesheet"	href="css/app.css" />
           </head>
-          <body className={'aaa-baseLayout-'+this.props.layoutName}>
+          <body className={'aaa-baseLayout-'+this.props.layoutName} style={{margin: '0 0 48pt'}}>
             <MUI.ThemeProvider muiTheme={muiTheme}>
               <div>
                 <Header title={this.props.title} />
+                  <div style={{width:'100%'}}>
+                  {this.props.children}
+                </div>
                 <Footer />
               </div>
             </MUI.ThemeProvider>
