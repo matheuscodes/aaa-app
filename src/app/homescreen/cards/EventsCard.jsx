@@ -1,4 +1,6 @@
+'use strict'
 var React = require('react');
+var MUI = require('app/common/MaterialUI');
 
 module.exports = React.createClass({
   getInitialState: function() {
@@ -16,24 +18,29 @@ module.exports = React.createClass({
   render: function() {
     var events = this.state.events.map(function(event) {
       return (
-        <div key={'aaa_event_'+event['date']+'_'+event['name_short']} id={'aaa_event_'+event['date']+'_'+event['name_short']} className='aaa-events-item'>
-          <div className='aaa-list-item-circle mdl-color-text--accent-contrast mdl-color--accent'>{event['name_short']}</div>
-          <div className='aaa-list-item-content'>
-            <a onClick='ProfilePage.removeEvent(\"event["date"]+"\",\""+event["name_short"]+"\");' className='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>
-              <i className='material-icons'>delete</i>
-            </a>
-            <p><strong>{event['name']}</strong></p>
-            <p><strong>Text['profile_event_start']: </strong>{event['date']}</p>
-            <p>{event['days']}<strong> Text['days'].</strong></p>
-          </div>
-        </div>
+        <MUI.ListItem
+          key={'aaa-event_'+event['date']+'_'+event['name_short']}
+          primaryText={
+            <p style={{fontSize:'80%',margin:0}}>
+              <strong>{event['name']}</strong><br/>
+              <strong>Text['profile_event_start']: </strong>{event['date']}<br/>
+              {event['days']}<strong> Text['days'].</strong>
+            </p>
+          }
+          leftAvatar={<MUI.Avatar>event['name_short']</MUI.Avatar>} />
       );
     },this);
     return (
-      <div id='aaa_home_events' className='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>
-        <h6>Text['home_events']</h6>
-        {events}
-      </div>
+      <MUI.Card>
+        <MUI.CardHeader
+          title="Text['home_events']"
+          subtitle="Text['home_events subtitle']" />
+        <MUI.CardText>
+          <MUI.List>
+            {events}
+          </MUI.List>
+        </MUI.CardText>
+      </MUI.Card>
     );
   }
 });

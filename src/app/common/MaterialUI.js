@@ -11,6 +11,7 @@ var MUI = {
   ThemeProvider: require('material-ui/styles/MuiThemeProvider').default,
   getTheme: require('material-ui/styles/getMuiTheme').default,
   AppBar: require('material-ui/AppBar').default,
+  Avatar: require('material-ui/Avatar').default,
   Drawer: require('material-ui/Drawer').default,
   DatePicker: require('material-ui/DatePicker').default,
   Divider: require('material-ui/Divider').default,
@@ -49,7 +50,9 @@ MUI.icons = {
     exit_to_app: require('material-ui/svg-icons/action/exit-to-app').default,
     settings: require('material-ui/svg-icons/action/settings').default,
     backup: require('material-ui/svg-icons/action/backup').default,
-    delete: require('material-ui/svg-icons/action/delete').default
+    delete: require('material-ui/svg-icons/action/delete').default,
+    done: require('material-ui/svg-icons/action/done').default,
+    code: require('material-ui/svg-icons/action/code').default
   },
   content:{
     create: require('material-ui/svg-icons/content/create').default,

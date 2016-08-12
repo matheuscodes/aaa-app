@@ -30,8 +30,8 @@ module.exports = React.createClass({
               <div>
                 <Header title={this.props.title} />
                   <div style={{width:'100%'}}>
-                  {this.props.children}
-                </div>
+                    {this.props.children}
+                  </div>
                 <Footer />
               </div>
             </MUI.ThemeProvider>

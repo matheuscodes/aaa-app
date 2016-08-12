@@ -1,4 +1,6 @@
+'use strict'
 var React = require('react');
+var MUI = require('app/common/MaterialUI');
 
 var SeasonGraph = require('svg/SeasonGraph.jsx');
 
@@ -224,10 +226,14 @@ module.exports = React.createClass({
   },
   render: function() {
     return (
-      <div id='aaa_home_seasons' className='mdl-cell--8-col mdl-cell mdl-shadow--2dp'>
-        <h6>Text['home_seasons']</h6>
-        <SeasonGraph data={this.state} graphId={'aaa_home_seasons_graph'} />
-      </div>
+      <MUI.Card>
+        <MUI.CardHeader
+          title="Text['home_seasons']"
+          subtitle="Text['home_seasons subtitle']" />
+        <MUI.CardText>
+          <SeasonGraph data={this.state} graphId={'aaa_home_seasons_graph'} />
+        </MUI.CardText>
+      </MUI.Card>
     );
   }
 });

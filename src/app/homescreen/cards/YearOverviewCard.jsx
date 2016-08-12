@@ -1,4 +1,6 @@
+'use strict'
 var React = require('react');
+var MUI = require('app/common/MaterialUI');
 
 module.exports = React.createClass({
   getInitialState: function() {
@@ -16,7 +18,7 @@ module.exports = React.createClass({
   render: function() {
     var monthlyCounts = this.state.months.map(function(count) {
       return (
-        <tr key={count.year + '_' + count.month}>
+        <tr key={'aaa-yearRow_'+count.year + '_' + count.month}>
           <td>{count.year}</td>
           <td>Text['month_full_']</td>
           <td>{count['total_count']}</td>
@@ -26,14 +28,24 @@ module.exports = React.createClass({
     },this);
 
     return (
-      <div id='aaa_home_year_summary' className='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>
-        <h6>Text['home_year_summary']</h6>
-        <table width='96%'>
-          <tbody>
-            {monthlyCounts}
-          </tbody>
-        </table>
-      </div>
+      <MUI.Card>
+        <MUI.CardHeader
+          title="Text['home_year_summary']"
+          subtitle="Text['home_year_summary subtitle']" />
+        <MUI.CardText>
+          <table width='96%'>
+            <tbody>
+              <tr>
+                <th>Text[year]</th>
+                <th>Text[month]</th>
+                <th>Text[total]</th>
+                <th>Text[average]</th>
+              </tr>
+              {monthlyCounts}
+            </tbody>
+          </table>
+        </MUI.CardText>
+      </MUI.Card>
     );
   }
 });

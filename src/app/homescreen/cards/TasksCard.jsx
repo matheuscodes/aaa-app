@@ -1,4 +1,6 @@
+'use strict'
 var React = require('react');
+var MUI = require('app/common/MaterialUI');
 
 
 module.exports = React.createClass({
@@ -17,24 +19,24 @@ module.exports = React.createClass({
   render: function() {
     var tasks = this.state.tasks.map(function(task) {
       return (
-        <tr id={'aaa_task_'+task['id']} key={'aaa_task_'+task['id']} >
-          <td>
-            <i className='material-icons'>{task['status'] == 'done' ? "done" : "code"}</i>
-          </td>
-          <td>{task['description']}</td>
-        </tr>
+        <MUI.ListItem
+          key={'aaa_task_'+task.id}
+          primaryText={"task['description']"}
+          leftIcon={task.status == 'done' ? <MUI.icons.action.done /> : <MUI.icons.action.code />} />
       );
     },this);
 
     return (
-      <div id='aaa_home_tasks' className='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>
-        <h6>Text['home_tasks']</h6>
-        <table>
-          <tbody>
+      <MUI.Card>
+        <MUI.CardHeader
+          title="Text['home_tasks']"
+          subtitle="Text['home_tasks subtitle']" />
+        <MUI.CardText>
+          <MUI.List>
             {tasks}
-          </tbody>
-        </table>
-      </div>
+          </MUI.List>
+        </MUI.CardText>
+      </MUI.Card>
     );
   }
 });

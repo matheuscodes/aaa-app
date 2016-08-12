@@ -1,4 +1,6 @@
+'use strict'
 var React = require('react');
+var MUI = require('app/common/MaterialUI');
 
 module.exports = React.createClass({
   getInitialState: function() {
@@ -17,26 +19,30 @@ module.exports = React.createClass({
   render: function() {
     var dailyCounts = this.state.days.map(function(day) {
       return (
-        <tr key={day.date}>
-          <td><b>{day.date}</b></td>
-          <td width='100%'>
-            <div style={{width: ((day.count/this.state.max)*100)+'%'}} className='aaa-home-arrows-day mdl-color-text--accent-contrast mdl-color--accent'>
-              {day.count}
+        <MUI.ListItem
+          key={'aaa-dayCount_'+day.date}
+          primaryText={
+            <div>
+              <b>{day.date}</b>
+              <div style={{width: ((day.count/this.state.max)*100)+'%'}} className='aaa-home-arrows-day mdl-color-text--accent-contrast mdl-color--accent'>
+                 {day.count}
+              </div>
             </div>
-          </td>
-        </tr>
+          } />
       );
     },this);
 
     return (
-      <div id='aaa_home_arrows' className='mdl-cell--2-col mdl-cell mdl-shadow--2dp'>
-        <h6>Text['home_arrows']</h6>
-        <table>
-          <tbody>
+      <MUI.Card>
+        <MUI.CardHeader
+          title="Text['home_arrows']"
+          subtitle="Text['home_arrows subtitle']" />
+        <MUI.CardText>
+          <MUI.List>
             {dailyCounts}
-          </tbody>
-        </table>
-      </div>
+          </MUI.List>
+        </MUI.CardText>
+      </MUI.Card>
     );
   }
 });

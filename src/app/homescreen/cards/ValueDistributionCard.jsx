@@ -1,4 +1,6 @@
+'use strict'
 var React = require('react');
+var MUI = require('app/common/MaterialUI');
 
 var ValueDistributionGraph = require('svg/ValueDistributionGraph.jsx');
 
@@ -26,10 +28,14 @@ module.exports = React.createClass({
   },
   render: function() {
     return (
-      <div id='aaa_home_values' className='mdl-cell--4-col mdl-cell mdl-shadow--2dp'>
-        <h6>Text['home_values']</h6>
-        <ValueDistributionGraph data={this.state} />
-      </div>
+      <MUI.Card>
+        <MUI.CardHeader
+          title="Text['home_values']"
+          subtitle="Text['home_values subtitle']" />
+        <MUI.CardText>
+          <ValueDistributionGraph data={this.state} />
+        </MUI.CardText>
+      </MUI.Card>
     );
   }
 });

@@ -1,4 +1,6 @@
+'use strict'
 var React = require('react');
+var MUI = require('app/common/MaterialUI');
 
 var EndDistributionGraph = require('svg/EndDistributionGraph.jsx');
 
@@ -24,10 +26,14 @@ module.exports = React.createClass({
   },
   render: function() {
     return (
-      <div id='aaa_home_ends' className='mdl-cell--4-col mdl-cell mdl-shadow--2dp'>
-        <h6>Text['home_ends']</h6>
-        <EndDistributionGraph data={this.state} />
-      </div>
+      <MUI.Card>
+        <MUI.CardHeader
+          title="Text['home_ends']"
+          subtitle="Text['home_ends subtitle']" />
+        <MUI.CardText>
+          <EndDistributionGraph data={this.state} />
+        </MUI.CardText>
+      </MUI.Card>
     );
   }
 });
