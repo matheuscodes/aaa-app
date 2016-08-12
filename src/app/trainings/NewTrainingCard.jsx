@@ -4,6 +4,27 @@ var TrainingTypes = require('constants/TrainingTypes.json');
 
 var MUI = require('app/common/MaterialUI');
 
+var style = {
+  arrowCountField:{
+    width:'29%',
+    padding:'0 5% 0 5%'
+  },
+  arrowCountButton:{
+    width:'30%',
+    height:'30%',
+    padding:0
+  },
+  arrowCountInput: {
+    textAlign:'center',
+    fontSize: '80%'
+  },
+  arrowCountIcon: {
+    width:'100%',
+    height:'100%',
+    color:MUI.palette.accent1Color
+  }
+}
+
 module.exports = React.createClass({
   getInitialState: function() {
     return {
@@ -79,16 +100,16 @@ module.exports = React.createClass({
       row[distance] = TrainingTypes.map(function(type){
         return (
           <MUI.TableRowColumn key={'newTrainingCard_'+distance+'_'+type}>
-            <MUI.IconButton id={'newTrainingInc_'+distance+'_'+type} style={{width:'25%',height:'25%',padding:0}} iconStyle={{width:'100%',height:'100%',color:MUI.palette.accent1Color}} onTouchTap={this.decreaseArrows}>
+            <MUI.IconButton id={'newTrainingInc_'+distance+'_'+type} tabIndex={-1} style={style.arrowCountButton} iconStyle={style.arrowCountIcon} onTouchTap={this.decreaseArrows}>
               <MUI.icons.content.remove_circle/>
             </MUI.IconButton>
             <MUI.TextField
-              style={{width:'39%',padding:'0 5% 0 5%'}}
-              inputStyle={{textAlign:'center'}}
+              style={style.arrowCountField}
+              inputStyle={style.arrowCountInput}
               id={'newTrainingCardText_'+distance+'_'+type}
               value={this.state.arrows[distance][type]}
               onChange={this.setArrowCount} />
-            <MUI.IconButton id={'newTrainingDec_'+distance+'_'+type} style={{width:'25%',height:'25%',padding:0}} iconStyle={{width:'100%',height:'100%',color:MUI.palette.accent1Color}} onTouchTap={this.increaseArrows}>
+            <MUI.IconButton id={'newTrainingDec_'+distance+'_'+type} tabIndex={-1} style={style.arrowCountButton} iconStyle={style.arrowCountIcon} onTouchTap={this.increaseArrows}>
               <MUI.icons.content.add_circle/>
             </MUI.IconButton>
           </MUI.TableRowColumn>
@@ -151,43 +172,6 @@ module.exports = React.createClass({
             <MUI.icons.action.backup />
           </MUI.FloatingActionButton>
         </MUI.CardActions>
-        {/*<div>
-          <div id='aaa_training_card' className='mdl-cell mdl-cell--8-col'>
-            <div className='mdl-card mdl-shadow--2dp'>
-              <div className='mdl-card__title'>
-                <h1 className='mdl-card__title-text'>Text['add_new_training']</h1>
-              </div>
-              <form>
-                <div className='mdl-card__supporting-text mdl-grid'>
-                  <div className='mdl-cell mdl-cell--12-col'>
-                    <div className='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>
-                      <input className='mdl-textfield__input' type='text' pattern='[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])' id='aaa_training_date' value={this.state.date} onChange={this.setDate} />
-                      <label className='mdl-textfield__label' htmlFor='aaa_training_date'>Text['date']</label>
-                      <span className='mdl-textfield__error'>Text['not_a_date']</span>
-                    </div>
-                  </div>
-
-
-
-                  <div className='mdl-cell mdl-cell--3-col'>
-                    <div className='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>
-                      <input className='mdl-textfield__input' type='text' pattern='-?[0-9]*(\.[0-9]+)?' id='aaa_training_distance' onChange={this.changeNewDistance} />
-                      <label className='mdl-textfield__label' htmlFor='aaa_training_distance'>Text['distance']</label>
-                      <span className='mdl-textfield__error'>Text['not_a_number']</span>
-                    </div>
-                  </div>
-
-                  <button id='aaa_add_training' onClick={this.createNewDistance} className='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored mdl-cell mdl-cell--1-col'>
-                    <i className='material-icons'>add</i>
-                  </button>
-                  <div className='mdl-tooltip' htmlFor='aaa_add_training'>Text['add_distance']</div>
-                </div>
-              </form>
-
-            </div>
-          </div>
-          <div className='mdl-layout-spacer'></div>
-        </div>*/}
       </MUI.Card>
     );
   }

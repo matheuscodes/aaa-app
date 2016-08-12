@@ -26,6 +26,7 @@ var MUI = {
   IconButton: require('material-ui/IconButton').default,
   Menu: require('material-ui/Menu').default,
   MenuItem: require('material-ui/MenuItem').default,
+  Paper: require('material-ui/Paper').default,
   Subheader: require('material-ui/Subheader').default,
   Table: require('material-ui/Table').Table,
   TableRow: require('material-ui/Table').TableRow,
