@@ -9,7 +9,7 @@ module.exports = React.createClass({
     if(unit <= 0) return (<g id={this.props.type} transform='translate(0,0)'></g>)
 
     var iterator = [];
-    for(let i = 0; i <= Math.floor((max-min)/unit); i++){
+    for(var i = 0; i <= Math.floor((max-min)/unit); i++){
       iterator.push(" ");
     }
 

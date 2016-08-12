@@ -5,7 +5,7 @@ module.exports = React.createClass({
 		var estimations = [];
 		var min_result = this.props.min ? this.props.min : 10;
 		var max_result = this.props.max ? this.props.max : 0;
-		for(let i = 0; i < this.props.data.length; i++){
+		for(var i = 0; i < this.props.data.length; i++){
 			if(typeof this.props.data[i] !== 'undefined'){
 				estimations.push(this.props.data[i]);
 				if(this.props.data[i] > max_result) max_result = this.props.data[i];
@@ -27,8 +27,8 @@ module.exports = React.createClass({
 
     var first = true;
     var path = ['M '];
-    for(let i = 0; i < estimations.length;i++){
-      let k = -((estimations[i]-min_result)/(max_result-min_result));
+    for(var i = 0; i < estimations.length;i++){
+      var k = -((estimations[i]-min_result)/(max_result-min_result));
       if(k <= 0){
         if(first){
           path.push((50+i*100)+" "+(k*this.props.size)+" C "+ (i*100+100) +","+(k*this.props.size)+" ");

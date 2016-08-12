@@ -39,25 +39,25 @@ module.exports = React.createClass({
     };
   },
   changeNewDistance:function(event){
-    let current = this.state;
+    var current = this.state;
     current.newDistance = event.target.value;
     this.setState(current);
   },
   setDate: function(event, date){
   console.log(date);
-    let current = this.state;
+    var current = this.state;
     current.date = date;
     this.setState(current);
   },
   setArrowCount: function(event) {
-    let split = event.target.id.split('_');
-    let current = this.state;
+    var split = event.target.id.split('_');
+    var current = this.state;
     current.arrows[split[1]][split[2]] = parseInt(event.target.value);
     this.setState(current);
   },
   increaseArrows: function(event) {
-    let split = event.target.id.split('_');
-    let current = this.state;
+    var split = event.target.id.split('_');
+    var current = this.state;
     if(typeof current.arrows[split[1]][split[2]] ==='undefined'){
       current.arrows[split[1]][split[2]] = 0;
     }
@@ -65,15 +65,15 @@ module.exports = React.createClass({
     this.setState(current);
   },
   decreaseArrows: function(event) {
-    let split = event.target.id.split('_');
-    let current = this.state;
+    var split = event.target.id.split('_');
+    var current = this.state;
     if(current.arrows[split[1]][split[2]] > 0){
       current.arrows[split[1]][split[2]] -= 1;
     }
     this.setState(current);
   },
   createNewDistance: function(){
-    let current = this.state;
+    var current = this.state;
     if(typeof current.newDistance === 'undefined'){
       //TODO throw a toast
       return;
@@ -87,16 +87,16 @@ module.exports = React.createClass({
 
   render: function() {
     //TODO move this to a component, used in 2 places already
-    let headers = TrainingTypes.map(function(type){
+    var headers = TrainingTypes.map(function(type){
       return (
         <MUI.TableHeaderColumn key={'newTrainingCardType_'+type}>
           Text[{type}]
         </MUI.TableHeaderColumn>
       );
     });
-    let row = {};
+    var row = {};
     //TODO move styles up, too much repetition
-    for(let distance in this.state.arrows){
+    for(var distance in this.state.arrows){
       row[distance] = TrainingTypes.map(function(type){
         return (
           <MUI.TableRowColumn key={'newTrainingCard_'+distance+'_'+type}>
@@ -117,8 +117,8 @@ module.exports = React.createClass({
       },this);
     }
 
-    let rows = [];
-    for(let distance in row){
+    var rows = [];
+    for(var distance in row){
       rows.push(
         <MUI.TableRow key={'newTrainingCardType_'+distance+'_distance'}>
           <MUI.TableRowColumn>{distance}</MUI.TableRowColumn>

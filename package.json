@@ -4,6 +4,7 @@
   "description": "AAA - Advanced Archery Application",
   "main": "src/server.js",
   "scripts": {
+    "discify": "browserify src/app.js -o build/app.js -i moment --full-paths && uglifyjs build/app.js -o build/app.min.js && discify build/app.min.js > build/disc.html --open",
     "sass": "node-sass --output-style compressed -o build/css/ scss/",
     "bundle": "browserify src/app.js -o build/app.js",
     "start": "npm run bundle | node src/server.js"
@@ -49,6 +50,8 @@
     "babel-preset-react": "^6.11.1",
     "babelify": "^7.3.0",
     "browserify": "^13.1.0",
-    "react-tap-event-plugin": "^1.0.0"
+    "disc": "^1.3.2",
+    "react-tap-event-plugin": "^1.0.0",
+    "uglify-js": "^2.7.0"
   }
 }

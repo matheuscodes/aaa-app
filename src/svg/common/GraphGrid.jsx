@@ -3,7 +3,7 @@ var React = require('react');
 module.exports = React.createClass({
   render: function() {
     var iterator_v = [];
-    for(let i = 0; i <= (this.props.columns ? this.props.columns : 10) ; i++){
+    for(var i = 0; i <= (this.props.columns ? this.props.columns : 10) ; i++){
       iterator_v.push(i);
     }
     var verticals = iterator_v.map(function(value,index){
@@ -13,7 +13,7 @@ module.exports = React.createClass({
     },this);
 
     var iterator_h = [];
-    for(let i = 0; i <= (this.props.rows ? this.props.rows : 10) ; i++){
+    for(var i = 0; i <= (this.props.rows ? this.props.rows : 10) ; i++){
       iterator_h.push(i);
     }
     var horizontals = iterator_h.map(function(value,index){

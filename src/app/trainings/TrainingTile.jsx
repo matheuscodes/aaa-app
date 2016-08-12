@@ -9,14 +9,14 @@ var TrainingTypes = require('constants/TrainingTypes.json');
 module.exports = React.createClass({
   render: function() {
 
-    let headers = TrainingTypes.map(function(type){
+    var headers = TrainingTypes.map(function(type){
       return (
         <MUI.TableHeaderColumn key={'trainingHeader_'+type}>Text[{type}]</MUI.TableHeaderColumn>
       );
     });
 
-    let row = {};
-    for(let distance in this.props.training.arrows){
+    var row = {};
+    for(var distance in this.props.training.arrows){
       row[distance] = TrainingTypes.map(function(type){
         return (
           <MUI.TableRowColumn key={'aaa-trainingCell_'+ dateToId(this.props.training.date) +'_'+distance+'_'+type}>
@@ -26,8 +26,8 @@ module.exports = React.createClass({
       },this);
     }
 
-    let rows = [];
-    for(let distance in row){
+    var rows = [];
+    for(var distance in row){
       rows.push(
         <MUI.TableRow key={'aaa-trainingRow_'+ dateToId(this.props.training.date) +'_'+distance}>
           <MUI.TableRowColumn>{distance}</MUI.TableRowColumn>

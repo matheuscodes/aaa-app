@@ -2,7 +2,7 @@ var React = require('react');
 
 module.exports = React.createClass({
   render: function() {
-    let all = [];
+    var all = [];
     all.push(".border {fill:none;stroke:#00F;stroke-width:1;stroke-opacity:1}");
     all.push(".plan {fill:#FFF;stroke:#000;stroke-opacity:1}");
     all.push(".week {fill:#4C4;stroke:#000;stroke-opacity:1}");

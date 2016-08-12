@@ -2,7 +2,7 @@ var React = require('react');
 
 module.exports = React.createClass({
   render: function() {
-    let rimStyle ={
+    var rimStyle ={
       fill:'none',
       fillRule:'evenodd',
       stroke:'#4b4b4b',
