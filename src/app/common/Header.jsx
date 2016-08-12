@@ -38,8 +38,8 @@ module.exports = React.createClass({
                 secondaryText="john@gmail.com"
                 disabled={true}
                 nestedItems={[
-                  <MUI.ListItem primaryText="Text['Settings']" leftIcon={<MUI.icons.action.settings />} />,
-                  <MUI.ListItem onTouchTap={this.handleClose} primaryText="Text['logout']" leftIcon={<MUI.icons.action.exit_to_app />} />
+                  <MUI.ListItem key={'aaa-headerSettings'} primaryText="Text['Settings']" leftIcon={<MUI.icons.action.settings />} />,
+                  <MUI.ListItem key={'aaa-headerLogout'} onTouchTap={this.handleClose} primaryText="Text['logout']" leftIcon={<MUI.icons.action.exit_to_app />} />
                 ]} />
             </MUI.List>
             <MUI.Divider />
