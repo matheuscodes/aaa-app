@@ -10,7 +10,7 @@ module.exports = React.createClass({
 
     var labels = this.props.content.map(function(value,index){
       return(
-        <g transform={'translate('+((index)*100+50)+',50)'} >
+        <g key={'aaa-graphBottomLabel_'+index} transform={'translate('+((index)*100+50)+',50)'} >
           { this.props.prefix ?
             <g>
               <text className='bottom' x='0' y='0'>{this.props.prefix}</text>

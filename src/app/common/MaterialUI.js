@@ -65,9 +65,11 @@ MUI.icons = {
   }
 }
 
+MUI.colors = require('material-ui/styles/colors');
+
 MUI.palette = require('material-ui/styles/baseThemes/lightBaseTheme').default.palette;
-MUI.palette.accent3Color = require('material-ui/styles/colors').grey600;
-MUI.palette.darkAccent1Color = require('material-ui/styles/colors').grey500;
-MUI.palette.darkAccent2Color = require('material-ui/styles/colors').grey700;
-MUI.palette.darkAccent3Color = require('material-ui/styles/colors').grey900;
+MUI.palette.accent3Color = MUI.colors.grey600;
+MUI.palette.darkAccent1Color = MUI.colors.grey500;
+MUI.palette.darkAccent2Color = MUI.colors.grey700;
+MUI.palette.darkAccent3Color = MUI.colors.grey900;
 module.exports = MUI

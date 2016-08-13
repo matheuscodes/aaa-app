@@ -15,7 +15,7 @@ module.exports = React.createClass({
 
     var labels = iterator.map(function(value,index){
       return(
-        <text className={this.props.type} x={this.props.offset ? this.props.offset + 10 : -10 } y={-index*(this.props.size/10)}>
+        <text key={'aaa-graphAxisLabel_'+index} className={this.props.type} x={this.props.offset ? this.props.offset + 10 : -10 } y={-index*(this.props.size/10)}>
           {(min + index*unit).toPrecision(3)}
   				{this.props.suffix ? this.props.suffix : null}
   			</text>

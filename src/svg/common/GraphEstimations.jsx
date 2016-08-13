@@ -42,7 +42,8 @@ module.exports = React.createClass({
 
     var bullets = this.props.data.map(function(value,index){
       return(
-        <circle className={'result' + (this.props.contentName ? '-'+this.props.contentName: '')}
+        <circle key={'aaa-graphEstimationsBullet_'+index}
+                className={'result' + (this.props.contentName ? '-'+this.props.contentName: '')}
                 cx={index*100+50}
                 cy={-((value-min_result)/(max_result-min_result))*this.props.size}
                 r='10'/>

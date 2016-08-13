@@ -1,5 +1,7 @@
 var React = require('react');
+var valueConverter = require('useful/valueConverter');
 
+//TODO FUCKING REFACTOR THIS SHIT.
 module.exports = React.createClass({
   render: function() {
     var all = [];
@@ -26,7 +28,11 @@ module.exports = React.createClass({
     all.push(".result-week {fill:#33CC33;stroke:#000;stroke-opacity:1}");
     all.push(".estimation-week {fill:none;stroke:#0F0;stroke-opacity:1;stroke-width:2}");
     all.push(".result-month {fill:#33CCCC;stroke:#000;stroke-opacity:1}");
+    all.push(".result-average_score {fill:#33CCCC;stroke:#000;stroke-opacity:1}");
     all.push(".estimation-month {fill:none;stroke:#00F;stroke-opacity:1;stroke-width:2}");
+    all.push(".estimation-average_score {fill:none;stroke:#00F;stroke-opacity:1;stroke-width:2}");
+    all.push(".tens {fill:"+valueConverter.backgroundColor['10']+";stroke:#000;stroke-opacity:1}");
+    all.push(".xs {fill:"+valueConverter.backgroundColor['X']+";stroke:#000;stroke-opacity:1}");
 
     return (
         <style>

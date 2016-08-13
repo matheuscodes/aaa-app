@@ -8,7 +8,7 @@ module.exports = React.createClass({
     }
     var verticals = iterator_v.map(function(value,index){
       return (
-        <path className='grid' d={'m '+100*index+',0 0,'+(-this.props.height)} />
+        <path key={'aaa-graphGridVertical_'+index} className='grid' d={'m '+100*index+',0 0,'+(-this.props.height)} />
       )
     },this);
 
@@ -18,7 +18,7 @@ module.exports = React.createClass({
     }
     var horizontals = iterator_h.map(function(value,index){
       return (
-        <path className='grid' d={'m 0,'+(-index*this.props.height/10)+' '+(this.props.columns*100)+',0 '} />
+        <path key={'aaa-graphGridHorizontal_'+index} className='grid' d={'m 0,'+(-index*this.props.height/10)+' '+(this.props.columns*100)+',0 '} />
       )
     },this);
 
