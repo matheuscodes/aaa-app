@@ -19,6 +19,7 @@ var loginPage = require('./app/login/LoginPage.jsx');
 var homePage = require('./app/homescreen/HomePage.jsx');
 var trainingsPage = require('./app/trainings/TrainingsPage.jsx');
 var assessmentsPage = require('./app/assessments/AssessmentsPage.jsx');
+var reportsPage = require('app/reports/ReportsPage.jsx');
 
 var app = express();
 
@@ -57,6 +58,14 @@ app.get("/assessments",function(req,res){
     userAgent: req.headers['user-agent']
   }
   res.send(ReactDOMServer.renderToString(React.createElement(assessmentsPage,props)));
+});
+
+app.get("/reports",function(req,res){
+  var props = {
+    languages: [{code:"de",name:"Deutsch"},{code:"en",name:"English"}],
+    userAgent: req.headers['user-agent']
+  }
+  res.send(ReactDOMServer.renderToString(React.createElement(reportsPage,props)));
 });
 
 var server = http.createServer(app)

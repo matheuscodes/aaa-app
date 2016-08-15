@@ -15,6 +15,7 @@ var MUI = {
   Drawer: require('material-ui/Drawer').default,
   DatePicker: require('material-ui/DatePicker').default,
   Divider: require('material-ui/Divider').default,
+  Dialog: require('material-ui/Dialog').default,
   DropDownMenu: require('material-ui/DropDownMenu').default,
   Card: require('material-ui/Card').Card,
   CardActions: require('material-ui/Card').CardActions,
@@ -28,6 +29,8 @@ var MUI = {
   Menu: require('material-ui/Menu').default,
   MenuItem: require('material-ui/MenuItem').default,
   Paper: require('material-ui/Paper').default,
+  RaisedButton: require('material-ui/RaisedButton').default,
+  SelectField: require('material-ui/SelectField').default,
   Subheader: require('material-ui/Subheader').default,
   Table: require('material-ui/Table').Table,
   TableRow: require('material-ui/Table').TableRow,
@@ -62,6 +65,9 @@ MUI.icons = {
   },
   navigation:{
     menu: require('material-ui/svg-icons/navigation/menu').default
+  },
+  maps:{
+    directions_walk: require('material-ui/svg-icons/maps/directions-walk').default
   }
 }
 

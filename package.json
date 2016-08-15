@@ -7,7 +7,7 @@
     "discify": "browserify src/app.js -o build/app.js -i moment --full-paths && uglifyjs build/app.js -o build/app.min.js && discify build/app.min.js > build/disc.html --open",
     "sass": "node-sass --output-style compressed -o build/css/ scss/",
     "bundle": "browserify src/app.js -o build/app.js",
-    "start": "npm run bundle | node src/server.js"
+    "start": "npm run bundle && node src/server.js"
   },
   "browserify": {
     "transform": [
