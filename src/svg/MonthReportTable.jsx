@@ -143,9 +143,8 @@ module.exports = React.createClass({
 
     return (
       <svg  version='1.1'
-            viewBox={'-10 -10 '+(columnWidth*this.props.allDays.count+sideLabelsSize*2.5+20)+' 500'}
+            viewBox={'-10 -10 '+(columnWidth*this.props.allDays.count+sideLabelsSize*2.5+20)+' '+(rows*rowHeight+20)}
             preserveAspectRatio='xMidYMid meet'
-            height={'500pt'}
             width={'100%'}>
         <ReportTableStyle />
         <g id='main'>

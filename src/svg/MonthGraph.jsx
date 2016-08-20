@@ -12,7 +12,7 @@ var PlanBar = require('svg/season/PlanBar.jsx');
 var SeasonLabels = require('svg/season/SeasonLabels.jsx');
 var ShareBar = require('svg/season/ShareBar.jsx');
 
-const sideLabelsSize = 384.615385;
+const sideLabelsSize = 397;
 const columnWidth = 100;
 
 module.exports = React.createClass({
@@ -33,7 +33,7 @@ module.exports = React.createClass({
     },this);
 
     var generalHeight = 1000 + 150 + 50 + 10;
-    var generalWidth = sideLabelsSize*2.5 + this.props.data.overview.length * columnWidth + 20;
+    var generalWidth = sideLabelsSize*2.5 + this.props.data.overview.length * columnWidth + 50;
     return (
       <svg  id={this.props.graphId}
             version='1.1'
