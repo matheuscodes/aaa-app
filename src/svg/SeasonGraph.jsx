@@ -13,7 +13,7 @@ var ShareBar = require('svg/season/ShareBar.jsx');
 
 module.exports = React.createClass({
   render: function() {
-    var total_weeks = this.props.data.season.length;
+    var total_weeks = this.props.data.overview.length;
 		var max = Math.ceil(this.props.data.max/50)*50+50;
 		var unit = 1000/max;
 		var general_width = (total_weeks*100+700+150);
@@ -23,7 +23,7 @@ module.exports = React.createClass({
     var weeks = [];
     var values = [];
 
-    var season_bars = this.props.data.season.map(function(single, index) {
+    var season_bars = this.props.data.overview.map(function(single, index) {
       var bar_unit = 1000/this.props.data.max;
       weeks.push(single.week);
       values.push(single.value);

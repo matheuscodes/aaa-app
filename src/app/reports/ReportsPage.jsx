@@ -16,8 +16,8 @@ module.exports = React.createClass({
   render: function() {
     return (
       <BaseLayout layoutName='reportsPage' userAgent={this.props.userAgent} languages={this.props.languages} title='Welcome to Advanced Archery' >
-        <MUI.GridList cellHeight={'unset'} cols={2} padding={10} style={styles.gridList} >
-          <MUI.GridTile style={{padding:'5pt'}} cols={2} >
+        <MUI.GridList cellHeight={'unset'} cols={1} padding={10} style={styles.gridList} >
+          <MUI.GridTile style={{padding:'5pt'}} cols={1} >
             <ReportCard />
           </MUI.GridTile>
         </MUI.GridList>

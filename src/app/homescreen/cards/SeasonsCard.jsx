@@ -10,7 +10,7 @@ module.exports = React.createClass({
   },
   componentWillMount: function() {
     this.setState({
-      season:[{
+      overview:[{
           total_plan: 300,
           gauge_plan: 150,
           shots: 178,
