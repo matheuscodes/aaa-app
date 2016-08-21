@@ -5,7 +5,7 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports.season = exports.default = undefined;
 
-exports.season = require('api/season')
+exports.seasons = require('api/Seasons');
 
 var API = {
 	//TODO modularize this shit ;) (all API)
@@ -69,31 +69,6 @@ var API = {
 
 		xmlhttp.open("GET", url, true); //Review the way downloads are made.
 		xmlhttp.send();
-	},
-
-	getSeasons: function(id){
-		//TODO review blocking requests.
-		//TODO use callbacks.
-		var xmlhttp = new XMLHttpRequest();
-		var url = "/seasons/";
-
-		xmlhttp.onreadystatechange = function() {
-		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-		    	var download = JSON.parse(""+xmlhttp.responseText);
-		    	if(download){
-		    		User.seasons = download;
-		    	}
-		    }
-		}
-
-		xmlhttp.open("GET", url, false); //Review the way downloads are made.
-		xmlhttp.send();
-		if(id){
-			return User.seasons[id];
-		}
-		else{
-			return User.seasons;
-		}
 	},
 
 	placeSeason: function(season,success){

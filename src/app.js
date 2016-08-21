@@ -18,6 +18,7 @@ var loginPage = require('app/login/LoginPage.jsx');
 var trainingsPage = require('app/trainings/TrainingsPage.jsx');
 var assessmentsPage = require('app/assessments/AssessmentsPage.jsx');
 var reportsPage = require('app/reports/ReportsPage.jsx');
+var seasonsPage = require('app/seasons/SeasonsPage.jsx');
 
 var bodies = document.getElementsByTagName('body');
 if(bodies.length < 1 || bodies.length > 1){
@@ -35,6 +36,9 @@ var props = {
 var renderParent = document.getElementsByTagName('html')[0].parentNode;
 
 switch(body.className){
+  case 'aaa-baseLayout-seasonsPage':
+    ReactDOM.render(React.createElement(seasonsPage,props),renderParent);
+    break;
   case 'aaa-baseLayout-reportsPage':
     ReactDOM.render(React.createElement(reportsPage,props),renderParent);
     break;

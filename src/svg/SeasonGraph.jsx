@@ -13,7 +13,7 @@ var ShareBar = require('svg/season/ShareBar.jsx');
 
 module.exports = React.createClass({
   render: function() {
-    var total_weeks = this.props.data.overview.length;
+    var total_weeks = this.props.data.goals.length;
 		var max = Math.ceil(this.props.data.max/50)*50+50;
 		var unit = 1000/max;
 		var general_width = (total_weeks*100+700+150);
@@ -23,16 +23,16 @@ module.exports = React.createClass({
     var weeks = [];
     var values = [];
 
-    var season_bars = this.props.data.overview.map(function(single, index) {
+    var season_bars = this.props.data.goals.map(function(single, index) {
       var bar_unit = 1000/this.props.data.max;
       weeks.push(single.week);
-      values.push(single.value);
+      values.push(single.averageGrade);
       //TODO maybe move unit to the components themselves?
       return (
         <g>
-          <PlanBar value={single.total_plan*bar_unit} column={index} max={this.props.data.max} />
-          <ActualBar target={(single.shots-single.technique_shots)*bar_unit} training={single.technique_shots*bar_unit} column={index} max={this.props.data.max} />
-          <ShareBar value={(single.total_plan-single.gauge_plan)*bar_unit} column={index} max={this.props.data.max} />
+          <PlanBar value={single.arrowCount*bar_unit} column={index} max={this.props.data.max} />
+          <ActualBar target={(single.arrowsShot-single.techniqueShot)*bar_unit} training={single.techniqueShot*bar_unit} column={index} max={this.props.data.max} />
+          <ShareBar value={(single.arrowCount-single.targetShare)*bar_unit} column={index} max={this.props.data.max} />
         </g>
       );
     },this);
