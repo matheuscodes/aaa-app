@@ -42,8 +42,7 @@ module.exports = React.createClass({
             version='1.1'
             viewBox={'0 '+(-general_height)+' '+(general_width+2)+' '+(general_height+2)}
             preserveAspectRatio='xMidYMid meet'
-            height='415'
-            width={width+'pt'} >
+            width={'100%'} >
         <GraphStyle />
         <g id='main'>
           <SeasonLabels max='1000' />

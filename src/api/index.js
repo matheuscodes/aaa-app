@@ -3,9 +3,10 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-exports.season = exports.default = undefined;
+exports.equipment = exports.seasons = exports.default = undefined;
 
 exports.seasons = require('api/Seasons');
+exports.equipment = require('api/Equipment');
 
 var API = {
 	//TODO modularize this shit ;) (all API)
