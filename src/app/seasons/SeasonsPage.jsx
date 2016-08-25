@@ -14,7 +14,7 @@ module.exports = React.createClass({
         <MUI.GridList cellHeight={'unset'} cols={4} padding={10} style={{width: '100%'}} >
           <MUI.GridTile style={{padding:'5pt'}}
             cols={2} >
-            <NewSeasonCard seasonId={2} />
+            <NewSeasonCard seasonId={3} />
           </MUI.GridTile>
           <MUI.GridTile style={{padding:'5pt'}}
             cols={2} >

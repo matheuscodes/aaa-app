@@ -40,6 +40,7 @@
     "app-module-path": "^1.1.0",
     "express": "^4.14.0",
     "material-ui": "^0.15.3",
+    "moment": "^2.14.1",
     "node-jsx": "^0.13.3",
     "node-sass": "^3.8.0",
     "react": "^15.3.0",
