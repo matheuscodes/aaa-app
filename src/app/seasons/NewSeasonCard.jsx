@@ -4,6 +4,7 @@ var Moment = require('moment');
 var MUI = require('app/common/MaterialUI');
 var API = require('api');
 var Waiting = require('app/common/Waiting.jsx');
+var Notice = require('app/common/Notice.jsx');
 
 var NewSeason= function(context){
   var equipment = context.state.equipment.map(function(equipment){
@@ -60,7 +61,6 @@ var NewSeason= function(context){
           value={context.state.season.equipmentId}
           onChange={context.changeEquipment}
           floatingLabelFixed={true} >
-          {/*FIXME temporary fix for https://github.com/callemall/material-ui/issues/2446*/}
           <MUI.MenuItem value={undefined} primaryText={"Text[no equipment]"} />
           {equipment}
         </MUI.SelectField>
@@ -100,7 +100,7 @@ module.exports = React.createClass({
     }
     else{
       API.equipment.getList(this,function(list){
-        this.setState({equipment:list,season:{}});
+        this.setState({equipment:list,season:{goals:[]}});
       });
     }
   },
@@ -164,8 +164,35 @@ module.exports = React.createClass({
     current.season.equipmentId = value;
     this.setState(current);
   },
+  showMessage: function(message,type){
+    var current = this.state;
+    current.message = {
+      text: message,
+      open: true,
+      type: type
+    }
+    this.setState(current);
+  },
+  hideMessage: function(){
+    var current = this.state;
+    current.message.open = false;
+    this.setState(current);
+  },
   submitSeason: function(){
-    API.seasons.save(this.state.season);
+    var callbacks = {
+      context: this,
+      success: function(){
+        this.showMessage("Text[season saved]","MESSAGE");
+        this.props.onClose(true);
+      },
+      warning: function(){
+        this.showMessage("Text[season saved]","WARNING");
+      },
+      error: function(){
+        this.showMessage("Text[season not saved]","ERROR");
+      }
+    }
+    API.seasons.save(this.state.season,callbacks);
   },
   render: function() {
     return (
@@ -177,13 +204,14 @@ module.exports = React.createClass({
           {this.state.season ? NewSeason(this) : <Waiting />}
         </MUI.CardText>
         <MUI.CardActions style={{textAlign:'right'}}>
-          <MUI.FloatingActionButton mini={true} secondary={true} style={{margin: '5pt'}}>
-            <MUI.icons.action.delete />
+          <MUI.FloatingActionButton mini={true} secondary={true} style={{margin: '5pt'}} onTouchTap={this.props.onClose}>
+            <MUI.icons.navigation.cancel />
           </MUI.FloatingActionButton>
           <MUI.FloatingActionButton style={{margin: '5pt'}} onTouchTap={this.submitSeason} >
             <MUI.icons.action.backup />
           </MUI.FloatingActionButton>
         </MUI.CardActions>
+        {this.state.message ? <Notice message={this.state.message} onClose={this.hideMessage}/> : null}
       </MUI.Card>
     );
   }

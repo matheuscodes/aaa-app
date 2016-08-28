@@ -32,6 +32,7 @@ var MUI = {
   Paper: require('material-ui/Paper').default,
   RaisedButton: require('material-ui/RaisedButton').default,
   SelectField: require('material-ui/SelectField').default,
+  Snackbar: require('material-ui/Snackbar').default,
   Subheader: require('material-ui/Subheader').default,
   Table: require('material-ui/Table').Table,
   TableRow: require('material-ui/Table').TableRow,
@@ -65,10 +66,14 @@ MUI.icons = {
     remove_circle: require('material-ui/svg-icons/content/remove-circle').default
   },
   navigation:{
-    menu: require('material-ui/svg-icons/navigation/menu').default
+    menu: require('material-ui/svg-icons/navigation/menu').default,
+    cancel: require('material-ui/svg-icons/navigation/cancel').default
   },
   maps:{
     directions_walk: require('material-ui/svg-icons/maps/directions-walk').default
+  },
+  editor:{
+    mode_edit: require('material-ui/svg-icons/editor/mode-edit').default
   }
 }
 
