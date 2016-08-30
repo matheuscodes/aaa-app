@@ -66,8 +66,8 @@ module.exports = React.createClass({
       context: this,
       success: function(){
         this.showMessage("Text[season deleted]","MESSAGE");
-        var current = this.state;
         API.seasons.getList(this,function(list){
+          var current = this.state;
           current.seasons = list;
           this.setState(current);
         });

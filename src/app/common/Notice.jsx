@@ -16,7 +16,7 @@ module.exports = React.createClass({
           open={this.props.message.open}
           message={<div style={color[this.props.message ? this.props.message.type : color.MESSAGE]}>{this.props.message ? this.props.message.text : null}</div>}
           autoHideDuration={2000}
-          onRequestClose={this.onClose} />
+          onRequestClose={this.props.onClose} />
       );
   }
 });
