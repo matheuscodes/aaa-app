@@ -5,7 +5,7 @@ module.exports = React.createClass({
     var unit = (this.props.max - this.props.min) / 10;
     var max = this.props.max;
     var min = parseFloat(this.props.min);
-
+    
     if(unit <= 0) return (<g id={this.props.type} transform='translate(0,0)'></g>)
 
     var iterator = [];

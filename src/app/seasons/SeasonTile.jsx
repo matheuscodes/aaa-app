@@ -8,7 +8,7 @@ var API = require('api');
 
 module.exports = React.createClass({
   getInitialState: function() {
-    return this.props.data;
+    return this.props.data; //TODO maybe remove this?
   },
   componentDidMount: function() {
     API.seasons.getById(this.props.seasonId,this,function(season){

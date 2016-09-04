@@ -11,7 +11,7 @@ var Compass = require('svg/icon/Compass.jsx');
 var ArcherAnchored = require('svg/icon/ArcherAnchored.jsx');
 
 var MUI = require('app/common/MaterialUI');
-
+var API = require('api');
 
 var style = {
   arrowCountField:{
@@ -40,36 +40,9 @@ module.exports = React.createClass({
       date: new Date(1451606400000),
       seasonId: 1,
       targetId: 3,
-      targets:[{
-          id:1,
-          name:"berlina"
-        },{
-          id:2,
-          name:"bababa"
-        },{
-          id:3,
-          name:"brlin"
-      }],
-      seasons:[{
-          id:1,
-          name:"werwe"
-        },{
-          id:2,
-          name:"erwerwer"
-        },{
-          id:3,
-          name:"werwer"
-      }],
-      events:[{
-          id:1,
-          name:"qwer"
-        },{
-          id:2,
-          name:"oute"
-        },{
-          id:3,
-          name:"gjkl"
-      }],
+      targets:[],
+      seasons:[],
+      events:[],
       rounds: [
         {
           sets:[[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6]]
@@ -80,56 +53,44 @@ module.exports = React.createClass({
       ]
     };
   },
-  changeNewDistance:function(event){
-    var current = this.state;
-    current.newDistance = event.target.value;
-    this.setState(current);
+  componentDidMount: function() {
+    var callbacks ={
+      context: this,
+      success: function(targets){
+        var current = this.state;
+        current.targets = targets;
+
+        var callbacks ={
+          context: this,
+          success: function(seasons){
+            current.seasons = seasons;
+            this.setState(current);
+          }
+        }
+        API.seasons.getList(callbacks);
+      }
+    }
+    API.assessments.getTargets(callbacks);
   },
-  setDate: function(event, date){
+  changeDate: function(event, date){
   console.log(date);
     var current = this.state;
     current.date = date;
     this.setState(current);
   },
-  setArrowCount: function(event) {
-    var split = event.target.id.split('_');
+  changeSeason: function(event, index, value){
     var current = this.state;
-    current.arrows[split[1]][split[2]] = parseInt(event.target.value);
+    current.seasonId = value;
     this.setState(current);
   },
-  increaseArrows: function(event) {
-    var split = event.target.id.split('_');
+  changeTarget: function(event, index, value){
     var current = this.state;
-    if(typeof current.arrows[split[1]][split[2]] ==='undefined'){
-      current.arrows[split[1]][split[2]] = 0;
-    }
-    current.arrows[split[1]][split[2]] += 1;
+    current.targetId = value;
     this.setState(current);
   },
-  decreaseArrows: function(event) {
-    var split = event.target.id.split('_');
+  changeEvent: function(event, index, value){
     var current = this.state;
-    if(current.arrows[split[1]][split[2]] > 0){
-      current.arrows[split[1]][split[2]] -= 1;
-    }
-    this.setState(current);
-  },
-  createNewDistance: function(){
-    var current = this.state;
-    if(typeof current.newDistance === 'undefined'){
-      //TODO throw a toast
-      return;
-    }
-    if(typeof current.arrows[current.newDistance] === 'undefined'){
-      current.arrows[current.newDistance] = {};
-      delete current.newDistance;
-    }
-    this.setState(current);
-  },
-  handleChange: function(event, index, value){
-    var current = this.state;
-    console.log(value);
-    current.eventId = this.state.events[value-1].id;
+    current.eventId = value;
     this.setState(current);
   },
   changeWeather: function(event, index, value){
@@ -160,19 +121,19 @@ module.exports = React.createClass({
   render: function() {
     var seasons = this.state.seasons.map(function(season,index){
       return(
-        <MUI.MenuItem value={index} primaryText={season.name} />
+        <MUI.MenuItem key={'aaa-newAssessmentSeason_'+index} value={season.id} primaryText={season.name} />
       );
     });
 
     var targets = this.state.targets.map(function(target,index){
       return(
-        <MUI.MenuItem value={index} primaryText={target.name} />
+        <MUI.MenuItem key={'aaa-newAssessmentTarget_'+index} value={target.id} primaryText={target.name} />
       );
     });
 
     var events = this.state.events.map(function(event,index){
       return(
-        <MUI.MenuItem key={event.id} value={event.id} primaryText={event.name} />
+        <MUI.MenuItem key={'aaa-newAssessmentEvent_'+index} value={event.id} primaryText={event.name} />
       );
     });
 
@@ -197,13 +158,24 @@ module.exports = React.createClass({
         <MUI.GridList cellHeight={'64pt'} cols={2} padding={10} style={{width:'100%'}}>
           <MUI.GridTile cols={1} >
           <MUI.GridList cellHeight={'64pt'} cols={4} padding={10} style={{width:'100%'}}>
+            <MUI.GridTile cols={4} >
+              <MUI.SelectField
+                id={'aaa-newAssessmentSeason'}
+                value={this.state.seasonId}
+                onChange={this.changeSeason}
+                floatingLabelText={"Text[season]"} >
+                {/*FIXME temporary fix for https://github.com/callemall/material-ui/issues/2446*/}
+                <MUI.MenuItem value={'undefined'} primaryText={" "} />
+                {seasons}
+              </MUI.SelectField>
+            </MUI.GridTile>
             <MUI.GridTile cols={2} >
               <MUI.DatePicker
                 id={'aaa-newAssessmentDate'}
                 floatingLabelText='Text[Assessment date]'
                 autoOk={true}
                 value={this.state.date}
-                onChange={this.setDate} />
+                onChange={this.changeDate} />
             </MUI.GridTile>
             <MUI.GridTile cols={2} >
               <MUI.TextField
@@ -214,8 +186,8 @@ module.exports = React.createClass({
             <MUI.GridTile cols={4} >
               <MUI.SelectField
                 id={'aaa-newAssessmentTarget'}
-                value={this.state.tagetId}
-                onChange={this.handleChange}
+                value={this.state.targetId}
+                onChange={this.changeTarget}
                 floatingLabelText={"Text[target]"} >
                 {/*FIXME temporary fix for https://github.com/callemall/material-ui/issues/2446*/}
                 <MUI.MenuItem value={'undefined'} primaryText={" "} />
@@ -224,20 +196,9 @@ module.exports = React.createClass({
             </MUI.GridTile>
             <MUI.GridTile cols={4} >
               <MUI.SelectField
-                id={'aaa-newAssessmentSeason'}
-                value={this.state.seasonId}
-                onChange={this.handleChange}
-                floatingLabelText={"Text[season]"} >
-                {/*FIXME temporary fix for https://github.com/callemall/material-ui/issues/2446*/}
-                <MUI.MenuItem value={'undefined'} primaryText={" "} />
-                {seasons}
-              </MUI.SelectField>
-            </MUI.GridTile>
-            <MUI.GridTile cols={4} >
-              <MUI.SelectField
                 id={'aaa-newAssessmentEvent'}
                 value={this.state.eventId}
-                onChange={this.handleChange}
+                onChange={this.changeEvent}
                 floatingLabelText={"Text[event]"} >
                 {/*FIXME temporary fix for https://github.com/callemall/material-ui/issues/2446*/}
                 <MUI.MenuItem value={'undefined'} primaryText={" "} />
