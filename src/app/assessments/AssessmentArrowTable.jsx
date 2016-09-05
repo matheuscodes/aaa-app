@@ -24,7 +24,7 @@ module.exports = React.createClass({
       },this);
       return(
         <tr key={'aaa-assessmentRow_'+this.props.data.index+'_'+endIndex}>
-          <td style={{maxWidth:(styles.arrowSize*6)}} >
+          <td style={{display:'block',maxWidth:(styles.arrowSize*6)}} >
             {arrows}
           </td>
           <td >
@@ -39,23 +39,23 @@ module.exports = React.createClass({
         <thead>
           <tr>
             <th>Text['points']</th>
-            <th>Text['sum']</th>
+            <th>Text[]</th>
           </tr>
         </thead>
         <tbody>
           {rows}
-          <tr>
+          {this.props.data.totalScore ? <tr>
             <th style={{textAlign:'right'}}>Text['total points']</th>
             <th>{this.props.data.totalScore}</th>
-          </tr>
-          <tr>
+          </tr> : null}
+          {this.props.data.totalScore ? <tr>
             <th style={{textAlign:'right'}}>Text['tens']</th>
             <th>{this.props.data.tens}</th>
-          </tr>
-          <tr>
+          </tr> : null}
+          {this.props.data.totalScore ? <tr>
             <th style={{textAlign:'right'}}>Text['xs']</th>
             <th>{this.props.data.xs}</th>
-          </tr>
+          </tr> : null}
         </tbody>
       </table>
     );

@@ -3,10 +3,11 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-exports.equipment = exports.assessments = exports.seasons = exports.default = undefined;
+exports.equipment = exports.events = exports.assessments = exports.seasons = exports.default = undefined;
 
 exports.seasons = require('api/Seasons');
 exports.assessments = require('api/Assessments');
+exports.events = require('api/Events');
 exports.equipment = require('api/Equipment');
 
 var API = {

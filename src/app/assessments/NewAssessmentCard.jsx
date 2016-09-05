@@ -9,6 +9,7 @@ var Thermometer = require('svg/icon/Thermometer.jsx');
 var Windmills = require('svg/icon/Windmills.jsx');
 var Compass = require('svg/icon/Compass.jsx');
 var ArcherAnchored = require('svg/icon/ArcherAnchored.jsx');
+var AssessmentArrowTable = require('app/assessments/AssessmentArrowTable.jsx');
 
 var MUI = require('app/common/MaterialUI');
 var API = require('api');
@@ -37,18 +38,16 @@ var style = {
 module.exports = React.createClass({
   getInitialState: function() {
     return {
-      date: new Date(1451606400000),
-      seasonId: 1,
-      targetId: 3,
+      date: new Date(),
       targets:[],
       seasons:[],
       events:[],
       rounds: [
         {
-          sets:[[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6]]
+          ends:[[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6]]
         },
         {
-          sets:[[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6]]
+          ends:[[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6]]
         }
       ]
     };
@@ -73,15 +72,37 @@ module.exports = React.createClass({
     API.assessments.getTargets(callbacks);
   },
   changeDate: function(event, date){
-  console.log(date);
     var current = this.state;
     current.date = date;
     this.setState(current);
+  },
+  changeDistance: function(event){
+    var current = this.state;
+    current.distance = event.target.value;
+  },
+  changeTemperature: function(event){
+    var current = this.state;
+    current.temperature = event.target.value;
+  },
+  changeWindSpeed: function(event){
+    var current = this.state;
+    current.windSpeed = event.target.value;
   },
   changeSeason: function(event, index, value){
     var current = this.state;
     current.seasonId = value;
     this.setState(current);
+    var callbacks ={
+      context: this,
+      success: function(events){
+        var current = this.state;
+        current.eventId ? delete current.eventId : null;
+        current.events = events;
+        this.setState(current);
+      }
+    }
+    var season = this.state.seasons[index-1];
+    API.events.getList(callbacks,season.start,season.end);
   },
   changeTarget: function(event, index, value){
     var current = this.state;
@@ -106,6 +127,11 @@ module.exports = React.createClass({
   changeShootDirection: function(event, index, value){
     var current = this.state;
     current.shootDirection = value;
+    this.setState(current);
+  },
+  addRound: function(){
+    var current = this.state;
+    current.rounds.push({ends:[]});
     this.setState(current);
   },
   handleOpen: function(event, index, value){
@@ -160,6 +186,7 @@ module.exports = React.createClass({
           <MUI.GridList cellHeight={'64pt'} cols={4} padding={10} style={{width:'100%'}}>
             <MUI.GridTile cols={4} >
               <MUI.SelectField
+                style={{width:'100%'}}
                 id={'aaa-newAssessmentSeason'}
                 value={this.state.seasonId}
                 onChange={this.changeSeason}
@@ -171,6 +198,7 @@ module.exports = React.createClass({
             </MUI.GridTile>
             <MUI.GridTile cols={2} >
               <MUI.DatePicker
+                style={{width:'100%'}}
                 id={'aaa-newAssessmentDate'}
                 floatingLabelText='Text[Assessment date]'
                 autoOk={true}
@@ -179,12 +207,16 @@ module.exports = React.createClass({
             </MUI.GridTile>
             <MUI.GridTile cols={2} >
               <MUI.TextField
+                style={{width:'100%'}}
                 id={'aaa-newAssessmentDistance'}
                 hintText="Text[distance hint]"
-                floatingLabelText="Text[distance]" />
+                floatingLabelText="Text[distance]"
+                value={this.state.distance}
+                onChange={this.changeDistance} />
             </MUI.GridTile>
             <MUI.GridTile cols={4} >
               <MUI.SelectField
+                style={{width:'100%'}}
                 id={'aaa-newAssessmentTarget'}
                 value={this.state.targetId}
                 onChange={this.changeTarget}
@@ -196,6 +228,7 @@ module.exports = React.createClass({
             </MUI.GridTile>
             <MUI.GridTile cols={4} >
               <MUI.SelectField
+                style={{width:'100%'}}
                 id={'aaa-newAssessmentEvent'}
                 value={this.state.eventId}
                 onChange={this.changeEvent}
@@ -219,7 +252,9 @@ module.exports = React.createClass({
                 style={{width:'100%'}}
                 id={'aaa-newAssessmentTemperature'}
                 hintText="Text[temperature hint]"
-                floatingLabelText="Text[temperature]" />
+                floatingLabelText="Text[temperature]"
+                value={this.state.temperature}
+                onChange={this.changeTemperature} />
             </MUI.GridTile>
             <MUI.GridTile cols={1} >
               <MUI.SelectField
@@ -246,9 +281,12 @@ module.exports = React.createClass({
             </MUI.GridTile>
             <MUI.GridTile cols={2} >
               <MUI.TextField
+                style={{width:'100%'}}
                 id={'aaa-newAssessmentWindSpeed'}
                 hintText="Text[wind hint]"
-                floatingLabelText="Text[wind]" />
+                floatingLabelText="Text[wind]"
+                value={this.state.windSpeed}
+                onChange={this.changeWindSpeed} />
             </MUI.GridTile>
             <MUI.GridTile cols={1} >
               <MUI.SelectField
@@ -356,14 +394,14 @@ module.exports = React.createClass({
           </MUI.GridTile>
           <MUI.GridTile cols={1} >
           <MUI.GridList cellHeight={'64pt'} cols={1} style={{width:'100%'}}>
-            <MUI.GridTile cols={1} >
-              <MUI.RaisedButton label="Text[add round]" style={style} />
+            <MUI.GridTile style={{padding:5}} cols={1} >
+              <MUI.RaisedButton label="Text[add round]" style={style} onTouchTap={this.addRound}/>
             </MUI.GridTile>
             {this.state.rounds.map(function(round){
               return (<MUI.GridTile cols={1}  style={{padding:'5pt'}}>
                 <MUI.Paper  zDepth={2}  style={{display:'inline-block', width:'100%'}}>
                   <MUI.GridList cellHeight={'64pt'} cols={1} padding={10} style={{width:'100%'}}>
-                    <MUI.GridTile cols={1} >
+                    <MUI.GridTile style={{padding:10}} cols={1} >
                       <MUI.RaisedButton label="Text[add set]" style={style} onTouchTap={this.handleOpen} />
                         <MUI.Dialog
                           title="Dialog With Actions"
@@ -382,19 +420,11 @@ module.exports = React.createClass({
                           ]}
                           modal={false}
                           open={this.state.open}
-                          onRequestClose={this.handleClose}
-                        />
+                          onRequestClose={this.handleClose} />
                     </MUI.GridTile>
-                    {round.sets.map(function(set){
-                      return(<MUI.GridTile cols={1} >
-                        {set.map(function(arrow){
-                          return(<MUI.Avatar
-                            color={valueConverter.color[arrow]}
-                            backgroundColor={valueConverter.backgroundColor[arrow]}
-                            size={30} >{arrow}</MUI.Avatar>);
-                        })}
-                      </MUI.GridTile>);
-                    })}
+                    <MUI.GridTile style={{padding:5}} cols={1} >
+                      <AssessmentArrowTable data={round} />
+                    </MUI.GridTile>
                   </MUI.GridList>
                 </MUI.Paper>
               </MUI.GridTile>)
