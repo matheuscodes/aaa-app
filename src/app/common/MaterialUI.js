@@ -22,6 +22,7 @@ var MUI = {
   CardText: require('material-ui/Card').CardText,
   CardHeader: require('material-ui/Card').CardHeader,
   CircularProgress: require('material-ui/CircularProgress').default,
+  FlatButton: require('material-ui/FlatButton').default,
   FloatingActionButton: require('material-ui/FloatingActionButton').default,
   GridList: require('material-ui/GridList').GridList,
   GridTile: require('material-ui/GridList').GridTile,

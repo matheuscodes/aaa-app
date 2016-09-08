@@ -1,15 +1,15 @@
+'use strict'
 var React = require('react');
 
 var TrainingTypes = require('constants/TrainingTypes.json');
 var valueConverter = require('useful/valueConverter');
 
-var WeatherConditions = require('constants/weatherConditions.json');
-var WeatherIcons = require('svg/icon/Weather.jsx');
 var Thermometer = require('svg/icon/Thermometer.jsx');
 var Windmills = require('svg/icon/Windmills.jsx');
-var Compass = require('svg/icon/Compass.jsx');
 var ArcherAnchored = require('svg/icon/ArcherAnchored.jsx');
 var AssessmentArrowTable = require('app/assessments/AssessmentArrowTable.jsx');
+var DirectionSelector = require('app/common/DirectionSelector.jsx');
+var WeatherSelector = require('app/common/WeatherSelector.jsx');
 
 var MUI = require('app/common/MaterialUI');
 var API = require('api');
@@ -134,6 +134,12 @@ module.exports = React.createClass({
     current.rounds.push({ends:[]});
     this.setState(current);
   },
+  deleteEnd: function(roundIndex,endIndex){
+    var current = this.state;
+    //TODO handle array out of bounds exceptions.
+    current.rounds[roundIndex].ends.splice(endIndex,1);
+    this.setState(current);
+  },
   handleOpen: function(event, index, value){
     var current = this.state;
     current.open = true;
@@ -162,18 +168,6 @@ module.exports = React.createClass({
         <MUI.MenuItem key={'aaa-newAssessmentEvent_'+index} value={event.id} primaryText={event.name} />
       );
     });
-
-    var weathers = [];
-    for(weather in WeatherConditions){
-      var CurrentIcon = WeatherIcons[WeatherConditions[weather]];
-      weathers.push(
-        <MUI.MenuItem
-          key={'aaa-weatherChoice_'+weather}
-          value={weather}
-          label={<CurrentIcon height={'24pt'} style={{padding:'5pt'}} />}
-          primaryText={<CurrentIcon height={'100%'} />} />
-      );
-    }
 
     return (
       <MUI.Card>
@@ -257,18 +251,11 @@ module.exports = React.createClass({
                 onChange={this.changeTemperature} />
             </MUI.GridTile>
             <MUI.GridTile cols={1} >
-              <MUI.SelectField
+              <WeatherSelector
                 style={{width:'100%'}}
-                id={'aaa-newAssessmentWeather'}
                 value={this.state.weather}
                 onChange={this.changeWeather}
-                floatingLabelFixed={true}
-                floatingLabelText={" "}
-                hintText={"Text[weather]"} >
-                {/*FIXME temporary fix for https://github.com/callemall/material-ui/issues/2446*/}
-                <MUI.MenuItem value={'undefined'} primaryText={" "} />
-                {weathers}
-              </MUI.SelectField>
+                hintText={"Text[weather]"} />
             </MUI.GridTile>
             <MUI.GridTile cols={1} >
               <Windmills
@@ -289,50 +276,12 @@ module.exports = React.createClass({
                 onChange={this.changeWindSpeed} />
             </MUI.GridTile>
             <MUI.GridTile cols={1} >
-              <MUI.SelectField
+              <DirectionSelector
                 style={{width:'100%'}}
-                id={'aaa-newAssessmentWindDirection'}
+                type={'WindDirection'}
                 value={this.state.windDirection}
                 onChange={this.changeWindDirection}
-                floatingLabelFixed={true}
-                floatingLabelText={" "}
-                hintText={"Text[direction wind]"} >
-                {/*FIXME temporary fix for https://github.com/callemall/material-ui/issues/2446*/}
-                <MUI.MenuItem value={'undefined'} primaryText={" "} />
-                {/*FIXME too. many. copy. paste */}
-                <MUI.MenuItem
-                  value={'N'}
-                  label={<Compass direction={'N'} height={'24pt'} style={{padding:'5pt'}} />}
-                  primaryText={<Compass direction={'N'} height={'100%'} />} />
-                <MUI.MenuItem
-                  value={'NE'}
-                  label={<Compass direction={'NE'} height={'24pt'} style={{padding:'5pt'}} />}
-                  primaryText={<Compass direction={'NE'} height={'100%'} />} />
-                <MUI.MenuItem
-                  value={'E'}
-                  label={<Compass direction={'E'} height={'24pt'} style={{padding:'5pt'}} />}
-                  primaryText={<Compass direction={'E'} height={'100%'} />} />
-                <MUI.MenuItem
-                  value={'SE'}
-                  label={<Compass direction={'SE'} height={'24pt'} style={{padding:'5pt'}} />}
-                  primaryText={<Compass direction={'SE'} height={'100%'} />} />
-                <MUI.MenuItem
-                  value={'S'}
-                  label={<Compass direction={'S'} height={'24pt'} style={{padding:'5pt'}} />}
-                  primaryText={<Compass direction={'S'} height={'100%'} />} />
-                <MUI.MenuItem
-                  value={'SW'}
-                  label={<Compass direction={'SW'} height={'24pt'} style={{padding:'5pt'}} />}
-                  primaryText={<Compass direction={'SW'} height={'100%'} />} />
-                <MUI.MenuItem
-                  value={'W'}
-                  label={<Compass direction={'W'} height={'24pt'} style={{padding:'5pt'}} />}
-                  primaryText={<Compass direction={'W'} height={'100%'} />} />
-                <MUI.MenuItem
-                  value={'NW'}
-                  label={<Compass direction={'NW'} height={'24pt'} style={{padding:'5pt'}} />}
-                  primaryText={<Compass direction={'NW'} height={'100%'} />} />
-              </MUI.SelectField>
+                hintText={"Text[direction wind]"} />
             </MUI.GridTile>
 
             <MUI.GridTile cols={1} >
@@ -347,48 +296,10 @@ module.exports = React.createClass({
             <MUI.GridTile cols={1} >
               <MUI.SelectField
                 style={{width:'100%'}}
-                id={'aaa-newAssessmentShootDirection'}
+                type={'ShootDirection'}
                 value={this.state.shootDirection}
                 onChange={this.changeShootDirection}
-                floatingLabelFixed={true}
-                floatingLabelText={" "}
-                hintText={"Text[direction wind]"} >
-                {/*FIXME temporary fix for https://github.com/callemall/material-ui/issues/2446*/}
-                <MUI.MenuItem value={'undefined'} primaryText={" "} />
-                {/*FIXME too. many. copy. paste */}
-                <MUI.MenuItem
-                  value={'N'}
-                  label={<Compass direction={'N'} height={'24pt'} style={{padding:'5pt'}} />}
-                  primaryText={<Compass direction={'N'} height={'100%'} />} />
-                <MUI.MenuItem
-                  value={'NE'}
-                  label={<Compass direction={'NE'} height={'24pt'} style={{padding:'5pt'}} />}
-                  primaryText={<Compass direction={'NE'} height={'100%'} />} />
-                <MUI.MenuItem
-                  value={'E'}
-                  label={<Compass direction={'E'} height={'24pt'} style={{padding:'5pt'}} />}
-                  primaryText={<Compass direction={'E'} height={'100%'} />} />
-                <MUI.MenuItem
-                  value={'SE'}
-                  label={<Compass direction={'SE'} height={'24pt'} style={{padding:'5pt'}} />}
-                  primaryText={<Compass direction={'SE'} height={'100%'} />} />
-                <MUI.MenuItem
-                  value={'S'}
-                  label={<Compass direction={'S'} height={'24pt'} style={{padding:'5pt'}} />}
-                  primaryText={<Compass direction={'S'} height={'100%'} />} />
-                <MUI.MenuItem
-                  value={'SW'}
-                  label={<Compass direction={'SW'} height={'24pt'} style={{padding:'5pt'}} />}
-                  primaryText={<Compass direction={'SW'} height={'100%'} />} />
-                <MUI.MenuItem
-                  value={'W'}
-                  label={<Compass direction={'W'} height={'24pt'} style={{padding:'5pt'}} />}
-                  primaryText={<Compass direction={'W'} height={'100%'} />} />
-                <MUI.MenuItem
-                  value={'NW'}
-                  label={<Compass direction={'NW'} height={'24pt'} style={{padding:'5pt'}} />}
-                  primaryText={<Compass direction={'NW'} height={'100%'} />} />
-              </MUI.SelectField>
+                hintText={"Text[direction wind]"} />
             </MUI.GridTile>
           </MUI.GridList>
           </MUI.GridTile>
@@ -397,7 +308,8 @@ module.exports = React.createClass({
             <MUI.GridTile style={{padding:5}} cols={1} >
               <MUI.RaisedButton label="Text[add round]" style={style} onTouchTap={this.addRound}/>
             </MUI.GridTile>
-            {this.state.rounds.map(function(round){
+            {this.state.rounds.map(function(round,index){
+              round.index = index;
               return (<MUI.GridTile cols={1}  style={{padding:'5pt'}}>
                 <MUI.Paper  zDepth={2}  style={{display:'inline-block', width:'100%'}}>
                   <MUI.GridList cellHeight={'64pt'} cols={1} padding={10} style={{width:'100%'}}>
@@ -423,7 +335,7 @@ module.exports = React.createClass({
                           onRequestClose={this.handleClose} />
                     </MUI.GridTile>
                     <MUI.GridTile style={{padding:5}} cols={1} >
-                      <AssessmentArrowTable data={round} />
+                      <AssessmentArrowTable data={round} deleteEnd={this.deleteEnd} />
                     </MUI.GridTile>
                   </MUI.GridList>
                 </MUI.Paper>

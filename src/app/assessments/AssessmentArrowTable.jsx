@@ -9,6 +9,12 @@ var styles = {
 }
 
 module.exports = React.createClass({
+  deleteEnd: function(event){
+    var data = event.target.id.split('_');
+    //data[1] == data.index == roundIndex
+    //data[2] == endIndex
+    this.props.deleteEnd(data[1],data[2]);
+  },
   render: function() {
     var rows = this.props.data.ends.map(function(end,endIndex){
       var total = 0;
@@ -29,6 +35,13 @@ module.exports = React.createClass({
           </td>
           <td >
             {total}
+            {this.props.deleteEnd ?
+              <MUI.FlatButton
+                id={'aaa-assessmentDelete_'+this.props.data.index+'_'+endIndex}
+                onTouchTap={this.deleteEnd}
+                secondary={true}
+                icon={<MUI.icons.navigation.cancel />}
+                style={{margin:2,minWidth:null}} /> : null}
           </td>
         </tr>
       );
