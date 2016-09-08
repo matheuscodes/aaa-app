@@ -294,7 +294,7 @@ module.exports = React.createClass({
                 }}/>
             </MUI.GridTile>
             <MUI.GridTile cols={1} >
-              <MUI.SelectField
+              <DirectionSelector
                 style={{width:'100%'}}
                 type={'ShootDirection'}
                 value={this.state.shootDirection}
