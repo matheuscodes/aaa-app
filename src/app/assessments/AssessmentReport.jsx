@@ -15,9 +15,6 @@ module.exports = React.createClass({
   onDelete: function() {
     this.props.onDelete(this.props.assessmentId);
   },
-  onEdit: function() {
-    this.props.onEdit(this.props.assessmentId);
-  },
   render: function() {
     var rounds = this.props.data.rounds ? this.props.data.rounds.map(function(round,roundIndex){
       round.index = roundIndex;
@@ -36,7 +33,7 @@ module.exports = React.createClass({
       }
       return (
         <MUI.GridTile
-          key={'aaa-assessmentRound_'+ this.props.data.id +'_'+roundIndex}
+          key={'aaa-assessmentRound_' + roundIndex}
           style={{padding:'5pt'}} cols={8} >
           <MUI.GridList cellHeight={'auto'} cols={2} padding={10} >
             <MUI.GridTile style={{padding:'5pt'}} cols={1} >
@@ -44,7 +41,7 @@ module.exports = React.createClass({
             </MUI.GridTile>
             <MUI.GridTile style={{padding:'5pt'}} cols={1} >
               <EndDistributionGraph
-                id={'aaa-assessmentGraph_'+ this.props.data.id +'_'+roundIndex}
+                id={'aaa-assessmentGraph_' + roundIndex}
                 height={'230pt'}
                 data={summary} />
             </MUI.GridTile>
@@ -65,7 +62,7 @@ module.exports = React.createClass({
           </p>
         </MUI.GridTile>
         <MUI.GridTile style={{padding:'5pt'}} cols={1} >
-          <MUI.FloatingActionButton mini={true} secondary={true} style={{margin: '5pt'}}>
+          <MUI.FloatingActionButton mini={true} secondary={true} style={{margin: '5pt'}} onTouchTap={this.onDelete}>
             <MUI.icons.action.delete />
           </MUI.FloatingActionButton>
         </MUI.GridTile>

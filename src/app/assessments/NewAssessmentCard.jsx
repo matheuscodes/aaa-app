@@ -3,11 +3,13 @@ var React = require('react');
 
 var TrainingTypes = require('constants/TrainingTypes.json');
 var valueConverter = require('useful/valueConverter');
+var Notice = require('app/common/Notice.jsx');
 
 var Thermometer = require('svg/icon/Thermometer.jsx');
 var Windmills = require('svg/icon/Windmills.jsx');
 var ArcherAnchored = require('svg/icon/ArcherAnchored.jsx');
 var AssessmentArrowTable = require('app/assessments/AssessmentArrowTable.jsx');
+var NewAssessmentEnd = require('app/assessments/NewAssessmentEnd.jsx');
 var DirectionSelector = require('app/common/DirectionSelector.jsx');
 var WeatherSelector = require('app/common/WeatherSelector.jsx');
 
@@ -42,14 +44,7 @@ module.exports = React.createClass({
       targets:[],
       seasons:[],
       events:[],
-      rounds: [
-        {
-          ends:[[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6]]
-        },
-        {
-          ends:[[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6]]
-        }
-      ]
+      rounds: []
     };
   },
   componentDidMount: function() {
@@ -107,6 +102,7 @@ module.exports = React.createClass({
   changeTarget: function(event, index, value){
     var current = this.state;
     current.targetId = value;
+    current.target = current.targets[index-1];
     this.setState(current);
   },
   changeEvent: function(event, index, value){
@@ -134,21 +130,49 @@ module.exports = React.createClass({
     current.rounds.push({ends:[]});
     this.setState(current);
   },
+  addEnd: function(roundIndex,end){
+    var current = this.state;
+    //TODO handle array out of bounds exceptions.
+    current.rounds[roundIndex].ends.push(end);
+    this.setState(current);
+  },
   deleteEnd: function(roundIndex,endIndex){
     var current = this.state;
     //TODO handle array out of bounds exceptions.
     current.rounds[roundIndex].ends.splice(endIndex,1);
     this.setState(current);
   },
-  handleOpen: function(event, index, value){
+  showMessage: function(message,type){
     var current = this.state;
-    current.open = true;
+    current.message = {
+      text: message,
+      open: true,
+      type: type
+    }
     this.setState(current);
   },
-  handleClose: function(event, index, value){
+  hideMessage: function(){
     var current = this.state;
-    current.open = false;
+    current.message.open = false;
     this.setState(current);
+  },
+  submitAssessment: function(){
+    var callbacks = {
+      context: this,
+      success: function(){
+        this.showMessage("Text[season saved]","MESSAGE");
+        this.setState(this.getInitialState());
+        this.props.onClose(true);
+      },
+      warning: function(){
+        this.showMessage("Text[season saved]","WARNING");
+      },
+      error: function(){
+        this.showMessage("Text[season not saved]","ERROR");
+      }
+    }
+    //FIXME separate assessment from state.
+    API.assessments.save(this.state,callbacks);
   },
   render: function() {
     var seasons = this.state.seasons.map(function(season,index){
@@ -314,25 +338,7 @@ module.exports = React.createClass({
                 <MUI.Paper  zDepth={2}  style={{display:'inline-block', width:'100%'}}>
                   <MUI.GridList cellHeight={'64pt'} cols={1} padding={10} style={{width:'100%'}}>
                     <MUI.GridTile style={{padding:10}} cols={1} >
-                      <MUI.RaisedButton label="Text[add set]" style={style} onTouchTap={this.handleOpen} />
-                        <MUI.Dialog
-                          title="Dialog With Actions"
-                          actions={[
-                            <MUI.RaisedButton
-                              label="Cancel"
-                              primary={true}
-                              onTouchTap={this.handleClose}
-                            />,
-                            <MUI.RaisedButton
-                              label="Submit"
-                              primary={true}
-                              keyboardFocused={true}
-                              onTouchTap={this.handleClose}
-                            />,
-                          ]}
-                          modal={false}
-                          open={this.state.open}
-                          onRequestClose={this.handleClose} />
+                      <NewAssessmentEnd roundIndex={round.index} addEnd={this.addEnd} />
                     </MUI.GridTile>
                     <MUI.GridTile style={{padding:5}} cols={1} >
                       <AssessmentArrowTable data={round} deleteEnd={this.deleteEnd} />
@@ -347,13 +353,14 @@ module.exports = React.createClass({
         </MUI.CardText>
 
         <MUI.CardActions style={{textAlign:'right'}}>
-          <MUI.FloatingActionButton mini={true} secondary={true} style={{margin: '5pt'}}>
-            <MUI.icons.action.delete />
+          <MUI.FloatingActionButton mini={true} secondary={true} style={{margin: '5pt'}}  onTouchTap={this.props.onClose}>
+            <MUI.icons.navigation.cancel />
           </MUI.FloatingActionButton>
-          <MUI.FloatingActionButton style={{margin: '5pt'}}>
+          <MUI.FloatingActionButton style={{margin: '5pt'}} onTouchTap={this.submitAssessment}>
             <MUI.icons.action.backup />
           </MUI.FloatingActionButton>
         </MUI.CardActions>
+        {this.state.message ? <Notice message={this.state.message} onClose={this.hideMessage}/> : null}
       </MUI.Card>
     );
   }

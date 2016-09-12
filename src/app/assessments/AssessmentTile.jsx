@@ -7,6 +7,7 @@ var API = require('api');
 var AssessmentReport = require('app/assessments/AssessmentReport.jsx');
 
 var Waiting = require('app/common/Waiting.jsx');
+var Notice = require('app/common/Notice.jsx');
 var MiniCalendar = require('svg/common/MiniCalendar.jsx');
 
 module.exports = React.createClass({
@@ -37,9 +38,10 @@ module.exports = React.createClass({
                 month={this.props.data.date.getMonth()} />
             }/>
           <MUI.CardText>
-            {this.state.date ? <AssessmentReport data={this.state} /> : <Waiting />}
+            {this.state.date ? <AssessmentReport assessmentId={this.props.data.id} data={this.state} onDelete={this.props.onDelete}/> : <Waiting />}
           </MUI.CardText>
         </MUI.Card>
+        {this.state.message ? <Notice message={this.state.message} onClose={this.hideMessage}/> : null}
       </MUI.Paper>
     );
   }

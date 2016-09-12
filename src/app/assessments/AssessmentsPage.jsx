@@ -97,7 +97,7 @@ module.exports = React.createClass({
     var assessments = this.state.assessments ? this.state.assessments.map(function(assessment, index) {
       return (
         <MUI.GridTile key={'aaa-assessment_'+assessment.id} style={{padding:'5pt'}} cols={2} >
-          <AssessmentTile data={assessment} />
+          <AssessmentTile data={assessment} onDelete={this.deleteAssessment}/>
         </MUI.GridTile>
       );
     },this) : null;
