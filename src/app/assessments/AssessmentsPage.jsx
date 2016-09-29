@@ -116,6 +116,7 @@ module.exports = React.createClass({
             {this.state.editAssessment ? <NewAssessmentCard seasonId={this.state.assessmentId} onClose={this.closeEdit} /> : <MUI.RaisedButton label="Text[new assessment]" fullWidth={true} primary={true} onTouchTap={this.newAssessment} /> }
           </MUI.GridTile>
           {this.state.editAssessment ? assessmentList : (assessments ? assessments : <Waiting />)}
+          {this.state.message ? <Notice message={this.state.message} onClose={this.hideMessage}/> : null}
         </MUI.GridList>
       </BaseLayout>
     );

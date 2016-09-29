@@ -133,7 +133,7 @@ module.exports = {
   delete: function(assessmentId,callbacks){
     var newCallbacks = {
       context: callbacks.context,
-      '200': callbacks.success,
+      '204': callbacks.success,
       failure: callbacks.error
     }
 

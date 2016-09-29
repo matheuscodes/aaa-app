@@ -3,6 +3,9 @@ var React = require('react');
 var TrainingTypes = require('constants/TrainingTypes.json');
 
 var MUI = require('app/common/MaterialUI');
+var API = require('api');
+
+var Notice = require('app/common/Notice.jsx');
 
 var style = {
   arrowCountField:{
@@ -27,65 +30,121 @@ var style = {
 
 module.exports = React.createClass({
   getInitialState: function() {
-    return {
-      date: new Date(1451606400000),
+    return {seasons:[],training:{
+      date: new Date(),
       arrows:{
-        '25':{WARMUP:33,BOARD:22},
-        '12':{WARMUP:31,TARGET:21},
-        '5':{WARMOUT:23,TARGET:12},
-        '16':{WARMOUT:23,BOARD:121,TARGET:12},
-        '1':{WARMOUT:23,TARGET:12}
+        '5':{},
+        '18':{},
+        '25':{},
+        '40':{}
       }
-    };
+    }};
   },
+
+  componentDidMount: function(){
+    var callbacks ={
+      context: this,
+      success: function(seasons){
+        var current = this.state;
+        current.seasons = seasons;
+        this.setState(current);
+      }
+    }
+    API.seasons.getList(callbacks);
+  },
+
   changeNewDistance:function(event){
     var current = this.state;
     current.newDistance = event.target.value;
-    this.setState(current);
   },
   setDate: function(event, date){
-  console.log(date);
     var current = this.state;
-    current.date = date;
+    current.training.date = date;
     this.setState(current);
   },
   setArrowCount: function(event) {
     var split = event.target.id.split('_');
     var current = this.state;
-    current.arrows[split[1]][split[2]] = parseInt(event.target.value);
+    current.training.arrows[split[1]][split[2]] = parseInt(event.target.value);
     this.setState(current);
   },
   increaseArrows: function(event) {
     var split = event.target.id.split('_');
     var current = this.state;
     if(typeof current.arrows[split[1]][split[2]] ==='undefined'){
-      current.arrows[split[1]][split[2]] = 0;
+      current.training.arrows[split[1]][split[2]] = 0;
     }
-    current.arrows[split[1]][split[2]] += 1;
+    current.training.arrows[split[1]][split[2]] += 1;
     this.setState(current);
   },
   decreaseArrows: function(event) {
     var split = event.target.id.split('_');
     var current = this.state;
-    if(current.arrows[split[1]][split[2]] > 0){
-      current.arrows[split[1]][split[2]] -= 1;
+    if(current.training.arrows[split[1]][split[2]] > 0){
+      current.training.arrows[split[1]][split[2]] -= 1;
     }
     this.setState(current);
   },
   createNewDistance: function(){
     var current = this.state;
     if(typeof current.newDistance === 'undefined'){
-      //TODO throw a toast
+      this.showMessage("Text[no empty distance]","ERROR");
       return;
     }
-    if(typeof current.arrows[current.newDistance] === 'undefined'){
-      current.arrows[current.newDistance] = {};
+    if(typeof current.training.arrows[current.newDistance] === 'undefined'){
+      current.training.arrows[current.newDistance] = {};
       delete current.newDistance;
     }
     this.setState(current);
   },
+  showMessage: function(message,type){
+    //TODO move this to a module or class, has been used in several places already
+    var current = this.state;
+    current.message = {
+      text: message,
+      open: true,
+      type: type
+    }
+    this.setState(current);
+  },
+  hideMessage: function(){
+    var current = this.state;
+    current.message.open = false;
+    this.setState(current);
+  },
+
+  submitTraining: function(){
+    var callbacks = {
+      context: this,
+      success: function(){
+        this.showMessage("Text[training saved]","MESSAGE");
+        this.props.onClose(true);
+        this.setState(this.getInitialState());
+      },
+      warning: function(){
+        this.showMessage("Text[training saved]","WARNING");
+      },
+      error: function(){
+        this.showMessage("Text[training not saved]","ERROR");
+      }
+    }
+    API.trainings.save(this.state.training,callbacks);
+  },
+
+
+  changeSeason: function(event, index, value){
+    var current = this.state;
+    current.training.seasonId = value;
+    this.setState(current);
+  },
 
   render: function() {
+    var seasons = this.state.seasons.map(function(season,index){
+      return(
+        <MUI.MenuItem key={'aaa-newAssessmentSeason_'+index} value={season.id} primaryText={season.name} />
+      );
+    });
+
     //TODO move this to a component, used in 2 places already
     var headers = TrainingTypes.map(function(type){
       return (
@@ -96,7 +155,7 @@ module.exports = React.createClass({
     });
     var row = {};
     //TODO move styles up, too much repetition
-    for(var distance in this.state.arrows){
+    for(var distance in this.state.training.arrows){
       row[distance] = TrainingTypes.map(function(type){
         return (
           <MUI.TableRowColumn key={'newTrainingCard_'+distance+'_'+type}>
@@ -107,7 +166,7 @@ module.exports = React.createClass({
               style={style.arrowCountField}
               inputStyle={style.arrowCountInput}
               id={'newTrainingCardText_'+distance+'_'+type}
-              value={this.state.arrows[distance][type]}
+              value={this.state.training.arrows[distance][type]}
               onChange={this.setArrowCount} />
             <MUI.IconButton id={'newTrainingDec_'+distance+'_'+type} tabIndex={-1} style={style.arrowCountButton} iconStyle={style.arrowCountIcon} onTouchTap={this.increaseArrows}>
               <MUI.icons.content.add_circle/>
@@ -136,8 +195,18 @@ module.exports = React.createClass({
             id={'aaa-newTrainingDate'}
             floatingLabelText='Text[Training date]'
             autoOk={true}
-            value={this.state.date}
+            value={this.state.training.date}
             onChange={this.setDate} />
+          <MUI.SelectField
+            style={{width:'100%'}}
+            id={'aaa-newTrainingSeason'}
+            value={this.state.training.seasonId}
+            onChange={this.changeSeason}
+            floatingLabelText={"Text[season]"} >
+            {/*FIXME temporary fix for https://github.com/callemall/material-ui/issues/2446*/}
+            <MUI.MenuItem value={'undefined'} primaryText={" "} />
+            {seasons}
+          </MUI.SelectField>
           <MUI.Table>
             <MUI.TableHeader displaySelectAll={false} adjustForCheckbox={false} >
               <MUI.TableRow>
@@ -165,13 +234,14 @@ module.exports = React.createClass({
         </MUI.CardText>
 
         <MUI.CardActions style={{textAlign:'right'}}>
-          <MUI.FloatingActionButton mini={true} secondary={true} style={{margin: '5pt'}}>
-            <MUI.icons.action.delete />
+          <MUI.FloatingActionButton mini={true} secondary={true} style={{margin: '5pt'}}  onTouchTap={this.props.onClose}>
+            <MUI.icons.navigation.cancel />
           </MUI.FloatingActionButton>
-          <MUI.FloatingActionButton style={{margin: '5pt'}}>
+          <MUI.FloatingActionButton style={{margin: '5pt'}} onTouchTap={this.submitTraining}>
             <MUI.icons.action.backup />
           </MUI.FloatingActionButton>
         </MUI.CardActions>
+        {this.state.message ? <Notice message={this.state.message} onClose={this.hideMessage}/> : null}
       </MUI.Card>
     );
   }

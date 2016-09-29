@@ -1,12 +1,15 @@
 'use strict'
 var React = require('react');
+
 var MUI = require('app/common/MaterialUI');
 
-var dateToId = require('useful/DateToId');
 var MiniCalendar = require('svg/common/MiniCalendar.jsx');
 var TrainingTypes = require('constants/TrainingTypes.json');
 
 module.exports = React.createClass({
+  delete: function() {
+    this.props.onDelete(this.props.data.id)
+  },
   render: function() {
 
     var headers = TrainingTypes.map(function(type){
@@ -16,11 +19,11 @@ module.exports = React.createClass({
     });
 
     var row = {};
-    for(var distance in this.props.training.arrows){
-      row[distance] = TrainingTypes.map(function(type){
+    for(var distance in this.props.data.arrows){
+      row[distance] = TrainingTypes.map(function(type,index){
         return (
-          <MUI.TableRowColumn key={'aaa-trainingCell_'+ dateToId(this.props.training.date) +'_'+distance+'_'+type}>
-            {this.props.training.arrows[distance][type] ? this.props.training.arrows[distance][type] : " - "}
+          <MUI.TableRowColumn key={'aaa-trainingCell_'+ index}>
+            {this.props.data.arrows[distance][type] ? this.props.data.arrows[distance][type] : " - "}
           </MUI.TableRowColumn>
         );
       },this);
@@ -29,29 +32,30 @@ module.exports = React.createClass({
     var rows = [];
     for(var distance in row){
       rows.push(
-        <MUI.TableRow key={'aaa-trainingRow_'+ dateToId(this.props.training.date) +'_'+distance}>
+        <MUI.TableRow key={'aaa-trainingRow_'+distance}>
           <MUI.TableRowColumn>{distance}</MUI.TableRowColumn>
           {row[distance]}
         </MUI.TableRow>
       )
     }
+
+    var subtitle = this.props.data.totalArrows ? 'Text[total time]' + this.props.data.time : '';
+    subtitle += this.props.data.totalArrows ? ', Text[arrows per minute]' + (this.props.data.total_arrows / this.props.data.time).toFixed(2) : '';
+
     return (
       <MUI.Paper style={{display:'inline-block'}} zDepth={1}>
-        <MUI.GridList cellHeight={'auto'} cols={8} rows={1} padding={10} >
-          <MUI.GridTile style={{padding:'5pt'}}
-            cols={1} >
-            <MiniCalendar
-              width='32pt'
-              height='32pt'
-              day={this.props.training.date.getDate()}
-              month={this.props.training.date.getMonth()} />
-          </MUI.GridTile>
-          <MUI.GridTile style={{padding:'5pt'}} cols={6} >
-            <p>
-              Text['total arrows'] {this.props.training.total_arrows} <br/>
-              Text['total time'] {this.props.training.time} <br/>
-              Text['arrows per minute'] {(this.props.training.total_arrows / this.props.training.time).toPrecision(3)}
-            </p>
+        <MUI.Card>
+          <MUI.CardHeader
+            title={'Text[total arrows] ' + this.props.data.totalArrows}
+            subtitle={subtitle}
+            avatar={
+              <MiniCalendar
+                width='32pt'
+                height='32pt'
+                day={this.props.data.date.getDate()}
+                month={this.props.data.date.getMonth()} />
+            }/>
+          <MUI.CardText>
             <MUI.Table style={{width:'100%'}}>
               <MUI.TableHeader displaySelectAll={false} adjustForCheckbox={false} >
                 <MUI.TableRow>
@@ -63,13 +67,13 @@ module.exports = React.createClass({
                 {rows}
               </MUI.TableBody>
             </MUI.Table>
-          </MUI.GridTile>
-          <MUI.GridTile style={{padding:'5pt'}} cols={1} >
-            <MUI.FloatingActionButton mini={true} secondary={true} style={{margin: '5pt'}}>
+          </MUI.CardText>
+          <MUI.CardActions style={{textAlign:'right'}}>
+            <MUI.FloatingActionButton mini={true} onTouchTap={this.delete} secondary={true} style={{margin: '5pt'}}>
               <MUI.icons.action.delete />
             </MUI.FloatingActionButton>
-          </MUI.GridTile>
-        </MUI.GridList>
+          </MUI.CardActions>
+        </MUI.Card>
       </MUI.Paper>
     );
   }
