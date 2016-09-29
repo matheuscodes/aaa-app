@@ -18,6 +18,8 @@ var MUI = {
   Dialog: require('material-ui/Dialog').default,
   DropDownMenu: require('material-ui/DropDownMenu').default,
   Card: require('material-ui/Card').Card,
+  CardMedia: require('material-ui/Card').CardMedia,
+  CardTitle: require('material-ui/Card').CardTitle,
   CardActions: require('material-ui/Card').CardActions,
   CardText: require('material-ui/Card').CardText,
   CardHeader: require('material-ui/Card').CardHeader,
@@ -68,7 +70,8 @@ MUI.icons = {
   },
   navigation:{
     menu: require('material-ui/svg-icons/navigation/menu').default,
-    cancel: require('material-ui/svg-icons/navigation/cancel').default
+    cancel: require('material-ui/svg-icons/navigation/cancel').default,
+    chevron_right: require('material-ui/svg-icons/navigation/chevron-right').default
   },
   maps:{
     directions_walk: require('material-ui/svg-icons/maps/directions-walk').default

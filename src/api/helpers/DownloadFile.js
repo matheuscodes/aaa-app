@@ -1,19 +1,6 @@
-module.exports = function(path,method,callbacks){
+module.exports = function(url,callbacks){
   var xmlhttp = new XMLHttpRequest();
-  var url = 'http://localhost:8080';
-  if(path !== '/login/'){
-    if(localStorage && localStorage.loggedToken){
-      url += 'archers/'+localStorage.loggedToken;
-    }
-    else{
-      callbacks.failure.call(callbacks.context,xmlhttp);
-      return;
-    }
-  }
-  url += path;
-
-  xmlhttp.open(method, url, true);
-  xmlhttp.setRequestHeader("Content-type", "application/json");
+  xmlhttp.open('GET', url, true);
   xmlhttp.setRequestHeader("Connection", "close");
 
   if(typeof callbacks !== 'undefined'){
@@ -27,12 +14,12 @@ module.exports = function(path,method,callbacks){
             callbacks.failure.call(callbacks.context,xmlhttp)
           }
           else{
-            console.log("[ERROR] Cannot callback after finishing request.",xmlhttp);
+            console.log("[ERROR] Cannot callback after finishing downloading file.",xmlhttp);
           }
         }
 	    }
 		}
   }
 
-  return xmlhttp;
+  xmlhttp.send();
 }
