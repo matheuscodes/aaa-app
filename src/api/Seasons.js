@@ -1,9 +1,11 @@
 var requestBuilder = require('api/helpers/requestBuilder');
 var Moment = require('moment');
 
-var processSeason = function(season){
+var processSeason = function(response){
+  var season = JSON.parse(response.toString());
   season.start = new Date(season.start);
   season.end = new Date(season.end);
+  return season;
 }
 
 var processResponseList = function(response){
@@ -31,27 +33,32 @@ module.exports = {
     var request = requestBuilder('/seasons/','GET',newCallbacks);
     request.send();
 	},
-  getById: function(id,context,callback){
-		var request = requestBuilder('/seasons/'+id,'GET');
+  getById: function(id,callbacks){
+    var successCall = function(request){
+      var response = processSeason(request.responseText);
+      callbacks.success.call(callbacks.context,response);
+    }
 
-		request.onreadystatechange = function() {
-		    if (request.readyState == 4 && request.status == 200) {
-          //TODO remove this ""+
-          //TODO add try and catch
-		    	var download = JSON.parse(""+request.responseText);
-		    	if(download){
-            processSeason(download);
-		    		callback.call(context,download);
-		    	}
-		    }
-		}
+    var newCallbacks = {
+      context: callbacks.context,
+      '200': successCall,
+      failure: callbacks.error
+    }
 
+		var request = requestBuilder('/seasons/'+id,'GET',newCallbacks);
 		request.send();
 	},
   save: function(season,callbacks){
-    var request= requestBuilder('/seasons/','POST');
+    var newCallbacks = {
+      context: callbacks.context,
+      '200': callbacks.success,
+      '201': callbacks.success,
+      failure: callbacks.error
+    }
+
+    var request = requestBuilder('/seasons/','POST',newCallbacks);
     if(typeof season.id !== 'undefined'){
-      request = requestBuilder('/seasons/'+season.id,'PUT');
+      request = requestBuilder('/seasons/'+season.id,'PUT',newCallbacks);
     }
 
     season.start = Moment(season.start).format('YYYY-MM-DD');
@@ -60,31 +67,17 @@ module.exports = {
 
     request.setRequestHeader("Content-type", "application/json");
 
-		request.onreadystatechange = function() {
-	    if (request.readyState == 4) {
-        if(request.status == 201 || request.status == 200){
-	    		callbacks.success.call(callbacks.context);
-          return;
-        }
-        callbacks.error.call(callbacks.context,request.responseText);
-        return;
-	    }
-		}
-
 		request.send(data);
 	},
   delete: function(seasonId,callbacks){
-    request = requestBuilder('/seasons/'+seasonId,'DELETE');
-		request.onreadystatechange = function() {
-	    if (request.readyState == 4) {
-        if(request.status == 204){
-	    		callbacks.success.call(callbacks.context);
-          return;
-        }
-        callbacks.error.call(callbacks.context,request.responseText);
-        return;
-	    }
-		}
+    var newCallbacks = {
+      context: callbacks.context,
+      '204': callbacks.success,
+      failure: callbacks.error
+    }
+
+    request = requestBuilder('/seasons/'+seasonId,'DELETE',newCallbacks);
+
 		request.send();
 	}
 }

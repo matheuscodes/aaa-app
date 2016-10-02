@@ -6,16 +6,17 @@ module.exports = function(path,method,callbacks){
       //TODO verify the signature in the token.
       var decodedToken = JSON.parse(atob(localStorage.loggedToken.split('.')[1]));
       var archer = JSON.parse(decodedToken.archerData);
-      url += 'archers/'+archer.id;
+      url += '/archers/'+archer.id;
     }
     else{
-      callbacks.failure.call(callbacks.context,xmlhttp);
+      callbacks.failure.call(callbacks.context,new ReferenceError('Missing Token.'));
       return;
     }
   }
   url += path;
 
   xmlhttp.open(method, url, true);
+  xmlhttp.setRequestHeader("X-AAA-Authorization", localStorage.loggedToken);
   xmlhttp.setRequestHeader("Content-type", "application/json");
   xmlhttp.setRequestHeader("Connection", "close");
 

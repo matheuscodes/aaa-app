@@ -11,9 +11,13 @@ module.exports = React.createClass({
     return this.props.data; //TODO maybe remove this?
   },
   componentDidMount: function() {
-    API.seasons.getById(this.props.seasonId,this,function(season){
-      this.setState(season);
-    });
+    var callbacks = {
+      context: this,
+      success: function(season){
+        this.setState(season);
+      }
+    }
+    API.seasons.getById(this.props.seasonId,callbacks);
   },
   onDelete: function() {
     this.props.onDelete(this.props.seasonId);

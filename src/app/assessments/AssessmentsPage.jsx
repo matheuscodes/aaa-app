@@ -26,13 +26,19 @@ module.exports = React.createClass({
     var callbacks = {
       context: this,
       success: function(list){
+        console.log(list)
         var current = this.state;
         current.editAssessment = false;
         current.assessmentId ? delete current.assessmentId : null;
         current.assessments = list;
         this.setState(current);
       },
-      error: function(){
+      error: function(error){
+        if(error instanceof ReferenceError){
+          if(error.message === 'Missing Token.'){
+            this.props.switcher.switchTo('loginPage');
+          }
+        }
         this.showMessage("Text[assessment list error]","ERROR");
       }
     }
@@ -102,22 +108,16 @@ module.exports = React.createClass({
       );
     },this) : null;
 
-    var assessmentList = (
-      <MUI.GridList cellHeight={'auto'} cols={2} padding={10} >
-        {assessments ? assessments : <Waiting />}
-      </MUI.GridList>
-    );
-
     return (
       <BaseLayout switcher={this.props.switcher} layoutName='assessmentsPage' userAgent={this.props.userAgent} languages={this.props.languages} title='Welcome to Advanced Archery' >
         <MUI.GridList cellHeight={'unset'} cols={4} padding={10} style={styles.gridList} >
           <MUI.GridTile style={{padding:'5pt'}}
             cols={this.state.editAssessment ? 2 : 4} >
-            {this.state.editAssessment ? <NewAssessmentCard seasonId={this.state.assessmentId} onClose={this.closeEdit} /> : <MUI.RaisedButton label="Text[new assessment]" fullWidth={true} primary={true} onTouchTap={this.newAssessment} /> }
+            {this.state.editAssessment ? <NewAssessmentCard onClose={this.closeEdit} /> : <MUI.RaisedButton label="Text[new assessment]" fullWidth={true} primary={true} onTouchTap={this.newAssessment} /> }
           </MUI.GridTile>
-          {this.state.editAssessment ? assessmentList : (assessments ? assessments : <Waiting />)}
-          {this.state.message ? <Notice message={this.state.message} onClose={this.hideMessage}/> : null}
+          {assessments ? assessments : <Waiting />}
         </MUI.GridList>
+        {this.state.message ? <Notice message={this.state.message} onClose={this.hideMessage}/> : null}
       </BaseLayout>
     );
   }

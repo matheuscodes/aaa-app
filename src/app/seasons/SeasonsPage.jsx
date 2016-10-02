@@ -12,27 +12,33 @@ var NewSeasonCard = require('app/seasons/NewSeasonCard.jsx');
 var SeasonTile = require('app/seasons/SeasonTile.jsx');
 
 module.exports = React.createClass({
+  updateSeasonsList: function(){
+    var callbacks = {
+      context: this,
+      success: function(list){
+        var current = this.state;
+        current.editSeason = false;
+        current.seasonId ? delete current.seasonId : null;
+        current.seasons = list;
+        this.setState(current);
+      }
+    }
+    API.seasons.getList(callbacks);
+  },
   getInitialState: function(){
     return {editSeason:false};
   },
   componentDidMount: function() {
-    var current = this.state;
-    API.seasons.getList(this,function(list){
-      current.seasons = list;
-      this.setState(current);
-    });
+    this.updateSeasonsList();
   },
   closeEdit: function(refresh){
-    var current = this.state;
-    current.editSeason = false;
-    current.seasonId ? delete current.seasonId : null;
     if(refresh){
-      API.seasons.getList(this,function(list){
-        current.seasons = list;
-        this.setState(current);
-      });
+      this.updateSeasonsList();
     }
     else{
+      var current = this.state;
+      current.editSeason = false;
+      current.seasonId ? delete current.seasonId : null;
       this.setState(current);
     }
   },
@@ -66,11 +72,7 @@ module.exports = React.createClass({
       context: this,
       success: function(){
         this.showMessage("Text[season deleted]","MESSAGE");
-        API.seasons.getList(this,function(list){
-          var current = this.state;
-          current.seasons = list;
-          this.setState(current);
-        });
+        this.updateSeasonsList();
       },
       warning: function(){
         this.showMessage("Text[season deleted]","WARNING");

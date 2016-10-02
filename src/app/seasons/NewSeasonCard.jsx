@@ -6,7 +6,7 @@ var API = require('api');
 var Waiting = require('app/common/Waiting.jsx');
 var Notice = require('app/common/Notice.jsx');
 
-var NewSeason= function(context){
+function NewSeason(context){
   var equipment = context.state.equipment.map(function(equipment){
     return(
       <MUI.MenuItem
