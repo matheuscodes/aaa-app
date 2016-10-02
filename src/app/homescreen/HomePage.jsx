@@ -14,7 +14,7 @@ var SeasonsCard = require('app/homescreen/cards/SeasonsCard.jsx');
 module.exports = React.createClass({
   render: function() {
     return (
-      <BaseLayout userAgent={this.props.userAgent} layoutName='homePage' languages={this.props.languages} title='Text["Home title"]' >
+      <BaseLayout switcher={this.props.switcher} userAgent={this.props.userAgent} layoutName='homePage' languages={this.props.languages} title='Text["Home title"]' >
         <MUI.GridList cellHeight={'auto'} cols={4} rows={3} padding={10} >
           <MUI.GridTile style={{padding:'5pt'}} cols={1} >
             <TotalArrowsCard />

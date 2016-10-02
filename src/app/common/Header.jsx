@@ -18,14 +18,36 @@ module.exports = React.createClass({
   handleClose: function(){
     this.setState({open: false});
   },
+  openSeasonsPage: function(){
+    this.props.switcher.switchTo('seasonsPage');
+  },
+  openReportsPage: function(){
+    this.props.switcher.switchTo('reportsPage');
+  },
+  openAssessmentsPage: function(){
+    this.props.switcher.switchTo('assessmentsPage');
+  },
+  openTrainingsPage: function(){
+    this.props.switcher.switchTo('trainingsPage');
+  },
+  openHomePage: function(){
+    this.props.switcher.switchTo('homePage');
+  },
   render: function() {
     return (
       <div>
         <MUI.AppBar
             title={this.props.title}
-            iconElementRight={<MUI.IconButton><MUI.icons.action.exit_to_app /></MUI.IconButton>}
-            iconElementLeft={<MUI.IconButton onTouchTap={this.handleToggle}><MUI.icons.navigation.menu /></MUI.IconButton> }
-          />
+            iconElementRight={
+              <MUI.IconButton>
+                <MUI.icons.action.exit_to_app />
+              </MUI.IconButton>
+            }
+            iconElementLeft={
+              <MUI.IconButton onTouchTap={this.handleToggle}>
+                <MUI.icons.navigation.menu />
+              </MUI.IconButton>
+            } />
         <MUI.Drawer
             docked={false}
             width={400}
@@ -44,10 +66,12 @@ module.exports = React.createClass({
             </MUI.List>
             <MUI.Divider />
             <MUI.Menu>
-              <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.home />}>Text['home']</MUI.MenuItem>
+              <MUI.MenuItem onTouchTap={this.openHomePage} leftIcon={<MUI.icons.action.home />}>Text['home']</MUI.MenuItem>
               <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.assignment_ind />}>Text['manage_profile']</MUI.MenuItem>
-              <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.content.create />}>Text['manage_trainings']</MUI.MenuItem>
-              <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.history />}>Text['performance_history']</MUI.MenuItem>
+              <MUI.MenuItem onTouchTap={this.openSeasonsPage} leftIcon={<MUI.icons.content.create />}>Text['manage_seasons']</MUI.MenuItem>
+              <MUI.MenuItem onTouchTap={this.openTrainingsPage} leftIcon={<MUI.icons.content.create />}>Text['manage_trainings']</MUI.MenuItem>
+              <MUI.MenuItem onTouchTap={this.openAssessmentsPage} leftIcon={<MUI.icons.content.create />}>Text['manage_assessments']</MUI.MenuItem>
+              <MUI.MenuItem onTouchTap={this.openReportsPage} leftIcon={<MUI.icons.action.history />}>Text['performance_history']</MUI.MenuItem>
               <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.help_outline />}>Text['help']</MUI.MenuItem>
             </MUI.Menu>
         </MUI.Drawer>

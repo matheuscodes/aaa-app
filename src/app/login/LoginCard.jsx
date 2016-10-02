@@ -5,6 +5,7 @@ var API = require('api');
 var downloadFile = require('api/helpers/DownloadFile');
 
 var Notice = require('app/common/Notice.jsx');
+var pageSwitcher = require('app/common/PageSwitcher');
 
 module.exports = React.createClass({
   getInitialState: function() {
@@ -32,6 +33,7 @@ module.exports = React.createClass({
       context: this,
       success: function(request){
         this.showMessage('Text [login succeeded]','MESSAGE');
+        pageSwitcher.switchTo('loginPage');
       },
       error: function(request){
         this.showMessage('Text [login failed]','ERROR');

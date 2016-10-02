@@ -100,7 +100,7 @@ module.exports = React.createClass({
     );
 
     return (
-      <BaseLayout layoutName='seasonsPage' userAgent={this.props.userAgent} languages={this.props.languages} title='Text[seasons]' >
+      <BaseLayout switcher={this.props.switcher} layoutName='seasonsPage' userAgent={this.props.userAgent} languages={this.props.languages} title='Text[seasons]' >
         <MUI.GridList cellHeight={'unset'} cols={4} padding={10} style={{width: '100%'}} >
           <MUI.GridTile style={{padding:'5pt'}}
             cols={this.state.editSeason ? 2 : 4} >

@@ -15,7 +15,7 @@ module.exports = React.createClass({
   render: function() {
     var icon = {primary: ArcherStanding, secondary: ArcherWheelchair};
     return (
-      <BaseLayout layoutName='loginPage' userAgent={this.props.userAgent} languages={this.props.languages} title='Welcome to Advanced Archery' headerIcon={icon} >
+      <BaseLayout switcher={this.props.switcher} layoutName='loginPage' userAgent={this.props.userAgent} languages={this.props.languages} title='Welcome to Advanced Archery' headerIcon={icon} >
         <MUI.GridList cellHeight={'unset'} cols={4} padding={10} style={{witdth:'100%'}} >
           <MUI.GridTile style={{padding:'5pt'}} cols={1} >
             {" "}

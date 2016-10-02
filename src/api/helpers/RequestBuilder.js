@@ -3,7 +3,10 @@ module.exports = function(path,method,callbacks){
   var url = 'http://localhost:8080';
   if(path !== '/login/'){
     if(localStorage && localStorage.loggedToken){
-      url += 'archers/'+localStorage.loggedToken;
+      //TODO verify the signature in the token.
+      var decodedToken = JSON.parse(atob(localStorage.loggedToken.split('.')[1]));
+      var archer = JSON.parse(decodedToken.archerData);
+      url += 'archers/'+archer.id;
     }
     else{
       callbacks.failure.call(callbacks.context,xmlhttp);

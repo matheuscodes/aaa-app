@@ -109,7 +109,7 @@ module.exports = React.createClass({
     );
 
     return (
-      <BaseLayout layoutName='assessmentsPage' userAgent={this.props.userAgent} languages={this.props.languages} title='Welcome to Advanced Archery' >
+      <BaseLayout switcher={this.props.switcher} layoutName='assessmentsPage' userAgent={this.props.userAgent} languages={this.props.languages} title='Welcome to Advanced Archery' >
         <MUI.GridList cellHeight={'unset'} cols={4} padding={10} style={styles.gridList} >
           <MUI.GridTile style={{padding:'5pt'}}
             cols={this.state.editAssessment ? 2 : 4} >
