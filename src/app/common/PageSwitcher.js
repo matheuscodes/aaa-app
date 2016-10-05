@@ -10,10 +10,18 @@ var assessmentsPage = require('app/assessments/AssessmentsPage.jsx');
 var reportsPage = require('app/reports/ReportsPage.jsx');
 var seasonsPage = require('app/seasons/SeasonsPage.jsx');
 
-function PageSwitcher(){}
+/**
+ * Controller for switching between pages.
+ * @param {Object} i18next controller to translations
+ * @author Matheus
+ * @since 1.0.0
+ */
+function PageSwitcher(i18next) {
+  this.i18n = i18next;
+}
 
-function getPageReactClass(pageTitle){
-  switch(pageTitle){
+const getPageReactClass = function(pageTitle) {
+  switch (pageTitle) {
     case 'seasonsPage':
       return seasonsPage;
     case 'reportsPage':
@@ -26,43 +34,48 @@ function getPageReactClass(pageTitle){
       return homePage;
     case 'loginPage':
       return loginPage;
+    default:
+      console.error(new ReferenceError("Page not found!"));
+      return undefined;
   }
-  console.error(new ReferenceError("Page not found!"));
-  return undefined;
-}
+};
 
 PageSwitcher.prototype.switchTo = function switchTo(pageTitle) {
-  var renderParent = document.getElementById('aaa-baseLayout').parentNode;
-  //TODO move this to constants to share between server/app
+  var renderParent = document.getElementById('aaa-baseLayout').parentNode; // eslint-disable-line
+  // TODO move this to constants to share between server/app
   const props = {
-    languages: [{code:"de",name:"Deutsch"},{code:"en",name:"English"}],
+    languages: [{code: "de", name: "Deutsch"}, {code: "en", name: "English"}],
     switcher: this,
-    userAgent: navigator.userAgent
-  }
-  ReactDOM.render(React.createElement(getPageReactClass(pageTitle),props),renderParent);
-}
+    userAgent: navigator.userAgent, // eslint-disable-line
+    i18n: this.i18n
+  };
+  ReactDOM.render(
+    React.createElement(getPageReactClass(pageTitle), props), renderParent);
+};
 
 PageSwitcher.prototype.loadClient = function load(pageTitle) {
-  var renderParent = document.getElementsByTagName('html')[0].parentNode;
-  //TODO move this to constants to share between server/app
+  var renderParent = document.getElementsByTagName('html')[0].parentNode; // eslint-disable-line
+  // TODO move this to constants to share between server/app
   const props = {
-    languages: [{code:"de",name:"Deutsch"},{code:"en",name:"English"}],
+    languages: [{code: "de", name: "Deutsch"}, {code: "en", name: "English"}],
     switcher: this,
-    userAgent: navigator.userAgent
-  }
+    userAgent: navigator.userAgent, // eslint-disable-line
+    i18n: this.i18n
+  };
   props.container = getPageReactClass(pageTitle);
-  ReactDOM.render(React.createElement(baseHtml,props),renderParent);
-}
+  ReactDOM.render(React.createElement(baseHtml, props), renderParent);
+};
 
-PageSwitcher.prototype.serverString = function serverString(pageTitle,request) {
-  //TODO move this to constants to share between server/app
+PageSwitcher.prototype.serverString = function serverString(pageTitle, request) {
+  // TODO move this to constants to share between server/app
   const props = {
-    languages: [{code:"de",name:"Deutsch"},{code:"en",name:"English"}],
+    languages: [{code: "de", name: "Deutsch"}, {code: "en", name: "English"}],
     switcher: this,
-    userAgent: request.headers['user-agent']
-  }
+    userAgent: request.headers['user-agent'],
+    i18n: request.i18n
+  };
   props.container = getPageReactClass(pageTitle);
-  return ReactDOMServer.renderToString(React.createElement(baseHtml,props));
-}
+  return ReactDOMServer.renderToString(React.createElement(baseHtml, props));
+};
 
 module.exports = PageSwitcher;

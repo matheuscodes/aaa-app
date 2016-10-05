@@ -1,6 +1,5 @@
-'use strict'
-
 var React = require('react');
+var translate = require('react-i18next').translate;
 
 var MUI = require('app/common/MaterialUI');
 var LanguageIcon = require('svg/icon/Languages.jsx');
@@ -14,38 +13,37 @@ var footerStyle = {
   bottom: 0,
   width: '100%',
   backgroundColor: MUI.palette.darkAccent3Color
-}
+};
 
 var copyrightStyle = {
-  display:'inline-block',
+  display: 'inline-block',
   lineHeight: '40pt',
   color: MUI.palette.accent3Color,
   fontSize: '80%',
   padding: '4pt'
-}
+};
 
 var linkListStyle = {
-  display:'inline-block',
-}
+  display: 'inline-block'
+};
 
 var linkStyle = {
-  display:'inline-block',
+  display: 'inline-block',
   lineHeight: '40pt',
   color: MUI.palette.alternateTextColor,
   fontSize: '90%',
   padding: '4pt'
-}
+};
 
 var iconStyle = {
-  float:'right',
-  display:'inline-block',
+  float: 'right',
+  display: 'inline-block',
   lineHeight: '48pt',
   width: '24pt',
   height: '24pt',
   fill: '#FFF',
   margin: '20px 0 0 0'
-}
-
+};
 
 /**
  * Footer with language selection.
@@ -54,23 +52,39 @@ var iconStyle = {
  */
 var languageNodes = languages.map(function(language) {
   return (
-    <MUI.MenuItem value={language.code} key={language.code} primaryText={language.name} />
+    <MUI.MenuItem
+      value={language.code}
+      key={language.code}
+      primaryText={language.name} />
   );
 });
 
-module.exports = React.createClass({
+var Footer = React.createClass({
+  propTypes: {
+    t: React.PropTypes.func
+  },
   render: function() {
+    var t = this.props.t;
     return (
       <footer style={footerStyle}>
         <div style={copyrightStyle}>
           Matheus Borges Teixeira &copy; 2016
         </div>
         <div style={linkListStyle}>
-          <a style={linkStyle} href='#'>Text[about]</a>
-          <a style={linkStyle} href='#'>Text[impressum]</a>
-          <a style={linkStyle} href='#'>Text[privacy and terms]</a>
+          <a style={linkStyle} href="#">
+            {t('common:footlinks.about')}
+          </a>
+          <a style={linkStyle} href="#">
+            {t('common:footlinks.impressum')}
+          </a>
+          <a style={linkStyle} href="#">
+            {t('common:footlinks.privacyAndTerms')}
+          </a>
         </div>
-        <MUI.DropDownMenu labelStyle={{color:MUI.palette.alternateTextColor}} style={{float:'right'}} value={'en'} >
+        <MUI.DropDownMenu
+          labelStyle={{color: MUI.palette.alternateTextColor}}
+          style={{float: 'right'}}
+          value={'en'} >
           {languageNodes}
         </MUI.DropDownMenu>
         <LanguageIcon style={iconStyle} />
@@ -78,3 +92,5 @@ module.exports = React.createClass({
     );
   }
 });
+
+module.exports = translate(['common'], {withRef: true, wait: true})(Footer);
