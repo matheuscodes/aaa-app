@@ -10,11 +10,11 @@ const htmlStyle = {
 };
 
 /**
- * Base layout for page rendering.
- * @prop switcher: controller to switch pages
- * @prop userAgent: configuration for checksum on browser and server
- * @prop languages: list of language objects for the footer
- * @prop i18n: controller to translations
+ * Root HTML.
+ * @prop {Object} switcher controller to switch pages
+ * @prop {String} userAgent configuration for checksum on browser and server
+ * @prop {Array} languages list of language objects for the footer
+ * @prop {Object} i18n controller to translations
  * @author Matheus
  * @since 1.0.0
  */

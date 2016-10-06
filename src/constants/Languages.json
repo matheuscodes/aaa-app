@@ -1,4 +1,4 @@
 [
-  {"code":"en","name":"English"},
-  {"code":"de","name":"Deutsch"}
-]
+  {code: "en", name: "English"},
+  {code: "de", name: "Deutsch"}
+];
