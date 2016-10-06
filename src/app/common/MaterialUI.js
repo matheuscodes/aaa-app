@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 /**
  * Material UI wrapper
  * This helps reduce the sizes of imports and centralizes configuration
@@ -47,10 +47,10 @@ var MUI = {
   TextField: require('material-ui/TextField').default,
   List: require('material-ui/List').default,
   ListItem: require('material-ui/List/ListItem').default
-}
+};
 
 MUI.icons = {
-  action:{
+  action: {
     home: require('material-ui/svg-icons/action/home').default,
     assignment_ind: require('material-ui/svg-icons/action/assignment-ind').default,
     history: require('material-ui/svg-icons/action/history').default,
@@ -62,24 +62,24 @@ MUI.icons = {
     done: require('material-ui/svg-icons/action/done').default,
     code: require('material-ui/svg-icons/action/code').default
   },
-  content:{
+  content: {
     create: require('material-ui/svg-icons/content/create').default,
     add_box: require('material-ui/svg-icons/content/add-box').default,
     add_circle: require('material-ui/svg-icons/content/add-circle').default,
     remove_circle: require('material-ui/svg-icons/content/remove-circle').default
   },
-  navigation:{
+  navigation: {
     menu: require('material-ui/svg-icons/navigation/menu').default,
     cancel: require('material-ui/svg-icons/navigation/cancel').default,
     chevron_right: require('material-ui/svg-icons/navigation/chevron-right').default
   },
-  maps:{
+  maps: {
     directions_walk: require('material-ui/svg-icons/maps/directions-walk').default
   },
-  editor:{
+  editor: {
     mode_edit: require('material-ui/svg-icons/editor/mode-edit').default
   }
-}
+};
 
 MUI.colors = require('material-ui/styles/colors');
 
@@ -88,4 +88,4 @@ MUI.palette.accent3Color = MUI.colors.grey600;
 MUI.palette.darkAccent1Color = MUI.colors.grey500;
 MUI.palette.darkAccent2Color = MUI.colors.grey700;
 MUI.palette.darkAccent3Color = MUI.colors.grey900;
-module.exports = MUI
+module.exports = MUI;
