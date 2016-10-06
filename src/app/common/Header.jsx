@@ -1,14 +1,19 @@
 var React = require('react');
+var translate = require('react-i18next').translate;
 
 var MUI = require('app/common/MaterialUI');
 
 /**
  * Header with an undocked drawer and a logout button.
- * @prop title: header title
  * @author Matheus
  * @since 1.0.0
  */
-module.exports = React.createClass({
+const Header = React.createClass({
+  propTypes: {
+    switcher: React.PropTypes.object,
+    title: React.PropTypes.string,
+    t: React.PropTypes.func
+  },
   getInitialState: function() {
     return {open: false};
   },
@@ -34,6 +39,41 @@ module.exports = React.createClass({
     this.props.switcher.switchTo('homePage');
   },
   render: function() {
+    const t = this.props.t;
+    const menu = (
+    <MUI.Menu>
+      <MUI.MenuItem
+        onTouchTap={this.openHomePage}
+        leftIcon={<MUI.icons.action.home />} >
+        {t('common:menuDrawer.homePage')}
+      </MUI.MenuItem>
+      <MUI.MenuItem
+        onTouchTap={this.openSeasonsPage}
+        leftIcon={<MUI.icons.content.create />}>
+        {t('common:menuDrawer.seasonsPage')}
+      </MUI.MenuItem>
+      <MUI.MenuItem
+        onTouchTap={this.openTrainingsPage}
+        leftIcon={<MUI.icons.content.create />}>
+        {t('common:menuDrawer.trainingsPage')}
+      </MUI.MenuItem>
+      <MUI.MenuItem
+        onTouchTap={this.openAssessmentsPage}
+        leftIcon={<MUI.icons.content.create />}>
+        {t('common:menuDrawer.assessmentsPage')}
+      </MUI.MenuItem>
+      <MUI.MenuItem
+        onTouchTap={this.openReportsPage}
+        leftIcon={<MUI.icons.action.history />}>
+        {t('common:menuDrawer.reportsPage')}
+      </MUI.MenuItem>
+      <MUI.MenuItem onTouchTap={this.handleClose}
+        leftIcon={<MUI.icons.action.help_outline />}>
+        {t('common:menuDrawer.helpPage')}
+      </MUI.MenuItem>
+    </MUI.Menu>
+    );
+
     return (
       <div>
         <MUI.AppBar
@@ -54,28 +94,30 @@ module.exports = React.createClass({
             open={this.state.open}
             onRequestChange={this.handleClose} >
             <MUI.List>
-              <MUI.Subheader inset={true}>Advanced Archery App</MUI.Subheader>
+              <MUI.Subheader inset={true}>
+                {t('common:appTitle')}
+              </MUI.Subheader>
               <MUI.ListItem
                 primaryText="John Doe"
                 secondaryText="john@gmail.com"
                 disabled={true}
                 nestedItems={[
-                  <MUI.ListItem key={'aaa-headerSettings'} primaryText="Text['Settings']" leftIcon={<MUI.icons.action.settings />} />,
-                  <MUI.ListItem key={'aaa-headerLogout'} onTouchTap={this.handleClose} primaryText="Text['logout']" leftIcon={<MUI.icons.action.exit_to_app />} />
+                  <MUI.ListItem
+                    key={'aaa-headerSettings'}
+                    primaryText={t('common:menuDrawer.settings')}
+                    leftIcon={<MUI.icons.action.settings />} />,
+                  <MUI.ListItem key={'aaa-headerLogout'}
+                    onTouchTap={this.handleClose}
+                    primaryText={t('common:logout')}
+                    leftIcon={<MUI.icons.action.exit_to_app />} />
                 ]} />
             </MUI.List>
             <MUI.Divider />
-            <MUI.Menu>
-              <MUI.MenuItem onTouchTap={this.openHomePage} leftIcon={<MUI.icons.action.home />}>Text['home']</MUI.MenuItem>
-              <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.assignment_ind />}>Text['manage_profile']</MUI.MenuItem>
-              <MUI.MenuItem onTouchTap={this.openSeasonsPage} leftIcon={<MUI.icons.content.create />}>Text['manage_seasons']</MUI.MenuItem>
-              <MUI.MenuItem onTouchTap={this.openTrainingsPage} leftIcon={<MUI.icons.content.create />}>Text['manage_trainings']</MUI.MenuItem>
-              <MUI.MenuItem onTouchTap={this.openAssessmentsPage} leftIcon={<MUI.icons.content.create />}>Text['manage_assessments']</MUI.MenuItem>
-              <MUI.MenuItem onTouchTap={this.openReportsPage} leftIcon={<MUI.icons.action.history />}>Text['performance_history']</MUI.MenuItem>
-              <MUI.MenuItem onTouchTap={this.handleClose} leftIcon={<MUI.icons.action.help_outline />}>Text['help']</MUI.MenuItem>
-            </MUI.Menu>
+            {menu}
         </MUI.Drawer>
       </div>
     );
   }
 });
+
+module.exports = translate(['common'], {withRef: true, wait: true})(Header);

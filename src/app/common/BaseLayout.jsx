@@ -11,7 +11,7 @@ var Footer = require('app/common/Footer.jsx');
  * @prop {String} userAgent configuration for checksum on browser and server
  * @prop {String} title header title
  * @prop {String} layoutName name used in the class
- * @prop {Array} children nodes inside the react component
+ * @prop {Object} children nodes inside the react component
  * @author Matheus
  * @since 1.0.0
  */
@@ -20,7 +20,8 @@ module.exports = React.createClass({
     switcher: React.PropTypes.object,
     userAgent: React.PropTypes.string,
     layoutName: React.PropTypes.string,
-    children: React.PropTypes.array
+    title: React.PropTypes.string,
+    children: React.PropTypes.object
   },
   render: function() {
     var muiTheme = MUI.getTheme({
