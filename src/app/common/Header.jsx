@@ -9,28 +9,28 @@ var MUI = require('app/common/MaterialUI');
  * @since 1.0.0
  */
 module.exports = React.createClass({
-  getInitialState: function(){
-    return {open:false};
+  getInitialState: function() {
+    return {open: false};
   },
-  handleToggle: function(){
+  handleToggle: function() {
     this.setState({open: !this.state.open});
   },
-  handleClose: function(){
+  handleClose: function() {
     this.setState({open: false});
   },
-  openSeasonsPage: function(){
+  openSeasonsPage: function() {
     this.props.switcher.switchTo('seasonsPage');
   },
-  openReportsPage: function(){
+  openReportsPage: function() {
     this.props.switcher.switchTo('reportsPage');
   },
-  openAssessmentsPage: function(){
+  openAssessmentsPage: function() {
     this.props.switcher.switchTo('assessmentsPage');
   },
-  openTrainingsPage: function(){
+  openTrainingsPage: function() {
     this.props.switcher.switchTo('trainingsPage');
   },
-  openHomePage: function(){
+  openHomePage: function() {
     this.props.switcher.switchTo('homePage');
   },
   render: function() {
