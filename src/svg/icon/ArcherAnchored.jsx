@@ -1,13 +1,13 @@
-'use strict'
+'use strict';
 var React = require('react');
-//TODO attribute creative commons the author: "Created by Gabriele Fumero from the Noun Project" 
+// TODO attribute creative commons the author: "Created by Gabriele Fumero from the Noun Project"
 module.exports = React.createClass({
   render: function() {
     return (
       <svg
         style={this.props.style}
         xmlns="http://www.w3.org/2000/svg"
-        viewBox='0 0 100 100'
+        viewBox="0 0 100 100"
         height={this.props.height ? this.props.height : 100}
         width={this.props.width ? this.props.width : (this.props.height ? this.props.height : 100)}>
         <path d="M35.68,59.581c-1.597-1.298-3.942-1.055-5.238,0.544L19.298,73.849c-0.659,0.813-0.948,1.866-0.792,2.902l3.029,20.08  c0.276,1.845,1.866,3.169,3.678,3.169c0.184,0,0.371-0.015,0.56-0.043c2.032-0.308,3.434-2.203,3.126-4.238l-2.784-18.453  L36.222,64.82C37.52,63.223,37.275,60.877,35.68,59.581z"/>

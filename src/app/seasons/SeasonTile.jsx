@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 var React = require('react');
 var MUI = require('app/common/MaterialUI');
 var Waiting = require('app/common/Waiting.jsx');
@@ -8,16 +8,16 @@ var API = require('api');
 
 module.exports = React.createClass({
   getInitialState: function() {
-    return this.props.data; //TODO maybe remove this?
+    return this.props.data; // TODO maybe remove this?
   },
   componentDidMount: function() {
     var callbacks = {
       context: this,
-      success: function(season){
+      success: function(season) {
         this.setState(season);
       }
-    }
-    API.seasons.getById(this.props.seasonId,callbacks);
+    };
+    API.seasons.getById(this.props.seasonId, callbacks);
   },
   onDelete: function() {
     this.props.onDelete(this.props.seasonId);
@@ -36,7 +36,7 @@ module.exports = React.createClass({
             {this.state.goals ? <SeasonGraph data={this.state} /> : <Waiting />}
           </MUI.CardText>
 
-          <MUI.CardActions style={{textAlign:'right'}}>
+          <MUI.CardActions style={{textAlign: 'right'}}>
             {this.props.readOnly ?
               <MUI.FloatingActionButton mini={true} onTouchTap={this.onEdit} style={{margin: '5pt'}}>
                 <MUI.icons.editor.mode_edit />

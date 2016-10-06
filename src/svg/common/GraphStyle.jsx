@@ -1,7 +1,7 @@
 var React = require('react');
 var valueConverter = require('useful/valueConverter');
 
-//TODO FUCKING REFACTOR THIS SHIT.
+// TODO FUCKING REFACTOR THIS SHIT.
 module.exports = React.createClass({
   render: function() {
     var all = [];
@@ -18,7 +18,7 @@ module.exports = React.createClass({
     all.push(".grid {fill:none;stroke:#000;stroke-opacity:1;stroke-dasharray: 10 5;stroke-width:2}");
     all.push(".share {fill:#777}");
     all.push(".share-shadow {fill:#000}");
-		//TODO replace for - instead of _
+		// TODO replace for - instead of _
     all.push(".graph_scale {}");
     all.push(".graph_label {font-size:30pt}");
     all.push(".bottom {font-size:30pt; text-anchor:middle}");
@@ -31,8 +31,8 @@ module.exports = React.createClass({
     all.push(".result-averageScore {fill:#33CCCC;stroke:#000;stroke-opacity:1}");
     all.push(".estimation-month {fill:none;stroke:#00F;stroke-opacity:1;stroke-width:2}");
     all.push(".estimation-averageScore {fill:none;stroke:#00F;stroke-opacity:1;stroke-width:2}");
-    all.push(".tens {fill:"+valueConverter.backgroundColor['10']+";stroke:#000;stroke-opacity:1}");
-    all.push(".xs {fill:"+valueConverter.backgroundColor['X']+";stroke:#000;stroke-opacity:1}");
+    all.push(".tens {fill:" + valueConverter.backgroundColor['10'] + ";stroke:#000;stroke-opacity:1}");
+    all.push(".xs {fill:" + valueConverter.backgroundColor.X + ";stroke:#000;stroke-opacity:1}");
 
     return (
         <style>

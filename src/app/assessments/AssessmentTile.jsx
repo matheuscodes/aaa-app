@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 var React = require('react');
 var MUI = require('app/common/MaterialUI');
@@ -11,17 +11,17 @@ var Notice = require('app/common/Notice.jsx');
 var MiniCalendar = require('svg/common/MiniCalendar.jsx');
 
 module.exports = React.createClass({
-  getInitialState: function(){
-    return {}
+  getInitialState: function() {
+    return {};
   },
   componentDidMount: function() {
-    var callbacks ={
+    var callbacks = {
       context: this,
-      success: function(assessment){
+      success: function(assessment) {
         this.setState(assessment);
       }
-    }
-    API.assessments.reportById(this.props.data.id,callbacks);
+    };
+    API.assessments.reportById(this.props.data.id, callbacks);
   },
   render: function() {
     return (
@@ -32,8 +32,8 @@ module.exports = React.createClass({
             subtitle="Text[from to]"
             avatar={
               <MiniCalendar
-                width='32pt'
-                height='32pt'
+                width="32pt"
+                height="32pt"
                 day={this.props.data.date.getDate()}
                 month={this.props.data.date.getMonth()} />
             }/>

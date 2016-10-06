@@ -1,8 +1,8 @@
-'use strict'
+'use strict';
 var React = require('react');
 var valueConverter = require('useful/valueConverter');
 
-//TODO FUCKING REFACTOR THIS SHIT.
+// TODO FUCKING REFACTOR THIS SHIT.
 module.exports = React.createClass({
   render: function() {
     var all = [];

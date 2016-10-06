@@ -1,11 +1,10 @@
-'use strict'
+'use strict';
 var React = require('react');
 var MUI = require('app/common/MaterialUI');
 
-
 module.exports = React.createClass({
   getInitialState: function() {
-    return {tasks:[]};
+    return {tasks: []};
   },
   componentWillMount: function() {
     this.setState({
@@ -20,11 +19,11 @@ module.exports = React.createClass({
     var tasks = this.state.tasks.map(function(task) {
       return (
         <MUI.ListItem
-          key={'aaa_task_'+task.id}
+          key={'aaa_task_' + task.id}
           primaryText={"task['description']"}
           leftIcon={task.status == 'done' ? <MUI.icons.action.done /> : <MUI.icons.action.code />} />
       );
-    },this);
+    }, this);
 
     return (
       <MUI.Card>

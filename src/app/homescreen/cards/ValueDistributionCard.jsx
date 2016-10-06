@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 var React = require('react');
 var MUI = require('app/common/MaterialUI');
 
@@ -6,7 +6,7 @@ var ValueDistributionGraph = require('svg/ValueDistributionGraph.jsx');
 
 module.exports = React.createClass({
   getInitialState: function() {
-    return {tasks:[]};
+    return {tasks: []};
   },
   componentWillMount: function() {
     this.setState({

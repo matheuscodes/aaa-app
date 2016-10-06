@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 var React = require('react');
 var MUI = require('app/common/MaterialUI');
 
@@ -14,27 +14,27 @@ var SeasonsCard = require('app/homescreen/cards/SeasonsCard.jsx');
 module.exports = React.createClass({
   render: function() {
     return (
-      <BaseLayout switcher={this.props.switcher} userAgent={this.props.userAgent} layoutName='homePage' languages={this.props.languages} title='Text["Home title"]' >
+      <BaseLayout switcher={this.props.switcher} userAgent={this.props.userAgent} layoutName="homePage" languages={this.props.languages} title='Text["Home title"]' >
         <MUI.GridList cellHeight={'auto'} cols={4} rows={3} padding={10} >
-          <MUI.GridTile style={{padding:'5pt'}} cols={1} >
+          <MUI.GridTile style={{padding: '5pt'}} cols={1} >
             <TotalArrowsCard />
           </MUI.GridTile>
-          <MUI.GridTile style={{padding:'5pt'}} cols={1} >
+          <MUI.GridTile style={{padding: '5pt'}} cols={1} >
             <EventsCard />
           </MUI.GridTile>
-          <MUI.GridTile style={{padding:'5pt'}} cols={1} >
+          <MUI.GridTile style={{padding: '5pt'}} cols={1} >
             <TasksCard />
           </MUI.GridTile>
-          <MUI.GridTile style={{padding:'5pt'}} cols={1} >
+          <MUI.GridTile style={{padding: '5pt'}} cols={1} >
             <YearOverviewCard />
           </MUI.GridTile>
-          <MUI.GridTile style={{padding:'5pt'}} cols={2} >
+          <MUI.GridTile style={{padding: '5pt'}} cols={2} >
             <ValueDistributionCard />
           </MUI.GridTile>
-          <MUI.GridTile style={{padding:'5pt'}} cols={2} >
+          <MUI.GridTile style={{padding: '5pt'}} cols={2} >
             <EndDistributionCard />
           </MUI.GridTile>
-          <MUI.GridTile style={{padding:'5pt'}} cols={4} >
+          <MUI.GridTile style={{padding: '5pt'}} cols={4} >
             <SeasonsCard />
           </MUI.GridTile>
         </MUI.GridList>

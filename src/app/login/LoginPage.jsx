@@ -9,18 +9,18 @@ var ArcherStanding = require('svg/icon/ArcherStanding.jsx');
 var ArcherWheelchair = require('svg/icon/ArcherWheelChair.jsx');
 
 module.exports = React.createClass({
-  getInitialState: function(){
-    return {}
+  getInitialState: function() {
+    return {};
   },
   render: function() {
     var icon = {primary: ArcherStanding, secondary: ArcherWheelchair};
     return (
-      <BaseLayout switcher={this.props.switcher} layoutName='loginPage' userAgent={this.props.userAgent} languages={this.props.languages} title='Welcome to Advanced Archery' headerIcon={icon} >
-        <MUI.GridList cellHeight={'unset'} cols={4} padding={10} style={{witdth:'100%'}} >
-          <MUI.GridTile style={{padding:'5pt'}} cols={1} >
+      <BaseLayout switcher={this.props.switcher} layoutName="loginPage" userAgent={this.props.userAgent} languages={this.props.languages} title="Welcome to Advanced Archery" headerIcon={icon} >
+        <MUI.GridList cellHeight={'unset'} cols={4} padding={10} style={{witdth: '100%'}} >
+          <MUI.GridTile style={{padding: '5pt'}} cols={1} >
             {" "}
           </MUI.GridTile>
-          <MUI.GridTile style={{padding:'5pt'}} cols={2} >
+          <MUI.GridTile style={{padding: '5pt'}} cols={2} >
             <LoginCard />
           </MUI.GridTile>
         </MUI.GridList>

@@ -9,82 +9,82 @@ var pageSwitcher = require('app/common/PageSwitcher');
 
 module.exports = React.createClass({
   getInitialState: function() {
-    return {login:{}}
+    return {login: {}};
   },
   componentDidMount: function() {
-    const selected = Math.floor(Math.random()*17);
+    const selected = Math.floor(Math.random() * 17);
     var callbacks = {
       context: this,
-      "200": function(request){
+      200: function(request) {
         var current = this.state;
         current.image = selected;
         current.imageData = JSON.parse(request.responseText);
         this.setState(current);
       },
-      failure: function(request){
-        //TODO handle me
-        console.log("ERROR",request);
+      failure: function(request) {
+        // TODO handle me
+        console.log("ERROR", request);
       }
-    }
-    downloadFile('img/'+selected+'.json',callbacks);
+    };
+    downloadFile('img/' + selected + '.json', callbacks);
   },
-  doLogin: function(){
+  doLogin: function() {
     var callbacks = {
       context: this,
-      success: function(request){
-        this.showMessage('Text [login succeeded]','MESSAGE');
+      success: function(request) {
+        this.showMessage('Text [login succeeded]', 'MESSAGE');
         pageSwitcher.switchTo('loginPage');
       },
-      error: function(request){
-        this.showMessage('Text [login failed]','ERROR');
+      error: function(request) {
+        this.showMessage('Text [login failed]', 'ERROR');
       }
-    }
-    API.login(this.state.login,callbacks);
+    };
+    API.login(this.state.login, callbacks);
   },
-  showMessage: function(message,type){
+  showMessage: function(message, type) {
     var current = this.state;
     current.message = {
       text: message,
       open: true,
       type: type
-    }
+    };
     this.setState(current);
   },
-  hideMessage: function(){
+  hideMessage: function() {
     var current = this.state;
     current.message.open = false;
     this.setState(current);
   },
-  changeEmail: function(event){
+  changeEmail: function(event) {
     var current = this.state;
     current.login.email = event.target.value;
   },
-  changePassword: function(event){
+  changePassword: function(event) {
     var current = this.state;
     current.login.password = event.target.value;
   },
   render: function() {
-    var title = this.state.imageData ? <a style={{color:'inherit',textDecoration:'none'}} href={this.state.imageData.source}> {this.state.imageData.title ? this.state.imageData.title : this.state.imageData.provider} </a> : "";
-    var subtitle = this.state.imageData ? "Photo by "+this.state.imageData.author : "";
+    var title = this.state.imageData ? <a style={{color: 'inherit', textDecoration: 'none'}} href={this.state.imageData.source}> {this.state.imageData.title ? this.state.imageData.title : this.state.imageData.provider} </a> : "";
+    var subtitle = this.state.imageData ? "Photo by " + this.state.imageData.author : "";
 
     return (
       <MUI.Card>
         <MUI.CardMedia overlay={<MUI.CardTitle title={title} subtitle={subtitle} />} >
-          <div style={{height:300,width:'100%',background: (this.state.image ? 'url(\"img/'+this.state.image+'.jpg\") center / cover' : '')}} />
+          <div style={{height: 300, width: '100%', background: (this.state.image ? 'url(\"img/' + this.state.image + '.jpg\") center / cover' : '')}} />
         </MUI.CardMedia>
         <MUI.CardText>
           <MUI.GridList cellHeight={'auto'} cols={1} padding={10} >
-            <MUI.GridTile style={{padding:'5pt'}} cols={1} >
+            <MUI.GridTile style={{padding: '5pt'}} cols={1} >
               <MUI.TextField
-                style={{width:'100%'}}
+                style={{width: '100%'}}
                 id={'aaa-loginEmail'}
                 onChange={this.changeEmail}
                 hintText={"Text[email] hint"}
                 floatingLabelText={"Text[email]"} />
             </MUI.GridTile>
-            <MUI.GridTile style={{padding:'5pt'}} cols={1} >
+            <MUI.GridTile style={{padding: '5pt'}} cols={1} >
               <MUI.TextField
-                style={{width:'100%'}}
+                style={{width: '100%'}}
                 id={'aaa-loginPassword'}
                 onChange={this.changePassword}
                 hintText={"Text[password] hint"}
@@ -95,7 +95,7 @@ module.exports = React.createClass({
         </MUI.CardText>
         <MUI.CardActions>
           <MUI.RaisedButton
-            style={{width:'100%'}}
+            style={{width: '100%'}}
             label="Text[login]"
             labelPosition="before"
             primary={true}

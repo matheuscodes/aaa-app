@@ -5,28 +5,28 @@ module.exports = React.createClass({
     var unit = (this.props.max - this.props.min) / 10;
     var max = this.props.max;
     var min = parseFloat(this.props.min);
-    
-    if(unit <= 0) return (<g id={this.props.type} transform='translate(0,0)'></g>)
+
+    if (unit <= 0) return (<g id={this.props.type} transform="translate(0,0)"></g>);
 
     var iterator = [];
-    for(var i = 0; i <= Math.floor((max-min)/unit); i++){
+    for (var i = 0; i <= Math.floor((max - min) / unit); i++) {
       iterator.push(" ");
     }
 
-    var labels = iterator.map(function(value,index){
-      return(
-        <text key={'aaa-graphAxisLabel_'+index} className={this.props.type} x={this.props.offset ? this.props.offset + 10 : -10 } y={-index*(this.props.size/10)}>
-          {(min + index*unit).toPrecision(3)}
+    var labels = iterator.map(function(value, index) {
+      return (
+        <text key={'aaa-graphAxisLabel_' + index} className={this.props.type} x={this.props.offset ? this.props.offset + 10 : -10 } y={-index * (this.props.size / 10)}>
+          {(min + index * unit).toPrecision(3)}
   				{this.props.suffix ? this.props.suffix : null}
   			</text>
-      )
-    },this);
+      );
+    }, this);
 
     var translation = this.props.type == 'right' ? parseInt(this.props.offset) + 100 : -90;
     return (
-      <g id={this.props.type} transform='translate(0,0)'>
+      <g id={this.props.type} transform="translate(0,0)">
         {labels}
-        <text transform={'translate('+ translation +',0) rotate(-90)'} className='title' x='0' y='0'>Text[{this.props.title}]</text>
+        <text transform={'translate(' + translation + ',0) rotate(-90)'} className="title" x="0" y="0">Text[{this.props.title}]</text>
       </g>
     );
   }
