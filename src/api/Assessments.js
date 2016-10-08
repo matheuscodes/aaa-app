@@ -1,6 +1,3 @@
-'use strict';
-var Moment = require('moment');
-
 var requestBuilder = require('api/helpers/requestBuilder');
 var valueConverter = require('useful/ValueConverter');
 
@@ -19,25 +16,26 @@ var processResponseList = function(response) {
 };
 
 var processRequest = function(assessment) {
-  var data = {};
-  data.date = assessment.date.toISOString();
   // FIXME separate assessment from state, this is all unnecessary.
-  data.target = assessment.target;
-  data.distance = assessment.distance;
-  data.seasonId = assessment.seasonId;
-  data.eventId = assessment.eventId ? assessment.eventId : null;
-  data.temperature = assessment.temperature ? assessment.temperature : null;
-  data.weather = assessment.weather ? assessment.weather : null;
-  data.windSpeed = assessment.windSpeed ? assessment.windSpeed : null;
-  data.windDirection = assessment.windDirection ? assessment.windDirection : null;
-  data.shootDirection = assessment.shootDirection ? assessment.shootDirection : null;
-  data.arrows = [];
+  var data = {
+    date: assessment.date.toISOString(),
+    target: assessment.target,
+    distance: assessment.distance,
+    seasonId: assessment.seasonId,
+    eventId: assessment.eventId,
+    temperature: assessment.temperature,
+    weather: assessment.weather,
+    windSpeed: assessment.windSpeed,
+    windDirection: assessment.windDirection,
+    shootDirection: assessment.shootDirection,
+    arrows: []
+  };
   assessment.rounds.forEach(function(round, roundIndex) {
     round.ends.forEach(function(end, endIndex) {
       end.forEach(function(value) {
         var arrow = {};
         arrow.value = valueConverter.integer[value];
-        arrow.x = (value == 'X' ? true : false);
+        arrow.x = (value === 'X');
         arrow.round = roundIndex + 1;
         arrow.end = endIndex + 1;
         data.arrows.push(arrow);
@@ -71,7 +69,7 @@ module.exports = {
     };
 
     var newCallbacks = {
-      context: callbacks.context, // TODO maybe change this to callbacks.context
+      context: callbacks.context,
       200: successCall,
       failure: callbacks.error
     };
@@ -91,7 +89,8 @@ module.exports = {
       failure: callbacks.error
     };
 
-    var request = requestBuilder('/assessments/' + assessmentId + '/', 'GET', newCallbacks);
+    var request = requestBuilder(['/assessments/', assessmentId, '/'].join(''),
+                                 'GET', newCallbacks);
     request.send();
   },
   reportById: function(assessmentId, callbacks) {
@@ -106,7 +105,8 @@ module.exports = {
       failure: callbacks.error
     };
 
-    var request = requestBuilder('/assessments/' + assessmentId + '/report/', 'GET', newCallbacks);
+    var request = requestBuilder(['/assessments/', assessmentId,
+                                  '/report/'].join(''), 'GET', newCallbacks);
     request.send();
   },
   save: function(assessment, callbacks) {
@@ -118,11 +118,11 @@ module.exports = {
     };
 
     var request;
-    if (typeof assessment.id !== 'undefined') {
-      request = requestBuilder('/assessments/' + assessment.id + '/', 'PUT', newCallbacks);
-    }
-    else {
+    if (typeof assessment.id === 'undefined') {
       request = requestBuilder('/assessments/', 'POST', newCallbacks);
+    } else {
+      request = requestBuilder(['/assessments/', assessment.id, '/'].join(''),
+                                'PUT', newCallbacks);
     }
 
     var data = processRequest(assessment);
@@ -136,7 +136,8 @@ module.exports = {
       failure: callbacks.error
     };
 
-    var request = requestBuilder('/assessments/' + assessmentId + '/', 'DELETE', newCallbacks);
+    var request = requestBuilder(['/assessments/', assessmentId, '/'].join(''),
+                                  'DELETE', newCallbacks);
 
     request.send();
   }

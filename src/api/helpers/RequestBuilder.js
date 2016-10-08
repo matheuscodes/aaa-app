@@ -4,12 +4,13 @@ module.exports = function(path, method, callbacks) {
   if (path !== '/login/') {
     if (localStorage && localStorage.loggedToken) {
       // TODO verify the signature in the token.
-      var decodedToken = JSON.parse(atob(localStorage.loggedToken.split('.')[1]));
+      var payload = atob(localStorage.loggedToken.split('.')[1]);
+      var decodedToken = JSON.parse(payload);
       var archer = JSON.parse(decodedToken.archerData);
       url += '/archers/' + archer.id;
-    }
-    else {
-      callbacks.failure.call(callbacks.context, new ReferenceError('Missing Token.'));
+    } else {
+      callbacks.failure.call(callbacks.context,
+                             new ReferenceError('Missing Token.'));
       return;
     }
   }
@@ -22,19 +23,15 @@ module.exports = function(path, method, callbacks) {
 
   if (typeof callbacks !== 'undefined') {
     xmlhttp.onreadystatechange = function() {
-	    if (xmlhttp.readyState == 4) {
-	    	if (typeof callbacks[xmlhttp.status] !== 'undefined') {
-      callbacks[xmlhttp.status].call(callbacks.context, xmlhttp);
-    }
-      else {
-      if (typeof callbacks.failure !== 'undefined') {
-        callbacks.failure.call(callbacks.context, xmlhttp);
+      if (xmlhttp.readyState === 4) {
+        if (typeof callbacks[xmlhttp.status] !== 'undefined') {
+          callbacks[xmlhttp.status].call(callbacks.context, xmlhttp);
+        } else if (typeof callbacks.failure === 'undefined') {
+          console.error("Cannot callback after finishing request.", xmlhttp);
+        } else {
+          callbacks.failure.call(callbacks.context, xmlhttp);
+        }
       }
-      else {
-        console.log("[ERROR] Cannot callback after finishing request.", xmlhttp);
-      }
-    }
-	    }
     };
   }
 

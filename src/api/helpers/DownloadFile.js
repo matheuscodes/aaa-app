@@ -5,21 +5,17 @@ module.exports = function(url, callbacks) {
 
   if (typeof callbacks !== 'undefined') {
     xmlhttp.onreadystatechange = function() {
-	    if (xmlhttp.readyState == 4) {
-	    	if (typeof callbacks[xmlhttp.status] !== 'undefined') {
-      callbacks[xmlhttp.status].call(callbacks.context, xmlhttp);
-    }
-      else {
-      if (typeof callbacks.failure !== 'undefined') {
-        callbacks.failure.call(callbacks.context, xmlhttp);
+      if (xmlhttp.readyState === 4) {
+        if (typeof callbacks[xmlhttp.status] !== 'undefined') {
+          callbacks[xmlhttp.status].call(callbacks.context, xmlhttp);
+        } else if (typeof callbacks.failure === 'undefined') {
+          console.error("Cannot callback after finishing downloading file.",
+                        xmlhttp);
+        } else {
+          callbacks.failure.call(callbacks.context, xmlhttp);
+        }
       }
-      else {
-        console.log("[ERROR] Cannot callback after finishing downloading file.", xmlhttp);
-      }
-    }
-	    }
     };
   }
-
   xmlhttp.send();
 };

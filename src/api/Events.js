@@ -1,5 +1,4 @@
 var requestBuilder = require('api/helpers/requestBuilder');
-var Moment = require('moment');
 
 var processResponseList = function(response) {
   var data = JSON.parse(response.toString());
@@ -16,7 +15,7 @@ module.exports = {
     };
 
     var newCallbacks = {
-      context: this, // TODO maybe change this to callbacks.context
+      context: callbacks.context,
       200: successCall,
       failure: callbacks.error
     };

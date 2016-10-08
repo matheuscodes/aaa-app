@@ -1,5 +1,5 @@
 var requestBuilder = require('api/helpers/requestBuilder');
-var Moment = require('moment');
+var moment = require('moment');
 
 var processSeason = function(response) {
   var season = JSON.parse(response.toString());
@@ -25,7 +25,7 @@ module.exports = {
     };
 
     var newCallbacks = {
-      context: this, // TODO maybe change this to callbacks.context
+      context: callbacks.context,
       200: successCall,
       failure: callbacks.error
     };
@@ -61,8 +61,8 @@ module.exports = {
       request = requestBuilder('/seasons/' + season.id, 'PUT', newCallbacks);
     }
 
-    season.start = Moment(season.start).format('YYYY-MM-DD');
-    season.end = Moment(season.end).format('YYYY-MM-DD');
+    season.start = moment(season.start).format('YYYY-MM-DD');
+    season.end = moment(season.end).format('YYYY-MM-DD');
     var data = JSON.stringify(season);
 
     request.setRequestHeader("Content-type", "application/json");
@@ -76,8 +76,8 @@ module.exports = {
       failure: callbacks.error
     };
 
+    var request;
     request = requestBuilder('/seasons/' + seasonId, 'DELETE', newCallbacks);
-
     request.send();
   }
 };

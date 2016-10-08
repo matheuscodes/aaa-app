@@ -28,15 +28,15 @@ var processRequest = function(training) {
   training.date = training.date.toISOString();
 
   var arrows = [];
-  for (var distance in training.arrows) {
-    for (var type in training.arrows[distance]) {
+  Object.keys(training.arrows).forEach(function distances(distance) {
+    Object.keys(training.arrows[distance]).forEach(function types(type) {
       var arrow = {};
       arrow.distance = distance;
       arrow.type = type;
       arrow.arrows = training.arrows[distance][type];
       arrows.push(arrow);
-    }
-  }
+    });
+  });
 
   training.arrows = arrows;
 
@@ -68,11 +68,11 @@ module.exports = {
     };
 
     var request;
-    if (typeof training.id !== 'undefined') {
-      request = requestBuilder('/trainings/' + training.id + '/', 'PUT', newCallbacks);
-    }
-    else {
+    if (typeof training.id === 'undefined') {
       request = requestBuilder('/trainings/', 'POST', newCallbacks);
+    } else {
+      request = requestBuilder(['/trainings/', training.id, '/'].join(''),
+                               'PUT', newCallbacks);
     }
 
     var data = processRequest(training);
@@ -86,7 +86,8 @@ module.exports = {
       failure: callbacks.error
     };
 
-    var request = requestBuilder('/trainings/' + trainingId + '/', 'DELETE', newCallbacks);
+    var request = requestBuilder(['/trainings/', trainingId, '/'].join(''),
+                                 'DELETE', newCallbacks);
 
     request.send();
   }
