@@ -45,7 +45,7 @@
     "i18next-express-middleware": "^1.0.2",
     "i18next-node-fs-backend": "^0.1.2",
     "i18next-xhr-backend": "^1.2.0",
-    "material-ui": "^0.15.4",
+    "material-ui": "^0.16.0",
     "moment": "^2.15.1",
     "node-jsx": "^0.13.3",
     "node-sass": "^3.10.1",
