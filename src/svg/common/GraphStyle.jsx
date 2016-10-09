@@ -1,5 +1,5 @@
 var React = require('react');
-var valueConverter = require('useful/valueConverter');
+var valueConverter = require('global/ValueConverter');
 
 // TODO FUCKING REFACTOR THIS SHIT.
 module.exports = React.createClass({

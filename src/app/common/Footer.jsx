@@ -1,10 +1,11 @@
-var React = require('react');
-var translate = require('react-i18next').translate;
+const React = require('react');
 
-var MUI = require('app/common/MaterialUI');
-var LanguageIcon = require('svg/icon/Languages.jsx');
+const MUI = require('app/common/MaterialUI');
+const i18nextReact = require('global/i18nextReact');
 
-var languages = require('constants/Languages');
+const LanguageIcon = require('svg/icon/Languages.jsx');
+
+const languages = require('constants/Languages');
 
 /* Styles used in the footer*/
 var footerStyle = {
@@ -93,4 +94,4 @@ var Footer = React.createClass({
   }
 });
 
-module.exports = translate(['common'], {withRef: true, wait: true})(Footer);
+module.exports = i18nextReact.setupTranslation(['common'], Footer);

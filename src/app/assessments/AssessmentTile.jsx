@@ -10,7 +10,7 @@ var Waiting = require('app/common/Waiting.jsx');
 var Notice = require('app/common/Notice.jsx');
 var MiniCalendar = require('svg/common/MiniCalendar.jsx');
 
-module.exports = React.createClass({
+const AssessmentTile = React.createClass({
   getInitialState: function() {
     return {};
   },
@@ -46,3 +46,5 @@ module.exports = React.createClass({
     );
   }
 });
+
+module.exports = AssessmentTile;

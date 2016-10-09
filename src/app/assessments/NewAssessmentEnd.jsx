@@ -3,7 +3,7 @@
 var React = require('react');
 var MUI = require('app/common/MaterialUI');
 
-var valueConverter = require('useful/ValueConverter');
+var valueConverter = require('global/ValueConverter');
 
 var styles = {
   arrowSize: 40,

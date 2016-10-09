@@ -17,7 +17,7 @@ var styles = {
   }
 };
 
-module.exports = React.createClass({
+const AssessmentsPage = React.createClass({
   getInitialState: function() {
     return {editAssessment: false};
   },
@@ -108,7 +108,7 @@ module.exports = React.createClass({
     }, this) : null;
 
     return (
-      <BaseLayout switcher={this.props.switcher} layoutName="assessmentsPage" userAgent={this.props.userAgent} languages={this.props.languages} title="Welcome to Advanced Archery" >
+      <div>
         <MUI.GridList cellHeight={'unset'} cols={4} padding={10} style={styles.gridList} >
           <MUI.GridTile style={{padding: '5pt'}}
             cols={this.state.editAssessment ? 2 : 4} >
@@ -117,7 +117,9 @@ module.exports = React.createClass({
           {assessments ? assessments : <Waiting />}
         </MUI.GridList>
         {this.state.message ? <Notice message={this.state.message} onClose={this.hideMessage}/> : null}
-      </BaseLayout>
+      </div>
     );
   }
 });
+
+module.exports = AssessmentsPage;

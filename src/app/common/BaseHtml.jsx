@@ -1,7 +1,9 @@
-'use strict';
+const React = require('react');
+const i18next = require('i18next');
 
-var React = require('react');
-var I18nextProvider = require('react-i18next').I18nextProvider;
+const I18nextProvider = require('react-i18next').I18nextProvider;
+
+const PageSwitcher = require('app/common/PageSwitcher');
 
 const htmlStyle = {
   fontFamily: 'Roboto, sans-serif',
@@ -13,17 +15,15 @@ const htmlStyle = {
  * Root HTML.
  * @prop {Object} switcher controller to switch pages
  * @prop {String} userAgent configuration for checksum on browser and server
- * @prop {Array} languages list of language objects for the footer
  * @prop {Object} i18n controller to translations
  * @author Matheus
  * @since 1.0.0
  */
-var BaseHtml = React.createClass({
+const BaseHtml = React.createClass({
   propTypes: {
-    switcher: React.PropTypes.object,
+    switcher: React.PropTypes.instanceOf(PageSwitcher),
     userAgent: React.PropTypes.string,
-    languages: React.PropTypes.array,
-    i18n: React.PropTypes.object
+    i18n: React.PropTypes.instanceOf(i18next.constructor)
   },
   render: function() {
     return (
@@ -36,12 +36,9 @@ var BaseHtml = React.createClass({
           </head>
           <body style={{margin: '0 0 48pt'}}>
             <I18nextProvider i18n={this.props.i18n}>
-              <div>
                 <this.props.container
-                  userAgent={this.props.userAgent}
                   switcher={this.props.switcher}
-                  languages={this.props.languages} />
-              </div>
+                  userAgent={this.props.userAgent} />
             </I18nextProvider>
             <script async defer src="app.js" />
           </body>

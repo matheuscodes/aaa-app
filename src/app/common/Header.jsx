@@ -1,7 +1,9 @@
-var React = require('react');
-var translate = require('react-i18next').translate;
+const React = require('react');
 
-var MUI = require('app/common/MaterialUI');
+const i18nextReact = require('global/i18nextReact');
+const MUI = require('app/common/MaterialUI');
+
+const PageSwitcher = require('app/common/PageSwitcher');
 
 /**
  * Header with an undocked drawer and a logout button.
@@ -10,7 +12,7 @@ var MUI = require('app/common/MaterialUI');
  */
 const Header = React.createClass({
   propTypes: {
-    switcher: React.PropTypes.object,
+    switcher: React.PropTypes.instanceOf(PageSwitcher),
     title: React.PropTypes.string,
     t: React.PropTypes.func
   },
@@ -120,4 +122,4 @@ const Header = React.createClass({
   }
 });
 
-module.exports = translate(['common'], {withRef: true, wait: true})(Header);
+module.exports = i18nextReact.setupTranslation(['common'], Header);

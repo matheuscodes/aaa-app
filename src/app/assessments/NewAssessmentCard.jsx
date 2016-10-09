@@ -2,7 +2,7 @@
 var React = require('react');
 
 var TrainingTypes = require('constants/TrainingTypes.json');
-var valueConverter = require('useful/valueConverter');
+var valueConverter = require('global/ValueConverter');
 var Notice = require('app/common/Notice.jsx');
 
 var Thermometer = require('svg/icon/Thermometer.jsx');

@@ -40,36 +40,67 @@ const getPageReactClass = function(pageTitle) {
   }
 };
 
+// TODO find a better way to do universal rendering without conflict.
+const getPageNamespaces = function(pageTitle) {
+  switch (pageTitle) {
+    case 'seasonsPage':
+      return [];
+    case 'reportsPage':
+      return [];
+    case 'assessmentsPage':
+      return [];
+    case 'trainingsPage':
+      return [];
+    case 'homePage':
+      return [];
+    case 'loginPage':
+      return ['common','login'];
+    default:
+      console.error(new ReferenceError("Page not found!"));
+      return [];
+  }
+};
+
 PageSwitcher.prototype.switchTo = function switchTo(pageTitle) {
-  var renderParent = document.getElementById('aaa-baseLayout').parentNode; // eslint-disable-line
+  var renderParent = document.getElementById('aaa-baseLayout').parentNode;
   // TODO move this to constants to share between server/app
   const props = {
-    languages: [{code: "de", name: "Deutsch"}, {code: "en", name: "English"}],
     switcher: this,
-    userAgent: navigator.userAgent, // eslint-disable-line
+    userAgent: navigator.userAgent,
     i18n: this.i18n
   };
-  ReactDOM.render(
-    React.createElement(getPageReactClass(pageTitle), props), renderParent);
+  this.i18n.loadNamespaces(getPageNamespaces(pageTitle), function(err, t) {
+    if (!err) {
+      ReactDOM.render(
+        React.createElement(getPageReactClass(pageTitle), props), renderParent);
+      return;
+    }
+    console.error('Namespaces could not be loaded to switch!', err);
+  });
 };
 
 PageSwitcher.prototype.loadClient = function load(pageTitle) {
-  var renderParent = document.getElementsByTagName('html')[0].parentNode; // eslint-disable-line
+  var renderParent = document.getElementsByTagName('html')[0].parentNode;
   // TODO move this to constants to share between server/app
   const props = {
-    languages: [{code: "de", name: "Deutsch"}, {code: "en", name: "English"}],
     switcher: this,
-    userAgent: navigator.userAgent, // eslint-disable-line
+    userAgent: navigator.userAgent,
     i18n: this.i18n
   };
   props.container = getPageReactClass(pageTitle);
-  ReactDOM.render(React.createElement(baseHtml, props), renderParent);
+  this.i18n.loadNamespaces(getPageNamespaces(pageTitle), function(err, t) {
+    if (!err) {
+      ReactDOM.render(React.createElement(baseHtml, props), renderParent);
+      return;
+    }
+    console.error('Namespaces could not be loaded to render!', err);
+  });
 };
 
-PageSwitcher.prototype.serverString = function serverString(pageTitle, request) {
+PageSwitcher.prototype.serverString = function serverString(pageTitle,
+                                                            request) {
   // TODO move this to constants to share between server/app
   const props = {
-    languages: [{code: "de", name: "Deutsch"}, {code: "en", name: "English"}],
     switcher: this,
     userAgent: request.headers['user-agent'],
     i18n: request.i18n

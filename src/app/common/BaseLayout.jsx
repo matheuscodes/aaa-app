@@ -4,6 +4,7 @@ var MUI = require('app/common/MaterialUI');
 
 var Header = require('app/common/Header.jsx');
 var Footer = require('app/common/Footer.jsx');
+var PageSwitcher = require('app/common/PageSwitcher');
 
 /**
  * Base layout for page rendering.
@@ -17,11 +18,14 @@ var Footer = require('app/common/Footer.jsx');
  */
 module.exports = React.createClass({
   propTypes: {
-    switcher: React.PropTypes.object,
+    switcher: React.PropTypes.instanceOf(PageSwitcher),
     userAgent: React.PropTypes.string,
     layoutName: React.PropTypes.string,
     title: React.PropTypes.string,
-    children: React.PropTypes.object
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.node,
+      React.PropTypes.arrayOf(React.PropTypes.node)
+    ])
   },
   render: function() {
     var muiTheme = MUI.getTheme({

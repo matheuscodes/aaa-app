@@ -1,5 +1,5 @@
 var requestBuilder = require('api/helpers/requestBuilder');
-var valueConverter = require('useful/ValueConverter');
+var valueConverter = require('global/ValueConverter');
 
 var processResponse = function(response) {
   var data = JSON.parse(response.toString());

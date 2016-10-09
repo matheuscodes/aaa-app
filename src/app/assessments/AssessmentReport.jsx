@@ -4,7 +4,7 @@ var React = require('react');
 var MUI = require('app/common/MaterialUI');
 var API = require('api');
 
-var valueConverter = require('useful/valueConverter');
+var valueConverter = require('global/ValueConverter');
 var MiniCalendar = require('svg/common/MiniCalendar.jsx');
 var EndDistributionGraph = require('svg/EndDistributionGraph.jsx');
 var Waiting = require('app/common/Waiting.jsx');

@@ -15,45 +15,8 @@ jsx.install();
 
 var PageSwitcher = require('app/common/PageSwitcher');
 
-var i18next = require('i18next');
-var fsBackend = require('i18next-node-fs-backend');
-var i18nextMiddleware = require('i18next-express-middleware');
-
-var fsBackendOptions = {
-  loadPath: 'content/languages/{{lng}}/{{ns}}.json',
-  addPath: 'content/languages/missing/{{lng}}/{{ns}}.json',
-  jsonIndent: 2
-};
-
-var detectionOptions = {
-  // order and from where user language should be detected
-  order: ['cookie', 'header'],
-  lookupQuerystring: 'lng',
-  lookupCookie: 'i18next',
-  // lookupSession: 'lng',
-  // lookupPath: 'lng',
-  // lookupFromPathIndex: 0,
-
-  // cache user language
-  caches: ['cookie']
-
-  // optional expire and domain for set cookie
-  // cookieExpirationDate: new Date(),
-  // cookieDomain: 'myDomain'
-};
-
-i18next
-  .use(i18nextMiddleware.LanguageDetector)
-  .use(fsBackend)
-  .init({
-    // debug:true,
-    saveMissing: true,
-    fallbackLng: 'de',
-    fallbackNS: 'common',
-    ns: ['common'],
-    detection: detectionOptions,
-    backend: fsBackendOptions
-  });
+const i18next = require('global/i18nextReact').i18next;
+const i18nextMiddleware = require('global/i18nextReact').i18nextMiddleware;
 
 var app = express();
 var pageSwitcher = new PageSwitcher();
@@ -67,6 +30,10 @@ app.get('/languages/resources.json',
 app.use(express.static('build'));
 app.use(express.static('src'));
 app.use(express.static('content'));
+
+app.get("/login", function(req, res) {
+  res.send(pageSwitcher.serverString('loginPage', req));
+});
 
 app.get("/login", function(req, res) {
   res.send(pageSwitcher.serverString('loginPage', req));
