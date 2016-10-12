@@ -1,22 +1,23 @@
-'use strict';
-var React = require('react');
+const React = require('react');
 
-var TrainingTypes = require('constants/TrainingTypes.json');
-var valueConverter = require('global/ValueConverter');
-var Notice = require('app/common/Notice.jsx');
+const MUI = require('app/common/MaterialUI');
+const API = require('api');
+const i18nextReact = require('global/i18nextReact');
 
-var Thermometer = require('svg/icon/Thermometer.jsx');
-var Windmills = require('svg/icon/Windmills.jsx');
-var ArcherAnchored = require('svg/icon/ArcherAnchored.jsx');
-var AssessmentArrowTable = require('app/assessments/AssessmentArrowTable.jsx');
-var NewAssessmentEnd = require('app/assessments/NewAssessmentEnd.jsx');
-var DirectionSelector = require('app/common/DirectionSelector.jsx');
-var WeatherSelector = require('app/common/WeatherSelector.jsx');
+const Notice = require('app/common/Notice.jsx');
 
-var MUI = require('app/common/MaterialUI');
-var API = require('api');
+const Thermometer = require('svg/icon/Thermometer.jsx');
+const Windmills = require('svg/icon/Windmills.jsx');
+const ArcherAnchored = require('svg/icon/ArcherAnchored.jsx');
 
-var style = {
+const AssessmentArrowTable = require(
+                              'app/assessments/AssessmentArrowTable.jsx'
+                             );
+const NewAssessmentEnd = require('app/assessments/NewAssessmentEnd.jsx');
+const DirectionSelector = require('app/common/DirectionSelector.jsx');
+const WeatherSelector = require('app/common/WeatherSelector.jsx');
+
+const style = {
   arrowCountField: {
     width: '29%',
     padding: '0 5% 0 5%'
@@ -37,7 +38,11 @@ var style = {
   }
 };
 
-module.exports = React.createClass({
+const NewAssessmentCard = React.createClass({
+  propTypes: {
+    onClose: React.PropTypes.func,
+    t: React.PropTypes.func
+  },
   getInitialState: function() {
     return {
       date: new Date(),
@@ -91,7 +96,7 @@ module.exports = React.createClass({
       context: this,
       success: function(events) {
         var current = this.state;
-        current.eventId ? delete current.eventId : null;
+        delete current.eventId;
         current.events = events;
         this.setState(current);
       }
@@ -157,59 +162,88 @@ module.exports = React.createClass({
     this.setState(current);
   },
   submitAssessment: function() {
+    const t = this.props.t;
     var callbacks = {
       context: this,
       success: function() {
-        this.showMessage("Text[season saved]", "MESSAGE");
+        this.showMessage(t('assesment:messages.newSaved'), "MESSAGE");
         this.setState(this.getInitialState());
         this.props.onClose(true);
       },
       warning: function() {
-        this.showMessage("Text[season saved]", "WARNING");
+        this.showMessage(t('assesment:messages.newSaved'), "WARNING");
       },
       error: function() {
-        this.showMessage("Text[season not saved]", "ERROR");
+        this.showMessage(t('assesment:messages.newError'), "ERROR");
       }
     };
     // FIXME separate assessment from state.
     API.assessments.save(this.state, callbacks);
   },
   render: function() {
+    const t = this.props.t;
     var seasons = this.state.seasons.map(function(season, index) {
       return (
-        <MUI.MenuItem key={'aaa-newAssessmentSeason_' + index} value={season.id} primaryText={season.name} />
+        <MUI.MenuItem
+          key={'aaa-newAssessmentSeason_' + index}
+          value={season.id}
+          primaryText={season.name} />
       );
     });
 
     var targets = this.state.targets.map(function(target, index) {
       return (
-        <MUI.MenuItem key={'aaa-newAssessmentTarget_' + index} value={target.id} primaryText={target.name} />
+        <MUI.MenuItem
+          key={'aaa-newAssessmentTarget_' + index}
+          value={target.id}
+          primaryText={target.name} />
       );
     });
 
     var events = this.state.events.map(function(event, index) {
       return (
-        <MUI.MenuItem key={'aaa-newAssessmentEvent_' + index} value={event.id} primaryText={event.name} />
+        <MUI.MenuItem
+          key={'aaa-newAssessmentEvent_' + index}
+          value={event.id}
+          primaryText={event.name} />
       );
     });
+
+    var message = '';
+    if (typeof this.state.message !== 'undefined') {
+      message = (
+        <Notice message={this.state.message} onClose={this.hideMessage} />
+      );
+    }
 
     return (
       <MUI.Card>
         <MUI.CardHeader
-          title="Text[new assessment title]"
-          subtitle="Text[new assessment subtitle]" />
+          title={t('assessment:newAssessment.title')}
+          subtitle={t('assessment:newAssessment.subtitle')} />
         <MUI.CardText>
-        <MUI.GridList cellHeight={'64pt'} cols={2} padding={10} style={{width: '100%'}}>
+        <MUI.GridList
+          cellHeight={'64pt'}
+          cols={2}
+          padding={10}
+          style={{width: '100%'}}>
           <MUI.GridTile cols={1} >
-          <MUI.GridList cellHeight={'64pt'} cols={4} padding={10} style={{width: '100%'}}>
+          <MUI.GridList
+            cellHeight={'64pt'}
+            cols={4}
+            padding={10}
+            style={{width: '100%'}}>
             <MUI.GridTile cols={4} >
               <MUI.SelectField
                 style={{width: '100%'}}
                 id={'aaa-newAssessmentSeason'}
                 value={this.state.seasonId}
                 onChange={this.changeSeason}
-                floatingLabelText={"Text[season]"} >
-                {/* FIXME temporary fix for https://github.com/callemall/material-ui/issues/2446*/}
+                floatingLabelText={
+                  t('assessment:newAssessment.seasonSelectField.label')
+                } >
+                {/* FIXME temporary fix
+                  See https://github.com/callemall/material-ui/issues/2446*/}
                 <MUI.MenuItem value={'undefined'} primaryText={" "} />
                 {seasons}
               </MUI.SelectField>
@@ -218,7 +252,9 @@ module.exports = React.createClass({
               <MUI.DatePicker
                 style={{width: '100%'}}
                 id={'aaa-newAssessmentDate'}
-                floatingLabelText="Text[Assessment date]"
+                floatingLabelText={
+                  t('assessment:newAssessment.dateDatepicker.label')
+                }
                 autoOk={true}
                 value={this.state.date}
                 onChange={this.changeDate} />
@@ -227,8 +263,10 @@ module.exports = React.createClass({
               <MUI.TextField
                 style={{width: '100%'}}
                 id={'aaa-newAssessmentDistance'}
-                hintText="Text[distance hint]"
-                floatingLabelText="Text[distance]"
+                hintText={t('assessment:newAssessment.distanceTextField.hint')}
+                floatingLabelText={
+                  t('assessment:newAssessment.distanceTextField.label')
+                }
                 value={this.state.distance}
                 onChange={this.changeDistance} />
             </MUI.GridTile>
@@ -238,8 +276,11 @@ module.exports = React.createClass({
                 id={'aaa-newAssessmentTarget'}
                 value={this.state.targetId}
                 onChange={this.changeTarget}
-                floatingLabelText={"Text[target]"} >
-                {/* FIXME temporary fix for https://github.com/callemall/material-ui/issues/2446*/}
+                floatingLabelText={
+                  t('assessment:newAssessment.targetSelectField.label')
+                } >
+                {/* FIXME temporary fix
+                  See https://github.com/callemall/material-ui/issues/2446*/}
                 <MUI.MenuItem value={'undefined'} primaryText={" "} />
                 {targets}
               </MUI.SelectField>
@@ -250,8 +291,11 @@ module.exports = React.createClass({
                 id={'aaa-newAssessmentEvent'}
                 value={this.state.eventId}
                 onChange={this.changeEvent}
-                floatingLabelText={"Text[event]"} >
-                {/* FIXME temporary fix for https://github.com/callemall/material-ui/issues/2446*/}
+                floatingLabelText={
+                  t('assessment:newAssessment.eventSelectField.label')
+                } >
+                {/* FIXME temporary fix
+                  See https://github.com/callemall/material-ui/issues/2446*/}
                 <MUI.MenuItem value={'undefined'} primaryText={" "} />
                 {events}
               </MUI.SelectField>
@@ -269,8 +313,12 @@ module.exports = React.createClass({
               <MUI.TextField
                 style={{width: '100%'}}
                 id={'aaa-newAssessmentTemperature'}
-                hintText="Text[temperature hint]"
-                floatingLabelText="Text[temperature]"
+                hintText={
+                  t('assessment:newAssessment.temperatureTextField.hint')
+                }
+                floatingLabelText={
+                  t('assessment:newAssessment.temperatureTextField.label')
+                }
                 value={this.state.temperature}
                 onChange={this.changeTemperature} />
             </MUI.GridTile>
@@ -279,7 +327,7 @@ module.exports = React.createClass({
                 style={{width: '100%'}}
                 value={this.state.weather}
                 onChange={this.changeWeather}
-                hintText={"Text[weather]"} />
+                hintText={t('assessment:newAssessment.weatherSelector.hint')} />
             </MUI.GridTile>
             <MUI.GridTile cols={1} >
               <Windmills
@@ -294,8 +342,12 @@ module.exports = React.createClass({
               <MUI.TextField
                 style={{width: '100%'}}
                 id={'aaa-newAssessmentWindSpeed'}
-                hintText="Text[wind hint]"
-                floatingLabelText="Text[wind]"
+                hintText={
+                  t('assessment:newAssessment.windTextField.hint')
+                }
+                floatingLabelText={
+                  t('assessment:newAssessment.windTextField.label')
+                }
                 value={this.state.windSpeed}
                 onChange={this.changeWindSpeed} />
             </MUI.GridTile>
@@ -305,7 +357,9 @@ module.exports = React.createClass({
                 type={'WindDirection'}
                 value={this.state.windDirection}
                 onChange={this.changeWindDirection}
-                hintText={"Text[direction wind]"} />
+                hintText={
+                  t('assessment:newAssessment.windDirectionSelector.hint')
+                } />
             </MUI.GridTile>
 
             <MUI.GridTile cols={1} >
@@ -323,25 +377,40 @@ module.exports = React.createClass({
                 type={'ShootDirection'}
                 value={this.state.shootDirection}
                 onChange={this.changeShootDirection}
-                hintText={"Text[direction wind]"} />
+                hintText={
+                  t('assessment:newAssessment.shootDirectionSelector.hint')
+                } />
             </MUI.GridTile>
           </MUI.GridList>
           </MUI.GridTile>
           <MUI.GridTile cols={1} >
           <MUI.GridList cellHeight={'64pt'} cols={1} style={{width: '100%'}}>
             <MUI.GridTile style={{padding: 5}} cols={1} >
-              <MUI.RaisedButton label="Text[add round]" style={style} onTouchTap={this.addRound}/>
+              <MUI.RaisedButton
+                label={t('assessment:addRound')}
+                style={style}
+                onTouchTap={this.addRound}/>
             </MUI.GridTile>
             {this.state.rounds.map(function(round, index) {
               round.index = index;
               return (<MUI.GridTile cols={1} style={{padding: '5pt'}}>
-                <MUI.Paper zDepth={2} style={{display: 'inline-block', width: '100%'}}>
-                  <MUI.GridList cellHeight={'64pt'} cols={1} padding={10} style={{width: '100%'}}>
+                <MUI.Paper
+                  zDepth={2}
+                  style={{display: 'inline-block', width: '100%'}}>
+                  <MUI.GridList
+                    cellHeight={'64pt'}
+                    cols={1}
+                    padding={10}
+                    style={{width: '100%'}}>
                     <MUI.GridTile style={{padding: 10}} cols={1} >
-                      <NewAssessmentEnd roundIndex={round.index} addEnd={this.addEnd} />
+                      <NewAssessmentEnd
+                        roundIndex={round.index}
+                        addEnd={this.addEnd} />
                     </MUI.GridTile>
                     <MUI.GridTile style={{padding: 5}} cols={1} >
-                      <AssessmentArrowTable data={round} deleteEnd={this.deleteEnd} />
+                      <AssessmentArrowTable
+                        data={round}
+                        deleteEnd={this.deleteEnd} />
                     </MUI.GridTile>
                   </MUI.GridList>
                 </MUI.Paper>
@@ -353,15 +422,24 @@ module.exports = React.createClass({
         </MUI.CardText>
 
         <MUI.CardActions style={{textAlign: 'right'}}>
-          <MUI.FloatingActionButton mini={true} secondary={true} style={{margin: '5pt'}} onTouchTap={this.props.onClose}>
+          <MUI.FloatingActionButton
+            mini={true}
+            secondary={true}
+            style={{margin: '5pt'}}
+            onTouchTap={this.props.onClose}>
             <MUI.icons.navigation.cancel />
           </MUI.FloatingActionButton>
-          <MUI.FloatingActionButton style={{margin: '5pt'}} onTouchTap={this.submitAssessment}>
+          <MUI.FloatingActionButton
+            style={{margin: '5pt'}}
+            onTouchTap={this.submitAssessment}>
             <MUI.icons.action.backup />
           </MUI.FloatingActionButton>
         </MUI.CardActions>
-        {this.state.message ? <Notice message={this.state.message} onClose={this.hideMessage}/> : null}
+        {message}
       </MUI.Card>
     );
   }
 });
+
+module.exports = i18nextReact.setupTranslation(['assessment'],
+                                               NewAssessmentCard);

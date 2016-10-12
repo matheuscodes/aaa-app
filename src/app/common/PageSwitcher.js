@@ -48,7 +48,7 @@ const getPageNamespaces = function(pageTitle) {
     case 'reportsPage':
       return [];
     case 'assessmentsPage':
-      return [];
+      return ['common','assessment'];
     case 'trainingsPage':
       return [];
     case 'homePage':

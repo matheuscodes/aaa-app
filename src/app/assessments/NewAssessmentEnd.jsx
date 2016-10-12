@@ -1,16 +1,22 @@
-'use strict';
+const React = require('react');
 
-var React = require('react');
-var MUI = require('app/common/MaterialUI');
+const MUI = require('app/common/MaterialUI');
+const i18nextReact = require('global/i18nextReact');
 
-var valueConverter = require('global/ValueConverter');
+const valueConverter = require('global/ValueConverter');
 
-var styles = {
+const styles = {
   arrowSize: 40,
   arrowButtonSize: 60
 };
 
-module.exports = React.createClass({
+const NewAssessmentEnd = React.createClass({
+  propTypes: {
+    style: React.PropTypes.object,
+    addEnd: React.PropTypes.func,
+    t: React.PropTypes.func,
+    roundIndex: React.PropTypes.number
+  },
   getInitialState: function() {
     return {open: false, arrows: []};
   },
@@ -38,22 +44,27 @@ module.exports = React.createClass({
     this.setState(current);
   },
   render: function() {
-    var actions = ['X', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M'].map(function(value) {
-      return (
+    const t = this.props.t;
+    var actions = ['X', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M']
+      .map(function(value) {
+        return (
         <MUI.RaisedButton
           id={'aaa-newAssessmentEndArrow_' + value}
-          style={{maxWidth: styles.arrowButtonSize, minWidth: styles.arrowButtonSize}}
+          style={{
+            maxWidth: styles.arrowButtonSize,
+            minWidth: styles.arrowButtonSize
+          }}
           backgroundColor={valueConverter.backgroundColor[value]}
           labelStyle={{color: valueConverter.color[value]}}
           label={value}
           onTouchTap={this.pushArrow} />
       );
-    }, this);
+      }, this);
     actions.push(<br/>);
     actions.push(<br/>);
     actions.push(
       <MUI.RaisedButton
-        label="Text[Submit]"
+        label={t('assessment:submitEnd')}
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.handleSubmit} />
@@ -71,10 +82,12 @@ module.exports = React.createClass({
 
     return (
       <div style={this.props.style ? this.props.style : null}>
-        <MUI.RaisedButton label="Text[add set]" onTouchTap={this.handleOpen} />
+        <MUI.RaisedButton
+          label={t('assessment:addEnd')}
+          onTouchTap={this.handleOpen} />
         <MUI.Dialog
           contentStyle={{maxWidth: (5 * styles.arrowButtonSize)}}
-          title="Text[new end]"
+          title={t('assessment:newEndTitle')}
           actions={actions}
           modal={false}
           open={this.state.open}
@@ -85,3 +98,6 @@ module.exports = React.createClass({
     );
   }
 });
+
+module.exports = i18nextReact.setupTranslation(['assessment'],
+                                               NewAssessmentEnd);

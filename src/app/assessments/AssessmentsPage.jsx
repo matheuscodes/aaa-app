@@ -1,34 +1,41 @@
-'use strict';
+const React = require('react');
 
-var React = require('react');
-var MUI = require('app/common/MaterialUI');
-var API = require('api');
+const MUI = require('app/common/MaterialUI');
+const API = require('api');
+const i18nextReact = require('global/i18nextReact');
 
-var Waiting = require('app/common/Waiting.jsx');
-var Notice = require('app/common/Notice.jsx');
+const Waiting = require('app/common/Waiting.jsx');
+const Notice = require('app/common/Notice.jsx');
+const PageSwitcher = require('app/common/PageSwitcher');
 
-var BaseLayout = require('app/common/BaseLayout.jsx');
-var AssessmentTile = require('app/assessments/AssessmentTile.jsx');
-var NewAssessmentCard = require('app/assessments/NewAssessmentCard.jsx');
+const BaseLayout = require('app/common/BaseLayout.jsx');
+const AssessmentTile = require('app/assessments/AssessmentTile.jsx');
+const NewAssessmentCard = require('app/assessments/NewAssessmentCard.jsx');
 
-var styles = {
+const styles = {
   gridList: {
     width: '100%'
   }
 };
 
 const AssessmentsPage = React.createClass({
+  propTypes: {
+    switcher: React.PropTypes.instanceOf(PageSwitcher),
+    userAgent: React.PropTypes.string,
+    t: React.PropTypes.func
+  },
   getInitialState: function() {
     return {editAssessment: false};
   },
   updateAssessmentList: function() {
+    const t = this.props.t;
     var callbacks = {
       context: this,
       success: function(list) {
         console.log(list);
         var current = this.state;
         current.editAssessment = false;
-        current.assessmentId ? delete current.assessmentId : null;
+        delete current.assessmentId;
         current.assessments = list;
         this.setState(current);
       },
@@ -38,7 +45,7 @@ const AssessmentsPage = React.createClass({
             this.props.switcher.switchTo('loginPage');
           }
         }
-        this.showMessage("Text[assessment list error]", "ERROR");
+        this.showMessage(t('assessment:messages.listError'), "ERROR");
       }
     };
     API.assessments.getList(callbacks);
@@ -49,11 +56,10 @@ const AssessmentsPage = React.createClass({
   closeEdit: function(refresh) {
     if (refresh) {
       this.updateAssessmentList();
-    }
-    else {
+    } else {
       var current = this.state;
       current.editAssessment = false;
-      current.assessmentId ? delete current.assessmentId : null;
+      delete current.assessmentId;
       this.setState(current);
     }
   },
@@ -83,43 +89,82 @@ const AssessmentsPage = React.createClass({
     this.setState(current);
   },
   deleteAssessment: function(assessmentId) {
+    const t = this.props.t;
     var callbacks = {
       context: this,
       success: function() {
-        this.showMessage("Text[season deleted]", "MESSAGE");
+        this.showMessage(t('assessment:messages.deleted'), "MESSAGE");
         this.updateAssessmentList();
       },
       warning: function() {
-        this.showMessage("Text[season deleted]", "WARNING");
+        this.showMessage(t('assessment:messages.deleted'), "WARNING");
       },
       error: function() {
-        this.showMessage("Text[season not deleted]", "ERROR");
+        this.showMessage(t('assessment:messages.deletedError'), "ERROR");
       }
     };
     API.assessments.delete(assessmentId, callbacks);
   },
   render: function() {
-    var assessments = this.state.assessments ? this.state.assessments.map(function(assessment, index) {
-      return (
-        <MUI.GridTile key={'aaa-assessment_' + assessment.id} style={{padding: '5pt'}} cols={2} >
-          <AssessmentTile data={assessment} onDelete={this.deleteAssessment}/>
-        </MUI.GridTile>
+    const t = this.props.t;
+
+    var assessments = '';
+    if (typeof this.state.assessments !== 'undefined') {
+      assessments = this.state.assessments.map(function(assessment, index) {
+        return (
+          <MUI.GridTile
+            key={['aaa-assessment_', assessment.id].join('')}
+            style={{padding: '5pt'}}
+            cols={2} >
+            <AssessmentTile data={assessment} onDelete={this.deleteAssessment}/>
+          </MUI.GridTile>
+        );
+      }, this);
+    }
+
+    var message = '';
+    if (typeof this.state.message !== 'undefined') {
+      message = (
+        <Notice message={this.state.message} onClose={this.hideMessage} />
       );
-    }, this) : null;
+    }
+
+    var newAssessmentButton = (
+      <MUI.RaisedButton
+        label={t('assessment:newAssessment.button')}
+        fullWidth={true}
+        primary={true}
+        onTouchTap={this.newAssessment} />
+    );
+
+    var editAssessment = '';
+    if (this.state.editAssessment) {
+      editAssessment = (
+        <NewAssessmentCard onClose={this.closeEdit} />
+      );
+    }
 
     return (
-      <BaseLayout switcher={this.props.switcher} layoutName="assessmentsPage" userAgent={this.props.userAgent} languages={this.props.languages} title="Welcome to Advanced Archery" >
-        <MUI.GridList cellHeight={'unset'} cols={4} padding={10} style={styles.gridList} >
+      <BaseLayout
+        switcher={this.props.switcher}
+        layoutName="assessmentsPage"
+        userAgent={this.props.userAgent}
+        title={t('assessment:title')} >
+        <MUI.GridList
+          cellHeight={'unset'}
+          cols={4}
+          padding={10}
+          style={styles.gridList} >
           <MUI.GridTile style={{padding: '5pt'}}
             cols={this.state.editAssessment ? 2 : 4} >
-            {this.state.editAssessment ? <NewAssessmentCard onClose={this.closeEdit} /> : <MUI.RaisedButton label="Text[new assessment]" fullWidth={true} primary={true} onTouchTap={this.newAssessment} /> }
+            {(editAssessment || newAssessmentButton)}
           </MUI.GridTile>
-          {assessments ? assessments : <Waiting />}
+          {(assessments || <Waiting />)}
         </MUI.GridList>
-        {this.state.message ? <Notice message={this.state.message} onClose={this.hideMessage}/> : null}
+        {message}
       </BaseLayout>
     );
   }
 });
 
-module.exports = AssessmentsPage;
+module.exports = i18nextReact.setupTranslation(['assessment'], AssessmentsPage);
