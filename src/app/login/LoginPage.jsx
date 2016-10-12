@@ -32,7 +32,7 @@ const LoginPage = React.createClass({
             {' '}
           </MUI.GridTile>
           <MUI.GridTile style={{padding: '5pt'}} cols={2} >
-            <LoginCard />
+            <LoginCard switcher={this.props.switcher} />
           </MUI.GridTile>
         </MUI.GridList>
       </BaseLayout>

@@ -62,17 +62,19 @@ const getPageNamespaces = function(pageTitle) {
 };
 
 PageSwitcher.prototype.switchTo = function switchTo(pageTitle) {
-  var renderParent = document.getElementById('aaa-baseLayout').parentNode;
+  //var renderParent = document.getElementById('aaa-baseLayout').parentNode;
+    var renderParent = document.getElementsByTagName('html')[0].parentNode;
   // TODO move this to constants to share between server/app
   const props = {
     switcher: this,
     userAgent: navigator.userAgent,
     i18n: this.i18n
   };
+
+  props.container = getPageReactClass(pageTitle);
   this.i18n.loadNamespaces(getPageNamespaces(pageTitle), function(err, t) {
     if (!err) {
-      ReactDOM.render(
-        React.createElement(getPageReactClass(pageTitle), props), renderParent);
+      ReactDOM.render(React.createElement(baseHtml, props), renderParent);
       return;
     }
     console.error('Namespaces could not be loaded to switch!', err);

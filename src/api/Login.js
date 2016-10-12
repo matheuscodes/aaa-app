@@ -1,5 +1,3 @@
-'use strict';
-
 var requestBuilder = require('api/helpers/requestBuilder');
 
 module.exports = function login(credentials, callbacks) {

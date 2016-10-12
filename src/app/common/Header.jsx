@@ -3,6 +3,8 @@ const React = require('react');
 const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 
+const getLocalArcher = require('api/helpers/getLocalArcher');
+
 const PageSwitcher = require('app/common/PageSwitcher');
 
 /**
@@ -18,6 +20,11 @@ const Header = React.createClass({
   },
   getInitialState: function() {
     return {open: false};
+  },
+  componentDidMount: function() {
+    var current = this.state;
+    current.archer = getLocalArcher();
+    this.setState(current);
   },
   handleToggle: function() {
     this.setState({open: !this.state.open});
@@ -76,20 +83,21 @@ const Header = React.createClass({
     </MUI.Menu>
     );
 
+    var leftIcon = (<MUI.IconButton onTouchTap={this.handleToggle}>
+      <MUI.icons.navigation.menu />
+    </MUI.IconButton>);
+
+    var rightIcon = (<MUI.IconButton>
+      <MUI.icons.action.exit_to_app />
+    </MUI.IconButton>);
+
     return (
       <div>
         <MUI.AppBar
             title={this.props.title}
-            iconElementRight={
-              <MUI.IconButton>
-                <MUI.icons.action.exit_to_app />
-              </MUI.IconButton>
-            }
-            iconElementLeft={
-              <MUI.IconButton onTouchTap={this.handleToggle}>
-                <MUI.icons.navigation.menu />
-              </MUI.IconButton>
-            } />
+            showMenuIconButton={ this.state.archer ? true : false }
+            iconElementRight={ this.state.archer ? rightIcon : null }
+            iconElementLeft={ this.state.archer ? leftIcon : null } />
         <MUI.Drawer
             docked={false}
             width={400}
@@ -100,8 +108,8 @@ const Header = React.createClass({
                 {t('common:appTitle')}
               </MUI.Subheader>
               <MUI.ListItem
-                primaryText="John Doe"
-                secondaryText="john@gmail.com"
+                primaryText={ this.state.archer ? this.state.archer.name : null }
+                secondaryText={ this.state.archer ? this.state.archer.email : null }
                 disabled={true}
                 nestedItems={[
                   <MUI.ListItem

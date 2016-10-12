@@ -39,7 +39,7 @@ const LoginCard = React.createClass({
       context: this,
       success: function(request) {
         this.showMessage('Text [login succeeded]', 'MESSAGE');
-        this.props.switcher.switchTo('loginPage');
+        this.props.switcher.switchTo('trainingsPage');
       },
       error: function(request) {
         this.showMessage('Text [login failed]', 'ERROR');

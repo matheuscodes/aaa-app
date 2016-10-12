@@ -8,7 +8,8 @@ const PageSwitcher = require('app/common/PageSwitcher');
 const htmlStyle = {
   fontFamily: 'Roboto, sans-serif',
   minHeight: '100%',
-  position: 'relative'
+  position: 'relative',
+  overflowX: 'hidden'
 };
 
 /**
@@ -36,9 +37,11 @@ const BaseHtml = React.createClass({
           </head>
           <body style={{margin: '0 0 48pt'}}>
             <I18nextProvider i18n={this.props.i18n}>
+              <div>
                 <this.props.container
                   switcher={this.props.switcher}
                   userAgent={this.props.userAgent} />
+              </div>
             </I18nextProvider>
             <script async defer src="app.js" />
           </body>

@@ -1,13 +1,12 @@
+const getLocalArcher = require('api/helpers/getLocalArcher');
+
 module.exports = function(path, method, callbacks) {
   var xmlhttp = new XMLHttpRequest();
   var url = 'http://localhost:8080';
   if (path !== '/login/') {
-    if (localStorage && localStorage.loggedToken) {
-      // TODO verify the signature in the token.
-      var payload = atob(localStorage.loggedToken.split('.')[1]);
-      var decodedToken = JSON.parse(payload);
-      var archer = JSON.parse(decodedToken.archerData);
-      url += '/archers/' + archer.id;
+    var archer = getLocalArcher();
+    if (typeof archer !== 'undefined') {
+      url += ['/archers/', archer.id].join('');
     } else {
       callbacks.failure.call(callbacks.context,
                              new ReferenceError('Missing Token.'));
@@ -17,7 +16,9 @@ module.exports = function(path, method, callbacks) {
   url += path;
 
   xmlhttp.open(method, url, true);
-  xmlhttp.setRequestHeader("X-AAA-Authorization", localStorage.loggedToken);
+  if(path !== '/login/'){
+    xmlhttp.setRequestHeader("X-AAA-Authorization", localStorage.loggedToken);
+  }
   xmlhttp.setRequestHeader("Content-type", "application/json");
   xmlhttp.setRequestHeader("Connection", "close");
 
