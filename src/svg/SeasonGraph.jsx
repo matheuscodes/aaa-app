@@ -1,38 +1,55 @@
-var React = require('react');
+const React = require('react');
 
-var GraphStyle = require('svg/common/GraphStyle.jsx');
-var GraphBottomLabels = require('svg/common/GraphBottomLabels.jsx');
-var GraphAxisLabels = require('svg/common/GraphAxisLabels.jsx');
-var GraphEstimations = require('svg/common/GraphEstimations.jsx');
-var GraphGrid = require('svg/common/GraphGrid.jsx');
+const i18nextReact = require('global/i18nextReact');
 
-var ActualBar = require('svg/season/ActualBar.jsx');
-var PlanBar = require('svg/season/PlanBar.jsx');
-var SeasonLabels = require('svg/season/SeasonLabels.jsx');
-var ShareBar = require('svg/season/ShareBar.jsx');
+const GraphStyle = require('svg/common/GraphStyle.jsx');
+const GraphBottomLabels = require('svg/common/GraphBottomLabels.jsx');
+const GraphAxisLabels = require('svg/common/GraphAxisLabels.jsx');
+const GraphEstimations = require('svg/common/GraphEstimations.jsx');
+const GraphGrid = require('svg/common/GraphGrid.jsx');
 
-module.exports = React.createClass({
+const ActualBar = require('svg/season/ActualBar.jsx');
+const PlanBar = require('svg/season/PlanBar.jsx');
+const SeasonLabels = require('svg/season/SeasonLabels.jsx');
+const ShareBar = require('svg/season/ShareBar.jsx');
+
+const SeasonGraph = React.createClass({
+  propTypes: {
+    // TODO declare a class to validate
+    data: React.PropTypes.object,
+    graphId: React.PropTypes.number,
+    t: React.PropTypes.func
+  },
   render: function() {
-    var total_weeks = this.props.data.goals.length;
-    var max = Math.ceil(this.props.data.max / 50) * 50 + 50;
-    var unit = 1000 / max;
-    var general_width = (total_weeks * 100 + 700 + 150);
-    var general_height = 1000 + 150 + 50;
-    var width = 20.2 / (100 / general_width);
+    const t = this.props.t;
+
+    var totalWeeks = this.props.data.goals.length;
+    var generalWidth = (totalWeeks * 100 + 700 + 150);
+    var generalHeight = 1000 + 150 + 50;
 
     var weeks = [];
     var values = [];
 
-    var season_bars = this.props.data.goals.map(function(single, index) {
-      var bar_unit = 1000 / this.props.data.max;
+    var seasonBars = this.props.data.goals.map(function(single, index) {
+      var barUnit = 1000 / this.props.data.max;
       weeks.push(single.week);
       values.push(single.averageGrade);
       // TODO maybe move unit to the components themselves?
       return (
         <g>
-          <PlanBar value={single.arrowCount * bar_unit} column={index} max={this.props.data.max} />
-          <ActualBar target={(single.arrowsShot - single.techniqueShot) * bar_unit} training={single.techniqueShot * bar_unit} column={index} max={this.props.data.max} />
-          <ShareBar value={(single.arrowCount - single.targetShare) * bar_unit} column={index} max={this.props.data.max} />
+          <PlanBar
+            value={single.arrowCount * barUnit}
+            column={index}
+            max={this.props.data.max} />
+          <ActualBar
+            target={(single.arrowsShot - single.techniqueShot) * barUnit}
+            training={single.techniqueShot * barUnit}
+            column={index}
+            max={this.props.data.max} />
+          <ShareBar
+            value={(single.arrowCount - single.targetShare) * barUnit}
+            column={index}
+            max={this.props.data.max} />
         </g>
       );
     }, this);
@@ -40,22 +57,37 @@ module.exports = React.createClass({
     return (
       <svg id={this.props.graphId}
             version="1.1"
-            viewBox={'0 ' + (-general_height) + ' ' + (general_width + 2) + ' ' + (general_height + 2)}
+            viewBox={[
+              '0 ', (-generalHeight),
+              ' ', (generalWidth + 2),
+              ' ', (generalHeight + 2)
+            ].join('')}
             preserveAspectRatio="xMidYMid meet"
             width={'100%'} >
         <GraphStyle />
         <g id="main">
           <SeasonLabels max="1000" />
           <g id="data" transform="translate(700,-150)">
-            <GraphGrid height="1000" columns={total_weeks} />
-            <GraphBottomLabels content={weeks} prefix={"Text['wk']"} />
-            <GraphAxisLabels type="left" min="0" max={this.props.data.max} title="arrow_count" size="1000" />
-            {season_bars}
-            <GraphEstimations data={values} size="1000" max={this.props.data.max_value} min={this.props.data.min_value} />
-            <GraphAxisLabels type="right" min={this.props.data.min_value} max={this.props.data.max_value} title="results" size="1000" offset={total_weeks * 100}/>
+            <GraphGrid height="1000" columns={totalWeeks} />
+            <GraphBottomLabels
+              content={weeks}
+              prefix={t('common:calendar.week.short')} />
+            <GraphAxisLabels
+              type="left" min="0" max={this.props.data.max}
+              title="arrow_count" size="1000" />
+            {seasonBars}
+            <GraphEstimations
+              data={values} size="1000"
+              max={this.props.data.max_value} min={this.props.data.min_value} />
+            <GraphAxisLabels
+              type="right" title="results" size="1000"
+              min={this.props.data.min_value} max={this.props.data.max_value}
+              offset={totalWeeks * 100}/>
           </g>
         </g>
       </svg>
     );
   }
 });
+
+module.exports = i18nextReact.setupTranslation(['common'], SeasonGraph);

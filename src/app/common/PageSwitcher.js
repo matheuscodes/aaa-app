@@ -44,9 +44,9 @@ const getPageReactClass = function(pageTitle) {
 const getPageNamespaces = function(pageTitle) {
   switch (pageTitle) {
     case 'seasonsPage':
-      return [];
+      return ['common','season'];
     case 'reportsPage':
-      return [];
+      return ['common','season','report'];
     case 'assessmentsPage':
       return ['common','assessment'];
     case 'trainingsPage':

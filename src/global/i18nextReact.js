@@ -94,7 +94,7 @@ if (typeof window === 'undefined') { // If on Node.js
       saveMissing: true,
       fallbackLng: 'en',
       fallbackNS: 'common',
-      ns: ['common', 'login', 'assessment'],
+      ns: ['common', 'login', 'assessment', 'season'],
       preload: ['en', 'de'],
       whitelist: ['en', 'de'],
       detection: detectionServerOptions,

@@ -1,13 +1,13 @@
-var React = require('react');
+const React = require('react');
 
-var GraphStyle = require('svg/common/GraphStyle.jsx');
-var GraphBar = require('svg/common/GraphBar.jsx');
-var GraphBottomLabels = require('svg/common/GraphBottomLabels.jsx');
-var GraphAxisLabels = require('svg/common/GraphAxisLabels.jsx');
-var GraphEstimations = require('svg/common/GraphEstimations.jsx');
-var GraphGrid = require('svg/common/GraphGrid.jsx');
+const GraphStyle = require('svg/common/GraphStyle.jsx');
+const GraphBar = require('svg/common/GraphBar.jsx');
+const GraphBottomLabels = require('svg/common/GraphBottomLabels.jsx');
+const GraphAxisLabels = require('svg/common/GraphAxisLabels.jsx');
+const GraphEstimations = require('svg/common/GraphEstimations.jsx');
+const GraphGrid = require('svg/common/GraphGrid.jsx');
 
-module.exports = React.createClass({
+const EndDistributionGraph = React.createClass({
   render: function() {
     var size = this.props.data.endCount;
 
