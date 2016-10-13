@@ -1,47 +1,56 @@
-'use strict';
-var React = require('react');
+const React = require('react');
 
-module.exports = React.createClass({
+const GraphEstimations = React.createClass({
+  propTypes: {
+    // TODO create a class to validate against
+    data: React.PropTypes.object,
+    contentName: React.PropTypes.string,
+    estimate: React.PropTypes.boolean,
+    min: React.PropTypes.number,
+    max: React.PropTypes.number,
+    size: React.PropTypes.number
+  },
   render: function() {
-    var estimations = [];
-    var min_result = this.props.min ? this.props.min : 10;
-    var max_result = this.props.max ? this.props.max : 0;
-    for (var i = 0; i < this.props.data.length; i++) {
-      if (typeof this.props.data[i] !== 'undefined' && this.props.data[i] > 0) {
-        estimations.push(this.props.data[i]);
-        if (this.props.data[i] > max_result) max_result = this.props.data[i];
-        if (this.props.data[i] < min_result) min_result = this.props.data[i];
+    const estimations = [];
+    var minResult = (this.props.min || 10);
+    var maxResult = (this.props.max || 0);
+    this.props.data.forEach(function(value, index) {
+      if (typeof value !== 'undefined' && value > 0) {
+        estimations.push(value);
+        if (value > maxResult) maxResult = value;
+        if (value < minResult) minResult = value;
+      } else if (this.props.estimate && index > 1) {
+        // TODO test this... probably not working.
+        var estimate = (estimations[index - 1] + estimations[index - 2]) / 2;
+        estimations.push(estimate);
+        if (estimate > maxResult) maxResult = estimate;
+        if (estimate < minResult) minResult = estimate;
+      } else {
+        estimations.push(-1);
       }
-      else {
-        if (this.props.estimate && i > 1) {
-          // TODO test this... probably not working.
-          var estimate = (estimations[i - 1] + estimations[i - 2]) / 2;
-          estimations.push(estimate);
-          if (estimate > max_result) max_result = estimate;
-          if (estimate < min_result) min_result = estimate;
-        }
-        else {
-          estimations.push(-1);
-        }
-      }
-    }
+    }, this);
 
     var first = true;
     var path = ['M '];
-    for (var i = 0; i < estimations.length; i++) {
-      if (estimations[i] >= 0) {
-        var k = -((estimations[i] - min_result) / (max_result - min_result));
+    estimations.forEach(function(value, index) {
+      if (value >= 0) {
+        var k = -((value - minResult) / (maxResult - minResult));
         if (k <= 0) {
           if (first) {
-            path.push((50 + i * 100) + " " + (k * this.props.size) + " C " + (i * 100 + 100) + "," + (k * this.props.size) + " ");
+            path.push([
+              (50 + index * 100), " ", (k * this.props.size),
+              " C ", (index * 100 + 100), ",", (k * this.props.size), " "
+            ].join(''));
             first = false;
-          }
-          else {
-            path.push((50 + i * 100 - 50) + "," + (k * this.props.size) + " " + (i * 100 + 50) + " " + (k * this.props.size) + " S ");
+          } else {
+            path.push([
+              (50 + index * 100 - 50), ",", (k * this.props.size),
+              " ", (index * 100 + 50), " ", (k * this.props.size), " S "
+            ].join(''));
           }
         }
       }
-    }
+    }, this);
     if (path.length > 0) {
       path[path.length - 1] = path[path.length - 1].replace(' S ', '');
     }
@@ -50,19 +59,31 @@ module.exports = React.createClass({
       if (value > 0) {
         return (
           <circle key={'aaa-graphEstimationsBullet_' + index}
-                  className={'result' + (this.props.contentName ? '-' + this.props.contentName : '')}
+                  className={['result',
+                    (this.props.contentName ? '-' : ''),
+                    (this.props.contentName ? this.props.contentName : '')
+                  ].join('')}
                   cx={index * 100 + 50}
-                  cy={-((value - min_result) / (max_result - min_result)) * this.props.size}
+                  cy={-((value - minResult) / (maxResult - minResult)) *
+                      this.props.size}
                   r="10"/>
         );
       }
+      return null;
     }, this);
 
     return (
       <g>
-        <path className={'estimation' + (this.props.contentName ? '-' + this.props.contentName : '')} d={path.join("")} />
+        <path
+          className={['estimation',
+            (this.props.contentName ? '-' : ''),
+            (this.props.contentName ? this.props.contentName : '')
+          ].join('')}
+          d={path.join("")} />
         {bullets}
       </g>
     );
   }
 });
+
+module.exports = GraphEstimations;

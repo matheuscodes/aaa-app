@@ -1,21 +1,20 @@
-'use strict';
-var React = require('react');
-var valueConverter = require('global/ValueConverter');
+const React = require('react');
 
 // TODO FUCKING REFACTOR THIS SHIT.
-module.exports = React.createClass({
+const ReportTableStyle = React.createClass({
   render: function() {
-    var all = [];
-    all.push(".aaa-reportSideLabel{fill:#000000;text-anchor:end;font-size:75%}");
-    all.push(".aaa-reportDay{fill:#FFFFFF}");
-    all.push("text.aaa-reportDay{fill:#000000;text-anchor:middle;font-size:75%}");
-    all.push(".aaa-reportDayHeader{fill:#FFFFFF;text-anchor:middle}");
-    all.push("text.aaa-reportDayHeader{fill:#000000;text-anchor:middle;font-size:75%}");
-    all.push(".aaa-reportDayWeekend{fill:#CCFFFF;}");
-    all.push(".aaa-reportDayOffTime{color:#777777!important;fill:#CCCCCC!important;}");
-    all.push(".aaa-reportDaySummary{fill:#AAAAAA;}");
-    all.push("text.aaa-reportDaySummary{fill:#000000!important;text-anchor:middle;font-size:75%}");
-
+    const all = [
+      ".aaa-reportSideLabel{fill:#000000;text-anchor:end;font-size:75%}",
+      ".aaa-reportDay{fill:#FFFFFF}",
+      "text.aaa-reportDay{fill:#000000;text-anchor:middle;font-size:75%}",
+      ".aaa-reportDayHeader{fill:#FFFFFF;text-anchor:middle}",
+      "text.aaa-reportDayHeader{fill:#000000;text-anchor:middle;font-size:75%}",
+      ".aaa-reportDayWeekend{fill:#CCFFFF;}",
+      ".aaa-reportDayOffTime{color:#777777!important;fill:#CCCCCC!important;}",
+      ".aaa-reportDaySummary{fill:#AAAAAA;}",
+      "text.aaa-reportDaySummary{",
+      "fill:#000000!important;text-anchor:middle;font-size:75%}"
+    ];
     return (
         <style>
           {all.join("")}
@@ -23,3 +22,5 @@ module.exports = React.createClass({
     );
   }
 });
+
+module.exports = ReportTableStyle;

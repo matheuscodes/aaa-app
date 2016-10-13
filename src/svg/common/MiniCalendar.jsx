@@ -1,8 +1,18 @@
-var React = require('react');
+const React = require('react');
+const i18nextReact = require('global/i18nextReact');
 
-module.exports = React.createClass({
+const MiniCalendar = React.createClass({
+  propTypes: {
+    height: React.PropTypes.string,
+    width: React.PropTypes.string,
+    month: React.PropTypes.number,
+    day: React.PropTypes.number,
+    t: React.PropTypes.func
+  },
   render: function() {
-    var rimStyle = {
+    const t = this.props.t;
+
+    const rimStyle = {
       fill: 'none',
       fillRule: 'evenodd',
       stroke: '#4b4b4b',
@@ -13,6 +23,7 @@ module.exports = React.createClass({
       strokeDasharray: 'none',
       strokeOpacity: 1
     };
+
     return (
       <svg version="1.1"
             viewBox="-15 -15 130 130"
@@ -50,7 +61,10 @@ module.exports = React.createClass({
                strokeDasharray: 'none',
                strokeOpacity: 1
              }}
-             d="m 20,0 c -11.08,0 -20,8.92 -20,20 l 0,29.74531 100,0 0,-29.74531 c 0,-11.08 -8.92,-20 -20,-20 l -60,0 z" />
+             d={["m 20,0 c -11.08,0 -20,8.92 -20,20 ",
+                 "l 0,29.74531 100,0 0,-29.74531 ",
+                 "c 0,-11.08 -8.92,-20 -20,-20 ",
+                 "l -60,0 z"].join('')} />
           <path
              style={rimStyle}
              d="m 20,-10 0,20" />
@@ -78,9 +92,8 @@ module.exports = React.createClass({
             strokeLinecap: 'butt',
             strokeLinejoin: 'miter',
             strokeOpacity: 1
-          }}
-              x="50" y="40.4">
-          {this.props.month}
+          }} x="50" y="40.4">
+          {t(['common:month.short.', this.props.month].join('')).toUpperCase()}
           </text>
           <text style={{
             fontStyle: 'normal',
@@ -109,3 +122,5 @@ module.exports = React.createClass({
     );
   }
 });
+
+module.exports = i18nextReact.setupTranslation(['common'], MiniCalendar);

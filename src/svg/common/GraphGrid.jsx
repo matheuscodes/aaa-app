@@ -1,24 +1,36 @@
-var React = require('react');
+const React = require('react');
 
-module.exports = React.createClass({
+const GraphGrid = React.createClass({
+  propTypes: {
+    height: React.PropTypes.string,
+    width: React.PropTypes.string,
+    rows: React.PropTypes.number,
+    columns: React.PropTypes.number
+  },
   render: function() {
-    var iterator_v = [];
-    for (var i = 0; i <= (this.props.columns ? this.props.columns : 10); i++) {
-      iterator_v.push(i);
+    const iteratorV = [];
+    for (var i = 0; i <= (this.props.columns || 10); i++) {
+      iteratorV.push(i);
     }
-    var verticals = iterator_v.map(function(value, index) {
+    const verticals = iteratorV.map(function(value, index) {
       return (
-        <path key={'aaa-graphGridVertical_' + index} className="grid" d={'m ' + 100 * index + ',0 0,' + (-this.props.height)} />
+        <path
+          key={'aaa-graphGridVertical_' + index}
+          className="grid"
+          d={['m ', 100 * index, ',0 0,', (-this.props.height)].join('')} />
       );
     }, this);
 
-    var iterator_h = [];
-    for (var i = 0; i <= (this.props.rows ? this.props.rows : 10); i++) {
-      iterator_h.push(i);
+    const iteratorH = [];
+    for (var k = 0; k <= (this.props.rows || 10); k++) {
+      iteratorH.push(k);
     }
-    var horizontals = iterator_h.map(function(value, index) {
+    const horizontals = iteratorH.map(function(value, index) {
       return (
-        <path key={'aaa-graphGridHorizontal_' + index} className="grid" d={'m 0,' + (-index * this.props.height / 10) + ' ' + (this.props.columns * 100) + ',0 '} />
+        <path key={'aaa-graphGridHorizontal_' + index}
+          className="grid"
+          d={['m 0,', (-index * this.props.height / 10),
+             ' ', (this.props.columns * 100), ',0 '].join('')} />
       );
     }, this);
 
@@ -30,3 +42,5 @@ module.exports = React.createClass({
     );
   }
 });
+
+module.exports = GraphGrid;
