@@ -5,7 +5,7 @@ const GraphEstimations = React.createClass({
     // TODO create a class to validate against
     data: React.PropTypes.object,
     contentName: React.PropTypes.string,
-    estimate: React.PropTypes.boolean,
+    estimate: React.PropTypes.bool,
     min: React.PropTypes.number,
     max: React.PropTypes.number,
     size: React.PropTypes.number

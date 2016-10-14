@@ -1,12 +1,16 @@
-var React = require('react');
-var Moment = require('moment');
+const React = require('react');
+const moment = require('moment');
 
-var MUI = require('app/common/MaterialUI');
-var API = require('api');
-var Waiting = require('app/common/Waiting.jsx');
-var Notice = require('app/common/Notice.jsx');
+const i18nextReact = require('global/i18nextReact');
+const MUI = require('app/common/MaterialUI');
+const API = require('api');
 
-function NewSeason(context) {
+const Waiting = require('app/common/Waiting.jsx');
+const Notice = require('app/common/Notice.jsx');
+
+function newSeason(context) {
+  const t = context.props.t;
+
   var equipment = context.state.equipment.map(function(equipment) {
     return (
       <MUI.MenuItem
@@ -18,25 +22,31 @@ function NewSeason(context) {
 
   var weekPlans = context.state.season.goals.map(function(goal, index) {
     return (
-      <MUI.GridTile key={'aaa-newSeasonGoal_' + index} style={{padding: '5pt'}} cols={1} >
+      <MUI.GridTile
+        key={['aaa-newSeasonGoal_', index].join('')}
+        style={{padding: '5pt'}} cols={1} >
         <MUI.GridList cellHeight={'auto'} cols={1} padding={10} >
           <MUI.GridTile style={{padding: '5pt'}} cols={1} >
             <MUI.TextField
               style={{width: '100%'}}
-              id={'aaa-newSeasonArrowCount_' + index}
+              id={['aaa-newSeasonArrowCount_', index].join('')}
               defaultValue={goal.arrowCount}
               onChange={context.changeWeekPlan}
-              hintText={"Text[count] week " + goal.week}
-              floatingLabelText={"Text[count] week " + goal.week} />
+              hintText={t('season:newSeason.arrowCountTextField.hint', goal)}
+              floatingLabelText={
+                t('season:newSeason.arrowCountTextField.label', goal)
+              } />
           </MUI.GridTile>
           <MUI.GridTile style={{padding: '5pt'}} cols={1} >
             <MUI.TextField
               style={{width: '100%'}}
-              id={'aaa-newSeasonTargetShare_' + index}
+              id={['aaa-newSeasonTargetShare_', index].join('')}
               defaultValue={goal.targetShare}
               onChange={context.changeWeekShare}
-              hintText={"Text[share] week " + goal.week}
-              floatingLabelText={"Text[share] week " + goal.week} />
+              hintText={t('season:newSeason.targetShareTextField.hint', goal)}
+              floatingLabelText={
+                t('season:newSeason.targetShareTextField.label', goal)
+              } />
           </MUI.GridTile>
         </MUI.GridList>
       </MUI.GridTile>
@@ -51,8 +61,8 @@ function NewSeason(context) {
           id={'aaa-newSeasonName'}
           defaultValue={context.state.season.name}
           onChange={context.changeName}
-          hintText={"Text[name]"}
-          floatingLabelText={"Text[name]"} />
+          hintText={t('season:newSeason.nameTextField.hint')}
+          floatingLabelText={t('season:newSeason.nameTextField.label')} />
       </MUI.GridTile>
       <MUI.GridTile style={{padding: '5pt'}} cols={4} >
         <MUI.SelectField
@@ -60,15 +70,22 @@ function NewSeason(context) {
           id={'aaa-newSeasonEquipment'}
           value={context.state.season.equipmentId}
           onChange={context.changeEquipment}
-          floatingLabelFixed={true} >
-          <MUI.MenuItem value={undefined} primaryText={"Text[no equipment]"} />
+          floatingLabelFixed={true}
+          floatingLabelText={
+            t('season:newSeason.equipmentSelectField.label')
+          } >
+          <MUI.MenuItem
+            value={undefined}
+            primaryText={
+              t('season:newSeason.equipmentSelectField.undefined')
+            } />
           {equipment}
         </MUI.SelectField>
       </MUI.GridTile>
       <MUI.GridTile style={{padding: '5pt'}} cols={2} >
         <MUI.DatePicker
           id={'aaa-seasonStartDate'}
-          floatingLabelText="Text[Season start date]"
+          floatingLabelText={t('season:newSeason.startDateDatepicker.label')}
           autoOk={true}
           defaultDate={context.state.season.start}
           onChange={context.changeStart} />
@@ -76,7 +93,7 @@ function NewSeason(context) {
       <MUI.GridTile style={{padding: '5pt'}} cols={2} >
         <MUI.DatePicker
           id={'aaa-seasonEndDate'}
-          floatingLabelText="Text[Season start date]"
+          floatingLabelText={t('season:newSeason.endDateDatepicker.label')}
           autoOk={true}
           defaultDate={context.state.season.end}
           onChange={context.changeEnd} />
@@ -86,22 +103,30 @@ function NewSeason(context) {
   );
 }
 
-module.exports = React.createClass({
+const NewSeasonCard = React.createClass({
+  propTypes: {
+    seasonId: React.PropTypes.number,
+    onClose: React.PropTypes.func,
+    t: React.PropTypes.func
+  },
   getInitialState: function() {
     return {equipment: []};
   },
   componentDidMount: function() {
-    if (typeof this.props.seasonId !== 'undefined') {
-      API.seasons.getById(this.props.seasonId, this, function(season) {
-        API.equipment.getList(this, function(list) {
-          this.setState({equipment: list, season: season});
-        });
-      });
-    }
-    else {
+    if (typeof this.props.seasonId === 'undefined') {
       API.equipment.getList(this, function(list) {
         this.setState({equipment: list, season: {goals: []}});
       });
+    } else {
+      var callbacks = {
+        context: this,
+        success: function(season) {
+          API.equipment.getList(this, function(list) {
+            this.setState({equipment: list, season: season});
+          });
+        }
+      };
+      API.seasons.getById(this.props.seasonId, callbacks);
     }
   },
   changeWeekPlan: function(event) {
@@ -125,7 +150,8 @@ module.exports = React.createClass({
     // this.setState(current);
   },
   updateWeeks: function(current) {
-    if (typeof current.season.start !== 'undefined' && typeof current.season.end !== 'undefined') {
+    if (typeof current.season.start !== 'undefined' &&
+        typeof current.season.end !== 'undefined') {
       const oneWeek = 7 * 24 * 60 * 60 * 1000;
       const oneDay = oneWeek / 7;
       var weeks = {};
@@ -133,17 +159,21 @@ module.exports = React.createClass({
       var weekEnd = current.season.end.getTime();
       var stop = weekEnd + oneDay;
       for (var i = weekStart; i < stop; i += oneWeek) {
-        var week = Moment(i).isoWeek();
-        weeks[week] = {week: week, arrowCount: 0, targetShare: 0};
-        current.season.id ? weeks[week].seasonId = current.season.id : null;
+        var week1 = moment(i).isoWeek();
+        weeks[week1] = {week: week1, arrowCount: 0, targetShare: 0};
+        if (typeof current.season.id !== 'undefined') {
+          weeks[week1].seasonId = current.season.id;
+        }
       }
       current.season.goals.forEach(function(value) {
-        weeks[value.week] ? weeks[value.week] = value : null;
+        if (typeof weeks[value.week] !== 'undefined') {
+          weeks[value.week] = value;
+        }
       });
       current.season.goals = [];
-      for (var i = weekStart; i < stop; i += oneWeek) {
-        var week = Moment(i).isoWeek();
-        current.season.goals.push(weeks[week]);
+      for (var j = weekStart; j < stop; j += oneWeek) {
+        var week2 = moment(j).isoWeek();
+        current.season.goals.push(weeks[week2]);
       }
     }
   },
@@ -179,40 +209,56 @@ module.exports = React.createClass({
     this.setState(current);
   },
   submitSeason: function() {
+    const t = this.props.t;
     var callbacks = {
       context: this,
       success: function() {
-        this.showMessage("Text[season saved]", "MESSAGE");
+        this.showMessage(t('season:messages.newSaved'), "MESSAGE");
         this.props.onClose(true);
       },
       warning: function() {
-        this.showMessage("Text[season saved]", "WARNING");
+        this.showMessage(t('season:messages.newSaved'), "WARNING");
       },
       error: function() {
-        this.showMessage("Text[season not saved]", "ERROR");
+        this.showMessage(t('season:messages.newError'), "ERROR");
       }
     };
     API.seasons.save(this.state.season, callbacks);
   },
   render: function() {
+    const t = this.props.t;
+
+    var message = '';
+    if (typeof this.state.message !== 'undefined') {
+      message = (
+        <Notice message={this.state.message} onClose={this.hideMessage} />
+      );
+    }
     return (
       <MUI.Card>
         <MUI.CardHeader
-          title="Text[new season title]"
-          subtitle="Text[new season subtitle]" />
+          title={t('season:newSeason.title')}
+          subtitle={t('season:newSeason.subtitle')} />
         <MUI.CardText>
-          {this.state.season ? NewSeason(this) : <Waiting />}
+          {this.state.season ? newSeason(this) : <Waiting />}
         </MUI.CardText>
         <MUI.CardActions style={{textAlign: 'right'}}>
-          <MUI.FloatingActionButton mini={true} secondary={true} style={{margin: '5pt'}} onTouchTap={this.props.onClose}>
+          <MUI.FloatingActionButton
+            mini={true} secondary={true}
+            style={{margin: '5pt'}}
+            onTouchTap={this.props.onClose}>
             <MUI.icons.navigation.cancel />
           </MUI.FloatingActionButton>
-          <MUI.FloatingActionButton style={{margin: '5pt'}} onTouchTap={this.submitSeason} >
+          <MUI.FloatingActionButton
+            style={{margin: '5pt'}}
+            onTouchTap={this.submitSeason} >
             <MUI.icons.action.backup />
           </MUI.FloatingActionButton>
         </MUI.CardActions>
-        {this.state.message ? <Notice message={this.state.message} onClose={this.hideMessage}/> : null}
+        {message}
       </MUI.Card>
     );
   }
 });
+
+module.exports = i18nextReact.setupTranslation(['season'], NewSeasonCard);

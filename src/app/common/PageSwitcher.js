@@ -44,17 +44,17 @@ const getPageReactClass = function(pageTitle) {
 const getPageNamespaces = function(pageTitle) {
   switch (pageTitle) {
     case 'seasonsPage':
-      return ['common','season'];
+      return ['common', 'season'];
     case 'reportsPage':
-      return ['common','season','report'];
+      return ['common', 'season', 'report'];
     case 'assessmentsPage':
-      return ['common','assessment'];
+      return ['common', 'assessment'];
     case 'trainingsPage':
       return [];
     case 'homePage':
       return [];
     case 'loginPage':
-      return ['common','login'];
+      return ['common', 'login'];
     default:
       console.error(new ReferenceError("Page not found!"));
       return [];
@@ -62,8 +62,8 @@ const getPageNamespaces = function(pageTitle) {
 };
 
 PageSwitcher.prototype.switchTo = function switchTo(pageTitle) {
-  //var renderParent = document.getElementById('aaa-baseLayout').parentNode;
-    var renderParent = document.getElementsByTagName('html')[0].parentNode;
+  // var renderParent = document.getElementById('aaa-baseLayout').parentNode;
+  var renderParent = document.getElementsByTagName('html')[0].parentNode;
   // TODO move this to constants to share between server/app
   const props = {
     switcher: this,

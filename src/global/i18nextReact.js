@@ -1,3 +1,4 @@
+const moment = require('moment');
 const i18next = require('i18next');
 const fsBackend = require('i18next-node-fs-backend');
 const i18nextMiddleware = require('i18next-express-middleware');
@@ -82,6 +83,21 @@ const translateConfig = {withRef: true, wait: false};
 
 const debug = false;
 
+i18next.on('languageChanged', function(lng) {
+  moment.locale(lng);
+});
+
+function formatter(value, format, lng) {
+  switch (format) {
+    case 'dateTimeLong':
+      return moment(value).format("dddd, MMMM Do YYYY, h:mm:ss a");
+    case 'dateLong':
+      return moment(value).format("MMMM Do YYYY");
+    default:
+      return value;
+  }
+}
+
 if (typeof window === 'undefined') { // If on Node.js
   module.exports.i18next
     .use(i18nextMiddleware.LanguageDetector)
@@ -98,7 +114,14 @@ if (typeof window === 'undefined') { // If on Node.js
       preload: ['en', 'de'],
       whitelist: ['en', 'de'],
       detection: detectionServerOptions,
-      backend: fsBackendOptions
+      backend: fsBackendOptions,
+      interpolation: {
+        formatSeparator: ',',
+        format: function(value, formatting, lng) {
+          if (value instanceof Date) return moment(value).format(formatting);
+          return value.toString();
+        }
+      }
     });
 } else { // If on Browser
   module.exports.i18next
@@ -112,7 +135,11 @@ if (typeof window === 'undefined') { // If on Node.js
       ns: ['common'],
       whitelist: ['en', 'de'],
       detection: detectionClientOptions,
-      backend: xhrBackendOptions
+      backend: xhrBackendOptions,
+      interpolation: {
+        formatSeparator: ',',
+        format: formatter
+      }
     });
 }
 

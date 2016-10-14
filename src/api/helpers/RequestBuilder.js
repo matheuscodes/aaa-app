@@ -16,7 +16,7 @@ module.exports = function(path, method, callbacks) {
   url += path;
 
   xmlhttp.open(method, url, true);
-  if(path !== '/login/'){
+  if (path !== '/login/') {
     xmlhttp.setRequestHeader("X-AAA-Authorization", localStorage.loggedToken);
   }
   xmlhttp.setRequestHeader("Content-type", "application/json");
