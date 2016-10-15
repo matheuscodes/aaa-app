@@ -1,23 +1,31 @@
-'use strict';
-var React = require('react');
+const React = require('react');
 
-var MUI = require('app/common/MaterialUI');
-var API = require('api');
+const i18nextReact = require('global/i18nextReact');
+const MUI = require('app/common/MaterialUI');
+const API = require('api');
 
-var BaseLayout = require('app/common/BaseLayout.jsx');
-var TrainingTile = require('app/trainings/TrainingTile.jsx');
-var NewTrainingCard = require('app/trainings/NewTrainingCard.jsx');
-var Waiting = require('app/common/Waiting.jsx');
-var Notice = require('app/common/Notice.jsx');
+const PageSwitcher = require('app/common/PageSwitcher');
+const BaseLayout = require('app/common/BaseLayout.jsx');
+const Waiting = require('app/common/Waiting.jsx');
+const Notice = require('app/common/Notice.jsx');
 
-var styles = {
+const TrainingTile = require('app/trainings/TrainingTile.jsx');
+const NewTrainingCard = require('app/trainings/NewTrainingCard.jsx');
+
+const styles = {
   gridList: {
     width: '100%'
   }
 };
 
-module.exports = React.createClass({
+const TrainingsPage = React.createClass({
+  propTypes: {
+    switcher: React.PropTypes.instanceOf(PageSwitcher),
+    userAgent: React.PropTypes.string,
+    t: React.PropTypes.func
+  },
   updateTrainingList: function() {
+    const t = this.props.t;
     var callbacks = {
       context: this,
       success: function(list) {
@@ -28,7 +36,7 @@ module.exports = React.createClass({
       },
       error: function(error) {
         // FIXME "this" is not set in the API callback.
-        this.showMessage("Text[training list error]", "ERROR");
+        this.showMessage(t('training:messages.listError'), "ERROR");
       }
     };
     API.trainings.getList(callbacks);
@@ -40,17 +48,18 @@ module.exports = React.createClass({
     this.updateTrainingList();
   },
   deleteTraining: function(trainingId) {
+    const t = this.props.t;
     var callbacks = {
       context: this,
       success: function() {
-        this.showMessage("Text[season deleted]", "MESSAGE");
+        this.showMessage(t('training:messages.deleted'), "MESSAGE");
         this.updateTrainingList();
       },
       warning: function() {
-        this.showMessage("Text[season deleted]", "WARNING");
+        this.showMessage(t('training:messages.deleted'), "WARNING");
       },
       error: function() {
-        this.showMessage("Text[season not deleted]", "ERROR");
+        this.showMessage(t('training:messages.deletedError'), "ERROR");
       }
     };
     API.trainings.delete(trainingId, callbacks);
@@ -58,8 +67,7 @@ module.exports = React.createClass({
   closeEdit: function(refresh) {
     if (refresh) {
       this.updateTrainingList();
-    }
-    else {
+    } else {
       var current = this.state;
       current.editTraining = false;
       this.setState(current);
@@ -71,25 +79,59 @@ module.exports = React.createClass({
     this.setState(current);
   },
   render: function() {
-    var trainings = this.state.trainings ? this.state.trainings.map(function(training, index) {
-      return (
-        <MUI.GridTile key={'aaa-training_' + index} style={{padding: '5pt'}} cols={2} >
-          <TrainingTile data={training} onDelete={this.deleteTraining} />
-        </MUI.GridTile>
+    const t = this.props.t;
+    var trainings;
+    if (typeof this.state.trainings !== 'undefined') {
+      trainings = this.state.trainings.map(function(training, index) {
+        return (
+          <MUI.GridTile
+            key={['aaa-training_', index].join('')}
+            style={{padding: '5pt'}} cols={2} >
+            <TrainingTile data={training} onDelete={this.deleteTraining} />
+          </MUI.GridTile>
+        );
+      }, this);
+    }
+
+    var message = '';
+    if (typeof this.state.message !== 'undefined') {
+      message = (
+        <Notice message={this.state.message} onClose={this.hideMessage} />
       );
-    }, this) : null;
+    }
+
+    var newTrainingButton = (
+      <MUI.RaisedButton
+        label={t('training:newTraining.button')}
+        fullWidth={true}
+        primary={true}
+        onTouchTap={this.newTraining} />
+    );
+
+    var editTraining = '';
+    if (this.state.editTraining) {
+      editTraining = (<NewTrainingCard onClose={this.closeEdit} />);
+    }
 
     return (
-      <BaseLayout switcher={this.props.switcher} layoutName="trainingsPage" userAgent={this.props.userAgent} languages={this.props.languages} title="Welcome to Advanced Archery" >
-        <MUI.GridList cellHeight={'unset'} cols={4} padding={10} style={styles.gridList} >
+      <BaseLayout
+        switcher={this.props.switcher}
+        layoutName="trainingsPage"
+        userAgent={this.props.userAgent}
+        title={t('training:title')} >
+        <MUI.GridList
+          cellHeight={'unset'} cols={4}
+          padding={10} style={styles.gridList} >
           <MUI.GridTile style={{padding: '5pt'}}
             cols={this.state.editTraining ? 2 : 4} >
-            {this.state.editTraining ? <NewTrainingCard onClose={this.closeEdit} /> : <MUI.RaisedButton label="Text[new training]" fullWidth={true} primary={true} onTouchTap={this.newTraining} /> }
+            {(editTraining || newTrainingButton)}
           </MUI.GridTile>
-            {trainings ? trainings : <Waiting />}
+            {(trainings || <Waiting />)}
         </MUI.GridList>
-        {this.state.message ? <Notice message={this.state.message} onClose={this.hideMessage}/> : null}
+        {message}
       </BaseLayout>
     );
   }
 });
+
+module.exports = i18nextReact.setupTranslation(['training'], TrainingsPage);

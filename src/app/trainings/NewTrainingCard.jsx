@@ -1,13 +1,14 @@
-var React = require('react');
+const React = require('react');
 
-var TrainingTypes = require('constants/TrainingTypes.json');
+const TrainingTypes = require('constants/TrainingTypes.json');
 
-var MUI = require('app/common/MaterialUI');
-var API = require('api');
+const i18nextReact = require('global/i18nextReact');
+const MUI = require('app/common/MaterialUI');
+const API = require('api');
 
-var Notice = require('app/common/Notice.jsx');
+const Notice = require('app/common/Notice.jsx');
 
-var style = {
+const style = {
   arrowCountField: {
     width: '29%',
     padding: '0 5% 0 5%'
@@ -28,7 +29,11 @@ var style = {
   }
 };
 
-module.exports = React.createClass({
+const NewTrainingCard = React.createClass({
+  propTypes: {
+    onClose: React.PropTypes.func,
+    t: React.PropTypes.func
+  },
   getInitialState: function() {
     return {seasons: [], training: {
       date: new Date(),
@@ -65,7 +70,9 @@ module.exports = React.createClass({
   setArrowCount: function(event) {
     var split = event.target.id.split('_');
     var current = this.state;
-    current.training.arrows[split[1]][split[2]] = parseInt(event.target.value);
+    var arrows = current.training.arrows;
+    arrows[split[1]][split[2]] = parseInt(event.target.value, 10);
+    current.training.arrows = arrows; // FIXME Needed?
     this.setState(current);
   },
   increaseArrows: function(event) {
@@ -86,9 +93,11 @@ module.exports = React.createClass({
     this.setState(current);
   },
   createNewDistance: function() {
+    const t = this.props.t;
+
     var current = this.state;
     if (typeof current.newDistance === 'undefined') {
-      this.showMessage("Text[no empty distance]", "ERROR");
+      this.showMessage(t('training:messages.emptyError'), "ERROR");
       return;
     }
     if (typeof current.training.arrows[current.newDistance] === 'undefined') {
@@ -98,7 +107,8 @@ module.exports = React.createClass({
     this.setState(current);
   },
   showMessage: function(message, type) {
-    // TODO move this to a module or class, has been used in several places already
+    // TODO move this to a module or class
+    // It has been used in several places already
     var current = this.state;
     current.message = {
       text: message,
@@ -114,18 +124,20 @@ module.exports = React.createClass({
   },
 
   submitTraining: function() {
+    const t = this.props.t;
+
     var callbacks = {
       context: this,
       success: function() {
-        this.showMessage("Text[training saved]", "MESSAGE");
+        this.showMessage(t('training:messages.newSaved'), "MESSAGE");
         this.props.onClose(true);
         this.setState(this.getInitialState());
       },
       warning: function() {
-        this.showMessage("Text[training saved]", "WARNING");
+        this.showMessage(t('training:messages.newSaved'), "WARNING");
       },
       error: function() {
-        this.showMessage("Text[training not saved]", "ERROR");
+        this.showMessage(t('training:messages.newError'), "ERROR");
       }
     };
     API.trainings.save(this.state.training, callbacks);
@@ -138,61 +150,86 @@ module.exports = React.createClass({
   },
 
   render: function() {
+    const t = this.props.t;
     var seasons = this.state.seasons.map(function(season, index) {
       return (
-        <MUI.MenuItem key={'aaa-newAssessmentSeason_' + index} value={season.id} primaryText={season.name} />
+        <MUI.MenuItem
+          key={['aaa-newAssessmentSeason_', index].join('')}
+          value={season.id}
+          primaryText={season.name} />
       );
     });
 
     // TODO move this to a component, used in 2 places already
     var headers = TrainingTypes.map(function(type) {
       return (
-        <MUI.TableHeaderColumn key={'newTrainingCardType_' + type}>
-          Text[{type}]
+        <MUI.TableHeaderColumn key={['newTrainingCardType_', type].join('')}>
+          {t(['training:trainingTypes.', type].join(''))}
         </MUI.TableHeaderColumn>
       );
     });
+
     var row = {};
     // TODO move styles up, too much repetition
-    for (var distance in this.state.training.arrows) {
+    Object.keys(this.state.training.arrows).forEach(function(distance) {
       row[distance] = TrainingTypes.map(function(type) {
         return (
-          <MUI.TableRowColumn key={'newTrainingCard_' + distance + '_' + type}>
-            <MUI.IconButton id={'newTrainingInc_' + distance + '_' + type} tabIndex={-1} style={style.arrowCountButton} iconStyle={style.arrowCountIcon} onTouchTap={this.decreaseArrows}>
+          <MUI.TableRowColumn
+            key={['newTrainingCard_', distance, '_', type].join('')}>
+            <MUI.IconButton
+              id={['newTrainingInc_', distance, '_', type].join('')}
+              tabIndex={-1}
+              style={style.arrowCountButton}
+              iconStyle={style.arrowCountIcon}
+              onTouchTap={this.decreaseArrows}>
               <MUI.icons.content.remove_circle/>
             </MUI.IconButton>
             <MUI.TextField
               style={style.arrowCountField}
               inputStyle={style.arrowCountInput}
-              id={'newTrainingCardText_' + distance + '_' + type}
+              id={['newTrainingCardText_', distance, '_', type].join('')}
               value={this.state.training.arrows[distance][type]}
               onChange={this.setArrowCount} />
-            <MUI.IconButton id={'newTrainingDec_' + distance + '_' + type} tabIndex={-1} style={style.arrowCountButton} iconStyle={style.arrowCountIcon} onTouchTap={this.increaseArrows}>
+            <MUI.IconButton
+              id={['newTrainingDec_', distance, '_', type].join('')}
+              tabIndex={-1}
+              style={style.arrowCountButton}
+              iconStyle={style.arrowCountIcon}
+              onTouchTap={this.increaseArrows}>
               <MUI.icons.content.add_circle/>
             </MUI.IconButton>
           </MUI.TableRowColumn>
         );
       }, this);
-    }
+    }, this);
 
     var rows = [];
-    for (var distance in row) {
+    Object.keys(row).forEach(function(distance) {
       rows.push(
-        <MUI.TableRow key={'newTrainingCardType_' + distance + '_distance'}>
+        <MUI.TableRow
+          key={['newTrainingCardType_', distance, '_distance'].join('')} >
           <MUI.TableRowColumn>{distance}</MUI.TableRowColumn>
           {row[distance]}
         </MUI.TableRow>
       );
+    });
+
+    var message = '';
+    if (typeof this.state.message !== 'undefined') {
+      message = (
+        <Notice message={this.state.message} onClose={this.hideMessage} />
+      );
     }
+
     return (
       <MUI.Card>
         <MUI.CardHeader
-          title="Text[new training title]"
-          subtitle="Text[new training subtitle]" />
+          title={t('training:newTraining.title')}
+          subtitle={t('training:newTraining.subtitle')} />
         <MUI.CardText>
           <MUI.DatePicker
             id={'aaa-newTrainingDate'}
-            floatingLabelText="Text[Training date]"
+            floatingLabelText={t('training:newTraining.dateDatepicker.label')}
             autoOk={true}
             value={this.state.training.date}
             onChange={this.setDate} />
@@ -201,15 +238,22 @@ module.exports = React.createClass({
             id={'aaa-newTrainingSeason'}
             value={this.state.training.seasonId}
             onChange={this.changeSeason}
-            floatingLabelText={"Text[season]"} >
-            {/* FIXME temporary fix for https://github.com/callemall/material-ui/issues/2446*/}
+            floatingLabelText={
+              t('training:newTraining.seasonSelectField.label')
+            } >
+            {/* FIXME temporary fix
+                for https://github.com/callemall/material-ui/issues/2446*/}
             <MUI.MenuItem value={'undefined'} primaryText={" "} />
             {seasons}
           </MUI.SelectField>
           <MUI.Table>
-            <MUI.TableHeader displaySelectAll={false} adjustForCheckbox={false} >
+            <MUI.TableHeader
+              displaySelectAll={false}
+              adjustForCheckbox={false} >
               <MUI.TableRow>
-                <MUI.TableHeaderColumn>Text['distance header']</MUI.TableHeaderColumn>
+                <MUI.TableHeaderColumn>
+                  {t('training:newTraining.headers.distance')}
+                </MUI.TableHeaderColumn>
                 {headers}
               </MUI.TableRow>
             </MUI.TableHeader>
@@ -221,7 +265,10 @@ module.exports = React.createClass({
                     style={{width: '70%'}}
                     id={'newTrainingCardNewDistance'}
                     value={this.state.newDistance}
-                    floatingLabelText="Text[new distance]"
+                    hintText={t('training:newTraining.distanceTextField.hint')}
+                    floatingLabelText={
+                      t('training:newTraining.distanceTextField.label')
+                    }
                     onChange={this.changeNewDistance} />
                   <MUI.IconButton onTouchTap={this.createNewDistance}>
                     <MUI.icons.content.add_box/>
@@ -233,15 +280,20 @@ module.exports = React.createClass({
         </MUI.CardText>
 
         <MUI.CardActions style={{textAlign: 'right'}}>
-          <MUI.FloatingActionButton mini={true} secondary={true} style={{margin: '5pt'}} onTouchTap={this.props.onClose}>
+          <MUI.FloatingActionButton
+            mini={true} secondary={true}
+            style={{margin: '5pt'}} onTouchTap={this.props.onClose}>
             <MUI.icons.navigation.cancel />
           </MUI.FloatingActionButton>
-          <MUI.FloatingActionButton style={{margin: '5pt'}} onTouchTap={this.submitTraining}>
+          <MUI.FloatingActionButton
+            style={{margin: '5pt'}} onTouchTap={this.submitTraining}>
             <MUI.icons.action.backup />
           </MUI.FloatingActionButton>
         </MUI.CardActions>
-        {this.state.message ? <Notice message={this.state.message} onClose={this.hideMessage}/> : null}
+        {message}
       </MUI.Card>
     );
   }
 });
+
+module.exports = i18nextReact.setupTranslation(['training'], NewTrainingCard);

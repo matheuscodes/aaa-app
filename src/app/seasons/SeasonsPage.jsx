@@ -1,8 +1,8 @@
 const React = require('react');
 
+const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 const API = require('api');
-const i18nextReact = require('global/i18nextReact');
 
 const PageSwitcher = require('app/common/PageSwitcher');
 const Waiting = require('app/common/Waiting.jsx');

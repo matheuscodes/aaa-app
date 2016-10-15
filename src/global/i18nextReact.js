@@ -85,6 +85,8 @@ const debug = false;
 
 i18next.on('languageChanged', function(lng) {
   moment.locale(lng);
+  // TODO add this to date pickers to get localized dialogs.
+  module.exports.DateTimeFormat = new Intl.DateTimeFormat(lng);
 });
 
 function formatter(value, format, lng) {
@@ -110,7 +112,7 @@ if (typeof window === 'undefined') { // If on Node.js
       saveMissing: true,
       fallbackLng: 'en',
       fallbackNS: 'common',
-      ns: ['common', 'login', 'assessment', 'season'],
+      ns: ['common', 'login', 'assessment', 'season', 'training'],
       preload: ['en', 'de'],
       whitelist: ['en', 'de'],
       detection: detectionServerOptions,

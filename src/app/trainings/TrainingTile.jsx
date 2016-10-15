@@ -1,51 +1,64 @@
-'use strict';
-var React = require('react');
+const React = require('react');
 
-var MUI = require('app/common/MaterialUI');
+const i18nextReact = require('global/i18nextReact');
+const MUI = require('app/common/MaterialUI');
 
-var MiniCalendar = require('svg/common/MiniCalendar.jsx');
-var TrainingTypes = require('constants/TrainingTypes.json');
+const MiniCalendar = require('svg/common/MiniCalendar.jsx');
+const TrainingTypes = require('constants/TrainingTypes.json');
 
-module.exports = React.createClass({
+const TrainingTile = React.createClass({
+  propTypes: {
+    // TODO create class to validate
+    data: React.PropTypes.object,
+    onDelete: React.PropTypes.func,
+    t: React.PropTypes.func
+  },
   delete: function() {
     this.props.onDelete(this.props.data.id);
   },
   render: function() {
+    const t = this.props.t;
+
     var headers = TrainingTypes.map(function(type) {
       return (
-        <MUI.TableHeaderColumn key={'trainingHeader_' + type}>Text[{type}]</MUI.TableHeaderColumn>
+        <MUI.TableHeaderColumn
+          key={['trainingHeader_', type].join('')}>
+          {t(['training:trainingTypes.', type].join(''))}
+        </MUI.TableHeaderColumn>
       );
     });
 
     var row = {};
-    for (var distance in this.props.data.arrows) {
+    Object.keys(this.props.data.arrows).forEach(function(distance) {
       row[distance] = TrainingTypes.map(function(type, index) {
         return (
           <MUI.TableRowColumn key={'aaa-trainingCell_' + index}>
-            {this.props.data.arrows[distance][type] ? this.props.data.arrows[distance][type] : " - "}
+            {this.props.data.arrows[distance][type] ?
+              this.props.data.arrows[distance][type] : " - "}
           </MUI.TableRowColumn>
         );
       }, this);
-    }
+    }, this);
 
     var rows = [];
-    for (var distance in row) {
+    Object.keys(row).forEach(function(distance) {
       rows.push(
-        <MUI.TableRow key={'aaa-trainingRow_' + distance}>
+        <MUI.TableRow key={['aaa-trainingRow_', distance].join('')}>
           <MUI.TableRowColumn>{distance}</MUI.TableRowColumn>
           {row[distance]}
         </MUI.TableRow>
       );
-    }
-
-    var subtitle = this.props.data.totalArrows ? 'Text[total time]' + this.props.data.time : '';
-    subtitle += this.props.data.totalArrows ? ', Text[arrows per minute]' + (this.props.data.total_arrows / this.props.data.time).toFixed(2) : '';
+    });
+    var subtitle = '';
+    subtitle = this.props.data.time ?
+                t('training:tile.subtitleTime', this.props.data) :
+                t('training:tile.subtitle', this.props.data);
 
     return (
       <MUI.Paper style={{display: 'inline-block'}} zDepth={1}>
         <MUI.Card>
           <MUI.CardHeader
-            title={'Text[total arrows] ' + this.props.data.totalArrows}
+            title={t('training:tile.title', this.props.data)}
             subtitle={subtitle}
             avatar={
               <MiniCalendar
@@ -56,9 +69,13 @@ module.exports = React.createClass({
             }/>
           <MUI.CardText>
             <MUI.Table style={{width: '100%'}}>
-              <MUI.TableHeader displaySelectAll={false} adjustForCheckbox={false} >
+              <MUI.TableHeader
+                displaySelectAll={false}
+                adjustForCheckbox={false} >
                 <MUI.TableRow>
-                  <MUI.TableHeaderColumn>Text['distance header']</MUI.TableHeaderColumn>
+                  <MUI.TableHeaderColumn>
+                    {t('training:tile.headers.distance')}
+                  </MUI.TableHeaderColumn>
                   {headers}
                 </MUI.TableRow>
               </MUI.TableHeader>
@@ -68,7 +85,11 @@ module.exports = React.createClass({
             </MUI.Table>
           </MUI.CardText>
           <MUI.CardActions style={{textAlign: 'right'}}>
-            <MUI.FloatingActionButton mini={true} onTouchTap={this.delete} secondary={true} style={{margin: '5pt'}}>
+            <MUI.FloatingActionButton
+              mini={true}
+              onTouchTap={this.delete}
+              secondary={true}
+              style={{margin: '5pt'}}>
               <MUI.icons.action.delete />
             </MUI.FloatingActionButton>
           </MUI.CardActions>
@@ -77,3 +98,5 @@ module.exports = React.createClass({
     );
   }
 });
+
+module.exports = i18nextReact.setupTranslation(['training'], TrainingTile);

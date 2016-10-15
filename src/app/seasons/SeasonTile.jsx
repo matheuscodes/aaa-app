@@ -1,7 +1,7 @@
 const React = require('react');
 
-const MUI = require('app/common/MaterialUI');
 const i18nextReact = require('global/i18nextReact');
+const MUI = require('app/common/MaterialUI');
 
 const Waiting = require('app/common/Waiting.jsx');
 const SeasonGraph = require('svg/SeasonGraph.jsx');
