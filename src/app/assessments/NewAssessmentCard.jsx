@@ -44,8 +44,10 @@ const NewAssessmentCard = React.createClass({
     t: React.PropTypes.func
   },
   getInitialState: function() {
+    var today = new Date();
+    today.setHours(18);
     return {
-      date: new Date(),
+      date: today,
       targets: [],
       seasons: [],
       events: [],
@@ -74,6 +76,7 @@ const NewAssessmentCard = React.createClass({
   changeDate: function(event, date) {
     var current = this.state;
     current.date = date;
+    current.date.setHours(18);
     this.setState(current);
   },
   changeDistance: function(event) {

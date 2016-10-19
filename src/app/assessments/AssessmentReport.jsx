@@ -1,7 +1,7 @@
 const React = require('react');
 
-const MUI = require('app/common/MaterialUI');
 const i18nextReact = require('global/i18nextReact');
+const MUI = require('app/common/MaterialUI');
 
 const EndDistributionGraph = require('svg/EndDistributionGraph.jsx');
 
@@ -23,41 +23,49 @@ const AssessmentReport = React.createClass({
   render: function() {
     const t = this.props.t;
 
-    var rounds = this.props.data.rounds ? this.props.data.rounds.map(
-      function(round, roundIndex) {
-        round.index = roundIndex;
-        var summary = {
-          values: {
-            averageScore: round.averageScores
-          },
-          counts: {
-            xs: round.xCount,
-            tens: round.tenCount
-          },
-          minAverage: round.minAverage,
-          maxAverage: round.maxAverage,
-          maxCount: round.maxCount,
-          endCount: round.endCount
-        };
-        return (
-          <MUI.GridTile
-            key={'aaa-assessmentRound_' + roundIndex}
-            style={{padding: '5pt'}} cols={8} >
-            <MUI.GridList cellHeight={'auto'} cols={2} padding={10} >
-              <MUI.GridTile style={{padding: '5pt'}} cols={1} >
-                <AssessmentArrowTable data={round} />
-              </MUI.GridTile>
-              <MUI.GridTile style={{padding: '5pt'}} cols={1} >
-                <EndDistributionGraph
-                  id={'aaa-assessmentGraph_' + roundIndex}
-                  height={'230pt'}
-                  data={summary} />
-              </MUI.GridTile>
-            </MUI.GridList>
-          </MUI.GridTile>
-        );
-      },
-    this) : null;
+    var rounds = (
+      <MUI.GridTile
+        style={{padding: '5pt'}} cols={8} >
+        {t('assessment:report.noRounds')}
+      </MUI.GridTile>
+    );
+    if (typeof this.props.data.rounds !== 'undefined'){
+      rounds = this.props.data.rounds.map(
+        function(round, roundIndex) {
+          round.index = roundIndex;
+          var summary = {
+            values: {
+              averageScore: round.averageScores
+            },
+            counts: {
+              xs: round.xCount,
+              tens: round.tenCount
+            },
+            minAverage: round.minAverage,
+            maxAverage: round.maxAverage,
+            maxCount: round.maxCount,
+            endCount: round.endCount
+          };
+          return (
+            <MUI.GridTile
+              key={'aaa-assessmentRound_' + roundIndex}
+              style={{padding: '5pt'}} cols={8} >
+              <MUI.GridList cellHeight={'auto'} cols={2} padding={10} >
+                <MUI.GridTile style={{padding: '5pt'}} cols={1} >
+                  <AssessmentArrowTable data={round} />
+                </MUI.GridTile>
+                <MUI.GridTile style={{padding: '5pt'}} cols={1} >
+                  <EndDistributionGraph
+                    id={'aaa-assessmentGraph_' + roundIndex}
+                    height={'230pt'}
+                    data={summary} />
+                </MUI.GridTile>
+              </MUI.GridList>
+            </MUI.GridTile>
+          );
+        },
+      this);
+    }
 
     return (
       <MUI.GridList cellHeight={'auto'} cols={8} padding={10} >
@@ -69,7 +77,7 @@ const AssessmentReport = React.createClass({
             {this.props.data.verifierArcher ? <br/> +
               t('assessment:report.verifiedArcher', this.props.data) : null}
             {this.props.data.verifierAdmin ? <br/> +
-              t('assessment:report.verifiedAdmin', this.props.data) : null}
+             t('assessment:report.verifiedAdmin', this.props.data) : null}
           </p>
         </MUI.GridTile>
         <MUI.GridTile style={{padding: '5pt'}} cols={1} >

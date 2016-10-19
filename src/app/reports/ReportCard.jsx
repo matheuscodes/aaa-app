@@ -351,7 +351,6 @@ module.exports = React.createClass({
             <MUI.GridTile cols={2} >
               <MonthReportTable data={this.state} allDays={allDays}/>
               <MonthGraph data={dailyGraphData} graphId={'aaa_reports_month_graph'} />
-              <SeasonGraph data={this.state.season} graphId={'aaa_reports_season_graph'} />
             </MUI.GridTile>
           </MUI.GridList>
         </MUI.CardText>

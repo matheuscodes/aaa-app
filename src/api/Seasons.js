@@ -63,6 +63,13 @@ module.exports = {
 
     season.start = moment(season.start).format('YYYY-MM-DD');
     season.end = moment(season.end).format('YYYY-MM-DD');
+
+    //i18next doing some bullshit to objects.
+    season.goals.forEach(function (goal){
+      delete goal.lng;
+      delete goal.ns;
+    });
+
     var data = JSON.stringify(season);
 
     request.setRequestHeader("Content-type", "application/json");

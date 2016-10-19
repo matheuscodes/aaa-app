@@ -35,7 +35,11 @@ const TrainingsPage = React.createClass({
         this.setState(current);
       },
       error: function(error) {
-        // FIXME "this" is not set in the API callback.
+        if (error instanceof ReferenceError) {
+          if (error.message === 'Missing Token.') {
+            this.props.switcher.switchTo('loginPage');
+          }
+        }
         this.showMessage(t('training:messages.listError'), "ERROR");
       }
     };
@@ -76,6 +80,20 @@ const TrainingsPage = React.createClass({
   newTraining: function() {
     var current = this.state;
     current.editTraining = true;
+    this.setState(current);
+  },
+  showMessage: function(message, type) {
+    var current = this.state;
+    current.message = {
+      text: message,
+      open: true,
+      type: type
+    };
+    this.setState(current);
+  },
+  hideMessage: function() {
+    var current = this.state;
+    current.message.open = false;
     this.setState(current);
   },
   render: function() {
