@@ -1,4 +1,5 @@
 const React = require('react');
+const moment = require('moment');
 
 const i18nextReact = require('global/i18nextReact');
 
@@ -23,16 +24,32 @@ const SeasonGraph = React.createClass({
   render: function() {
     const t = this.props.t;
 
-    var totalWeeks = this.props.data.goals.length;
-    var generalWidth = (totalWeeks * 100 + 700 + 150);
-    var generalHeight = 1000 + 150 + 50;
+    const weekStart = moment(this.props.data.start).isoWeek();
+    const dateEnd = moment(this.props.data.end);
 
-    var weeks = [];
+    const mapData = {};
+    this.props.data.goals.map(function(single) {
+      mapData[single.week] = single;
+    });
+
+    const weeks = [];
+    const sortedData = [];
+    for(var i = moment(this.props.data.start); i <= dateEnd; i.date(i.date()+7)){
+      const localWeek = i.isoWeek();
+      weeks.push(localWeek);
+      sortedData.push(mapData[localWeek]);
+    }
+
+
+    const totalWeeks = weeks.length;
+    const generalWidth = (totalWeeks * 100 + 700 + 150);
+    const generalHeight = 1000 + 150 + 50;
+
     var values = [];
 
-    var seasonBars = this.props.data.goals.map(function(single, index) {
+    var seasonBars = sortedData.map(function(single, index) {
       var barUnit = 1000 / this.props.data.max;
-      weeks.push(single.week);
+
       values.push(single.averageGrade);
       // TODO maybe move unit to the components themselves?
       return (
@@ -77,11 +94,11 @@ const SeasonGraph = React.createClass({
               title="arrow_count" size="1000" />
             {seasonBars}
             <GraphEstimations
-              data={values} size="1000"
-              max={this.props.data.max_value} min={this.props.data.min_value} />
+              data={values} size="1000" estimate={true}
+              max={this.props.data.maxValue} min={this.props.data.minValue} />
             <GraphAxisLabels
               type="right" title="results" size="1000"
-              min={this.props.data.min_value} max={this.props.data.max_value}
+              min={this.props.data.minValue} max={this.props.data.maxValue}
               offset={totalWeeks * 100}/>
           </g>
         </g>
