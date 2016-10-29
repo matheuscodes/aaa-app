@@ -92,7 +92,7 @@ i18next.on('languageChanged', function(lng) {
 function formatter(value, format, lng) {
   switch (format) {
     case 'dateTimeLong':
-      return moment(value).format("dddd, MMMM Do YYYY, h:mm:ss a");
+      return moment(value).format("dddd, MMMM Do YYYY, h:mm a");
     case 'dateLong':
       return moment(value).format("MMMM Do YYYY");
     default:
@@ -112,7 +112,7 @@ if (typeof window === 'undefined') { // If on Node.js
       saveMissing: true,
       fallbackLng: 'en',
       fallbackNS: 'common',
-      ns: ['common', 'login', 'assessment', 'season', 'training'],
+      ns: ['common', 'login', 'assessment', 'season', 'training', 'home'],
       preload: ['en', 'de'],
       whitelist: ['en', 'de'],
       detection: detectionServerOptions,

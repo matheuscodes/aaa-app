@@ -4,6 +4,7 @@ Object.defineProperty(exports, '__esModule', {
 
 const API = {};
 
+exports.reports = API.reports = require('api/Reports');
 exports.seasons = API.seasons = require('api/Seasons');
 exports.assessments = API.assessments = require('api/Assessments');
 exports.trainings = API.trainings = require('api/Trainings');

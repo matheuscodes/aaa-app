@@ -1,31 +1,44 @@
-'use strict';
-var React = require('react');
-var MUI = require('app/common/MaterialUI');
+const React = require('react');
+const moment = require('moment');
 
-module.exports = React.createClass({
+const i18nextReact = require('global/i18nextReact');
+const MUI = require('app/common/MaterialUI');
+const API = require('api');
+
+const TotalArrowsCard = React.createClass({
   getInitialState: function() {
     return {days: [], max: 1};
   },
-  componentWillMount: function() {
-    this.setState({
-      days: [
-        {date: "2016-02-22", count: 21},
-        {date: "2016-02-21", count: 5},
-        {date: "2016-02-20", count: 30}
-      ],
-      max: 33
-    });
+  componentDidMount: function() {
+    var callbacks = {
+      context: this,
+      success: function(days) {
+        this.setState(days);
+      }
+    };
+    API.reports.getLastWeeksOverview(callbacks);
   },
   render: function() {
-    var dailyCounts = this.state.days.map(function(day) {
+    const t = this.props.t;
+    var dailyCounts = this.state.days.map(function(day,index) {
       return (
         <MUI.ListItem
-          key={'aaa-dayCount_' + day.date}
+          key={'aaa-dayCount_' + index}
           primaryText={
             <div>
-              <b>{day.date}</b>
-              <div style={{width: ((day.count / this.state.max) * 100) + '%'}} className="aaa-home-arrows-day mdl-color-text--accent-contrast mdl-color--accent">
-                 {day.count}
+              <b>{t('home:arrows.date',day)}</b>
+              <div
+                style={{
+                  width: ((day.totalCount / this.state.max) * 100) + '%',
+                  color: MUI.palette.alternateTextColor,
+                  backgroundColor: MUI.palette.accent1Color,
+                  textAlign: 'left',
+                  fontWeight: 'bold',
+                  border: '1pt solid #CCC',
+                  fontSize: '8pt',
+                  padding: '1pt'
+                }} >
+                 {day.totalCount}
               </div>
             </div>
           } />
@@ -35,8 +48,8 @@ module.exports = React.createClass({
     return (
       <MUI.Card>
         <MUI.CardHeader
-          title="Text['home_arrows']"
-          subtitle="Text['home_arrows subtitle']" />
+          title={t('home:arrows.title')}
+          subtitle={t('home:arrows.subtitle')} />
         <MUI.CardText>
           <MUI.List>
             {dailyCounts}
@@ -46,3 +59,6 @@ module.exports = React.createClass({
     );
   }
 });
+
+module.exports = i18nextReact.setupTranslation(['common','home'],
+                                               TotalArrowsCard);

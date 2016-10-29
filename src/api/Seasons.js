@@ -33,6 +33,21 @@ module.exports = {
     var request = requestBuilder('/seasons/', 'GET', newCallbacks);
     request.send();
   },
+  getActive: function(callbacks) {
+    var successCall = function(request) {
+      var response = processResponseList(request.responseText);
+      callbacks.success.call(callbacks.context, response);
+    };
+
+    var newCallbacks = {
+      context: callbacks.context,
+      200: successCall,
+      failure: callbacks.error
+    };
+
+    var request = requestBuilder('/seasons/active', 'GET', newCallbacks);
+    request.send();
+  },
   getById: function(id, callbacks) {
     var successCall = function(request) {
       var response = processSeason(request.responseText);

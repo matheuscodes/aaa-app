@@ -11,6 +11,7 @@ const GraphGrid = require('svg/common/GraphGrid.jsx');
 
 const EndDistributionGraph = React.createClass({
   render: function() {
+    const t = this.props.t;
     var size = this.props.data.endCount;
 
     var general_width = (size * 100 + 100 + 150);
@@ -44,7 +45,7 @@ const EndDistributionGraph = React.createClass({
             className={group} x="0" y={75 + 100 * position}
             height="20" width="100" />
           <text className="graph_label" x="125" y={98 + 100 * position}>
-            Text[{group}]
+            {t(['assessment:graph.counts.', group].join(''))}
           </text>
         </g>
       );
@@ -75,10 +76,11 @@ const EndDistributionGraph = React.createClass({
             className={['result-', group].join('')}
             cx="50" cy={87.5 + 100 * position} r="10"/>
           <text className="graph_label" x="125" y={98 + 100 * position}>
-            Text[{group}]
+            {t(['assessment:graph.values.', group].join(''))}
           </text>
         </g>
       );
+      position++;
     }
 
     var ends = [];

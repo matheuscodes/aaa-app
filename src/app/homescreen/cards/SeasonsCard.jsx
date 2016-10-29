@@ -1,239 +1,62 @@
-'use strict';
-var React = require('react');
-var MUI = require('app/common/MaterialUI');
+const React = require('react');
 
-var SeasonGraph = require('svg/SeasonGraph.jsx');
+const i18nextReact = require('global/i18nextReact');
+const MUI = require('app/common/MaterialUI');
+const API = require('api');
 
-module.exports = React.createClass({
+const SeasonTile = require('app/seasons/SeasonTile.jsx');
+const Waiting = require('app/common/Waiting.jsx');
+
+const SeasonsCard = React.createClass({
   getInitialState: function() {
-    return {values: [], max_value: 0, min_value: 0, max_end: 0};
+    return {};
   },
-  componentWillMount: function() {
-    this.setState({
-      overview: [{
-        total_plan: 300,
-        gauge_plan: 150,
-        shots: 178,
-        technique_shots: 34,
-        week: 51,
-        value: 3.454
-      },
-      {
-        total_plan: 315,
-        gauge_plan: 120,
-        shots: 44,
-        technique_shots: 30,
-        week: 52,
-        value: 5.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.674
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 6.5
-      },
-      {
-        total_plan: 225,
-        gauge_plan: 120,
-        shots: 64,
-        technique_shots: 20,
-        week: 1,
-        value: 2.1
+  componentDidMount: function() {
+    var callbacks = {
+      context: this,
+      success: function(list) {
+        var current = this.state;
+        current.seasons = list;
+        this.setState(current);
       }
-      ],
-      max: 350,
-      min_value: 2,
-      max_value: 7
-    });
+    };
+    API.seasons.getActive(callbacks);
   },
   render: function() {
+    const t = this.props.t;
+    var seasons;
+    if (typeof this.state.seasons !== 'undefined') {
+      seasons = this.state.seasons.map(function(season, index) {
+        return (
+          <MUI.GridTile
+            key={'aaa-season_' + season.id} style={{padding: '5pt'}} cols={2} >
+            <SeasonTile
+              seasonId={season.id}
+              data={season}
+              readOnly={!this.state.seasonId}
+              onDelete={this.deleteSeason}
+              onEdit={this.editSeason} />
+          </MUI.GridTile>
+        );
+      }, this);
+    }
     return (
       <MUI.Card>
         <MUI.CardHeader
-          title="Text['home_seasons']"
-          subtitle="Text['home_seasons subtitle']" />
+          title={t('home:seasons.title')}
+          subtitle={t('home:seasons.subtitle')} />
         <MUI.CardText>
-          <SeasonGraph data={this.state} graphId={'aaa_home_seasons_graph'} />
+          <MUI.GridList
+            cellHeight={'unset'}
+            cols={2}
+            padding={10}
+            style={{width: '100%'}} >
+            {(seasons || <Waiting />)}
+          </MUI.GridList>
         </MUI.CardText>
       </MUI.Card>
     );
   }
 });
+
+module.exports = i18nextReact.setupTranslation(['home','season'], SeasonsCard);

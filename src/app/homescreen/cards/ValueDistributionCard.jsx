@@ -1,37 +1,31 @@
-'use strict';
-var React = require('react');
-var MUI = require('app/common/MaterialUI');
+const React = require('react');
 
-var ValueDistributionGraph = require('svg/ValueDistributionGraph.jsx');
+const i18nextReact = require('global/i18nextReact');
+const MUI = require('app/common/MaterialUI');
+const API = require('api');
 
-module.exports = React.createClass({
+const ValueDistributionGraph = require('svg/ValueDistributionGraph.jsx');
+
+const ValueDistributionCard = React.createClass({
   getInitialState: function() {
-    return {tasks: []};
+    return {distribution: [], maxes: {month:0,quarter:0,half:0}, max:0};
   },
-  componentWillMount: function() {
-    this.setState({
-      distribution: [
-        {year: 1, month: 2, week: 3},
-        {year: 2, month: 4, week: 6},
-        {year: 3, month: 8, week: 12},
-        {year: 4, month: 16, week: 20},
-        {year: 5, month: 16, week: 16},
-        {year: 6, month: 20, week: 12},
-        {year: 7, month: 16, week: 8},
-        {year: 6, month: 8, week: 4},
-        {year: 5, month: 4, week: 1},
-        {year: 4, month: 2, week: 2},
-        {year: 1, month: 1, week: 1}
-      ],
-      max: 20
-    });
+  componentDidMount: function() {
+    var callbacks = {
+      context: this,
+      success: function(distribution) {
+        this.setState(distribution);
+      }
+    };
+    API.reports.getRingsOverview(callbacks);
   },
   render: function() {
+    const t = this.props.t;
     return (
       <MUI.Card>
         <MUI.CardHeader
-          title="Text['home_values']"
-          subtitle="Text['home_values subtitle']" />
+          title={t('home:rings.title')}
+          subtitle={t('home:rings.subtitle')} />
         <MUI.CardText>
           <ValueDistributionGraph data={this.state} />
         </MUI.CardText>
@@ -39,3 +33,6 @@ module.exports = React.createClass({
     );
   }
 });
+
+module.exports = i18nextReact.setupTranslation(['common','home'],
+                                               ValueDistributionCard);

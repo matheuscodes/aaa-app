@@ -1,45 +1,61 @@
-'use strict';
-var React = require('react');
-var MUI = require('app/common/MaterialUI');
+const React = require('react');
 
-module.exports = React.createClass({
+const i18nextReact = require('global/i18nextReact');
+const MUI = require('app/common/MaterialUI');
+const API = require('api');
+
+const YearOverviewCard = React.createClass({
   getInitialState: function() {
     return {months: []};
   },
-  componentWillMount: function() {
-    this.setState({
-      months: [
-        {year: 2015, month: 1, total_count: 12, average_value: 2.234123},
-        {year: 2015, month: 2, total_count: 213, average_value: 6},
-        {year: 2015, month: 3, total_count: 33, average_value: 4.1}
-      ]
-    });
+  componentDidMount: function() {
+    var callbacks = {
+      context: this,
+      success: function(months) {
+        this.setState({months});
+      }
+    };
+    API.reports.getYearOverview(callbacks);
   },
   render: function() {
-    var monthlyCounts = this.state.months.map(function(count) {
-      return (
-        <tr key={'aaa-yearRow_' + count.year + '_' + count.month}>
-          <td>{count.year}</td>
-          <td>Text['month_full_']</td>
-          <td>{count.total_count}</td>
-          <td>{count.average_value ? count.average_value.toPrecision(3) : null }</td>
+    const t = this.props.t;
+
+    var monthlyCounts = [];
+    for(var i = new Date(this.state.months.to); i > this.state.months.from; i.setMonth(i.getMonth()-1)){
+      var row = this.state.months[[(i.getYear()+1900),i.getMonth()].join('-')];
+      if(typeof row == 'undefined'){
+        row = {
+          year: (i.getYear()+1900),
+          month: i.getMonth()
+        }
+      }
+      monthlyCounts.push(
+        <tr key={'aaa-yearRow_' + i.getTime()}>
+          <td style={{textAlign:'center'}}>{row.year}</td>
+          <td style={{textAlign:'center'}}>
+            {t(['common:month.long.',row.month].join(''))}
+          </td>
+          <td style={{textAlign:'center'}}>{(row.totalCount || '-')}</td>
+          <td style={{textAlign:'center'}}>
+            {row.averageGrade ? row.averageGrade.toFixed(2) : '-' }
+          </td>
         </tr>
       );
-    }, this);
+    }
 
     return (
       <MUI.Card>
         <MUI.CardHeader
-          title="Text['home_year_summary']"
-          subtitle="Text['home_year_summary subtitle']" />
+          title={t('home:year.title')}
+          subtitle={t('home:year.subtitle')} />
         <MUI.CardText>
           <table width="96%">
             <tbody>
               <tr>
-                <th>Text[year]</th>
-                <th>Text[month]</th>
-                <th>Text[total]</th>
-                <th>Text[average]</th>
+                <th>{t('home:year.header.year')}</th>
+                <th>{t('home:year.header.month')}</th>
+                <th>{t('home:year.header.total')}</th>
+                <th>{t('home:year.header.grade')}</th>
               </tr>
               {monthlyCounts}
             </tbody>
@@ -49,3 +65,6 @@ module.exports = React.createClass({
     );
   }
 });
+
+module.exports = i18nextReact.setupTranslation(['common','home'],
+                                               YearOverviewCard);

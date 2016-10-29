@@ -1,39 +1,40 @@
-'use strict';
-var React = require('react');
-var MUI = require('app/common/MaterialUI');
+const React = require('react');
 
-var EndDistributionGraph = require('svg/EndDistributionGraph.jsx');
+const i18nextReact = require('global/i18nextReact');
+const MUI = require('app/common/MaterialUI');
+const API = require('api');
 
-module.exports = React.createClass({
+const EndDistributionGraph = require('svg/EndDistributionGraph.jsx');
+
+const EndDistributionCard = React.createClass({
   getInitialState: function() {
-    return {values: [], max_value: 0, min_value: 0, max_end: 0};
+    return {values: {}, maxCounts:0, maxValue: 0, minValue: 0, maxEnd: 0};
   },
-  componentWillMount: function() {
-    this.setState({
-      values: {
-        month: [1.2, 3.6, 2.2, 5.5, 7.023, 6.34],
-        week: [3.3, 2.2, 1.777, 7.4222421, 2]
-      },
-      counts: {
-        month: [6, 6, 6, 6, 6, 6],
-        week: [5, 3, 1, 4, 5, 6]
-      },
-      max_value: 7.422421,
-      min_value: 1.2,
-      max_count: 6,
-      max_end: 6
-    });
+  componentDidMount: function() {
+    var callbacks = {
+      context: this,
+      success: function(report) {
+        this.setState(report);
+      }
+    };
+    API.reports.getAssessmentsOverview(callbacks);
   },
   render: function() {
+    const t = this.props.t;
     return (
       <MUI.Card>
         <MUI.CardHeader
-          title="Text['home_ends']"
-          subtitle="Text['home_ends subtitle']" />
+          title={t('home:assessments.title')}
+          subtitle={t('home:assessments.subtitle')} />
         <MUI.CardText>
-          <EndDistributionGraph data={this.state} />
+          <EndDistributionGraph
+            id={'aaa-assessmenOverviewtGraph'}
+            data={this.state} />
         </MUI.CardText>
       </MUI.Card>
     );
   }
 });
+
+
+module.exports = i18nextReact.setupTranslation(['home'], EndDistributionCard);

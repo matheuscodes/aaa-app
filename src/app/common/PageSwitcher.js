@@ -18,7 +18,13 @@ var seasonsPage = require('app/seasons/SeasonsPage.jsx');
  */
 function PageSwitcher(i18next) {
   this.i18n = i18next;
+
+  if(typeof window !== 'undefined'){
+    window.onpopstate = this.popSwitch.bind(this);
+  }
 }
+
+
 
 const getPageReactClass = function(pageTitle) {
   switch (pageTitle) {
@@ -52,7 +58,7 @@ const getPageNamespaces = function(pageTitle) {
     case 'trainingsPage':
       return ['common', 'training'];
     case 'homePage':
-      return [];
+      return ['common', 'home'];
     case 'loginPage':
       return ['common', 'login'];
     default:
@@ -61,7 +67,27 @@ const getPageNamespaces = function(pageTitle) {
   }
 };
 
-PageSwitcher.prototype.switchTo = function switchTo(pageTitle) {
+function getPageUrlPath (pageTitle) {
+  switch (pageTitle) {
+    case 'seasonsPage':
+      return '/seasons';
+    case 'reportsPage':
+      return '/reports';
+    case 'assessmentsPage':
+      return '/assessments';
+    case 'trainingsPage':
+      return '/trainings';
+    case 'homePage':
+      return '/home';
+    case 'loginPage':
+      return '/login';
+    default:
+      console.error(new ReferenceError("Page not found!"));
+      return [];
+  }
+};
+
+PageSwitcher.prototype.renderPage = function (pageTitle,callback){
   // var renderParent = document.getElementById('aaa-baseLayout').parentNode;
   var renderParent = document.getElementsByTagName('html')[0].parentNode;
   // TODO move this to constants to share between server/app
@@ -75,27 +101,28 @@ PageSwitcher.prototype.switchTo = function switchTo(pageTitle) {
   this.i18n.loadNamespaces(getPageNamespaces(pageTitle), function(err, t) {
     if (!err) {
       ReactDOM.render(React.createElement(baseHtml, props), renderParent);
+      callback();
       return;
     }
     console.error('Namespaces could not be loaded to switch!', err);
   });
 };
 
-PageSwitcher.prototype.loadClient = function load(pageTitle) {
-  var renderParent = document.getElementsByTagName('html')[0].parentNode;
-  // TODO move this to constants to share between server/app
-  const props = {
-    switcher: this,
-    userAgent: navigator.userAgent,
-    i18n: this.i18n
-  };
-  props.container = getPageReactClass(pageTitle);
-  this.i18n.loadNamespaces(getPageNamespaces(pageTitle), function(err, t) {
-    if (!err) {
-      ReactDOM.render(React.createElement(baseHtml, props), renderParent);
-      return;
-    }
-    console.error('Namespaces could not be loaded to render!', err);
+PageSwitcher.prototype.switchTo = function switchTo(pageTitle) {
+  this.renderPage(pageTitle,function(){
+    window.history.pushState({pageTitle},pageTitle, getPageUrlPath(pageTitle));
+  });
+};
+
+PageSwitcher.prototype.popSwitch = function popSwitch(e){
+  if(e.state){
+    this.renderPage(e.state.pageTitle,function(){});
+  }
+}
+
+PageSwitcher.prototype.loadClient = function loadClient(pageTitle) {
+  this.renderPage(pageTitle,function(){
+    window.history.pushState({pageTitle},pageTitle, getPageUrlPath(pageTitle));
   });
 };
 

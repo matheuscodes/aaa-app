@@ -35,7 +35,6 @@ const GraphEstimations = React.createClass({
         if (estimate < minResult) minResult = estimate;
       } else if (this.props.estimate && estimations[0] >= 0) {
         var estimate = (estimations[0] + (this.props.min || minResult)) / 2;
-        console.log("first",estimations,estimate,this.props.min)
         estimations.push(estimate);
         if (estimate > maxResult) maxResult = estimate;
         if (estimate < minResult) minResult = estimate;
