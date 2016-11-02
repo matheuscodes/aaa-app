@@ -1,4 +1,6 @@
 const React = require('react');
+const moment = require('moment');
+
 const i18nextReact = require('global/i18nextReact');
 
 const ReportTableStyle = require('svg/common/ReportTableStyle.jsx');
@@ -24,6 +26,7 @@ const columnWidth = 26;
 const rowHeight = 11;
 
 const oneDay = 24 * 60 * 60 * 1000;
+const oneWeek = oneDay * 7;
 
 const composeDays = function(source,
                              line,
@@ -47,17 +50,56 @@ const composeDays = function(source,
     }
 
     className = classOverride ? classOverride : className;
-
+    var data = source ? source[today.toISOString().substring(0, 10)] : '';
+    data = (data || ' ');
+    if(Number(data) === data && data % 1 !== 0){
+      data = data.toFixed(1);
+    }
     row.push(
       <g transform={'translate(0,' + rowHeight * line + ')'}>
         <rect
           className={className} width={columnWidth} height={rowHeight}
           x={index * columnWidth} y={0} style={styles.reportDay}/>
-        {source && source[today.toISOString().substring(0, 10)] ?
+        {data ?
           <text
             className={className}
             x={(index + 0.5) * columnWidth} y={rowHeight * 0.85}>
-            {source[today.toISOString().substring(0, 10)]}
+            {data}
+          </text> : null}
+      </g>
+    );
+  }
+  return row;
+};
+
+const composeWeeks = function(source,
+                             line,
+                             start,
+                             end,
+                             currentMonth,
+                             classOverride) {
+  var row = [];
+  for (var i = start.getTime(); i <= end.getTime(); i += oneWeek) {
+    var index = (i - start.getTime()) / oneDay;
+    var today = new Date(i);
+    var className = 'aaa-reportDay';
+
+    className = classOverride ? classOverride : className;
+    var data = source ? source[moment(today).isoWeek()] : '';
+    data = (data || ' ');
+    if(Number(data) === data && data % 1 !== 0){
+      data = data.toFixed(1);
+    }
+    row.push(
+      <g transform={'translate(0,' + rowHeight * line + ')'}>
+        <rect
+          className={className} width={columnWidth*7} height={rowHeight}
+          x={index * columnWidth} y={0} style={styles.reportDay}/>
+        {data ?
+          <text
+            className={className}
+            x={(index + 3.5) * columnWidth} y={rowHeight * 0.85}>
+            {data}
           </text> : null}
       </g>
     );
@@ -125,14 +167,17 @@ const rowSummary = function(source,
                             lastDay,
                             currentMonth,
                             title,
-                            classOverride) {
+                            classOverride,
+                            weekly) {
   var totalDays = Math.ceil(
     (new Date(lastDay).getTime() - new Date(firstDay).getTime()) / oneDay
   ) + 1;
 
   return (
     <g transform={'translate(' + 2 * sideLabelsSize + ',0)'}>
-      {composeDays(source, 0, firstDay, lastDay, currentMonth, classOverride)}
+      {weekly ?
+        composeWeeks(source, 0, firstDay, lastDay, currentMonth, classOverride):
+        composeDays(source, 0, firstDay, lastDay, currentMonth, classOverride)}
       <text
         className={'aaa-reportSideLabel'}
         x={-sideLabelsGap} y={rowHeight * 0.85}>
@@ -146,6 +191,49 @@ const rowSummary = function(source,
   );
 };
 
+const composeWeekColumns = function(start, end, rows) {
+  var row = [];
+  for (var i = start.getTime(); i <= end.getTime(); i += oneWeek) {
+    var index = (i - start.getTime()) / oneDay;
+    var today = new Date(i);
+
+    row.push(
+      <g transform={'translate(0,0)'}>
+        <rect
+          style={{
+            stroke: '#000',
+            strokeWidth: 2,
+            fillOpacity: 0,
+            strokeOpacity: 1,
+          }} width={columnWidth*7} height={rowHeight*rows}
+          x={index * columnWidth} y={0} />
+        <text
+          style={{
+            fill:'#000000',
+            textAnchor:'middle',
+            fontSize:'75%'
+          }}
+          x={(index + 3.5) * columnWidth} y={rowHeight * 0.85}>
+          {'Text[weeknumber]'}
+        </text>
+
+        <text
+          style={{
+            fill:'#777777',
+            textAnchor:'right',
+            fontSize:'275%',
+            fontWeight:'bold'
+          }}
+          x={(index +5) * columnWidth} y={rowHeight * 3.85}>
+          {moment(today).isoWeek()}
+        </text>
+      </g>
+    );
+  }
+  return row;
+};
+
+
 const MonthReportTable = React.createClass({
   propTypes: {
     // TODO declare a class to validate
@@ -156,6 +244,18 @@ const MonthReportTable = React.createClass({
   render: function() {
     var rows = 0;
     var data = this.props.data;
+
+    const weeklyTechnique = {};
+    const weeklyTotals = {};
+    const weeklyScores = {};
+
+    data.season.goals.forEach(function(goal){
+      weeklyTechnique[goal.week] = goal.techniqueShot;
+      weeklyTotals[goal.week] = goal.arrowsShot;
+      // TODO scores or grades? decide and uniformize!
+      weeklyScores[goal.week] = goal.averageGrade;
+    })
+
 
     var dailyHeader = composeDays(this.props.allDays,
                                   rows,
@@ -235,6 +335,79 @@ const MonthReportTable = React.createClass({
     );
     rows += 1;
 
+    var techniqueWeekly = (
+      <g transform={'translate(' + (sideLabelsSize * 0.5) + ',0)'}>
+        {skipLines(rows,
+                   rowSummary(weeklyTechnique,
+                              data.firstDay,
+                              data.lastDay,
+                              data.month,
+                              'Text[total counts]',
+                              '',
+                              true /*weekly*/))}
+      </g>
+    );
+    rows += 1;
+
+    var totalWeekly = (
+      <g transform={'translate(' + (sideLabelsSize * 0.5) + ',0)'}>
+        {skipLines(rows,
+                   rowSummary(weeklyTotals,
+                              data.firstDay,
+                              data.lastDay,
+                              data.month,
+                              'Text[total counts]',
+                              '',
+                              true /*weekly*/))}
+      </g>
+    );
+    rows += 1;
+
+    var allResults = [];
+    Object.keys(data.roundRings).forEach(function(distance) {
+      var distanceGroup = rowGroup(data.roundRings[distance],
+                                   data.firstDay,
+                                   data.lastDay,
+                                   data.month,
+                                   'Text[' + distance + ']');
+      allDistanceTrainings.push(
+        <g transform={'translate(' + (sideLabelsSize * 0.5) + ',0)'}>
+          {skipLines(rows, distanceGroup.node)}
+        </g>
+      );
+      rows += distanceGroup.size;
+    });
+
+    var scoreDaily = (
+      <g transform={'translate(' + (sideLabelsSize * 0.5) + ',0)'}>
+        {skipLines(rows,
+                   rowSummary(data.totalScores,
+                              data.firstDay,
+                              data.lastDay,
+                              data.month,
+                              'Text[total counts]',
+                              'aaa-reportDaySummary'))}
+      </g>
+    );
+    rows += 1;
+
+    var scoreWeekly = (
+      <g transform={'translate(' + (sideLabelsSize * 0.5) + ',0)'}>
+        {skipLines(rows,
+                   rowSummary(weeklyScores,
+                              data.firstDay,
+                              data.lastDay,
+                              data.month,
+                              'Text[total counts]',
+                              '',
+                              true /*weekly*/))}
+      </g>
+    );
+    rows += 1;
+
+    rows += 4;
+    const weekColumns = composeWeekColumns(data.firstDay, data.lastDay,rows);
+
     return (
       <svg
         version="1.1"
@@ -247,14 +420,24 @@ const MonthReportTable = React.createClass({
         width={'100%'}>
         <ReportTableStyle />
         <g id="main">
-          <g transform={'translate(' + (sideLabelsSize * 2.5) + ',0)'}>
-            {dailyHeader}
+          <g transform={'translate(0,' + rowHeight*4 + ')'}>
+            <g transform={'translate(' + (sideLabelsSize * 2.5) + ',0)'}>
+              {dailyHeader}
+            </g>
+            {warmUps}
+            {warmOuts}
+            {allDistanceTrainings}
+            {techniqueDaily}
+            {totalDaily}
+            {techniqueWeekly}
+            {totalWeekly}
+            {allResults}
+            {scoreDaily}
+            {scoreWeekly}
           </g>
-          {warmUps}
-          {warmOuts}
-          {allDistanceTrainings}
-          {techniqueDaily}
-          {totalDaily}
+          <g transform={'translate(' + (sideLabelsSize * 2.5) + ',0)'}>
+            {weekColumns}
+          </g>
         </g>
       </svg>
     );

@@ -66,10 +66,10 @@ const MonthGraph = React.createClass({
             {seasonBars}
             <GraphEstimations
               data={values} estimate={true} size="1000"
-              max={this.props.data.max_value} min={this.props.data.min_value} />
+              max={this.props.data.maxValue} min={this.props.data.minValue} />
             <GraphAxisLabels
               type="right" title="results" size="1000"
-              min={this.props.data.min_value} max={this.props.data.max_value}
+              min={this.props.data.minValue} max={this.props.data.maxValue}
               offset={this.props.data.overview.length * columnWidth}/>
           </g>
         </g>

@@ -8,6 +8,14 @@ var processSeason = function(response) {
   return season;
 };
 
+var processReport = function(response) {
+  var report = JSON.parse(response.toString());
+  report.firstDay = new Date(report.firstDay);
+  report.lastDay = new Date(report.lastDay);
+  report.month = report.month - 1;
+  return report;
+};
+
 var processResponseList = function(response) {
   var data = JSON.parse(response.toString());
   for (var i = 0; i < data.length; i++) {
@@ -61,6 +69,22 @@ module.exports = {
     };
 
     var request = requestBuilder('/seasons/' + id, 'GET', newCallbacks);
+    request.send();
+  },
+  getMonthReport: function(id, year, month, callbacks) {
+    var successCall = function(request) {
+      var response = processReport(request.responseText);
+      callbacks.success.call(callbacks.context, response);
+    };
+
+    var newCallbacks = {
+      context: callbacks.context,
+      200: successCall,
+      failure: callbacks.error
+    };
+
+    var request = requestBuilder('/seasons/' + id + '/report/'+year+'/'+ month,
+                                 'GET', newCallbacks);
     request.send();
   },
   save: function(season, callbacks) {
