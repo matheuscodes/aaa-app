@@ -56,7 +56,7 @@ const MonthGraph = React.createClass({
           <SeasonLabels max="1000" />
           <g
             id="data"
-            transform={'translate(' + sideLabelsSize * 2.5 + ',-150)'}>
+            transform={'translate(' + sideLabelsSize * 2 + ',-150)'}>
             <GraphGrid
               height="1000" columns={this.props.data.overview.length} />
             <GraphBottomLabels content={days} />

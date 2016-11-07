@@ -14,6 +14,9 @@ const PlanBar = require('svg/season/PlanBar.jsx');
 const SeasonLabels = require('svg/season/SeasonLabels.jsx');
 const ShareBar = require('svg/season/ShareBar.jsx');
 
+const sideLabelsSize = 397;
+const columnWidth = 100;
+
 const SeasonGraph = React.createClass({
   propTypes: {
     // TODO declare a class to validate
@@ -42,7 +45,10 @@ const SeasonGraph = React.createClass({
 
 
     const totalWeeks = weeks.length;
-    const generalWidth = (totalWeeks * 100 + 700 + 150);
+    const extraPadding = this.props.extraPadding ?
+                         this.props.extraPadding*columnWidth : 0;
+    const generalWidth = sideLabelsSize * 2.5 +
+                         totalWeeks * columnWidth + 50 + extraPadding;
     const generalHeight = 1000 + 150 + 50;
 
     var values = [];
@@ -83,8 +89,10 @@ const SeasonGraph = React.createClass({
             width={'100%'} >
         <GraphStyle />
         <g id="main">
-          <SeasonLabels max="1000" />
-          <g id="data" transform="translate(700,-150)">
+          {this.props.hideLabels ? '' : <SeasonLabels max="1000" />}
+          <g
+            id="data"
+            transform={'translate(' + (sideLabelsSize * 2) + ',-150)'}>
             <GraphGrid height="1000" columns={totalWeeks} />
             <GraphBottomLabels
               content={weeks}

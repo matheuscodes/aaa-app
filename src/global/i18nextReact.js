@@ -95,6 +95,8 @@ function formatter(value, format, lng) {
       return moment(value).format("dddd, MMMM Do YYYY, h:mm a");
     case 'dateLong':
       return moment(value).format("MMMM Do YYYY");
+    case 'monthLong':
+      return moment(value).format("MMMM, YYYY");
     default:
       return value;
   }
@@ -112,7 +114,7 @@ if (typeof window === 'undefined') { // If on Node.js
       saveMissing: true,
       fallbackLng: 'en',
       fallbackNS: 'common',
-      ns: ['common', 'login', 'assessment', 'season', 'training', 'home'],
+      ns: ['common', 'login', 'assessment', 'season', 'training', 'home', 'report'],
       preload: ['en', 'de'],
       whitelist: ['en', 'de'],
       detection: detectionServerOptions,
