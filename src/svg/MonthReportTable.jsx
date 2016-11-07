@@ -52,7 +52,7 @@ const composeDays = function(source,
     className = classOverride ? classOverride : className;
     var data = source ? source[today.toISOString().substring(0, 10)] : '';
     data = (data || ' ');
-    if(Number(data) === data && data % 1 !== 0){
+    if (Number(data) === data && data % 1 !== 0) {
       data = data.toFixed(1);
     }
     row.push(
@@ -87,13 +87,13 @@ const composeWeeks = function(source,
     className = classOverride ? classOverride : className;
     var data = source ? source[moment(today).isoWeek()] : '';
     data = (data || ' ');
-    if(Number(data) === data && data % 1 !== 0){
+    if (Number(data) === data && data % 1 !== 0) {
       data = data.toFixed(1);
     }
     row.push(
       <g transform={'translate(0,' + rowHeight * line + ')'}>
         <rect
-          className={className} width={columnWidth*7} height={rowHeight}
+          className={className} width={columnWidth * 7} height={rowHeight}
           x={index * columnWidth} y={0} style={styles.reportDay}/>
         {data ?
           <text
@@ -176,7 +176,7 @@ const rowSummary = function(source,
   return (
     <g transform={'translate(' + 2 * sideLabelsSize + ',0)'}>
       {weekly ?
-        composeWeeks(source, 0, firstDay, lastDay, currentMonth, classOverride):
+        composeWeeks(source, 0, firstDay, lastDay, currentMonth, classOverride) :
         composeDays(source, 0, firstDay, lastDay, currentMonth, classOverride)}
       <text
         className={'aaa-reportSideLabel'}
@@ -204,14 +204,14 @@ const composeWeekColumns = function(start, end, rows, title) {
             stroke: '#000',
             strokeWidth: 2,
             fillOpacity: 0,
-            strokeOpacity: 1,
-          }} width={columnWidth*7} height={rowHeight*rows}
+            strokeOpacity: 1
+          }} width={columnWidth * 7} height={rowHeight * rows}
           x={index * columnWidth} y={0} />
         <text
           style={{
-            fill:'#000000',
-            textAnchor:'middle',
-            fontSize:'75%'
+            fill: '#000000',
+            textAnchor: 'middle',
+            fontSize: '75%'
           }}
           x={(index + 3.5) * columnWidth} y={rowHeight * 0.85}>
           {title}
@@ -219,12 +219,12 @@ const composeWeekColumns = function(start, end, rows, title) {
 
         <text
           style={{
-            fill:'#777777',
-            textAnchor:'right',
-            fontSize:'275%',
-            fontWeight:'bold'
+            fill: '#777777',
+            textAnchor: 'right',
+            fontSize: '275%',
+            fontWeight: 'bold'
           }}
-          x={(index +5) * columnWidth} y={rowHeight * 3.85}>
+          x={(index + 5) * columnWidth} y={rowHeight * 3.85}>
           {moment(today).isoWeek()}
         </text>
       </g>
@@ -249,13 +249,12 @@ const MonthReportTable = React.createClass({
     const weeklyTotals = {};
     const weeklyScores = {};
 
-    data.season.goals.forEach(function(goal){
+    data.season.goals.forEach(function(goal) {
       weeklyTechnique[goal.week] = goal.techniqueShot;
       weeklyTotals[goal.week] = goal.arrowsShot;
       // TODO scores or grades? decide and uniformize!
       weeklyScores[goal.week] = goal.averageGrade;
-    })
-
+    });
 
     var dailyHeader = composeDays(this.props.allDays,
                                   rows,
@@ -272,8 +271,8 @@ const MonthReportTable = React.createClass({
                                  data.lastDay,
                                  data.month,
                                  t('report:warmUps'),
-                                 function(distance){
-                                   return t('report:warmUpsDistance',{distance})
+                                 function(distance) {
+                                   return t('report:warmUpsDistance', {distance});
                                  });
       warmUps = (
         <g transform={'translate(0,0)'}>
@@ -289,9 +288,9 @@ const MonthReportTable = React.createClass({
                                    data.firstDay,
                                    data.lastDay,
                                    data.month,
-                                   t('report:trainingsDistance',{distance}),
-                                   function(value){
-                                     return t(['report:trainingsGroup.', value].join(''))
+                                   t('report:trainingsDistance', {distance}),
+                                   function(value) {
+                                     return t(['report:trainingsGroup.', value].join(''));
                                    });
       allDistanceTrainings.push(
         <g transform={'translate(0,0)'}>
@@ -308,8 +307,8 @@ const MonthReportTable = React.createClass({
                                   data.lastDay,
                                   data.month,
                                   t('report:warmOuts'),
-                                  function(distance){
-                                    return t('report:warmOutsDistance',{distance})
+                                  function(distance) {
+                                    return t('report:warmOutsDistance', {distance});
                                   });
       warmOuts = (
         <g transform={'translate(0,0)'}>
@@ -353,7 +352,7 @@ const MonthReportTable = React.createClass({
                               data.month,
                               t('report:techniqueWeekly'),
                               '',
-                              true /*weekly*/))}
+                              true /* weekly*/))}
       </g>
     );
     rows += 1;
@@ -367,7 +366,7 @@ const MonthReportTable = React.createClass({
                               data.month,
                               t('report:techniqueWeekly'),
                               '',
-                              true /*weekly*/))}
+                              true /* weekly*/))}
       </g>
     );
     rows += 1;
@@ -378,9 +377,9 @@ const MonthReportTable = React.createClass({
                                    data.firstDay,
                                    data.lastDay,
                                    data.month,
-                                   t('report:resultsDistance',{distance}),
-                                   function(round){
-                                     return t('report:resultsGroup',{round})
+                                   t('report:resultsDistance', {distance}),
+                                   function(round) {
+                                     return t('report:resultsGroup', {round});
                                    });
       allDistanceTrainings.push(
         <g transform={'translate(0,0)'}>
@@ -412,13 +411,13 @@ const MonthReportTable = React.createClass({
                               data.month,
                               t('report:resultsWeekly'),
                               '',
-                              true /*weekly*/))}
+                              true /* weekly*/))}
       </g>
     );
     rows += 1;
 
     rows += 4;
-    const weekColumns = composeWeekColumns(data.firstDay, data.lastDay,rows,
+    const weekColumns = composeWeekColumns(data.firstDay, data.lastDay, rows,
       	                                   t('report:calendarWeek'));
 
     return (
@@ -433,7 +432,7 @@ const MonthReportTable = React.createClass({
         width={'100%'}>
         <ReportTableStyle />
         <g id="main">
-          <g transform={'translate(0,' + rowHeight*4 + ')'}>
+          <g transform={'translate(0,' + rowHeight * 4 + ')'}>
             <g transform={'translate(' + (sideLabelsSize * 2) + ',0)'}>
               {dailyHeader}
             </g>

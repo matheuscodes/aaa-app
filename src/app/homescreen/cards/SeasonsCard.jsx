@@ -59,4 +59,4 @@ const SeasonsCard = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['home','season'], SeasonsCard);
+module.exports = i18nextReact.setupTranslation(['home', 'season'], SeasonsCard);

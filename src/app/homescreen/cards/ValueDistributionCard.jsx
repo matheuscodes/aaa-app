@@ -8,7 +8,7 @@ const ValueDistributionGraph = require('svg/ValueDistributionGraph.jsx');
 
 const ValueDistributionCard = React.createClass({
   getInitialState: function() {
-    return {distribution: [], maxes: {month:0,quarter:0,half:0}, max:0};
+    return {distribution: [], maxes: {month: 0, quarter: 0, half: 0}, max: 0};
   },
   componentDidMount: function() {
     var callbacks = {
@@ -34,5 +34,5 @@ const ValueDistributionCard = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common','home'],
+module.exports = i18nextReact.setupTranslation(['common', 'home'],
                                                ValueDistributionCard);

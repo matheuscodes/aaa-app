@@ -17,7 +17,7 @@ const ReportTableStyle = React.createClass({
       "fill:#000000!important;text-anchor:middle;font-size:75%}",
       ".aaa-reportWeek{fill-opacity:0 !important}",
       "text.aaa-reportWeek{fill:#000000;text-anchor:middle;font-size:75%}",
-      "text.aaa-reportWeekTitle{fill:#000000;text-anchor:right;font-size:175%}",
+      "text.aaa-reportWeekTitle{fill:#000000;text-anchor:right;font-size:175%}"
     ];
     return (
         <style>

@@ -3,14 +3,14 @@ var requestBuilder = require('api/helpers/requestBuilder');
 module.exports = {
   getYearOverview: function(callbacks) {
     const to = new Date();
-    const from = new Date(to.getTime()-1000*60*60*24*365);
+    const from = new Date(to.getTime() - 1000 * 60 * 60 * 24 * 365);
     from.setDate(1);
 
     var successCall = function(request) {
       var response = JSON.parse(request.responseText);
-      var processed = {from,to};
-      response.forEach(function (each){
-        processed[[each.year,each.month].join('-')] = each;
+      var processed = {from, to};
+      response.forEach(function(each) {
+        processed[[each.year, each.month].join('-')] = each;
       });
       callbacks.success.call(callbacks.context, processed);
     };
@@ -20,7 +20,6 @@ module.exports = {
       200: successCall,
       failure: callbacks.error
     };
-
 
     var url = [
       '/reports/overview/monthly?',
@@ -32,20 +31,20 @@ module.exports = {
   },
   getLastWeeksOverview: function(callbacks) {
     const to = new Date();
-    const from = new Date(to.getTime()-1000*60*60*24*14);
+    const from = new Date(to.getTime() - 1000 * 60 * 60 * 24 * 14);
     from.setDate(1);
 
     var successCall = function(request) {
       var response = JSON.parse(request.responseText);
-      var max = 0
-      response.forEach(function (each){
+      var max = 0;
+      response.forEach(function(each) {
         each.date = new Date(each.date);
-        if(each.totalCount > max) max = each.totalCount;
+        if (each.totalCount > max) max = each.totalCount;
       });
-      response.sort(function(a,b){
+      response.sort(function(a, b) {
         return a - b;
-      })
-      callbacks.success.call(callbacks.context, {days:response,max,from,to});
+      });
+      callbacks.success.call(callbacks.context, {days: response, max, from, to});
     };
 
     var newCallbacks = {
@@ -53,7 +52,6 @@ module.exports = {
       200: successCall,
       failure: callbacks.error
     };
-
 
     var url = [
       '/reports/overview/daily?',
@@ -66,22 +64,22 @@ module.exports = {
   getRingsOverview: function(callbacks) {
     var successCall = function(request) {
       var response = JSON.parse(request.responseText);
-      var maxes = {month:0,quarter:0,half:0};
+      var maxes = {month: 0, quarter: 0, half: 0};
       var max = 0;
-      response.forEach(function(value){
+      response.forEach(function(value) {
         maxes.month += value.month;
         maxes.quarter += value.quarter;
         maxes.half += value.half;
       });
-      response.forEach(function(value){
-        value.month = value.month/maxes.month;
-        value.quarter = value.quarter/maxes.quarter;
-        value.half  = value.half/maxes.half;
-        if(value.month > max) max = value.month;
-        if(value.quarter > max) max = value.quarter;
-        if(value.half > max) max = value.half;
+      response.forEach(function(value) {
+        value.month = value.month / maxes.month;
+        value.quarter = value.quarter / maxes.quarter;
+        value.half = value.half / maxes.half;
+        if (value.month > max) max = value.month;
+        if (value.quarter > max) max = value.quarter;
+        if (value.half > max) max = value.half;
       });
-      callbacks.success.call(callbacks.context, {distribution:response,maxes,max});
+      callbacks.success.call(callbacks.context, {distribution: response, maxes, max});
     };
 
     var newCallbacks = {
@@ -108,4 +106,4 @@ module.exports = {
     var request = requestBuilder('/reports/overview/assessments', 'GET', newCallbacks);
     request.send();
   }
-}
+};

@@ -71,7 +71,7 @@ const ValueDistributionGraph = React.createClass({
           <g id="data" transform="translate(150,-250)">
             <GraphGrid height="1000" columns="12" />
             <GraphAxisLabels
-              type="left" min="0" max={this.props.data.max*100}
+              type="left" min="0" max={this.props.data.max * 100}
               title="ringDistribution" size="1000" suffix="%" />
               {bars}
             <GraphBottomLabels content={values} />
@@ -82,5 +82,5 @@ const ValueDistributionGraph = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common','home'],
+module.exports = i18nextReact.setupTranslation(['common', 'home'],
                                                ValueDistributionGraph);

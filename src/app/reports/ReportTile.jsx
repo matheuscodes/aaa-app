@@ -26,12 +26,12 @@ const ReportTile = React.createClass({
     API.seasons.getMonthReport(this.props.seasonId,
                             this.props.year,
                             this.props.month, callbacks);
-    delete this.state.firstDay; //Showing the loading again.
+    delete this.state.firstDay; // Showing the loading again.
   },
-  componentDidMount: function(){
+  componentDidMount: function() {
     this.updateContent();
   },
-  componentDidUpdate: function(){
+  componentDidUpdate: function() {
     this.updateContent();
   },
   render: function() {
@@ -61,7 +61,7 @@ const ReportTile = React.createClass({
       content = (
         <MUI.GridList cellHeight={'unset'} cols={1} padding={10} style={{width: '100%'}}>
           <MUI.GridTile cols={1} >
-            <h2>{t('report:tableTitle',{date:new Date(this.props.year,this.props.month-1,1)})}</h2>
+            <h2>{t('report:tableTitle', {date: new Date(this.props.year, this.props.month - 1, 1)})}</h2>
             <MonthReportTable data={this.state} allDays={allDays}/>
             <h3>{t('report:dailyGraphTitle')}</h3>
             <MonthGraph data={dailyGraphData} graphId={'aaa_reports_month_graph'} />

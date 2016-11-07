@@ -20,13 +20,13 @@ const TotalArrowsCard = React.createClass({
   },
   render: function() {
     const t = this.props.t;
-    var dailyCounts = this.state.days.map(function(day,index) {
+    var dailyCounts = this.state.days.map(function(day, index) {
       return (
         <MUI.ListItem
           key={'aaa-dayCount_' + index}
           primaryText={
             <div>
-              <b>{t('home:arrows.date',day)}</b>
+              <b>{t('home:arrows.date', day)}</b>
               <div
                 style={{
                   width: ((day.totalCount / this.state.max) * 100) + '%',
@@ -60,5 +60,5 @@ const TotalArrowsCard = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common','home'],
+module.exports = i18nextReact.setupTranslation(['common', 'home'],
                                                TotalArrowsCard);

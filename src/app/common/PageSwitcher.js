@@ -19,12 +19,10 @@ var seasonsPage = require('app/seasons/SeasonsPage.jsx');
 function PageSwitcher(i18next) {
   this.i18n = i18next;
 
-  if(typeof window !== 'undefined'){
+  if (typeof window !== 'undefined') {
     window.onpopstate = this.popSwitch.bind(this);
   }
 }
-
-
 
 const getPageReactClass = function(pageTitle) {
   switch (pageTitle) {
@@ -67,7 +65,7 @@ const getPageNamespaces = function(pageTitle) {
   }
 };
 
-function getPageUrlPath (pageTitle) {
+function getPageUrlPath(pageTitle) {
   switch (pageTitle) {
     case 'seasonsPage':
       return '/seasons';
@@ -85,9 +83,9 @@ function getPageUrlPath (pageTitle) {
       console.error(new ReferenceError("Page not found!"));
       return [];
   }
-};
+}
 
-PageSwitcher.prototype.renderPage = function (pageTitle,callback){
+PageSwitcher.prototype.renderPage = function(pageTitle, callback) {
   // var renderParent = document.getElementById('aaa-baseLayout').parentNode;
   var renderParent = document.getElementsByTagName('html')[0].parentNode;
   // TODO move this to constants to share between server/app
@@ -109,20 +107,20 @@ PageSwitcher.prototype.renderPage = function (pageTitle,callback){
 };
 
 PageSwitcher.prototype.switchTo = function switchTo(pageTitle) {
-  this.renderPage(pageTitle,function(){
-    window.history.pushState({pageTitle},pageTitle, getPageUrlPath(pageTitle));
+  this.renderPage(pageTitle, function() {
+    window.history.pushState({pageTitle}, pageTitle, getPageUrlPath(pageTitle));
   });
 };
 
-PageSwitcher.prototype.popSwitch = function popSwitch(e){
-  if(e.state){
-    this.renderPage(e.state.pageTitle,function(){});
+PageSwitcher.prototype.popSwitch = function popSwitch(e) {
+  if (e.state) {
+    this.renderPage(e.state.pageTitle, function() {});
   }
-}
+};
 
 PageSwitcher.prototype.loadClient = function loadClient(pageTitle) {
-  this.renderPage(pageTitle,function(){
-    window.history.pushState({pageTitle},pageTitle, getPageUrlPath(pageTitle));
+  this.renderPage(pageTitle, function() {
+    window.history.pushState({pageTitle}, pageTitle, getPageUrlPath(pageTitle));
   });
 };
 

@@ -8,7 +8,7 @@ const EndDistributionGraph = require('svg/EndDistributionGraph.jsx');
 
 const EndDistributionCard = React.createClass({
   getInitialState: function() {
-    return {values: {}, maxCounts:0, maxValue: 0, minValue: 0, maxEnd: 0};
+    return {values: {}, maxCounts: 0, maxValue: 0, minValue: 0, maxEnd: 0};
   },
   componentDidMount: function() {
     var callbacks = {
@@ -35,6 +35,5 @@ const EndDistributionCard = React.createClass({
     );
   }
 });
-
 
 module.exports = i18nextReact.setupTranslation(['home'], EndDistributionCard);

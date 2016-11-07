@@ -31,9 +31,9 @@ const EndDistributionGraph = React.createClass({
         // Optimize for shortest.
         return (
           <GraphBar key={[
-              'aaa-endDistributionGraph_', this.props.id,
-              '_count_', group, '_', index
-            ].join('')}
+            'aaa-endDistributionGraph_', this.props.id,
+            '_count_', group, '_', index
+          ].join('')}
             value={single * 1000 / this.props.data.maxCount}
             column={index} position={position}
             size={groupCount} type={group} />

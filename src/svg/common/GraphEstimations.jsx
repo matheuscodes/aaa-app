@@ -21,10 +21,10 @@ const GraphEstimations = React.createClass({
         if (value < minResult) minResult = value;
       } else if (this.props.estimate && index > 1) {
         var estimate = -1;
-        if(estimations[index - 1] > 0){
+        if (estimations[index - 1] > 0) {
           estimate = estimations[index - 1];
         }
-        if(estimations[index - 2] > 0){
+        if (estimations[index - 2] > 0) {
           estimate += estimations[index - 2];
         } else {
           estimate += -1;

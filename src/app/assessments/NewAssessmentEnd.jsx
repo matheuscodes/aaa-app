@@ -92,7 +92,7 @@ const NewAssessmentEnd = React.createClass({
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose} >
-          <div style={{height:styles.arrowSize*2}}>
+          <div style={{height: styles.arrowSize * 2}}>
             {arrows}
           </div>
         </MUI.Dialog>

@@ -21,22 +21,22 @@ const YearOverviewCard = React.createClass({
     const t = this.props.t;
 
     var monthlyCounts = [];
-    for(var i = new Date(this.state.months.to); i > this.state.months.from; i.setMonth(i.getMonth()-1)){
-      var row = this.state.months[[(i.getYear()+1900),i.getMonth()].join('-')];
-      if(typeof row == 'undefined'){
+    for (var i = new Date(this.state.months.to); i > this.state.months.from; i.setMonth(i.getMonth() - 1)) {
+      var row = this.state.months[[(i.getYear() + 1900), i.getMonth()].join('-')];
+      if (typeof row == 'undefined') {
         row = {
-          year: (i.getYear()+1900),
+          year: (i.getYear() + 1900),
           month: i.getMonth()
-        }
+        };
       }
       monthlyCounts.push(
         <tr key={'aaa-yearRow_' + i.getTime()}>
-          <td style={{textAlign:'center'}}>{row.year}</td>
-          <td style={{textAlign:'center'}}>
-            {t(['common:month.long.',row.month].join(''))}
+          <td style={{textAlign: 'center'}}>{row.year}</td>
+          <td style={{textAlign: 'center'}}>
+            {t(['common:month.long.', row.month].join(''))}
           </td>
-          <td style={{textAlign:'center'}}>{(row.totalCount || '-')}</td>
-          <td style={{textAlign:'center'}}>
+          <td style={{textAlign: 'center'}}>{(row.totalCount || '-')}</td>
+          <td style={{textAlign: 'center'}}>
             {row.averageGrade ? row.averageGrade.toFixed(2) : '-' }
           </td>
         </tr>
@@ -66,5 +66,5 @@ const YearOverviewCard = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common','home'],
+module.exports = i18nextReact.setupTranslation(['common', 'home'],
                                                YearOverviewCard);

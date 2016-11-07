@@ -23,23 +23,23 @@ const EventsCard = React.createClass({
       }
     };
     var now = new Date();
-    var next3months = new Date(now.getTime()+1000*60*60*24*90);
-    API.events.getList(callbacks,now,next3months);
+    var next3months = new Date(now.getTime() + 1000 * 60 * 60 * 24 * 90);
+    API.events.getList(callbacks, now, next3months);
   },
   render: function() {
     const t = this.props.t;
 
     var events = '';
     if (typeof this.state.events !== 'undefined') {
-      events = this.state.events.map(function(event,index) {
+      events = this.state.events.map(function(event, index) {
         return (
           <MUI.ListItem
             key={'aaa-event_' + index}
             primaryText={
               <p style={{fontSize: '80%', margin: 0}}>
                 <strong>{event.name}</strong><br/>
-                {t('home:events.start',event)}<br/>
-                {t('home:events.days',{count:event.days})}
+                {t('home:events.start', event)}<br/>
+                {t('home:events.days', {count: event.days})}
               </p>
             }
             leftAvatar={
@@ -62,6 +62,5 @@ const EventsCard = React.createClass({
     );
   }
 });
-
 
 module.exports = i18nextReact.setupTranslation(['home'], EventsCard);

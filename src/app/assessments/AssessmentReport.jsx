@@ -29,7 +29,7 @@ const AssessmentReport = React.createClass({
         {t('assessment:report.noRounds')}
       </MUI.GridTile>
     );
-    if (typeof this.props.data.rounds !== 'undefined'){
+    if (typeof this.props.data.rounds !== 'undefined') {
       rounds = this.props.data.rounds.map(
         function(round, roundIndex) {
           round.index = roundIndex;

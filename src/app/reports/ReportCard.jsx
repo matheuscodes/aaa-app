@@ -7,10 +7,10 @@ const API = require('api');
 const ReportTile = require('app/reports/ReportTile.jsx');
 
 const ReportCard = React.createClass({
-  getInitialState: function(){
-    return {seasons:[],years:[],months:[]}
+  getInitialState: function() {
+    return {seasons: [], years: [], months: []};
   },
-  componentDidMount: function(){
+  componentDidMount: function() {
     var callbacks = {
       context: this,
       success: function(seasons) {
@@ -30,7 +30,7 @@ const ReportCard = React.createClass({
     delete current.selectedYear;
     current.months = [];
     delete current.selectedMonth;
-    for(var i = season.start.getFullYear(); i <= season.end.getFullYear(); i++){
+    for (var i = season.start.getFullYear(); i <= season.end.getFullYear(); i++) {
       current.years.push(i);
     }
     this.setState(current);
@@ -42,8 +42,8 @@ const ReportCard = React.createClass({
     current.selectedYear = year;
     current.months = [];
     delete current.selectedMonth;
-    for(var i = new Date(season.start); i <= season.end; i.setMonth(i.getMonth()+1)){
-      if(i.getFullYear() == year){
+    for (var i = new Date(season.start); i <= season.end; i.setMonth(i.getMonth() + 1)) {
+      if (i.getFullYear() == year) {
         current.months.push(i.getMonth());
       }
     }
@@ -79,7 +79,7 @@ const ReportCard = React.createClass({
         <MUI.MenuItem
           key={'aaa-reportYear_' + index}
           value={month}
-          primaryText={t('common:month.long.'+month)} />
+          primaryText={t('common:month.long.' + month)} />
       );
     });
 
@@ -145,7 +145,7 @@ const ReportCard = React.createClass({
               <ReportTile
                 seasonId={this.state.seasonId}
                 year={this.state.selectedYear}
-                month={this.state.selectedMonth > 8 ? (this.state.selectedMonth+1) : '0'+(this.state.selectedMonth+1)} />
+                month={this.state.selectedMonth > 8 ? (this.state.selectedMonth + 1) : '0' + (this.state.selectedMonth + 1)} />
               : <center><h1>{t('report:noneSelected')}</h1></center>}
             </MUI.GridTile>
           </MUI.GridList>
@@ -155,4 +155,4 @@ const ReportCard = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common','report'], ReportCard);
+module.exports = i18nextReact.setupTranslation(['common', 'report'], ReportCard);

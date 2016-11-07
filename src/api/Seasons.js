@@ -83,7 +83,7 @@ module.exports = {
       failure: callbacks.error
     };
 
-    var request = requestBuilder('/seasons/' + id + '/report/'+year+'/'+ month,
+    var request = requestBuilder('/seasons/' + id + '/report/' + year + '/' + month,
                                  'GET', newCallbacks);
     request.send();
   },
@@ -103,8 +103,8 @@ module.exports = {
     season.start = moment(season.start).format('YYYY-MM-DD');
     season.end = moment(season.end).format('YYYY-MM-DD');
 
-    //i18next doing some bullshit to objects.
-    season.goals.forEach(function (goal){
+    // i18next doing some bullshit to objects.
+    season.goals.forEach(function(goal) {
       delete goal.lng;
       delete goal.ns;
     });

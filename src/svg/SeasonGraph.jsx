@@ -37,16 +37,15 @@ const SeasonGraph = React.createClass({
 
     const weeks = [];
     const sortedData = [];
-    for(var i = moment(this.props.data.start); i <= dateEnd; i.date(i.date()+7)){
+    for (var i = moment(this.props.data.start); i <= dateEnd; i.date(i.date() + 7)) {
       const localWeek = i.isoWeek();
       weeks.push(localWeek);
       sortedData.push(mapData[localWeek]);
     }
 
-
     const totalWeeks = weeks.length;
     const extraPadding = this.props.extraPadding ?
-                         this.props.extraPadding*columnWidth : 0;
+                         this.props.extraPadding * columnWidth : 0;
     const generalWidth = sideLabelsSize * 2.5 +
                          totalWeeks * columnWidth + 50 + extraPadding;
     const generalHeight = 1000 + 150 + 50;
