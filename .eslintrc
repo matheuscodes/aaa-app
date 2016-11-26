@@ -1,7 +1,6 @@
 extends:
   - google
   - plugin:react/recommended
-
 plugins:
   - react
 env:

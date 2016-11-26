@@ -8,6 +8,13 @@ engines:
       - javascript
   eslint:
     enabled: true
+    channel: "eslint-3"
+    config:
+      extensions:
+      - .es6
+      - .js
+      - .jsx
+      - .svg
   fixme:
     enabled: true
 ratings:
