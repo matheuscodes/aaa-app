@@ -17,5 +17,3 @@
 [![Test Coverage](https://codeclimate.com/github/matheuscodes/aaa-app/badges/coverage.svg)](https://codeclimate.com/github/matheuscodes/aaa-app/coverage)
 
 [![Issue Count](https://codeclimate.com/github/matheuscodes/aaa-app/badges/issue_count.svg)](https://codeclimate.com/github/matheuscodes/aaa-app)
-
-[![GitHub issues](https://img.shields.io/github/issues/badges/shields.svg?style=plastic)]()
