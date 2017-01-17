@@ -8,6 +8,8 @@ var i18next = require('global/i18nextReact').i18next;
 
 var PageSwitcher = require('app/common/PageSwitcher');
 
+//process.env.NODE_ENV = 'production';
+
 console.log("Loading");
 
 var container = document.getElementById('aaa-baseLayout');

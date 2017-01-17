@@ -91,7 +91,7 @@ PageSwitcher.prototype.renderPage = function(pageTitle, callback) {
   // TODO move this to constants to share between server/app
   const props = {
     switcher: this,
-    userAgent: navigator.userAgent,
+    userAgent: false,
     i18n: this.i18n
   };
 
@@ -129,7 +129,7 @@ PageSwitcher.prototype.serverString = function serverString(pageTitle,
   // TODO move this to constants to share between server/app
   const props = {
     switcher: this,
-    userAgent: request.headers['user-agent'],
+    userAgent: false,
     i18n: request.i18n
   };
   props.container = getPageReactClass(pageTitle);

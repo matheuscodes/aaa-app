@@ -6,8 +6,8 @@ const xhrBackend = require('i18next-xhr-backend');
 const browserLanguageDetector = require('i18next-browser-languagedetector');
 
 const fsBackendOptions = {
-  loadPath: 'content/languages/{{lng}}/{{ns}}.json',
-  addPath: 'content/languages/missing/{{lng}}/{{ns}}.json',
+  loadPath: 'node_modules/aaa-languages/src/{{lng}}/{{ns}}.json',
+  addPath: 'build/missing/{{lng}}/{{ns}}.json',
   jsonIndent: 2
 };
 

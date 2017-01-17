@@ -5,7 +5,7 @@ const i18nextReact = require('global/i18nextReact');
 
 const LanguageIcon = require('svg/icon/Languages.jsx');
 
-const languages = require('constants/Languages');
+const languages = require('constants/Languages.json');
 
 /* Styles used in the footer*/
 var footerStyle = {

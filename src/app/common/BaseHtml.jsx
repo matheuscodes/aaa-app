@@ -3,8 +3,6 @@ const i18next = require('i18next');
 
 const I18nextProvider = require('react-i18next').I18nextProvider;
 
-const PageSwitcher = require('app/common/PageSwitcher');
-
 const htmlStyle = {
   fontFamily: 'Roboto, sans-serif',
   minHeight: '100%',
@@ -22,7 +20,6 @@ const htmlStyle = {
  */
 const BaseHtml = React.createClass({
   propTypes: {
-    switcher: React.PropTypes.instanceOf(PageSwitcher),
     userAgent: React.PropTypes.string,
     i18n: React.PropTypes.instanceOf(i18next.constructor)
   },
