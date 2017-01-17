@@ -12,8 +12,8 @@ const fsBackendOptions = {
 };
 
 const xhrBackendOptions = {
-  loadPath: '/languages/{{lng}}/{{ns}}.json',
-  addPath: '/languages/missing/{{lng}}/{{ns}}.json',
+  loadPath: 'languages/{{lng}}/{{ns}}.json',
+  addPath: 'languages/missing/{{lng}}/{{ns}}.json',
 
   // your backend server supports multiloading
   // /locales/resources.json?lng=de+en&ns=ns1+ns2
