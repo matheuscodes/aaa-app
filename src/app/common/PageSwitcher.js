@@ -85,6 +85,8 @@ function getPageUrlPath(pageTitle) {
   }
 }
 
+PageSwitcher.prototype.getPageUrlPath = getPageUrlPath;
+
 PageSwitcher.prototype.renderPage = function(pageTitle, callback) {
   // var renderParent = document.getElementById('aaa-baseLayout').parentNode;
   var renderParent = document.getElementsByTagName('html')[0].parentNode;

@@ -42,27 +42,33 @@ app.get("/*", function(req, res, next) {
 
 app.use('/languages',express.static('node_modules/aaa-languages/src'));
 
-app.get("/login", function(req, res) {
+app.get(['/',['/',pageSwitcher.getPageUrlPath('loginPage')].join('')],
+        function(req, res) {
   res.send(pageSwitcher.serverString('loginPage', req));
 });
 
-app.get("/home", function(req, res) {
+app.get(['/',pageSwitcher.getPageUrlPath('homePage')].join(''),
+        function(req, res) {
   res.send(pageSwitcher.serverString('homePage', req));
 });
 
-app.get("/trainings", function(req, res) {
+app.get(['/',pageSwitcher.getPageUrlPath('trainingsPage')].join(''),
+        function(req, res) {
   res.send(pageSwitcher.serverString('trainingsPage', req));
 });
 
-app.get("/assessments", function(req, res) {
+app.get(['/',pageSwitcher.getPageUrlPath('assessmentsPage')].join(''),
+        function(req, res) {
   res.send(pageSwitcher.serverString('assessmentsPage', req));
 });
 
-app.get("/reports", function(req, res) {
+app.get(['/',pageSwitcher.getPageUrlPath('reportsPage')].join(''),
+        function(req, res) {
   res.send(pageSwitcher.serverString('reportsPage', req));
 });
 
-app.get("/seasons", function(req, res) {
+app.get(['/',pageSwitcher.getPageUrlPath('seasonsPage')].join(''),
+        function(req, res) {
   res.send(pageSwitcher.serverString('seasonsPage', req));
 });
 
