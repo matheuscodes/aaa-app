@@ -68,17 +68,17 @@ const getPageNamespaces = function(pageTitle) {
 function getPageUrlPath(pageTitle) {
   switch (pageTitle) {
     case 'seasonsPage':
-      return '/seasons';
+      return 'seasons';
     case 'reportsPage':
-      return '/reports';
+      return 'reports';
     case 'assessmentsPage':
-      return '/assessments';
+      return 'assessments';
     case 'trainingsPage':
-      return '/trainings';
+      return 'trainings';
     case 'homePage':
-      return '/home';
+      return 'home';
     case 'loginPage':
-      return '/login';
+      return 'login';
     default:
       console.error(new ReferenceError("Page not found!"));
       return [];
