@@ -1,4 +1,4 @@
-var requestBuilder = require('api/helpers/requestBuilder');
+var requestBuilder = require('api/helpers/RequestBuilder');
 
 module.exports = function login(credentials, callbacks) {
   var successCall = function(request) {

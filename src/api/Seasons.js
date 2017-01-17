@@ -1,4 +1,4 @@
-var requestBuilder = require('api/helpers/requestBuilder');
+var requestBuilder = require('api/helpers/RequestBuilder');
 var moment = require('moment');
 
 var processSeason = function(response) {

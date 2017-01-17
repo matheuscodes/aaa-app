@@ -1,4 +1,4 @@
-var requestBuilder = require('api/helpers/requestBuilder');
+var requestBuilder = require('api/helpers/RequestBuilder');
 
 module.exports = {
   getYearOverview: function(callbacks) {

@@ -1,6 +1,6 @@
 'use strict';
 
-var requestBuilder = require('api/helpers/requestBuilder');
+var requestBuilder = require('api/helpers/RequestBuilder');
 
 var processResponse = function(data) {
   data.date = new Date(data.date);
