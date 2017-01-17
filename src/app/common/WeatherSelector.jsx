@@ -3,7 +3,7 @@
 var React = require('react');
 var MUI = require('app/common/MaterialUI');
 
-var WeatherConditions = require('constants/weatherConditions.json');
+var WeatherConditions = require('constants/WeatherConditions.json');
 var WeatherIcons = require('svg/icon/Weather.jsx');
 
 module.exports = React.createClass({
