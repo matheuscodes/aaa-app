@@ -30,6 +30,16 @@ app.use(express.static('build'));
 app.use(express.static('src'));
 app.use(express.static('content'));
 
+app.get("/*", function(req, res, next) {
+  console.log(req.path,new Date());
+  Object.keys(req.headers).forEach(function(header){
+    if(header.match('[xX]-.*')){
+      console.log([header,req.headers[header]].join(': '));
+    }
+  });
+  next();
+});
+
 app.use('/languages',express.static('node_modules/aaa-languages/src'));
 
 app.get("/login", function(req, res) {
