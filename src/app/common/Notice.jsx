@@ -15,7 +15,7 @@ module.exports = React.createClass({
       <MUI.Snackbar
           open={this.props.message.open}
           message={<div style={color[this.props.message ? this.props.message.type : color.MESSAGE]}>{this.props.message ? this.props.message.text : null}</div>}
-          autoHideDuration={2000}
+          autoHideDuration={4000}
           onRequestClose={this.props.onClose} />
       );
   }

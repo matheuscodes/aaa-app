@@ -29,20 +29,21 @@ const LoginCard = React.createClass({
       },
       failure: function(request) {
         // TODO handle me
-        console.log("ERROR", request);
+        console.log("ERROR DOWNLOADING IMAGE INFO", request);
       }
     };
     downloadFile('img/' + selected + '.json', callbacks);
   },
   doLogin: function() {
+    const t = this.props.t;
     var callbacks = {
       context: this,
       success: function(request) {
-        this.showMessage('Text [login succeeded]', 'MESSAGE');
+        this.showMessage(t('login:messages.login'), 'MESSAGE');
         this.props.switcher.switchTo('trainingsPage');
       },
       error: function(request) {
-        this.showMessage('Text [login failed]', 'ERROR');
+        this.showMessage(t('login:messages.loginError'), 'ERROR');
       }
     };
     API.login(this.state.login, callbacks);
@@ -108,20 +109,22 @@ const LoginCard = React.createClass({
           <div style={{height: 300, width: '100%', background}} />
         </MUI.CardMedia>
         <MUI.CardText>
-          <MUI.GridList cellHeight={'auto'} cols={1} padding={10} >
-            <MUI.GridTile style={{padding: '5pt'}} cols={1} >
+          <MUI.GridList cellHeight={72} cols={1} padding={10} >
+            <MUI.GridTile cols={1} >
               <MUI.TextField
                 style={{width: '100%'}}
                 id={'aaa-loginEmail'}
                 onChange={this.changeEmail}
+                type='email'
                 hintText={t('login:emailTextField.hint')}
                 floatingLabelText={t('login:emailTextField.label')} />
             </MUI.GridTile>
-            <MUI.GridTile style={{padding: '5pt'}} cols={1} >
+            <MUI.GridTile cols={1} >
               <MUI.TextField
                 style={{width: '100%'}}
                 id={'aaa-loginPassword'}
                 onChange={this.changePassword}
+                type='password'
                 hintText={t('login:passwordTextField.hint')}
                 floatingLabelText={t('login:passwordTextField.label')} />
             </MUI.GridTile>
@@ -133,6 +136,7 @@ const LoginCard = React.createClass({
             label={t('login:loginButton.label')}
             labelPosition="before"
             primary={true}
+            type={'submit'}
             onTouchTap={this.doLogin}
             icon={<MUI.icons.navigation.chevron_right />} />
         </MUI.CardActions>
