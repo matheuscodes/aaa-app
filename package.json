@@ -4,7 +4,7 @@
   "description": "AAA - Advanced Archery Application",
   "main": "src/server.js",
   "scripts": {
-    "discify": "browserify src/app.js -o build/app.js -i moment --full-paths && uglifyjs build/app.js -o build/app.min.js && discify build/app.min.js > build/disc.html --open",
+    "discify": "browserify src/app.js -t babelify --outfile build/app.js -i moment --full-paths && uglifyjs build/app.js -o build/app.min.js && discify build/app.min.js > build/disc.html --open",
     "bundle": "browserify src/app.js -t babelify --outfile build/app.js",
     "build": "rm -rf build && mkdir build && npm run bundle",
     "start": "npm run bundle && babel-node src/server.js",
