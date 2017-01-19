@@ -215,7 +215,7 @@ const TrainingsPage = React.createClass({
     if(typeof this.state.previous !== 'undefined'){
       previousButton = (
         <MUI.RaisedButton
-          label={t('training:previous')}
+          label={t('training:previousButton')}
           fullWidth={true}
           primary={true}
           disabled={(this.state.previous === null)}
@@ -228,7 +228,7 @@ const TrainingsPage = React.createClass({
     if(typeof this.state.next !== 'undefined'){
       nextButton = (
         <MUI.RaisedButton
-          label={t('training:next')}
+          label={t('training:nextButton')}
           fullWidth={true}
           primary={true}
           labelPosition={'before'}

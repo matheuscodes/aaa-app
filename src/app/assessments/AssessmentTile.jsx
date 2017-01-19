@@ -1,7 +1,6 @@
 const React = require('react');
 
 const MUI = require('app/common/MaterialUI');
-const API = require('api');
 const i18nextReact = require('global/i18nextReact');
 
 const AssessmentReport = require('app/assessments/AssessmentReport.jsx');
@@ -19,16 +18,13 @@ const AssessmentTile = React.createClass({
     t: React.PropTypes.func
   },
   getInitialState: function() {
-    return {};
+    return {open:false};
   },
-  componentDidMount: function() {
-    var callbacks = {
-      context: this,
-      success: function(assessment) {
-        this.setState(assessment);
-      }
-    };
-    API.assessments.reportById(this.props.data.id, callbacks);
+  handleClose: function() {
+    this.setState({open:false});
+  },
+  handleOpen: function() {
+    this.setState({open:true});
   },
   render: function() {
     const t = this.props.t;
@@ -40,15 +36,13 @@ const AssessmentTile = React.createClass({
       );
     }
 
-    var content = <Waiting />;
-    if (typeof this.state.date !== 'undefined') {
-      content = (
-        <AssessmentReport
-          assessmentId={this.props.data.id}
-          data={this.state}
-          onDelete={this.props.onDelete}/>
-      );
-    }
+    var content = (
+      <AssessmentReport
+        assessmentId={this.props.data.id}
+        handleClose={this.handleClose}
+        open={this.state.open}
+        onDelete={this.props.onDelete}/>
+    );
 
     return (
       <MUI.Paper zDepth={1}>
@@ -66,6 +60,13 @@ const AssessmentTile = React.createClass({
           <MUI.CardText>
             {content}
           </MUI.CardText>
+          <MUI.CardActions style={{textAlign: 'right'}}>
+            <MUI.RaisedButton
+              label={t('assessment:detailsButton')}
+              secondary={true}
+              style={{margin: '5pt'}}
+              onTouchTap={this.handleOpen}/>
+          </MUI.CardActions>
         </MUI.Card>
         {message}
       </MUI.Paper>

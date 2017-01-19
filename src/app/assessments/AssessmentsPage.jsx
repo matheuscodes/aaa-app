@@ -25,7 +25,7 @@ const AssessmentsPage = React.createClass({
     t: React.PropTypes.func
   },
   getInitialState: function() {
-    return {editAssessment: false};
+    return {editAssessment: false, currentPage: 0};
   },
   updateAssessmentList: function() {
     const t = this.props.t;
@@ -48,14 +48,94 @@ const AssessmentsPage = React.createClass({
         this.showMessage(t('assessment:messages.listError'), "ERROR");
       }
     };
-    API.assessments.getList(callbacks);
+    API.assessments.getList(this.state.currentPage,callbacks);
+  },
+  updatePreviousList: function() {
+    const t = this.props.t;
+    var callbacks = {
+      context: this,
+      success: function(list) {
+        var current = this.state;
+        current.previous = list;
+        this.setState(current);
+      },
+      error: function(error) {
+        if (error instanceof ReferenceError) {
+          if (error.message === 'Missing Token.') {
+            this.props.switcher.switchTo('loginPage');
+          }
+        }
+        this.showMessage(t('assessment:messages.listError'), "ERROR");
+      }
+    };
+    if(this.state.currentPage > 0){
+      API.assessments.getList(this.state.currentPage - 1,callbacks);
+    } else {
+      var current = this.state;
+      delete current.previous;
+      this.setState(current);
+    }
+  },
+  updateNextList: function() {
+    const t = this.props.t;
+    var callbacks = {
+      context: this,
+      success: function(list) {
+        var current = this.state;
+        if(list.length > 0){
+          current.next = list;
+        } else {
+          delete current.next;
+        }
+        this.setState(current);
+      },
+      error: function(error) {
+        if (error instanceof ReferenceError) {
+          if (error.message === 'Missing Token.') {
+            this.props.switcher.switchTo('loginPage');
+          }
+        }
+        this.showMessage(t('assessment:messages.listError'), "ERROR");
+      }
+    };
+    API.assessments.getList(this.state.currentPage + 1,callbacks);
   },
   componentDidMount: function() {
+    this.updateAll();
+  },
+  updateAll: function() {
     this.updateAssessmentList();
+    this.updateRest();
+  },
+  updateRest: function() {
+    this.updateNextList();
+    this.updatePreviousList();
+  },
+  moveToNextPage(){
+    var current = this.state;
+    current.currentPage += 1;
+    current.assessments = current.next;
+    current.next = null;
+    current.previous = null;
+    this.setState(current);
+    this.updateRest();
+  },
+  moveToPreviousPage(){
+    var current = this.state;
+    current.currentPage -= 1;
+    current.assessments = current.previous;
+    current.next = null;
+    if(current.currentPage > 0){
+      current.previous = null
+    } else {
+      delete current.previous;
+    }
+    this.setState(current);
+    this.updateRest();
   },
   closeEdit: function(refresh) {
     if (refresh) {
-      this.updateAssessmentList();
+      this.updateAll();
     } else {
       var current = this.state;
       current.editAssessment = false;
@@ -144,6 +224,33 @@ const AssessmentsPage = React.createClass({
       );
     }
 
+    var previousButton = '';
+    if(typeof this.state.previous !== 'undefined'){
+      previousButton = (
+        <MUI.RaisedButton
+          label={t('assessment:previousButton')}
+          fullWidth={true}
+          primary={true}
+          disabled={(this.state.previous === null)}
+          onTouchTap={this.moveToPreviousPage}
+          icon={<MUI.icons.navigation.chevron_left />} />
+      );
+    }
+
+    var nextButton = '';
+    if(typeof this.state.next !== 'undefined'){
+      nextButton = (
+        <MUI.RaisedButton
+          label={t('assessment:nextButton')}
+          fullWidth={true}
+          primary={true}
+          labelPosition={'before'}
+          disabled={(this.state.next === null)}
+          onTouchTap={this.moveToNextPage}
+          icon={<MUI.icons.navigation.chevron_right />} />
+      );
+    }
+
     return (
       <BaseLayout
         switcher={this.props.switcher}
@@ -159,7 +266,19 @@ const AssessmentsPage = React.createClass({
             cols={this.state.editAssessment ? 2 : 4} >
             {(editAssessment || newAssessmentButton)}
           </MUI.GridTile>
-          {(assessments || <Waiting />)}
+          {(assessments || <MUI.GridTile cols={4} ><Waiting /></MUI.GridTile>)}
+          <MUI.GridTile cols={4} >
+            <MUI.GridList cols={4} padding={10} style={styles.gridList} >
+              <MUI.GridTile style={{padding: '5pt'}}>
+                {previousButton}
+              </MUI.GridTile>
+              <MUI.GridTile>{''}</MUI.GridTile>
+              <MUI.GridTile>{''}</MUI.GridTile>
+              <MUI.GridTile style={{padding: '5pt'}}>
+                {nextButton}
+              </MUI.GridTile>
+            </MUI.GridList>
+          </MUI.GridTile>
         </MUI.GridList>
         {message}
       </BaseLayout>
