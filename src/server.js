@@ -26,8 +26,7 @@ app.post('/languages/missing/:lng/:ns.json',
 app.get('/languages/resources.json',
         i18nextMiddleware.getResourcesHandler(i18next));
 
-app.use(express.static('build'));
-app.use(express.static('src'));
+app.use('/app.js',express.static('build/app.js'));
 app.use(express.static('content'));
 
 app.get("/*", function(req, res, next) {

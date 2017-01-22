@@ -5,12 +5,12 @@ const MUI = require('app/common/MaterialUI');
 const API = require('api');
 
 const PageSwitcher = require('app/common/PageSwitcher');
-const Waiting = require('app/common/Waiting.jsx');
-const Notice = require('app/common/Notice.jsx');
+const Waiting = require('app/common/Waiting');
+const Notice = require('app/common/Notice');
 
-const BaseLayout = require('app/common/BaseLayout.jsx');
-const NewSeasonCard = require('app/seasons/NewSeasonCard.jsx');
-const SeasonTile = require('app/seasons/SeasonTile.jsx');
+const BaseLayout = require('app/common/BaseLayout');
+const NewSeasonCard = require('app/seasons/NewSeasonCard');
+const SeasonTile = require('app/seasons/SeasonTile');
 
 const SeasonsPage = React.createClass({
   propTypes: {

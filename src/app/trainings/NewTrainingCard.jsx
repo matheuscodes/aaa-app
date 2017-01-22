@@ -1,12 +1,12 @@
 const React = require('react');
 
-const TrainingTypes = require('constants/TrainingTypes.json');
+const TrainingTypes = require('constants/TrainingTypes');
 
 const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 const API = require('api');
 
-const Notice = require('app/common/Notice.jsx');
+const Notice = require('app/common/Notice');
 
 const style = {
   arrowCountField: {

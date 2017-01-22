@@ -4,18 +4,18 @@ const MUI = require('app/common/MaterialUI');
 const API = require('api');
 const i18nextReact = require('global/i18nextReact');
 
-const Notice = require('app/common/Notice.jsx');
+const Notice = require('app/common/Notice');
 
-const Thermometer = require('svg/icon/Thermometer.jsx');
-const Windmills = require('svg/icon/Windmills.jsx');
-const ArcherAnchored = require('svg/icon/ArcherAnchored.jsx');
+const Thermometer = require('svg/icon/Thermometer');
+const Windmills = require('svg/icon/Windmills');
+const ArcherAnchored = require('svg/icon/ArcherAnchored');
 
 const AssessmentArrowTable = require(
-                              'app/assessments/AssessmentArrowTable.jsx'
+                              'app/assessments/AssessmentArrowTable'
                              );
-const NewAssessmentEnd = require('app/assessments/NewAssessmentEnd.jsx');
-const DirectionSelector = require('app/common/DirectionSelector.jsx');
-const WeatherSelector = require('app/common/WeatherSelector.jsx');
+const NewAssessmentEnd = require('app/assessments/NewAssessmentEnd');
+const DirectionSelector = require('app/common/DirectionSelector');
+const WeatherSelector = require('app/common/WeatherSelector');
 
 const style = {
   arrowCountField: {

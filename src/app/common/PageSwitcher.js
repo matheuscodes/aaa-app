@@ -2,13 +2,13 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var ReactDOMServer = require('react-dom/server');
 
-var baseHtml = require('app/common/BaseHtml.jsx');
-var homePage = require('app/homescreen/HomePage.jsx');
-var loginPage = require('app/login/LoginPage.jsx');
-var trainingsPage = require('app/trainings/TrainingsPage.jsx');
-var assessmentsPage = require('app/assessments/AssessmentsPage.jsx');
-var reportsPage = require('app/reports/ReportsPage.jsx');
-var seasonsPage = require('app/seasons/SeasonsPage.jsx');
+var baseHtml = require('app/common/BaseHtml');
+var homePage = require('app/homescreen/HomePage');
+var loginPage = require('app/login/LoginPage');
+var trainingsPage = require('app/trainings/TrainingsPage');
+var assessmentsPage = require('app/assessments/AssessmentsPage');
+var reportsPage = require('app/reports/ReportsPage');
+var seasonsPage = require('app/seasons/SeasonsPage');
 
 /**
  * Controller for switching between pages.

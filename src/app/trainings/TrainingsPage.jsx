@@ -5,12 +5,12 @@ const MUI = require('app/common/MaterialUI');
 const API = require('api');
 
 const PageSwitcher = require('app/common/PageSwitcher');
-const BaseLayout = require('app/common/BaseLayout.jsx');
-const Waiting = require('app/common/Waiting.jsx');
-const Notice = require('app/common/Notice.jsx');
+const BaseLayout = require('app/common/BaseLayout');
+const Waiting = require('app/common/Waiting');
+const Notice = require('app/common/Notice');
 
-const TrainingTile = require('app/trainings/TrainingTile.jsx');
-const NewTrainingCard = require('app/trainings/NewTrainingCard.jsx');
+const TrainingTile = require('app/trainings/TrainingTile');
+const NewTrainingCard = require('app/trainings/NewTrainingCard');
 
 const styles = {
   gridList: {

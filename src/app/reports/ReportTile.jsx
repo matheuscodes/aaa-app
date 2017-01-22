@@ -4,11 +4,11 @@ const MUI = require('app/common/MaterialUI');
 const API = require('api');
 const i18nextReact = require('global/i18nextReact');
 
-const Waiting = require('app/common/Waiting.jsx');
+const Waiting = require('app/common/Waiting');
 
-const MonthReportTable = require('svg/MonthReportTable.jsx');
-const MonthGraph = require('svg/MonthGraph.jsx');
-const SeasonGraph = require('svg/SeasonGraph.jsx');
+const MonthReportTable = require('svg/MonthReportTable');
+const MonthGraph = require('svg/MonthGraph');
+const SeasonGraph = require('svg/SeasonGraph');
 
 const oneDay = 24 * 60 * 60 * 1000;
 

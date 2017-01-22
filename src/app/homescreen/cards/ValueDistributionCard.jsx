@@ -4,7 +4,7 @@ const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 const API = require('api');
 
-const ValueDistributionGraph = require('svg/ValueDistributionGraph.jsx');
+const ValueDistributionGraph = require('svg/ValueDistributionGraph');
 
 const ValueDistributionCard = React.createClass({
   getInitialState: function() {

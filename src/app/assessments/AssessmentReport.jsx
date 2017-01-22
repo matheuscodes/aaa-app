@@ -4,14 +4,14 @@ const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 const API = require('api');
 
-const WeatherConditions = require('constants/WeatherConditions.json');
-const Compass = require('svg/icon/Compass.jsx');
-const WeatherIcons = require('svg/icon/Weather.jsx');
-const EndDistributionGraph = require('svg/EndDistributionGraph.jsx');
-const DistributionComparisonGraph = require('svg/DistributionComparisonGraph.jsx');
+const WeatherConditions = require('constants/WeatherConditions');
+const Compass = require('svg/icon/Compass');
+const WeatherIcons = require('svg/icon/Weather');
+const EndDistributionGraph = require('svg/EndDistributionGraph');
+const DistributionComparisonGraph = require('svg/DistributionComparisonGraph');
 
-const AssessmentArrowTable = require('app/assessments/AssessmentArrowTable.jsx');
-const Waiting = require('app/common/Waiting.jsx');
+const AssessmentArrowTable = require('app/assessments/AssessmentArrowTable');
+const Waiting = require('app/common/Waiting');
 
 const AssessmentReport = React.createClass({
   propTypes: {

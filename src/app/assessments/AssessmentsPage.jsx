@@ -4,13 +4,13 @@ const MUI = require('app/common/MaterialUI');
 const API = require('api');
 const i18nextReact = require('global/i18nextReact');
 
-const Waiting = require('app/common/Waiting.jsx');
-const Notice = require('app/common/Notice.jsx');
+const Waiting = require('app/common/Waiting');
+const Notice = require('app/common/Notice');
 const PageSwitcher = require('app/common/PageSwitcher');
 
-const BaseLayout = require('app/common/BaseLayout.jsx');
-const AssessmentTile = require('app/assessments/AssessmentTile.jsx');
-const NewAssessmentCard = require('app/assessments/NewAssessmentCard.jsx');
+const BaseLayout = require('app/common/BaseLayout');
+const AssessmentTile = require('app/assessments/AssessmentTile');
+const NewAssessmentCard = require('app/assessments/NewAssessmentCard');
 
 const styles = {
   gridList: {

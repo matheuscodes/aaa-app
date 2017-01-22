@@ -1,4 +1,4 @@
-{
+module.exports = {
   "FAIR":"Fair",
   "BARELYCLOUDY":"BarelyCloudy",
   "PARTLYCLOUDY":"PartlyCloudy",

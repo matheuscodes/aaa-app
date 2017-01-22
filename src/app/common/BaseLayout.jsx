@@ -2,8 +2,8 @@ var React = require('react');
 
 var MUI = require('app/common/MaterialUI');
 
-var Header = require('app/common/Header.jsx');
-var Footer = require('app/common/Footer.jsx');
+var Header = require('app/common/Header');
+var Footer = require('app/common/Footer');
 var PageSwitcher = require('app/common/PageSwitcher');
 
 /**

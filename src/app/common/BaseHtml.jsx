@@ -30,7 +30,6 @@ const BaseHtml = React.createClass({
             <link
               href="https://fonts.googleapis.com/css?family=Roboto:400,300,500"
               rel="stylesheet" type="text/css" />
-            <link rel="stylesheet"	href="css/app.css" />
           </head>
           <body style={{margin: '0 0 48pt'}}>
             <I18nextProvider i18n={this.props.i18n}>

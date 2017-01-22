@@ -4,7 +4,7 @@ const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 const API = require('api');
 
-const ReportTile = require('app/reports/ReportTile.jsx');
+const ReportTile = require('app/reports/ReportTile');
 
 const ReportCard = React.createClass({
   getInitialState: function() {

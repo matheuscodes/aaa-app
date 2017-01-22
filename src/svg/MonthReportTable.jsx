@@ -3,7 +3,7 @@ const moment = require('moment');
 
 const i18nextReact = require('global/i18nextReact');
 
-const ReportTableStyle = require('svg/common/ReportTableStyle.jsx');
+const ReportTableStyle = require('svg/common/ReportTableStyle');
 
 const styles = {
   reportDay: {

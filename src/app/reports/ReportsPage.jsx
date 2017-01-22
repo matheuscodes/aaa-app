@@ -3,8 +3,8 @@
 var React = require('react');
 var MUI = require('app/common/MaterialUI');
 
-var BaseLayout = require('app/common/BaseLayout.jsx');
-var ReportCard = require('app/reports/ReportCard.jsx');
+var BaseLayout = require('app/common/BaseLayout');
+var ReportCard = require('app/reports/ReportCard');
 
 var styles = {
   gridList: {

@@ -3,8 +3,8 @@ const React = require('react');
 const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 
-const MiniCalendar = require('svg/common/MiniCalendar.jsx');
-const TrainingTypes = require('constants/TrainingTypes.json');
+const MiniCalendar = require('svg/common/MiniCalendar');
+const TrainingTypes = require('constants/TrainingTypes');
 
 const TrainingTile = React.createClass({
   propTypes: {
@@ -44,7 +44,7 @@ const TrainingTile = React.createClass({
     Object.keys(row).forEach(function(distance) {
       rows.push(
         <MUI.TableRow key={['aaa-trainingRow_', distance].join('')}>
-          <MUI.TableRowColumn>{distance}m</MUI.TableRowColumn>
+          <MUI.TableRowColumn>{distance} m</MUI.TableRowColumn>
           {row[distance]}
         </MUI.TableRow>
       );

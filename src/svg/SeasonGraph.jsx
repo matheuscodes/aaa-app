@@ -3,16 +3,16 @@ const moment = require('moment');
 
 const i18nextReact = require('global/i18nextReact');
 
-const GraphStyle = require('svg/common/GraphStyle.jsx');
-const GraphBottomLabels = require('svg/common/GraphBottomLabels.jsx');
-const GraphAxisLabels = require('svg/common/GraphAxisLabels.jsx');
-const GraphEstimations = require('svg/common/GraphEstimations.jsx');
-const GraphGrid = require('svg/common/GraphGrid.jsx');
+const GraphStyle = require('svg/common/GraphStyle');
+const GraphBottomLabels = require('svg/common/GraphBottomLabels');
+const GraphAxisLabels = require('svg/common/GraphAxisLabels');
+const GraphEstimations = require('svg/common/GraphEstimations');
+const GraphGrid = require('svg/common/GraphGrid');
 
-const ActualBar = require('svg/season/ActualBar.jsx');
-const PlanBar = require('svg/season/PlanBar.jsx');
-const SeasonLabels = require('svg/season/SeasonLabels.jsx');
-const ShareBar = require('svg/season/ShareBar.jsx');
+const ActualBar = require('svg/season/ActualBar');
+const PlanBar = require('svg/season/PlanBar');
+const SeasonLabels = require('svg/season/SeasonLabels');
+const ShareBar = require('svg/season/ShareBar');
 
 const sideLabelsSize = 397;
 const columnWidth = 100;
