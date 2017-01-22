@@ -87,16 +87,11 @@ const Header = React.createClass({
       <MUI.icons.navigation.menu />
     </MUI.IconButton>);
 
-    var rightIcon = (<MUI.IconButton>
-      <MUI.icons.action.exit_to_app />
-    </MUI.IconButton>);
-
     return (
       <div>
         <MUI.AppBar
             title={this.props.title}
             showMenuIconButton={ this.state.archer ? true : false }
-            iconElementRight={ this.state.archer ? rightIcon : null }
             iconElementLeft={ this.state.archer ? leftIcon : null } />
         <MUI.Drawer
             docked={false}
@@ -112,10 +107,6 @@ const Header = React.createClass({
                 secondaryText={ this.state.archer ? this.state.archer.email : null }
                 disabled={true}
                 nestedItems={[
-                  <MUI.ListItem
-                    key={'aaa-headerSettings'}
-                    primaryText={t('common:menuDrawer.settings')}
-                    leftIcon={<MUI.icons.action.settings />} />,
                   <MUI.ListItem key={'aaa-headerLogout'}
                     onTouchTap={this.handleClose}
                     primaryText={t('common:logout')}
