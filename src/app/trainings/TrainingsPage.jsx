@@ -249,14 +249,27 @@ const TrainingsPage = React.createClass({
             cols={this.state.editTraining ? 2 : 4} >
             {(editTraining || newTrainingButton)}
           </MUI.GridTile>
+
+          <MUI.GridTile cols={this.state.editTraining ? 2 : 4} >
+            <MUI.GridList
+              cellHeight={'unset'}
+              cols={this.state.editTraining ? 2 : 4}
+              padding={10}
+              style={styles.gridList} >
             {(trainings || <MUI.GridTile cols={4} ><Waiting /></MUI.GridTile>)}
+            </MUI.GridList>
+          </MUI.GridTile>
           <MUI.GridTile cols={4} >
             <MUI.GridList cols={4} padding={10} style={styles.gridList} >
+              {this.state.editTraining ?
+                [<MUI.GridTile>{''}</MUI.GridTile>,
+                <MUI.GridTile>{''}</MUI.GridTile>] : []}
               <MUI.GridTile style={{padding: '5pt'}}>
                 {previousButton}
               </MUI.GridTile>
-              <MUI.GridTile>{''}</MUI.GridTile>
-              <MUI.GridTile>{''}</MUI.GridTile>
+              {this.state.editTraining === false ?
+                [<MUI.GridTile>{''}</MUI.GridTile>,
+                <MUI.GridTile>{''}</MUI.GridTile>] : []}
               <MUI.GridTile style={{padding: '5pt'}}>
                 {nextButton}
               </MUI.GridTile>

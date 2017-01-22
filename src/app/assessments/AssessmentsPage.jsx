@@ -195,7 +195,7 @@ const AssessmentsPage = React.createClass({
           <MUI.GridTile
             key={['aaa-assessment_', assessment.id].join('')}
             style={{padding: '5pt'}}
-            cols={2} >
+            cols={this.state.editAssessment ? 6 : 2} >
             <AssessmentTile data={assessment} onDelete={this.deleteAssessment}/>
           </MUI.GridTile>
         );
@@ -258,22 +258,34 @@ const AssessmentsPage = React.createClass({
         userAgent={this.props.userAgent}
         title={t('assessment:title')} >
         <MUI.GridList
-          cellHeight={'unset'}
-          cols={4}
+          cellHeight={'auto'}
+          cols={6}
           padding={10}
           style={styles.gridList} >
           <MUI.GridTile style={{padding: '5pt'}}
-            cols={this.state.editAssessment ? 2 : 4} >
+            cols={this.state.editAssessment ? 3 : 6} >
             {(editAssessment || newAssessmentButton)}
           </MUI.GridTile>
-          {(assessments || <MUI.GridTile cols={4} ><Waiting /></MUI.GridTile>)}
-          <MUI.GridTile cols={4} >
+          <MUI.GridTile cols={this.state.editAssessment ? 3 : 6} >
+            <MUI.GridList
+              cellHeight={'unset'}
+              cols={6}
+              padding={10}
+              style={styles.gridList} >
+            {(assessments || <MUI.GridTile cols={6} ><Waiting /></MUI.GridTile>)}
+            </MUI.GridList>
+          </MUI.GridTile>
+          <MUI.GridTile cols={6} >
             <MUI.GridList cols={4} padding={10} style={styles.gridList} >
+              {this.state.editAssessment ?
+                [<MUI.GridTile>{''}</MUI.GridTile>,
+                <MUI.GridTile>{''}</MUI.GridTile>] : []}
               <MUI.GridTile style={{padding: '5pt'}}>
                 {previousButton}
               </MUI.GridTile>
-              <MUI.GridTile>{''}</MUI.GridTile>
-              <MUI.GridTile>{''}</MUI.GridTile>
+              {this.state.editAssessment === false ?
+                [<MUI.GridTile>{''}</MUI.GridTile>,
+                <MUI.GridTile>{''}</MUI.GridTile>] : []}
               <MUI.GridTile style={{padding: '5pt'}}>
                 {nextButton}
               </MUI.GridTile>

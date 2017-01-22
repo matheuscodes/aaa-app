@@ -169,15 +169,15 @@ const NewAssessmentCard = React.createClass({
     var callbacks = {
       context: this,
       success: function() {
-        this.showMessage(t('assesment:messages.newSaved'), "MESSAGE");
+        this.showMessage(t('assessment:messages.newSaved'), "MESSAGE");
         this.setState(this.getInitialState());
         this.props.onClose(true);
       },
       warning: function() {
-        this.showMessage(t('assesment:messages.newSaved'), "WARNING");
+        this.showMessage(t('assessment:messages.newSaved'), "WARNING");
       },
       error: function() {
-        this.showMessage(t('assesment:messages.newError'), "ERROR");
+        this.showMessage(t('assessment:messages.newError'), "ERROR");
       }
     };
     // FIXME separate assessment from state.

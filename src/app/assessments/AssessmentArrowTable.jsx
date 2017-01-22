@@ -68,22 +68,32 @@ const AssessmentArrowTable = React.createClass({
       <table style={{width: '100%'}}>
         <thead>
           <tr>
-            <th>{t('assessment:rings')}</th>
-            <th>{t('assessment:total')}</th>
+            <th style={{color:MUI.palette.accent3Color}}>
+              {t('assessment:rings')}
+            </th>
+            <th style={{color:MUI.palette.accent3Color}}>
+              {t('assessment:total')}
+            </th>
           </tr>
         </thead>
         <tbody>
           {rows}
           {this.props.data.totalScore ? <tr>
-            <th style={{textAlign: 'right'}}>{t('assessment:totalPoints')}</th>
+            <th style={{textAlign: 'right',color:MUI.palette.accent3Color}}>
+              {t('assessment:totalPoints')}
+            </th>
             <th>{this.props.data.totalScore}</th>
           </tr> : null}
           {this.props.data.totalScore ? <tr>
-            <th style={{textAlign: 'right'}}>{t('assessment:totalTens')}</th>
+            <th style={{textAlign: 'right',color:MUI.palette.accent3Color}}>
+              {t('assessment:totalTens')}
+            </th>
             <th>{this.props.data.tens}</th>
           </tr> : null}
           {this.props.data.totalScore ? <tr>
-            <th style={{textAlign: 'right'}}>{t('assessment:totalXs')}</th>
+            <th style={{textAlign: 'right',color:MUI.palette.accent3Color}}>
+              {t('assessment:totalXs')}
+            </th>
             <th>{this.props.data.xs}</th>
           </tr> : null}
         </tbody>

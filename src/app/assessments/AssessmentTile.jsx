@@ -39,6 +39,7 @@ const AssessmentTile = React.createClass({
     var content = (
       <AssessmentReport
         assessmentId={this.props.data.id}
+        data={this.props.data}
         handleClose={this.handleClose}
         open={this.state.open}
         onDelete={this.props.onDelete}/>
@@ -48,8 +49,9 @@ const AssessmentTile = React.createClass({
       <MUI.Paper zDepth={1}>
         <MUI.Card>
           <MUI.CardHeader
-            title={t('assessment:tile.title', this.props.data)}
-            subtitle={t('assessment:tile.subtitle', this.props.data)}
+            title={ this.props.data.eventName ? this.props.data.eventName :
+                    t('assessment:tile.title', this.props.data)}
+            subtitle={this.props.data.seasonName}
             avatar={
               <MiniCalendar
                 width="32pt"
@@ -58,15 +60,23 @@ const AssessmentTile = React.createClass({
                 month={this.props.data.date.getMonth()} />
             }/>
           <MUI.CardText>
+            <MUI.GridList cellHeight={'auto'} cols={2} padding={10} >
+              <MUI.GridTile style={{padding: '5pt'}} cols={1} >
+                <p style={{margin: 0}}>
+                  {t('assessment:report.totalPoints', this.props.data)} <br/>
+                  {t('assessment:report.averagePoints', this.props.data)}
+                </p>
+              </MUI.GridTile>
+              <MUI.GridTile style={{padding: '5pt'}} cols={1} >
+                <MUI.RaisedButton
+                  label={t('assessment:detailsButton')}
+                  secondary={true}
+                  style={{margin: '5pt'}}
+                  onTouchTap={this.handleOpen} />
+              </MUI.GridTile>
+            </MUI.GridList>
             {content}
           </MUI.CardText>
-          <MUI.CardActions style={{textAlign: 'right'}}>
-            <MUI.RaisedButton
-              label={t('assessment:detailsButton')}
-              secondary={true}
-              style={{margin: '5pt'}}
-              onTouchTap={this.handleOpen}/>
-          </MUI.CardActions>
         </MUI.Card>
         {message}
       </MUI.Paper>
