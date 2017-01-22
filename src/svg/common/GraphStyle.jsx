@@ -10,6 +10,8 @@ const GraphStyle = React.createClass({
       ".half {fill:#4C4;stroke:#000;stroke-opacity:1}",
       ".month {fill:#44C;stroke:#000;stroke-opacity:1}",
       ".quarter {fill:#C44;stroke:#000;stroke-opacity:1}",
+      ".currentDistribution {fill:#04C;stroke:#000;stroke-opacity:1}",
+      ".previousDistribution {fill:#C40;stroke:#000;stroke-opacity:1}",
       ".training {fill:#CCFFFF;stroke:#000;stroke-opacity:1}",
       ".target {fill:#FFCC99;stroke:#000;stroke-opacity:1}",
       ".result {fill:#33CCCC;stroke:#000;stroke-opacity:1}",

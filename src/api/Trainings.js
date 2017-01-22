@@ -44,7 +44,7 @@ var processRequest = function(training) {
 };
 
 module.exports = {
-  getList: function(callbacks) {
+  getList: function(page, callbacks) {
     var successCall = function(request) {
       var response = processResponseList(request.responseText);
       callbacks.success.call(callbacks.context, response);
@@ -55,8 +55,8 @@ module.exports = {
       200: successCall,
       failure: callbacks.error
     };
-
-    var request = requestBuilder('/trainings/', 'GET', newCallbacks);
+    var url = ['/trainings/?page=',page].join('');
+    var request = requestBuilder(url, 'GET', newCallbacks);
     request.send();
   },
   save: function(training, callbacks) {

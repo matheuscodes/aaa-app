@@ -47,7 +47,7 @@ var processRequest = function(assessment) {
 };
 
 module.exports = {
-  getList: function(callbacks) {
+  getList: function(page,callbacks) {
     var successCall = function(request) {
       var response = processResponseList(request.responseText);
       callbacks.success.call(callbacks.context, response);
@@ -59,7 +59,8 @@ module.exports = {
       failure: callbacks.error
     };
 
-    var request = requestBuilder('/assessments/', 'GET', newCallbacks);
+    var url = ['/assessments/?page=',page].join('');
+    var request = requestBuilder(url, 'GET', newCallbacks);
     request.send();
   },
   getTargets: function(callbacks) {

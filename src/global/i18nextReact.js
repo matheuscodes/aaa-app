@@ -97,6 +97,8 @@ function formatter(value, format, lng) {
       return moment(value).format("MMMM Do YYYY");
     case 'monthLong':
       return moment(value).format("MMMM, YYYY");
+    case 'floatShort':
+      return typeof value === 'number' ? value.toFixed(2) : value;
     default:
       return value;
   }

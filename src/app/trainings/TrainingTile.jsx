@@ -44,22 +44,18 @@ const TrainingTile = React.createClass({
     Object.keys(row).forEach(function(distance) {
       rows.push(
         <MUI.TableRow key={['aaa-trainingRow_', distance].join('')}>
-          <MUI.TableRowColumn>{distance}</MUI.TableRowColumn>
+          <MUI.TableRowColumn>{distance}m</MUI.TableRowColumn>
           {row[distance]}
         </MUI.TableRow>
       );
     });
-    var subtitle = '';
-    subtitle = this.props.data.time ?
-                t('training:tile.subtitleTime', this.props.data) :
-                t('training:tile.subtitle', this.props.data);
 
     return (
       <MUI.Paper style={{display: 'inline-block'}} zDepth={1}>
         <MUI.Card>
           <MUI.CardHeader
             title={t('training:tile.title', this.props.data)}
-            subtitle={subtitle}
+            subtitle={this.props.data.seasonName}
             avatar={
               <MiniCalendar
                 width="32pt"

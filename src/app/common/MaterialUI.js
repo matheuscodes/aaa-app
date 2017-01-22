@@ -71,6 +71,7 @@ MUI.icons = {
   navigation: {
     menu: require('material-ui/svg-icons/navigation/menu').default,
     cancel: require('material-ui/svg-icons/navigation/cancel').default,
+    chevron_left: require('material-ui/svg-icons/navigation/chevron-left').default,
     chevron_right: require('material-ui/svg-icons/navigation/chevron-right').default
   },
   maps: {
