@@ -265,7 +265,7 @@ const MonthReportTable = React.createClass({
     rows += 1;
 
     var warmUps = null;
-    if (typeof data.warmUps !== 'undefined') {
+    if (Object.keys(data.warmUps).length > 0) {
       var warmUpGroup = rowGroup(data.warmUps,
                                  data.firstDay,
                                  data.lastDay,
@@ -301,7 +301,7 @@ const MonthReportTable = React.createClass({
     });
 
     var warmOuts = null;
-    if (typeof data.warmUps !== 'undefined') {
+    if (Object.keys(data.warmOuts).length > 0) {
       var warmOutGroup = rowGroup(data.warmOuts,
                                   data.firstDay,
                                   data.lastDay,

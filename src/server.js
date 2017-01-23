@@ -1,24 +1,18 @@
-// require('app-module-path').addPath(__dirname + '/src/app');
-// process.env.NODE_ENV = 'production'
-
-var express = require('express');
-var http = require('http');
+const express = require('express');
+const http = require('http');
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
-//var injectTapEventPlugin = require('react-tap-event-plugin');
-//injectTapEventPlugin();
+const injectTapEventPlugin = require('react-tap-event-plugin');
+injectTapEventPlugin();
 
-//process.env.NODE_ENV = 'production';
-
-
-var PageSwitcher = require('app/common/PageSwitcher');
+const PageSwitcher = require('app/common/PageSwitcher');
 
 const i18next = require('global/i18nextReact').i18next;
 const i18nextMiddleware = require('global/i18nextReact').i18nextMiddleware;
 
-var app = express();
-var pageSwitcher = new PageSwitcher();
+const app = express();
+const pageSwitcher = new PageSwitcher(i18next);
 
 app.use(i18nextMiddleware.handle(i18next));
 app.post('/languages/missing/:lng/:ns.json',

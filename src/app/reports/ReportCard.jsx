@@ -22,7 +22,7 @@ const ReportCard = React.createClass({
     API.seasons.getList(callbacks);
   },
   changeSeason: function(event, index, value) {
-    var season = this.state.seasons[index - 1];
+    var season = this.state.seasons[index];
     var current = this.state;
     current.selectedSeason = season;
     current.seasonId = season.id;
@@ -36,7 +36,7 @@ const ReportCard = React.createClass({
     this.setState(current);
   },
   changeYear: function(event, index, value) {
-    var year = this.state.years[index - 1];
+    var year = this.state.years[index];
     var current = this.state;
     var season = current.selectedSeason;
     current.selectedYear = year;
@@ -51,7 +51,7 @@ const ReportCard = React.createClass({
   },
   changeMonth: function(event, index, value) {
     var current = this.state;
-    current.selectedMonth = this.state.months[index - 1];
+    current.selectedMonth = this.state.months[index];
     this.setState(current);
   },
   render: function() {
@@ -86,10 +86,10 @@ const ReportCard = React.createClass({
     return (
       <MUI.Card>
         <MUI.CardHeader
-          title={t('report:title')}
-          subtitle={t('report:subtitle')} />
+          title={t('report:cardTitle')}
+          subtitle={t('report:cardSubtitle')} />
         <MUI.CardText>
-          <MUI.GridList cellHeight={'unset'} cols={12} padding={10} style={{width: '100%'}}>
+          <MUI.GridList cellHeight={'auto'} cols={12} padding={10} style={{width: '100%'}}>
             <MUI.GridTile cols={3} >
               {' '}
             </MUI.GridTile>
@@ -102,9 +102,6 @@ const ReportCard = React.createClass({
                 floatingLabelText={
                   t('report:seasonSelectField.label')
                 } >
-                {/* FIXME temporary fix
-                  See https://github.com/callemall/material-ui/issues/2446*/}
-                <MUI.MenuItem value={'undefined'} primaryText={" "} />
                 {seasons}
               </MUI.SelectField>
             </MUI.GridTile>
@@ -117,9 +114,6 @@ const ReportCard = React.createClass({
                 floatingLabelText={
                   t('report:yearSelectField.label')
                 } >
-                {/* FIXME temporary fix
-                  See https://github.com/callemall/material-ui/issues/2446*/}
-                <MUI.MenuItem value={'undefined'} primaryText={" "} />
                 {years}
               </MUI.SelectField>
             </MUI.GridTile>
@@ -132,16 +126,13 @@ const ReportCard = React.createClass({
                 floatingLabelText={
                   t('report:monthSelectField.label')
                 } >
-                {/* FIXME temporary fix
-                  See https://github.com/callemall/material-ui/issues/2446*/}
-                <MUI.MenuItem value={'undefined'} primaryText={" "} />
                 {months}
               </MUI.SelectField>
             </MUI.GridTile>
             <MUI.GridTile cols={12} >
               {this.state.seasonId &&
                this.state.selectedYear &&
-               this.state.selectedMonth ?
+               typeof this.state.selectedMonth !== 'undefined' ?
               <ReportTile
                 seasonId={this.state.seasonId}
                 year={this.state.selectedYear}

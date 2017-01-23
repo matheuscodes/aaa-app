@@ -5,7 +5,7 @@ const MUI = require('app/common/MaterialUI');
 
 const getLocalArcher = require('api/helpers/getLocalArcher');
 
-const PageSwitcher = require('app/common/PageSwitcher');
+const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
 
 /**
  * Header with an undocked drawer and a logout button.
@@ -14,9 +14,9 @@ const PageSwitcher = require('app/common/PageSwitcher');
  */
 const Header = React.createClass({
   propTypes: {
-    switcher: React.PropTypes.instanceOf(PageSwitcher),
-    title: React.PropTypes.string,
-    t: React.PropTypes.func
+    switcher: ReactPageSwitcherType.isRequired,
+    title: React.PropTypes.string.isRequired,
+    t: React.PropTypes.func.isRequired
   },
   getInitialState: function() {
     return {open: false};

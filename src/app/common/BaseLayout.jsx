@@ -4,7 +4,7 @@ var MUI = require('app/common/MaterialUI');
 
 var Header = require('app/common/Header');
 var Footer = require('app/common/Footer');
-var PageSwitcher = require('app/common/PageSwitcher');
+const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
 
 /**
  * Base layout for page rendering.
@@ -18,8 +18,8 @@ var PageSwitcher = require('app/common/PageSwitcher');
  */
 module.exports = React.createClass({
   propTypes: {
-    switcher: React.PropTypes.instanceOf(PageSwitcher),
-    userAgent: React.PropTypes.string,
+    switcher: ReactPageSwitcherType.isRequired,
+    userAgent: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]),
     layoutName: React.PropTypes.string,
     title: React.PropTypes.string,
     children: React.PropTypes.oneOfType([

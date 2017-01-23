@@ -3,6 +3,8 @@ const i18next = require('i18next');
 
 const I18nextProvider = require('react-i18next').I18nextProvider;
 
+const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
+
 const htmlStyle = {
   fontFamily: 'Roboto, sans-serif',
   minHeight: '100%',
@@ -20,7 +22,9 @@ const htmlStyle = {
  */
 const BaseHtml = React.createClass({
   propTypes: {
-    userAgent: React.PropTypes.string,
+    switcher: ReactPageSwitcherType.isRequired,
+    title: React.PropTypes.string.isRequired,
+    userAgent: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]),
     i18n: React.PropTypes.instanceOf(i18next.constructor)
   },
   render: function() {
@@ -30,6 +34,7 @@ const BaseHtml = React.createClass({
             <link
               href="https://fonts.googleapis.com/css?family=Roboto:400,300,500"
               rel="stylesheet" type="text/css" />
+            <title>{this.props.title}</title>
           </head>
           <body style={{margin: '0 0 48pt'}}>
             <I18nextProvider i18n={this.props.i18n}>

@@ -56,7 +56,7 @@ const ReportTile = React.createClass({
         allDays.count++;
       }
       content = (
-        <MUI.GridList cellHeight={'unset'} cols={1} padding={10} style={{width: '100%'}}>
+        <MUI.GridList cellHeight={'auto'} cols={1} padding={10} style={{width: '100%'}}>
           <MUI.GridTile cols={1} >
             <h2>{t('report:tableTitle', {date: new Date(this.props.year, this.props.month - 1, 1)})}</h2>
             <MonthReportTable data={this.state} allDays={allDays}/>

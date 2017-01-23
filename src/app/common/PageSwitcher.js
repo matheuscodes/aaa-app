@@ -100,6 +100,7 @@ PageSwitcher.prototype.renderPage = function(pageTitle, callback) {
   props.container = getPageReactClass(pageTitle);
   this.i18n.loadNamespaces(getPageNamespaces(pageTitle), function(err, t) {
     if (!err) {
+      props.title = props.i18n.t(['common:pageTitle.', pageTitle].join(''));
       ReactDOM.render(React.createElement(baseHtml, props), renderParent);
       callback();
       return;
@@ -132,7 +133,8 @@ PageSwitcher.prototype.serverString = function serverString(pageTitle,
   const props = {
     switcher: this,
     userAgent: false,
-    i18n: request.i18n
+    i18n: request.i18n,
+    title: request.i18n.t(['common:pageTitle.', pageTitle].join(''))
   };
   props.container = getPageReactClass(pageTitle);
   return ReactDOMServer.renderToString(React.createElement(baseHtml, props));

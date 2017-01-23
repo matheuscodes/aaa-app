@@ -21,7 +21,7 @@ const styles = {
 const AssessmentsPage = React.createClass({
   propTypes: {
     switcher: React.PropTypes.instanceOf(PageSwitcher),
-    userAgent: React.PropTypes.string,
+    userAgent: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]),
     t: React.PropTypes.func
   },
   getInitialState: function() {
