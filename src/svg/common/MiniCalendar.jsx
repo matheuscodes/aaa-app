@@ -3,8 +3,8 @@ const i18nextReact = require('global/i18nextReact');
 
 const MiniCalendar = React.createClass({
   propTypes: {
-    height: React.PropTypes.string,
-    width: React.PropTypes.string,
+    height: React.PropTypes.number,
+    width: React.PropTypes.number,
     month: React.PropTypes.number,
     day: React.PropTypes.number,
     t: React.PropTypes.func

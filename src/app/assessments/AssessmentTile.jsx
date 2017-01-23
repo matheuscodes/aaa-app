@@ -54,8 +54,8 @@ const AssessmentTile = React.createClass({
             subtitle={this.props.data.seasonName}
             avatar={
               <MiniCalendar
-                width="32pt"
-                height="32pt"
+                width={64}
+                height={64}
                 day={this.props.data.date.getDate()}
                 month={this.props.data.date.getMonth()} />
             }/>

@@ -102,13 +102,13 @@ const NewAssessmentCard = React.createClass({
         this.setState(current);
       }
     };
-    var season = this.state.seasons[index - 1];
+    var season = this.state.seasons[index];
     API.events.getList(callbacks, season.start, season.end);
   },
   changeTarget: function(event, index, value) {
     var current = this.state;
     current.targetId = value;
-    current.target = current.targets[index - 1];
+    current.target = current.targets[index];
     this.setState(current);
   },
   changeEvent: function(event, index, value) {
@@ -224,13 +224,13 @@ const NewAssessmentCard = React.createClass({
           subtitle={t('assessment:newAssessment.subtitle')} />
         <MUI.CardText>
         <MUI.GridList
-          cellHeight={'64pt'}
+          cellHeight={'auto'}
           cols={2}
           padding={10}
           style={{width: '100%'}}>
           <MUI.GridTile cols={1} >
           <MUI.GridList
-            cellHeight={'64pt'}
+            cellHeight={'auto'}
             cols={4}
             padding={10}
             style={{width: '100%'}}>
@@ -243,9 +243,6 @@ const NewAssessmentCard = React.createClass({
                 floatingLabelText={
                   t('assessment:newAssessment.seasonSelectField.label')
                 } >
-                {/* FIXME temporary fix
-                  See https://github.com/callemall/material-ui/issues/2446*/}
-                <MUI.MenuItem value={'undefined'} primaryText={" "} />
                 {seasons}
               </MUI.SelectField>
             </MUI.GridTile>
@@ -280,9 +277,6 @@ const NewAssessmentCard = React.createClass({
                 floatingLabelText={
                   t('assessment:newAssessment.targetSelectField.label')
                 } >
-                {/* FIXME temporary fix
-                  See https://github.com/callemall/material-ui/issues/2446*/}
-                <MUI.MenuItem value={'undefined'} primaryText={" "} />
                 {targets}
               </MUI.SelectField>
             </MUI.GridTile>
@@ -295,15 +289,12 @@ const NewAssessmentCard = React.createClass({
                 floatingLabelText={
                   t('assessment:newAssessment.eventSelectField.label')
                 } >
-                {/* FIXME temporary fix
-                  See https://github.com/callemall/material-ui/issues/2446*/}
-                <MUI.MenuItem value={'undefined'} primaryText={" "} />
                 {events}
               </MUI.SelectField>
             </MUI.GridTile>
             <MUI.GridTile cols={1} >
               <Thermometer
-                height={'24pt'}
+                height={32}
                 style={{
                   position: 'absolute',
                   bottom: 0,
@@ -332,7 +323,7 @@ const NewAssessmentCard = React.createClass({
             </MUI.GridTile>
             <MUI.GridTile cols={1} >
               <Windmills
-                height={'24pt'}
+                height={32}
                 style={{
                   position: 'absolute',
                   bottom: 0,
@@ -365,7 +356,7 @@ const NewAssessmentCard = React.createClass({
 
             <MUI.GridTile cols={1} >
               <ArcherAnchored
-                height={'24pt'}
+                height={32}
                 style={{
                   position: 'absolute',
                   bottom: 0,
@@ -385,7 +376,7 @@ const NewAssessmentCard = React.createClass({
           </MUI.GridList>
           </MUI.GridTile>
           <MUI.GridTile cols={1} >
-          <MUI.GridList cellHeight={'64pt'} cols={1} style={{width: '100%'}}>
+          <MUI.GridList cellHeight={'auto'} cols={1} style={{width: '100%'}}>
             <MUI.GridTile style={{padding: 5}} cols={1} >
               <MUI.RaisedButton
                 label={t('assessment:addRound')}
@@ -399,7 +390,7 @@ const NewAssessmentCard = React.createClass({
                   zDepth={2}
                   style={{display: 'inline-block', width: '100%'}}>
                   <MUI.GridList
-                    cellHeight={'64pt'}
+                    cellHeight={'auto'}
                     cols={1}
                     padding={10}
                     style={{width: '100%'}}>
