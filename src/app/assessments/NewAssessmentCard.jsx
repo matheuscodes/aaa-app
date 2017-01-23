@@ -10,9 +10,7 @@ const Thermometer = require('svg/icon/Thermometer');
 const Windmills = require('svg/icon/Windmills');
 const ArcherAnchored = require('svg/icon/ArcherAnchored');
 
-const AssessmentArrowTable = require(
-                              'app/assessments/AssessmentArrowTable'
-                             );
+const AssessmentArrowTable = require('app/assessments/AssessmentArrowTable');
 const NewAssessmentEnd = require('app/assessments/NewAssessmentEnd');
 const DirectionSelector = require('app/common/DirectionSelector');
 const WeatherSelector = require('app/common/WeatherSelector');
@@ -270,7 +268,7 @@ const NewAssessmentCard = React.createClass({
                 floatingLabelText={
                   t('assessment:newAssessment.distanceTextField.label')
                 }
-                value={this.state.distance}
+                defaultValue={this.state.distance}
                 onChange={this.changeDistance} />
             </MUI.GridTile>
             <MUI.GridTile cols={4} >
@@ -322,7 +320,7 @@ const NewAssessmentCard = React.createClass({
                 floatingLabelText={
                   t('assessment:newAssessment.temperatureTextField.label')
                 }
-                value={this.state.temperature}
+                defaultValue={this.state.temperature}
                 onChange={this.changeTemperature} />
             </MUI.GridTile>
             <MUI.GridTile cols={1} >
@@ -351,7 +349,7 @@ const NewAssessmentCard = React.createClass({
                 floatingLabelText={
                   t('assessment:newAssessment.windTextField.label')
                 }
-                value={this.state.windSpeed}
+                defaultValue={this.state.windSpeed}
                 onChange={this.changeWindSpeed} />
             </MUI.GridTile>
             <MUI.GridTile cols={1} >
