@@ -3,13 +3,13 @@ const React = require('react');
 const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 
-const BaseLayout = require('app/common/BaseLayout.jsx');
-const TotalArrowsCard = require('app/homescreen/cards/TotalArrowsCard.jsx');
-const EventsCard = require('app/homescreen/cards/EventsCard.jsx');
-const YearOverviewCard = require('app/homescreen/cards/YearOverviewCard.jsx');
-const ValueDistributionCard = require('app/homescreen/cards/ValueDistributionCard.jsx');
-const EndDistributionCard = require('app/homescreen/cards/EndDistributionCard.jsx');
-const SeasonsCard = require('app/homescreen/cards/SeasonsCard.jsx');
+const BaseLayout = require('app/common/BaseLayout');
+const TotalArrowsCard = require('app/homescreen/cards/TotalArrowsCard');
+const EventsCard = require('app/homescreen/cards/EventsCard');
+const YearOverviewCard = require('app/homescreen/cards/YearOverviewCard');
+const ValueDistributionCard = require('app/homescreen/cards/ValueDistributionCard');
+const EndDistributionCard = require('app/homescreen/cards/EndDistributionCard');
+const SeasonsCard = require('app/homescreen/cards/SeasonsCard');
 
 const HomePage = React.createClass({
   render: function() {

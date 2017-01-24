@@ -5,8 +5,8 @@ const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 const API = require('api');
 
-const Waiting = require('app/common/Waiting.jsx');
-const Notice = require('app/common/Notice.jsx');
+const Waiting = require('app/common/Waiting');
+const Notice = require('app/common/Notice');
 
 function newSeason(context) {
   const t = context.props.t;

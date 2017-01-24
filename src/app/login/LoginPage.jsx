@@ -3,8 +3,8 @@ const React = require('react');
 const MUI = require('app/common/MaterialUI');
 const i18nextReact = require('global/i18nextReact');
 
-const BaseLayout = require('app/common/BaseLayout.jsx');
-const LoginCard = require('app/login/LoginCard.jsx');
+const BaseLayout = require('app/common/BaseLayout');
+const LoginCard = require('app/login/LoginCard');
 const PageSwitcher = require('app/common/PageSwitcher');
 
 const LoginPage = React.createClass({

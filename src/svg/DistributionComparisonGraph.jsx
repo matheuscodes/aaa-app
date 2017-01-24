@@ -2,11 +2,11 @@ const React = require('react');
 
 const i18nextReact = require('global/i18nextReact');
 
-const GraphStyle = require('svg/common/GraphStyle.jsx');
-const GraphBar = require('svg/common/GraphBar.jsx');
-const GraphBottomLabels = require('svg/common/GraphBottomLabels.jsx');
-const GraphAxisLabels = require('svg/common/GraphAxisLabels.jsx');
-const GraphGrid = require('svg/common/GraphGrid.jsx');
+const GraphStyle = require('svg/common/GraphStyle');
+const GraphBar = require('svg/common/GraphBar');
+const GraphBottomLabels = require('svg/common/GraphBottomLabels');
+const GraphAxisLabels = require('svg/common/GraphAxisLabels');
+const GraphGrid = require('svg/common/GraphGrid');
 
 const ValueDistributionGraph = React.createClass({
   propTypes: {

@@ -6,7 +6,7 @@ const i18nextReact = require('global/i18nextReact');
 
 const downloadFile = require('api/helpers/DownloadFile');
 
-const Notice = require('app/common/Notice.jsx');
+const Notice = require('app/common/Notice');
 const PageSwitcher = require('app/common/PageSwitcher');
 
 const LoginCard = React.createClass({

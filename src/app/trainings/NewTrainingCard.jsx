@@ -1,31 +1,21 @@
 const React = require('react');
 
-const TrainingTypes = require('constants/TrainingTypes.json');
+const TrainingTypes = require('constants/TrainingTypes');
 
 const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 const API = require('api');
 
-const Notice = require('app/common/Notice.jsx');
+const Notice = require('app/common/Notice');
 
 const style = {
   arrowCountField: {
-    width: '29%',
+    width: '90%',
     padding: '0 5% 0 5%'
-  },
-  arrowCountButton: {
-    width: '30%',
-    height: '30%',
-    padding: 0
   },
   arrowCountInput: {
     textAlign: 'center',
     fontSize: '80%'
-  },
-  arrowCountIcon: {
-    width: '100%',
-    height: '100%',
-    color: MUI.palette.accent1Color
   }
 };
 
@@ -35,26 +25,34 @@ const NewTrainingCard = React.createClass({
     t: React.PropTypes.func
   },
   getInitialState: function() {
+    const today = new Date();
+    today.setHours(18);
     return {seasons: [], training: {
-      date: new Date(),
+      date: today,
       arrows: {
         5: {},
         18: {},
         25: {},
-        40: {}
+        40: {},
+        70: {}
       }
     }};
   },
 
   componentDidMount: function() {
+    const t = this.props.t;
     var callbacks = {
       context: this,
       success: function(seasons) {
         var current = this.state;
         current.seasons = seasons;
         this.setState(current);
+      },
+      error: function(){
+        this.showMessage(t('training:messages.seasonError'), "ERROR");
       }
     };
+    this.setState(this.getInitialState());
     API.seasons.getList(callbacks);
   },
 
@@ -65,6 +63,7 @@ const NewTrainingCard = React.createClass({
   setDate: function(event, date) {
     var current = this.state;
     current.training.date = date;
+    current.training.date.setHours(18);
     this.setState(current);
   },
   setArrowCount: function(event) {
@@ -73,23 +72,6 @@ const NewTrainingCard = React.createClass({
     var arrows = current.training.arrows;
     arrows[split[1]][split[2]] = parseInt(event.target.value, 10);
     current.training.arrows = arrows; // FIXME Needed?
-    this.setState(current);
-  },
-  increaseArrows: function(event) {
-    var split = event.target.id.split('_');
-    var current = this.state;
-    if (typeof current.arrows[split[1]][split[2]] === 'undefined') {
-      current.training.arrows[split[1]][split[2]] = 0;
-    }
-    current.training.arrows[split[1]][split[2]] += 1;
-    this.setState(current);
-  },
-  decreaseArrows: function(event) {
-    var split = event.target.id.split('_');
-    var current = this.state;
-    if (current.training.arrows[split[1]][split[2]] > 0) {
-      current.training.arrows[split[1]][split[2]] -= 1;
-    }
     this.setState(current);
   },
   createNewDistance: function() {
@@ -131,7 +113,6 @@ const NewTrainingCard = React.createClass({
       success: function() {
         this.showMessage(t('training:messages.newSaved'), "MESSAGE");
         this.props.onClose(true);
-        this.setState(this.getInitialState());
       },
       warning: function() {
         this.showMessage(t('training:messages.newSaved'), "WARNING");
@@ -163,7 +144,9 @@ const NewTrainingCard = React.createClass({
     // TODO move this to a component, used in 2 places already
     var headers = TrainingTypes.map(function(type) {
       return (
-        <MUI.TableHeaderColumn key={['newTrainingCardType_', type].join('')}>
+        <MUI.TableHeaderColumn
+          style={{textAlign:'center'}}
+          key={['newTrainingCardType_', type].join('')}>
           {t(['training:trainingTypes.', type].join(''))}
         </MUI.TableHeaderColumn>
       );
@@ -176,28 +159,12 @@ const NewTrainingCard = React.createClass({
         return (
           <MUI.TableRowColumn
             key={['newTrainingCard_', distance, '_', type].join('')}>
-            <MUI.IconButton
-              id={['newTrainingInc_', distance, '_', type].join('')}
-              tabIndex={-1}
-              style={style.arrowCountButton}
-              iconStyle={style.arrowCountIcon}
-              onTouchTap={this.decreaseArrows}>
-              <MUI.icons.content.remove_circle/>
-            </MUI.IconButton>
             <MUI.TextField
               style={style.arrowCountField}
               inputStyle={style.arrowCountInput}
               id={['newTrainingCardText_', distance, '_', type].join('')}
-              value={this.state.training.arrows[distance][type]}
+              defaultValue={this.state.training.arrows[distance][type]}
               onChange={this.setArrowCount} />
-            <MUI.IconButton
-              id={['newTrainingDec_', distance, '_', type].join('')}
-              tabIndex={-1}
-              style={style.arrowCountButton}
-              iconStyle={style.arrowCountIcon}
-              onTouchTap={this.increaseArrows}>
-              <MUI.icons.content.add_circle/>
-            </MUI.IconButton>
           </MUI.TableRowColumn>
         );
       }, this);
@@ -208,7 +175,9 @@ const NewTrainingCard = React.createClass({
       rows.push(
         <MUI.TableRow
           key={['newTrainingCardType_', distance, '_distance'].join('')} >
-          <MUI.TableRowColumn>{distance}</MUI.TableRowColumn>
+          <MUI.TableRowColumn style={{textAlign:'center'}} >
+            {distance} m
+          </MUI.TableRowColumn>
           {row[distance]}
         </MUI.TableRow>
       );
@@ -231,7 +200,7 @@ const NewTrainingCard = React.createClass({
             id={'aaa-newTrainingDate'}
             floatingLabelText={t('training:newTraining.dateDatepicker.label')}
             autoOk={true}
-            value={this.state.training.date}
+            defaultDate={this.state.training.date}
             onChange={this.setDate} />
           <MUI.SelectField
             style={{width: '100%'}}
@@ -241,9 +210,6 @@ const NewTrainingCard = React.createClass({
             floatingLabelText={
               t('training:newTraining.seasonSelectField.label')
             } >
-            {/* FIXME temporary fix
-                for https://github.com/callemall/material-ui/issues/2446*/}
-            <MUI.MenuItem value={'undefined'} primaryText={" "} />
             {seasons}
           </MUI.SelectField>
           <MUI.Table>
@@ -251,7 +217,7 @@ const NewTrainingCard = React.createClass({
               displaySelectAll={false}
               adjustForCheckbox={false} >
               <MUI.TableRow>
-                <MUI.TableHeaderColumn>
+                <MUI.TableHeaderColumn style={{textAlign:'center'}}>
                   {t('training:newTraining.headers.distance')}
                 </MUI.TableHeaderColumn>
                 {headers}
@@ -264,7 +230,7 @@ const NewTrainingCard = React.createClass({
                   <MUI.TextField
                     style={{width: '70%'}}
                     id={'newTrainingCardNewDistance'}
-                    value={this.state.newDistance}
+                    defaultValue={this.state.newDistance}
                     hintText={t('training:newTraining.distanceTextField.hint')}
                     floatingLabelText={
                       t('training:newTraining.distanceTextField.label')

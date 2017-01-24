@@ -4,13 +4,13 @@ const MUI = require('app/common/MaterialUI');
 const API = require('api');
 const i18nextReact = require('global/i18nextReact');
 
-const Waiting = require('app/common/Waiting.jsx');
-const Notice = require('app/common/Notice.jsx');
-const PageSwitcher = require('app/common/PageSwitcher');
+const Waiting = require('app/common/Waiting');
+const Notice = require('app/common/Notice');
+const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
 
-const BaseLayout = require('app/common/BaseLayout.jsx');
-const AssessmentTile = require('app/assessments/AssessmentTile.jsx');
-const NewAssessmentCard = require('app/assessments/NewAssessmentCard.jsx');
+const BaseLayout = require('app/common/BaseLayout');
+const AssessmentTile = require('app/assessments/AssessmentTile');
+const NewAssessmentCard = require('app/assessments/NewAssessmentCard');
 
 const styles = {
   gridList: {
@@ -20,9 +20,9 @@ const styles = {
 
 const AssessmentsPage = React.createClass({
   propTypes: {
-    switcher: React.PropTypes.instanceOf(PageSwitcher),
-    userAgent: React.PropTypes.string,
-    t: React.PropTypes.func
+    switcher: ReactPageSwitcherType.isRequired,
+    userAgent: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]).isRequired,
+    t: React.PropTypes.func.isRequired
   },
   getInitialState: function() {
     return {editAssessment: false, currentPage: 0};
@@ -256,7 +256,7 @@ const AssessmentsPage = React.createClass({
         switcher={this.props.switcher}
         layoutName="assessmentsPage"
         userAgent={this.props.userAgent}
-        title={t('assessment:title')} >
+        title={t('assessment:appBarTitle')} >
         <MUI.GridList
           cellHeight={'auto'}
           cols={6}
@@ -268,7 +268,7 @@ const AssessmentsPage = React.createClass({
           </MUI.GridTile>
           <MUI.GridTile cols={this.state.editAssessment ? 3 : 6} >
             <MUI.GridList
-              cellHeight={'unset'}
+              cellHeight={'auto'}
               cols={6}
               padding={10}
               style={styles.gridList} >
@@ -278,14 +278,14 @@ const AssessmentsPage = React.createClass({
           <MUI.GridTile cols={6} >
             <MUI.GridList cols={4} padding={10} style={styles.gridList} >
               {this.state.editAssessment ?
-                [<MUI.GridTile>{''}</MUI.GridTile>,
-                <MUI.GridTile>{''}</MUI.GridTile>] : []}
+                [<MUI.GridTile key={1}>{''}</MUI.GridTile>,
+                <MUI.GridTile key={2}>{''}</MUI.GridTile>] : []}
               <MUI.GridTile style={{padding: '5pt'}}>
                 {previousButton}
               </MUI.GridTile>
               {this.state.editAssessment === false ?
-                [<MUI.GridTile>{''}</MUI.GridTile>,
-                <MUI.GridTile>{''}</MUI.GridTile>] : []}
+                [<MUI.GridTile key={1}>{''}</MUI.GridTile>,
+                <MUI.GridTile key={2}>{''}</MUI.GridTile>] : []}
               <MUI.GridTile style={{padding: '5pt'}}>
                 {nextButton}
               </MUI.GridTile>

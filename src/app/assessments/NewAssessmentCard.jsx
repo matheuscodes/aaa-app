@@ -4,18 +4,16 @@ const MUI = require('app/common/MaterialUI');
 const API = require('api');
 const i18nextReact = require('global/i18nextReact');
 
-const Notice = require('app/common/Notice.jsx');
+const Notice = require('app/common/Notice');
 
-const Thermometer = require('svg/icon/Thermometer.jsx');
-const Windmills = require('svg/icon/Windmills.jsx');
-const ArcherAnchored = require('svg/icon/ArcherAnchored.jsx');
+const Thermometer = require('svg/icon/Thermometer');
+const Windmills = require('svg/icon/Windmills');
+const ArcherAnchored = require('svg/icon/ArcherAnchored');
 
-const AssessmentArrowTable = require(
-                              'app/assessments/AssessmentArrowTable.jsx'
-                             );
-const NewAssessmentEnd = require('app/assessments/NewAssessmentEnd.jsx');
-const DirectionSelector = require('app/common/DirectionSelector.jsx');
-const WeatherSelector = require('app/common/WeatherSelector.jsx');
+const AssessmentArrowTable = require('app/assessments/AssessmentArrowTable');
+const NewAssessmentEnd = require('app/assessments/NewAssessmentEnd');
+const DirectionSelector = require('app/common/DirectionSelector');
+const WeatherSelector = require('app/common/WeatherSelector');
 
 const style = {
   arrowCountField: {
@@ -104,13 +102,13 @@ const NewAssessmentCard = React.createClass({
         this.setState(current);
       }
     };
-    var season = this.state.seasons[index - 1];
+    var season = this.state.seasons[index];
     API.events.getList(callbacks, season.start, season.end);
   },
   changeTarget: function(event, index, value) {
     var current = this.state;
     current.targetId = value;
-    current.target = current.targets[index - 1];
+    current.target = current.targets[index];
     this.setState(current);
   },
   changeEvent: function(event, index, value) {
@@ -226,13 +224,13 @@ const NewAssessmentCard = React.createClass({
           subtitle={t('assessment:newAssessment.subtitle')} />
         <MUI.CardText>
         <MUI.GridList
-          cellHeight={'64pt'}
+          cellHeight={'auto'}
           cols={2}
           padding={10}
           style={{width: '100%'}}>
           <MUI.GridTile cols={1} >
           <MUI.GridList
-            cellHeight={'64pt'}
+            cellHeight={'auto'}
             cols={4}
             padding={10}
             style={{width: '100%'}}>
@@ -245,9 +243,6 @@ const NewAssessmentCard = React.createClass({
                 floatingLabelText={
                   t('assessment:newAssessment.seasonSelectField.label')
                 } >
-                {/* FIXME temporary fix
-                  See https://github.com/callemall/material-ui/issues/2446*/}
-                <MUI.MenuItem value={'undefined'} primaryText={" "} />
                 {seasons}
               </MUI.SelectField>
             </MUI.GridTile>
@@ -270,7 +265,7 @@ const NewAssessmentCard = React.createClass({
                 floatingLabelText={
                   t('assessment:newAssessment.distanceTextField.label')
                 }
-                value={this.state.distance}
+                defaultValue={this.state.distance}
                 onChange={this.changeDistance} />
             </MUI.GridTile>
             <MUI.GridTile cols={4} >
@@ -282,9 +277,6 @@ const NewAssessmentCard = React.createClass({
                 floatingLabelText={
                   t('assessment:newAssessment.targetSelectField.label')
                 } >
-                {/* FIXME temporary fix
-                  See https://github.com/callemall/material-ui/issues/2446*/}
-                <MUI.MenuItem value={'undefined'} primaryText={" "} />
                 {targets}
               </MUI.SelectField>
             </MUI.GridTile>
@@ -297,15 +289,12 @@ const NewAssessmentCard = React.createClass({
                 floatingLabelText={
                   t('assessment:newAssessment.eventSelectField.label')
                 } >
-                {/* FIXME temporary fix
-                  See https://github.com/callemall/material-ui/issues/2446*/}
-                <MUI.MenuItem value={'undefined'} primaryText={" "} />
                 {events}
               </MUI.SelectField>
             </MUI.GridTile>
             <MUI.GridTile cols={1} >
               <Thermometer
-                height={'24pt'}
+                height={32}
                 style={{
                   position: 'absolute',
                   bottom: 0,
@@ -322,7 +311,7 @@ const NewAssessmentCard = React.createClass({
                 floatingLabelText={
                   t('assessment:newAssessment.temperatureTextField.label')
                 }
-                value={this.state.temperature}
+                defaultValue={this.state.temperature}
                 onChange={this.changeTemperature} />
             </MUI.GridTile>
             <MUI.GridTile cols={1} >
@@ -334,7 +323,7 @@ const NewAssessmentCard = React.createClass({
             </MUI.GridTile>
             <MUI.GridTile cols={1} >
               <Windmills
-                height={'24pt'}
+                height={32}
                 style={{
                   position: 'absolute',
                   bottom: 0,
@@ -351,7 +340,7 @@ const NewAssessmentCard = React.createClass({
                 floatingLabelText={
                   t('assessment:newAssessment.windTextField.label')
                 }
-                value={this.state.windSpeed}
+                defaultValue={this.state.windSpeed}
                 onChange={this.changeWindSpeed} />
             </MUI.GridTile>
             <MUI.GridTile cols={1} >
@@ -367,7 +356,7 @@ const NewAssessmentCard = React.createClass({
 
             <MUI.GridTile cols={1} >
               <ArcherAnchored
-                height={'24pt'}
+                height={32}
                 style={{
                   position: 'absolute',
                   bottom: 0,
@@ -387,7 +376,7 @@ const NewAssessmentCard = React.createClass({
           </MUI.GridList>
           </MUI.GridTile>
           <MUI.GridTile cols={1} >
-          <MUI.GridList cellHeight={'64pt'} cols={1} style={{width: '100%'}}>
+          <MUI.GridList cellHeight={'auto'} cols={1} style={{width: '100%'}}>
             <MUI.GridTile style={{padding: 5}} cols={1} >
               <MUI.RaisedButton
                 label={t('assessment:addRound')}
@@ -401,7 +390,7 @@ const NewAssessmentCard = React.createClass({
                   zDepth={2}
                   style={{display: 'inline-block', width: '100%'}}>
                   <MUI.GridList
-                    cellHeight={'64pt'}
+                    cellHeight={'auto'}
                     cols={1}
                     padding={10}
                     style={{width: '100%'}}>

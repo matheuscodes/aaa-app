@@ -3,11 +3,11 @@ const React = require('react');
 const MUI = require('app/common/MaterialUI');
 const i18nextReact = require('global/i18nextReact');
 
-const AssessmentReport = require('app/assessments/AssessmentReport.jsx');
+const AssessmentReport = require('app/assessments/AssessmentReport');
 
-const Waiting = require('app/common/Waiting.jsx');
-const Notice = require('app/common/Notice.jsx');
-const MiniCalendar = require('svg/common/MiniCalendar.jsx');
+const Waiting = require('app/common/Waiting');
+const Notice = require('app/common/Notice');
+const MiniCalendar = require('svg/common/MiniCalendar');
 
 const AssessmentTile = React.createClass({
   propTypes: {
@@ -54,8 +54,8 @@ const AssessmentTile = React.createClass({
             subtitle={this.props.data.seasonName}
             avatar={
               <MiniCalendar
-                width="32pt"
-                height="32pt"
+                width={48}
+                height={48}
                 day={this.props.data.date.getDate()}
                 month={this.props.data.date.getMonth()} />
             }/>

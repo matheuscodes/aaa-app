@@ -3,12 +3,12 @@ const React = require('react');
 const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 
-const MiniCalendar = require('svg/common/MiniCalendar.jsx');
-const TrainingTypes = require('constants/TrainingTypes.json');
+const MiniCalendar = require('svg/common/MiniCalendar');
+const TrainingTypes = require('constants/TrainingTypes');
 
 const TrainingTile = React.createClass({
   propTypes: {
-    // TODO create class to validate
+    // TODO create a react type class to validate
     data: React.PropTypes.object,
     onDelete: React.PropTypes.func,
     t: React.PropTypes.func
@@ -44,7 +44,7 @@ const TrainingTile = React.createClass({
     Object.keys(row).forEach(function(distance) {
       rows.push(
         <MUI.TableRow key={['aaa-trainingRow_', distance].join('')}>
-          <MUI.TableRowColumn>{distance}m</MUI.TableRowColumn>
+          <MUI.TableRowColumn>{distance} m</MUI.TableRowColumn>
           {row[distance]}
         </MUI.TableRow>
       );
@@ -58,8 +58,8 @@ const TrainingTile = React.createClass({
             subtitle={this.props.data.seasonName}
             avatar={
               <MiniCalendar
-                width="32pt"
-                height="32pt"
+                width={48}
+                height={48}
                 day={this.props.data.date.getDate()}
                 month={this.props.data.date.getMonth()} />
             }/>

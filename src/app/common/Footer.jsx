@@ -3,9 +3,9 @@ const React = require('react');
 const MUI = require('app/common/MaterialUI');
 const i18nextReact = require('global/i18nextReact');
 
-const LanguageIcon = require('svg/icon/Languages.jsx');
+const LanguageIcon = require('svg/icon/Languages');
 
-const languages = require('constants/Languages.json');
+const languages = require('constants/Languages');
 
 /* Styles used in the footer*/
 var footerStyle = {

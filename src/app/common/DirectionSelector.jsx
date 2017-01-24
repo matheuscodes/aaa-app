@@ -1,7 +1,7 @@
 const React = require('react');
 const MUI = require('app/common/MaterialUI');
 
-const Compass = require('svg/icon/Compass.jsx');
+const Compass = require('svg/icon/Compass');
 const compassStyle = {padding: '5pt'};
 
 const DirectionSelector = React.createClass({

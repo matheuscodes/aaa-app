@@ -4,8 +4,8 @@ const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 const API = require('api');
 
-const SeasonTile = require('app/seasons/SeasonTile.jsx');
-const Waiting = require('app/common/Waiting.jsx');
+const SeasonTile = require('app/seasons/SeasonTile');
+const Waiting = require('app/common/Waiting');
 
 const SeasonsCard = React.createClass({
   getInitialState: function() {

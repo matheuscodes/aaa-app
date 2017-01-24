@@ -4,7 +4,7 @@ const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 const API = require('api');
 
-const EndDistributionGraph = require('svg/EndDistributionGraph.jsx');
+const EndDistributionGraph = require('svg/EndDistributionGraph');
 
 const EndDistributionCard = React.createClass({
   getInitialState: function() {

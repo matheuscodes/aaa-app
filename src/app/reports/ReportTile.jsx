@@ -4,11 +4,11 @@ const MUI = require('app/common/MaterialUI');
 const API = require('api');
 const i18nextReact = require('global/i18nextReact');
 
-const Waiting = require('app/common/Waiting.jsx');
+const Waiting = require('app/common/Waiting');
 
-const MonthReportTable = require('svg/MonthReportTable.jsx');
-const MonthGraph = require('svg/MonthGraph.jsx');
-const SeasonGraph = require('svg/SeasonGraph.jsx');
+const MonthReportTable = require('svg/MonthReportTable');
+const MonthGraph = require('svg/MonthGraph');
+const SeasonGraph = require('svg/SeasonGraph');
 
 const oneDay = 24 * 60 * 60 * 1000;
 
@@ -16,23 +16,20 @@ const ReportTile = React.createClass({
   getInitialState: function() {
     return {};
   },
-  updateContent: function() {
+  updateContent: function(nextProps) {
     var callbacks = {
       context: this,
       success: function(report) {
         this.setState(report);
       }
     };
-    API.seasons.getMonthReport(this.props.seasonId,
-                            this.props.year,
-                            this.props.month, callbacks);
+    API.seasons.getMonthReport(nextProps.seasonId,
+                            nextProps.year,
+                            nextProps.month, callbacks);
     delete this.state.firstDay; // Showing the loading again.
   },
-  componentDidMount: function() {
-    this.updateContent();
-  },
-  componentDidUpdate: function() {
-    this.updateContent();
+  componentWillReceiveProps: function(nextProps) {
+    this.updateContent(nextProps);
   },
   render: function() {
     const t = this.props.t;
@@ -59,7 +56,7 @@ const ReportTile = React.createClass({
         allDays.count++;
       }
       content = (
-        <MUI.GridList cellHeight={'unset'} cols={1} padding={10} style={{width: '100%'}}>
+        <MUI.GridList cellHeight={'auto'} cols={1} padding={10} style={{width: '100%'}}>
           <MUI.GridTile cols={1} >
             <h2>{t('report:tableTitle', {date: new Date(this.props.year, this.props.month - 1, 1)})}</h2>
             <MonthReportTable data={this.state} allDays={allDays}/>

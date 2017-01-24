@@ -4,8 +4,8 @@ const MUI = require('app/common/MaterialUI');
 const API = require('api');
 const i18nextReact = require('global/i18nextReact');
 
-const Waiting = require('app/common/Waiting.jsx');
-const Notice = require('app/common/Notice.jsx');
+const Waiting = require('app/common/Waiting');
+const Notice = require('app/common/Notice');
 
 const EventsCard = React.createClass({
   getInitialState: function() {

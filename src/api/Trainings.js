@@ -1,8 +1,6 @@
-'use strict';
+const requestBuilder = require('api/helpers/RequestBuilder');
 
-var requestBuilder = require('api/helpers/RequestBuilder');
-
-var processResponse = function(data) {
+function processResponse(data) {
   data.date = new Date(data.date);
   var newArrows = {};
   data.arrows.forEach(function(value) {
@@ -15,7 +13,7 @@ var processResponse = function(data) {
   return data;
 };
 
-var processResponseList = function(response) {
+function processResponseList(response) {
   var data = JSON.parse(response.toString());
   var results = [];
   data.forEach(function(value) {
@@ -24,7 +22,7 @@ var processResponseList = function(response) {
   return results;
 };
 
-var processRequest = function(training) {
+function processRequest(training) {
   training.date = training.date.toISOString();
 
   var arrows = [];
@@ -45,26 +43,37 @@ var processRequest = function(training) {
 
 module.exports = {
   getList: function(page, callbacks) {
-    var successCall = function(request) {
+    function successCall(request) {
       var response = processResponseList(request.responseText);
       callbacks.success.call(callbacks.context, response);
     };
 
+    function errorCall(request){
+      let error = new Error(request.responseText.toString());
+      callbacks.error.call(callbacks.context, error);
+    }
+
     var newCallbacks = {
       context: callbacks.context,
       200: successCall,
-      failure: callbacks.error
+      failure: errorCall
     };
+
     var url = ['/trainings/?page=',page].join('');
     var request = requestBuilder(url, 'GET', newCallbacks);
     request.send();
   },
   save: function(training, callbacks) {
-    var newCallbacks = {
+    function errorCall(request){
+      let error = new Error(request.responseText.toString());
+      callbacks.error.call(callbacks.context, error);
+    }
+
+    const newCallbacks = {
       context: callbacks.context,
       201: callbacks.success,
       200: callbacks.success,
-      failure: callbacks.error
+      failure: errorCall
     };
 
     var request;
@@ -75,15 +84,18 @@ module.exports = {
                                'PUT', newCallbacks);
     }
 
-    var data = processRequest(training);
-
-    request.send(data);
+    request.send(processRequest(training));
   },
   delete: function(trainingId, callbacks) {
+    function errorCall(request){
+      let error = new Error(request.responseText.toString());
+      callbacks.error.call(callbacks.context, error);
+    }
+
     var newCallbacks = {
       context: callbacks.context,
       204: callbacks.success,
-      failure: callbacks.error
+      failure: errorCall
     };
 
     var request = requestBuilder(['/trainings/', trainingId, '/'].join(''),

@@ -3,8 +3,8 @@
 var React = require('react');
 var MUI = require('app/common/MaterialUI');
 
-var WeatherConditions = require('constants/WeatherConditions.json');
-var WeatherIcons = require('svg/icon/Weather.jsx');
+var WeatherConditions = require('constants/WeatherConditions');
+var WeatherIcons = require('svg/icon/Weather');
 
 module.exports = React.createClass({
   getInitialState: function() {
