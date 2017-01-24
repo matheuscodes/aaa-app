@@ -11,5 +11,6 @@ exports.trainings = API.trainings = require('api/Trainings');
 exports.events = API.events = require('api/Events');
 exports.equipment = API.equipment = require('api/Equipment');
 exports.login = API.login = require('api/Login');
+exports.isAuthError = API.isAuthError = require('api/helpers/isAuthError');
 
 exports.default = API;

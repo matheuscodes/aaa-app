@@ -35,10 +35,8 @@ const TrainingsPage = React.createClass({
         this.setState(current);
       },
       error: function(error) {
-        if (error instanceof ReferenceError) {
-          if (error.message === 'Missing Token.') {
-            this.props.switcher.switchTo('loginPage');
-          }
+        if(API.isAuthError(error)){
+          this.props.switcher.switchTo('loginPage');
         }
         this.showMessage(t('training:messages.listError'), "ERROR");
       }
