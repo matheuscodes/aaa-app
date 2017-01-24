@@ -52,6 +52,7 @@ const NewTrainingCard = React.createClass({
         this.showMessage(t('training:messages.seasonError'), "ERROR");
       }
     };
+    this.setState(this.getInitialState());
     API.seasons.getList(callbacks);
   },
 
@@ -63,7 +64,6 @@ const NewTrainingCard = React.createClass({
     var current = this.state;
     current.training.date = date;
     current.training.date.setHours(18);
-    console.log(current.training.date)
     this.setState(current);
   },
   setArrowCount: function(event) {
@@ -113,7 +113,6 @@ const NewTrainingCard = React.createClass({
       success: function() {
         this.showMessage(t('training:messages.newSaved'), "MESSAGE");
         this.props.onClose(true);
-        this.setState(this.getInitialState());
       },
       warning: function() {
         this.showMessage(t('training:messages.newSaved'), "WARNING");
