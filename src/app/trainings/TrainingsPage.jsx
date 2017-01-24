@@ -4,7 +4,7 @@ const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 const API = require('api');
 
-const PageSwitcher = require('app/common/PageSwitcher');
+const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
 const BaseLayout = require('app/common/BaseLayout');
 const Waiting = require('app/common/Waiting');
 const Notice = require('app/common/Notice');
@@ -20,9 +20,9 @@ const styles = {
 
 const TrainingsPage = React.createClass({
   propTypes: {
-    switcher: React.PropTypes.instanceOf(PageSwitcher),
-    userAgent: React.PropTypes.string,
-    t: React.PropTypes.func
+    switcher: ReactPageSwitcherType.isRequired,
+    userAgent: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]).isRequired,
+    t: React.PropTypes.func.isRequired
   },
   updateTrainingList: function() {
     const t = this.props.t;
@@ -243,7 +243,7 @@ const TrainingsPage = React.createClass({
         switcher={this.props.switcher}
         layoutName="trainingsPage"
         userAgent={this.props.userAgent}
-        title={t('training:title')} >
+        title={t('training:appBarTitle')} >
         <MUI.GridList cellHeight={'auto'} cols={4} padding={10} style={styles.gridList} >
           <MUI.GridTile style={{padding: '5pt'}}
             cols={this.state.editTraining ? 2 : 4} >
@@ -252,7 +252,7 @@ const TrainingsPage = React.createClass({
 
           <MUI.GridTile cols={this.state.editTraining ? 2 : 4} >
             <MUI.GridList
-              cellHeight={'unset'}
+              cellHeight={'auto'}
               cols={this.state.editTraining ? 2 : 4}
               padding={10}
               style={styles.gridList} >
@@ -262,14 +262,14 @@ const TrainingsPage = React.createClass({
           <MUI.GridTile cols={4} >
             <MUI.GridList cols={4} padding={10} style={styles.gridList} >
               {this.state.editTraining ?
-                [<MUI.GridTile>{''}</MUI.GridTile>,
-                <MUI.GridTile>{''}</MUI.GridTile>] : []}
+                [<MUI.GridTile key={1}>{''}</MUI.GridTile>,
+                <MUI.GridTile key={2}>{''}</MUI.GridTile>] : []}
               <MUI.GridTile style={{padding: '5pt'}}>
                 {previousButton}
               </MUI.GridTile>
               {this.state.editTraining === false ?
-                [<MUI.GridTile>{''}</MUI.GridTile>,
-                <MUI.GridTile>{''}</MUI.GridTile>] : []}
+                [<MUI.GridTile key={1}>{''}</MUI.GridTile>,
+                <MUI.GridTile key={2}>{''}</MUI.GridTile>] : []}
               <MUI.GridTile style={{padding: '5pt'}}>
                 {nextButton}
               </MUI.GridTile>

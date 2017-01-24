@@ -8,7 +8,7 @@ const TrainingTypes = require('constants/TrainingTypes');
 
 const TrainingTile = React.createClass({
   propTypes: {
-    // TODO create class to validate
+    // TODO create a react type class to validate
     data: React.PropTypes.object,
     onDelete: React.PropTypes.func,
     t: React.PropTypes.func
@@ -58,8 +58,8 @@ const TrainingTile = React.createClass({
             subtitle={this.props.data.seasonName}
             avatar={
               <MiniCalendar
-                width="32pt"
-                height="32pt"
+                width={48}
+                height={48}
                 day={this.props.data.date.getDate()}
                 month={this.props.data.date.getMonth()} />
             }/>

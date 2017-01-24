@@ -78,7 +78,7 @@ const NewTrainingCard = React.createClass({
   increaseArrows: function(event) {
     var split = event.target.id.split('_');
     var current = this.state;
-    if (typeof current.arrows[split[1]][split[2]] === 'undefined') {
+    if (typeof current.training.arrows[split[1]][split[2]] === 'undefined') {
       current.training.arrows[split[1]][split[2]] = 0;
     }
     current.training.arrows[split[1]][split[2]] += 1;
@@ -188,7 +188,7 @@ const NewTrainingCard = React.createClass({
               style={style.arrowCountField}
               inputStyle={style.arrowCountInput}
               id={['newTrainingCardText_', distance, '_', type].join('')}
-              value={this.state.training.arrows[distance][type]}
+              defaultValue={this.state.training.arrows[distance][type]}
               onChange={this.setArrowCount} />
             <MUI.IconButton
               id={['newTrainingDec_', distance, '_', type].join('')}
@@ -241,9 +241,6 @@ const NewTrainingCard = React.createClass({
             floatingLabelText={
               t('training:newTraining.seasonSelectField.label')
             } >
-            {/* FIXME temporary fix
-                for https://github.com/callemall/material-ui/issues/2446*/}
-            <MUI.MenuItem value={'undefined'} primaryText={" "} />
             {seasons}
           </MUI.SelectField>
           <MUI.Table>
@@ -264,7 +261,7 @@ const NewTrainingCard = React.createClass({
                   <MUI.TextField
                     style={{width: '70%'}}
                     id={'newTrainingCardNewDistance'}
-                    value={this.state.newDistance}
+                    defaultValue={this.state.newDistance}
                     hintText={t('training:newTraining.distanceTextField.hint')}
                     floatingLabelText={
                       t('training:newTraining.distanceTextField.label')
