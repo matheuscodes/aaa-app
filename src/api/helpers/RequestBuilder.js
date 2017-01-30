@@ -1,8 +1,11 @@
 const getLocalArcher = require('api/helpers/getLocalArcher');
 
+const requestURL = (process.env.clientRequestURL || 'none');
+console.log("Using Request URL:",requestURL)
+
 module.exports = function(path, method, callbacks) {
   var xmlhttp = new XMLHttpRequest();
-  var url = 'http://localhost:8080';
+  var url = requestURL;
   if (path !== '/login/') {
     var archer = getLocalArcher();
     if (typeof archer !== 'undefined') {
