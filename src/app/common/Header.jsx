@@ -90,6 +90,7 @@ const Header = React.createClass({
     return (
       <div>
         <MUI.AppBar
+            style={{backgroundColor:MUI.colors.blue600}}
             title={this.props.title}
             showMenuIconButton={ this.state.archer ? true : false }
             iconElementLeft={ this.state.archer ? leftIcon : null } />

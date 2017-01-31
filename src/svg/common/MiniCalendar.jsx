@@ -51,7 +51,7 @@ const MiniCalendar = React.createClass({
             ry="20" />
           <path
              style={{
-               fill: '#900000',
+               fill: '#E53935',
                fillRule: 'evenodd',
                stroke: '#000000',
                strokeWidth: 3,

@@ -89,4 +89,9 @@ MUI.palette.accent3Color = MUI.colors.grey600;
 MUI.palette.darkAccent1Color = MUI.colors.grey500;
 MUI.palette.darkAccent2Color = MUI.colors.grey700;
 MUI.palette.darkAccent3Color = MUI.colors.grey900;
+MUI.palette.primary1Color = MUI.colors.yellow700;
+MUI.palette.primary2Color = MUI.colors.yellow800;
+MUI.palette.accent1Color = MUI.colors.red600;
+MUI.palette.pickerHeaderColor = MUI.colors.yellow600;
+
 module.exports = MUI;

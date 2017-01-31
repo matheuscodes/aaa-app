@@ -215,7 +215,8 @@ const TrainingsPage = React.createClass({
         <MUI.RaisedButton
           label={t('training:previousButton')}
           fullWidth={true}
-          primary={true}
+          backgroundColor={MUI.colors.blue600}
+          labelColor={MUI.palette.alternateTextColor}
           disabled={(this.state.previous === null)}
           onTouchTap={this.moveToPreviousPage}
           icon={<MUI.icons.navigation.chevron_left />} />
@@ -228,7 +229,8 @@ const TrainingsPage = React.createClass({
         <MUI.RaisedButton
           label={t('training:nextButton')}
           fullWidth={true}
-          primary={true}
+          backgroundColor={MUI.colors.blue600}
+          labelColor={MUI.palette.alternateTextColor}
           labelPosition={'before'}
           disabled={(this.state.next === null)}
           onTouchTap={this.moveToNextPage}
