@@ -4,6 +4,7 @@ const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 
 const getLocalArcher = require('api/helpers/getLocalArcher');
+const deleteLocalArcher = require('api/helpers/deleteLocalArcher');
 
 const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
 
@@ -46,6 +47,10 @@ const Header = React.createClass({
   },
   openHomePage: function() {
     this.props.switcher.switchTo('homePage');
+  },
+  logout: function() {
+    deleteLocalArcher();
+    this.props.switcher.switchTo('loginPage');
   },
   render: function() {
     const t = this.props.t;
@@ -109,7 +114,7 @@ const Header = React.createClass({
                 disabled={true}
                 nestedItems={[
                   <MUI.ListItem key={'aaa-headerLogout'}
-                    onTouchTap={this.handleClose}
+                    onTouchTap={this.logout}
                     primaryText={t('common:logout')}
                     leftIcon={<MUI.icons.action.exit_to_app />} />
                 ]} />

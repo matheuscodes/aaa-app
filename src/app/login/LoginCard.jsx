@@ -33,7 +33,7 @@ const LoginCard = React.createClass({
         console.log("ERROR DOWNLOADING IMAGE INFO", request);
       }
     };
-    if(getLocalArcher() === 'undefined'){
+    if(typeof getLocalArcher() === 'undefined'){
       downloadFile('img/' + selected + '.json', callbacks);
     } else {
       this.props.switcher.switchTo('homePage');
