@@ -147,12 +147,11 @@ const TrainingsPage = React.createClass({
     API.trainings.delete(trainingId, callbacks);
   },
   closeEdit: function(refresh) {
+    var current = this.state;
+    current.editTraining = false;
+    this.setState(current);
     if (refresh) {
       this.updateAll();
-    } else {
-      var current = this.state;
-      current.editTraining = false;
-      this.setState(current);
     }
   },
   newTraining: function() {
