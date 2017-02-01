@@ -33,9 +33,7 @@ const SeasonsCard = React.createClass({
             <SeasonTile
               seasonId={season.id}
               data={season}
-              readOnly={!this.state.seasonId}
-              onDelete={this.deleteSeason}
-              onEdit={this.editSeason} />
+              readOnly={true} />
           </MUI.GridTile>
         );
       }, this);

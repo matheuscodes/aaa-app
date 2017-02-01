@@ -50,19 +50,20 @@ const SeasonTile = React.createClass({
           </MUI.CardText>
 
           <MUI.CardActions style={{textAlign: 'right'}}>
-            {this.props.readOnly ?
+            {!this.props.readOnly ?
               <MUI.FloatingActionButton
                 mini={true}
                 onTouchTap={this.onEdit}
                 style={{margin: '5pt'}}>
                 <MUI.icons.editor.mode_edit />
-              </MUI.FloatingActionButton> : null}
-            <MUI.FloatingActionButton
-              mini={true}
-              onTouchTap={this.onDelete}
-              secondary={true} style={{margin: '5pt'}}>
-              <MUI.icons.action.delete />
-            </MUI.FloatingActionButton>
+              </MUI.FloatingActionButton> : ''}
+            {!this.props.readOnly ?
+              <MUI.FloatingActionButton
+                mini={true}
+                onTouchTap={this.onDelete}
+                secondary={true} style={{margin: '5pt'}}>
+                <MUI.icons.action.delete />
+              </MUI.FloatingActionButton> : ''}
           </MUI.CardActions>
         </MUI.Card>
       </MUI.Paper>
