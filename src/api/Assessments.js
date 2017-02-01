@@ -53,15 +53,22 @@ module.exports = {
       callbacks.success.call(callbacks.context, response);
     };
 
+    function errorCall(request){
+      let error = new Error(request.responseText.toString());
+      callbacks.error.call(callbacks.context, error);
+    }
+
     var newCallbacks = {
       context: callbacks.context,
       200: successCall,
-      failure: callbacks.error
+      failure: errorCall
     };
 
     var url = ['/assessments/?page=',page].join('');
     var request = requestBuilder(url, 'GET', newCallbacks);
-    request.send();
+    if(request !== null){
+      request.send();
+    }
   },
   getTargets: function(callbacks) {
     var successCall = function(request) {
@@ -69,14 +76,21 @@ module.exports = {
       callbacks.success.call(callbacks.context, response);
     };
 
+    function errorCall(request){
+      let error = new Error(request.responseText.toString());
+      callbacks.error.call(callbacks.context, error);
+    }
+
     var newCallbacks = {
       context: callbacks.context,
       200: successCall,
-      failure: callbacks.error
+      failure: errorCall
     };
 
     var request = requestBuilder('/assessments/targets/', 'GET', newCallbacks);
-    request.send();
+    if(request !== null){
+      request.send();
+    }
   },
   getById: function(assessmentId, callbacks) {
     var successCall = function(request) {
@@ -84,15 +98,22 @@ module.exports = {
       callbacks.success.call(callbacks.context, response);
     };
 
+    function errorCall(request){
+      let error = new Error(request.responseText.toString());
+      callbacks.error.call(callbacks.context, error);
+    }
+
     var newCallbacks = {
       context: callbacks.context,
       200: successCall,
-      failure: callbacks.error
+      failure: errorCall
     };
 
     var request = requestBuilder(['/assessments/', assessmentId, '/'].join(''),
                                  'GET', newCallbacks);
-    request.send();
+    if(request !== null){
+      request.send();
+    }
   },
   reportById: function(assessmentId, callbacks) {
     var successCall = function(request) {
@@ -100,15 +121,23 @@ module.exports = {
       callbacks.success.call(callbacks.context, response);
     };
 
+    function errorCall(request){
+      let error = new Error(request.responseText.toString());
+      callbacks.error.call(callbacks.context, error);
+    }
+
     var newCallbacks = {
       context: callbacks.context,
       200: successCall,
-      failure: callbacks.error
+      failure: errorCall
     };
 
     var request = requestBuilder(['/assessments/', assessmentId,
                                   '/report/'].join(''), 'GET', newCallbacks);
-    request.send();
+
+    if(request !== null){
+      request.send();
+    }
   },
   save: function(assessment, callbacks) {
     var newCallbacks = {
@@ -128,7 +157,9 @@ module.exports = {
 
     var data = processRequest(assessment);
 
-    request.send(data);
+    if(request !== null){
+      request.send(data);
+    }
   },
   delete: function(assessmentId, callbacks) {
     var newCallbacks = {
@@ -140,7 +171,9 @@ module.exports = {
     var request = requestBuilder(['/assessments/', assessmentId, '/'].join(''),
                                   'DELETE', newCallbacks);
 
-    request.send();
+    if(request !== null){
+      request.send();
+    }
   }
 
 };
