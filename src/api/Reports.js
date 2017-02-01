@@ -108,7 +108,9 @@ module.exports = {
     };
 
     var request = requestBuilder('/reports/overview/rings', 'GET', newCallbacks);
-    request.send();
+    if(request !== null){
+      request.send();
+    }
   },
   getAssessmentsOverview: function(callbacks) {
     var successCall = function(request) {
@@ -128,6 +130,8 @@ module.exports = {
     };
 
     var request = requestBuilder('/reports/overview/assessments', 'GET', newCallbacks);
-    request.send();
+    if(request !== null){
+      request.send();
+    }
   }
 };

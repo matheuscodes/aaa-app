@@ -25,6 +25,8 @@ module.exports = {
     url += from ? '&from=' + from.toISOString() : '';
     url += to ? '&to=' + to.toISOString() : '';
     var request = requestBuilder(url, 'GET', newCallbacks);
-    request.send();
+    if(request !== null){
+      request.send();      
+    }
   }
 };

@@ -11,7 +11,11 @@ module.exports = function(path, method, callbacks) {
     if (typeof archer !== 'undefined') {
       url += ['/archers/', archer.id].join('');
     } else {
-      callbacks.failure.call(callbacks.context,{responseText:'Missing Token.'});
+      if (typeof callbacks.failure === 'undefined') {
+        console.error("Cannot callback to inform missing token.");
+      } else {
+        callbacks.failure.call(callbacks.context,{responseText:'Missing Token.'});
+      }
       return null;
     }
   }
