@@ -15,7 +15,7 @@ const SeasonTile = require('app/seasons/SeasonTile');
 const SeasonsPage = React.createClass({
   propTypes: {
     switcher: React.PropTypes.instanceOf(PageSwitcher),
-    userAgent: React.PropTypes.string,
+    userAgent: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]).isRequired,
     t: React.PropTypes.func
   },
   updateSeasonsList: function() {
@@ -30,12 +30,10 @@ const SeasonsPage = React.createClass({
         this.setState(current);
       },
       error: function(error) {
-        if (error instanceof ReferenceError) {
-          if (error.message === 'Missing Token.') {
-            this.props.switcher.switchTo('loginPage');
-          }
-        }
         this.showMessage(t('season:messages.listError'), "ERROR");
+        if(API.isAuthError(error)){
+          this.props.switcher.switchTo('loginPage');
+        }
       }
     };
     API.seasons.getList(callbacks);
@@ -146,7 +144,7 @@ const SeasonsPage = React.createClass({
         switcher={this.props.switcher}
         layoutName="seasonsPage"
         userAgent={this.props.userAgent}
-        title={t('season:title')} >
+        title={t('season:appBarTitle')} >
         <MUI.GridList
           cellHeight={'unset'}
           cols={4}
