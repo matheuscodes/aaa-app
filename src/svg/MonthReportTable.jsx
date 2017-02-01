@@ -364,7 +364,7 @@ const MonthReportTable = React.createClass({
                               data.firstDay,
                               data.lastDay,
                               data.month,
-                              t('report:techniqueWeekly'),
+                              t('report:totalWeekly'),
                               '',
                               true /* weekly*/))}
       </g>

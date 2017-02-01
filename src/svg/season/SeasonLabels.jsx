@@ -50,12 +50,6 @@ const SeasonLabels = React.createClass({
         <text className="graph_label" x="125" y={(5 * this.props.max / 10 - 2)}>
           {t('season:graphLabels.data.resultTotals')}
         </text>
-
-        <circle className="strength"
-          cx="50" cy={(6 * this.props.max / 10 - 12.5)} r="10"/>
-        <text className="graph_label" x="125" y={(6 * this.props.max / 10 - 2)}>
-          {t('season:graphLabels.data.strengthTraining')}
-        </text>
       </g>
     );
   }
