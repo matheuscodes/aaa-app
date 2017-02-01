@@ -23,9 +23,9 @@ const LoginPage = React.createClass({
         switcher={this.props.switcher}
         layoutName="loginPage"
         userAgent={this.props.userAgent}
-        title={t('login:title')} >
+        title={t('login:appBarTitle')} >
         <MUI.GridList
-          cellHeight={'unset'}
+          cellHeight={'auto'}
           cols={4} padding={10}
           style={{witdth: '100%'}} >
           <MUI.GridTile style={{padding: '5pt'}} cols={1} >

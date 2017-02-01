@@ -146,7 +146,7 @@ const SeasonsPage = React.createClass({
         userAgent={this.props.userAgent}
         title={t('season:appBarTitle')} >
         <MUI.GridList
-          cellHeight={'unset'}
+          cellHeight={'auto'}
           cols={4}
           padding={10}
           style={{width: '100%'}} >

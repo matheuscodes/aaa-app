@@ -50,7 +50,7 @@ const SeasonsCard = React.createClass({
           subtitle={t('home:seasons.subtitle')} />
         <MUI.CardText>
           <MUI.GridList
-            cellHeight={'unset'}
+            cellHeight={'auto'}
             cols={2}
             padding={10}
             style={{width: '100%'}} >
