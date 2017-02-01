@@ -17,6 +17,11 @@ const ReportCard = React.createClass({
         var current = this.state;
         current.seasons = seasons;
         this.setState(current);
+      },
+      error: function(error) {
+        if(API.isAuthError(error)){
+          this.props.switcher.switchTo('loginPage');
+        }
       }
     };
     API.seasons.getList(callbacks);

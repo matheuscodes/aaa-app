@@ -32,14 +32,21 @@ module.exports = {
       callbacks.success.call(callbacks.context, response);
     };
 
+    function errorCall(request){
+      let error = new Error(request.responseText.toString());
+      callbacks.error.call(callbacks.context, error);
+    }
+
     var newCallbacks = {
       context: callbacks.context,
       200: successCall,
-      failure: callbacks.error
+      failure: errorCall
     };
 
     var request = requestBuilder('/seasons/', 'GET', newCallbacks);
-    request.send();
+    if(request !== null){
+      request.send();
+    }
   },
   getActive: function(callbacks) {
     var successCall = function(request) {
@@ -47,14 +54,21 @@ module.exports = {
       callbacks.success.call(callbacks.context, response);
     };
 
+    function errorCall(request){
+      let error = new Error(request.responseText.toString());
+      callbacks.error.call(callbacks.context, error);
+    }
+
     var newCallbacks = {
       context: callbacks.context,
       200: successCall,
-      failure: callbacks.error
+      failure: errorCall
     };
 
     var request = requestBuilder('/seasons/active', 'GET', newCallbacks);
-    request.send();
+    if(request !== null){
+      request.send();
+    }
   },
   getById: function(id, callbacks) {
     var successCall = function(request) {
@@ -62,14 +76,21 @@ module.exports = {
       callbacks.success.call(callbacks.context, response);
     };
 
+    function errorCall(request){
+      let error = new Error(request.responseText.toString());
+      callbacks.error.call(callbacks.context, error);
+    }
+
     var newCallbacks = {
       context: callbacks.context,
       200: successCall,
-      failure: callbacks.error
+      failure: errorCall
     };
 
     var request = requestBuilder('/seasons/' + id, 'GET', newCallbacks);
-    request.send();
+    if(request !== null){
+      request.send();
+    }
   },
   getMonthReport: function(id, year, month, callbacks) {
     var successCall = function(request) {
@@ -77,15 +98,22 @@ module.exports = {
       callbacks.success.call(callbacks.context, response);
     };
 
+    function errorCall(request){
+      let error = new Error(request.responseText.toString());
+      callbacks.error.call(callbacks.context, error);
+    }
+
     var newCallbacks = {
       context: callbacks.context,
       200: successCall,
-      failure: callbacks.error
+      failure: errorCall
     };
 
     var request = requestBuilder('/seasons/' + id + '/report/' + year + '/' + month,
                                  'GET', newCallbacks);
-    request.send();
+    if(request !== null){
+      request.send();
+    }
   },
   save: function(season, callbacks) {
     var newCallbacks = {
