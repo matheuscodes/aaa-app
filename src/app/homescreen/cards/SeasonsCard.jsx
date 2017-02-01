@@ -18,7 +18,12 @@ const SeasonsCard = React.createClass({
         var current = this.state;
         current.seasons = list;
         this.setState(current);
-      }
+      },
+      error: function(error){
+        if(API.isAuthError(error)){
+          this.props.switcher.switchTo('loginPage');
+        }
+      },
     };
     API.seasons.getActive(callbacks);
   },
@@ -45,7 +50,7 @@ const SeasonsCard = React.createClass({
           subtitle={t('home:seasons.subtitle')} />
         <MUI.CardText>
           <MUI.GridList
-            cellHeight={'unset'}
+            cellHeight={'auto'}
             cols={2}
             padding={10}
             style={{width: '100%'}} >

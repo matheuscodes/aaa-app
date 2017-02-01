@@ -40,12 +40,10 @@ const AssessmentsPage = React.createClass({
         this.setState(current);
       },
       error: function(error) {
-        if (error instanceof ReferenceError) {
-          if (error.message === 'Missing Token.') {
-            this.props.switcher.switchTo('loginPage');
-          }
-        }
         this.showMessage(t('assessment:messages.listError'), "ERROR");
+        if(API.isAuthError(error)){
+          this.props.switcher.switchTo('loginPage');
+        }
       }
     };
     API.assessments.getList(this.state.currentPage,callbacks);
@@ -60,12 +58,10 @@ const AssessmentsPage = React.createClass({
         this.setState(current);
       },
       error: function(error) {
-        if (error instanceof ReferenceError) {
-          if (error.message === 'Missing Token.') {
-            this.props.switcher.switchTo('loginPage');
-          }
-        }
         this.showMessage(t('assessment:messages.listError'), "ERROR");
+        if(API.isAuthError(error)){
+          this.props.switcher.switchTo('loginPage');
+        }
       }
     };
     if(this.state.currentPage > 0){
@@ -90,12 +86,10 @@ const AssessmentsPage = React.createClass({
         this.setState(current);
       },
       error: function(error) {
-        if (error instanceof ReferenceError) {
-          if (error.message === 'Missing Token.') {
-            this.props.switcher.switchTo('loginPage');
-          }
-        }
         this.showMessage(t('assessment:messages.listError'), "ERROR");
+        if(API.isAuthError(error)){
+          this.props.switcher.switchTo('loginPage');
+        }
       }
     };
     API.assessments.getList(this.state.currentPage + 1,callbacks);

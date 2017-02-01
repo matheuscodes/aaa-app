@@ -8,6 +8,7 @@ const downloadFile = require('api/helpers/DownloadFile');
 
 const Notice = require('app/common/Notice');
 const PageSwitcher = require('app/common/PageSwitcher');
+const getLocalArcher = require('api/helpers/getLocalArcher');
 
 const LoginCard = React.createClass({
   propTypes: {
@@ -32,7 +33,11 @@ const LoginCard = React.createClass({
         console.log("ERROR DOWNLOADING IMAGE INFO", request);
       }
     };
-    downloadFile('img/' + selected + '.json', callbacks);
+    if(typeof getLocalArcher() === 'undefined'){
+      downloadFile('img/' + selected + '.json', callbacks);
+    } else {
+      this.props.switcher.switchTo('homePage');
+    }
   },
   doLogin: function() {
     const t = this.props.t;
@@ -40,7 +45,7 @@ const LoginCard = React.createClass({
       context: this,
       success: function(request) {
         this.showMessage(t('login:messages.login'), 'MESSAGE');
-        this.props.switcher.switchTo('trainingsPage');
+        this.props.switcher.switchTo('homePage');
       },
       error: function(request) {
         this.showMessage(t('login:messages.loginError'), 'ERROR');

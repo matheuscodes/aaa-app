@@ -20,25 +20,25 @@ const HomePage = React.createClass({
         userAgent={this.props.userAgent}
         layoutName="homePage"
         languages={this.props.languages}
-        title={t('home:title')} >
-        <MUI.GridList cellHeight={'auto'} cols={9} padding={10} >
+        title={t('home:appBarTitle')} >
+        <MUI.GridList cellHeight={'auto'} cols={12} padding={10} >
           <MUI.GridTile style={{padding: '5pt'}} cols={2} >
-            <TotalArrowsCard />
+            <TotalArrowsCard switcher={this.props.switcher} />
           </MUI.GridTile>
           <MUI.GridTile style={{padding: '5pt'}} cols={4} >
-            <ValueDistributionCard />
+            <ValueDistributionCard switcher={this.props.switcher} />
           </MUI.GridTile>
           <MUI.GridTile style={{padding: '5pt'}} cols={3} >
-            <EndDistributionCard />
+            <YearOverviewCard switcher={this.props.switcher} />
           </MUI.GridTile>
-          <MUI.GridTile style={{padding: '5pt'}} cols={5} >
-            <SeasonsCard />
+          <MUI.GridTile style={{padding: '5pt'}} cols={3} >
+            <EventsCard switcher={this.props.switcher} />
           </MUI.GridTile>
-          <MUI.GridTile style={{padding: '5pt'}} cols={2} >
-            <EventsCard />
+          <MUI.GridTile style={{padding: '5pt'}} cols={4} >
+            <EndDistributionCard switcher={this.props.switcher} />
           </MUI.GridTile>
-          <MUI.GridTile style={{padding: '5pt'}} cols={2} >
-            <YearOverviewCard />
+          <MUI.GridTile style={{padding: '5pt'}} cols={8} >
+            <SeasonsCard switcher={this.props.switcher} />
           </MUI.GridTile>
         </MUI.GridList>
       </BaseLayout>

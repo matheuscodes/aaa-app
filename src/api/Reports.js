@@ -15,10 +15,15 @@ module.exports = {
       callbacks.success.call(callbacks.context, processed);
     };
 
+    function errorCall(request){
+      let error = new Error(request.responseText.toString());
+      callbacks.error.call(callbacks.context, error);
+    }
+
     var newCallbacks = {
       context: callbacks.context,
       200: successCall,
-      failure: callbacks.error
+      failure: errorCall
     };
 
     var url = [
@@ -27,12 +32,13 @@ module.exports = {
       '&to=', to.toISOString()
     ].join('');
     var request = requestBuilder(url, 'GET', newCallbacks);
-    request.send();
+    if(request !== null){
+      request.send();
+    }
   },
   getLastWeeksOverview: function(callbacks) {
     const to = new Date();
     const from = new Date(to.getTime() - 1000 * 60 * 60 * 24 * 14);
-    from.setDate(1);
 
     var successCall = function(request) {
       var response = JSON.parse(request.responseText);
@@ -47,10 +53,15 @@ module.exports = {
       callbacks.success.call(callbacks.context, {days: response, max, from, to});
     };
 
+    function errorCall(request){
+      let error = new Error(request.responseText.toString());
+      callbacks.error.call(callbacks.context, error);
+    }
+
     var newCallbacks = {
       context: callbacks.context,
       200: successCall,
-      failure: callbacks.error
+      failure: errorCall
     };
 
     var url = [
@@ -59,7 +70,9 @@ module.exports = {
       '&to=', to.toISOString()
     ].join('');
     var request = requestBuilder(url, 'GET', newCallbacks);
-    request.send();
+    if(request !== null){
+      request.send();
+    }
   },
   getRingsOverview: function(callbacks) {
     var successCall = function(request) {
@@ -82,14 +95,22 @@ module.exports = {
       callbacks.success.call(callbacks.context, {distribution: response, maxes, max});
     };
 
+    function errorCall(request){
+      let error = new Error(request.responseText.toString());
+      callbacks.error.call(callbacks.context, error);
+    }
+
+
     var newCallbacks = {
       context: callbacks.context,
       200: successCall,
-      failure: callbacks.error
+      failure: errorCall
     };
 
     var request = requestBuilder('/reports/overview/rings', 'GET', newCallbacks);
-    request.send();
+    if(request !== null){
+      request.send();
+    }
   },
   getAssessmentsOverview: function(callbacks) {
     var successCall = function(request) {
@@ -97,13 +118,20 @@ module.exports = {
       callbacks.success.call(callbacks.context, response);
     };
 
+    function errorCall(request){
+      let error = new Error(request.responseText.toString());
+      callbacks.error.call(callbacks.context, error);
+    }
+
     var newCallbacks = {
       context: callbacks.context,
       200: successCall,
-      failure: callbacks.error
+      failure: errorCall
     };
 
     var request = requestBuilder('/reports/overview/assessments', 'GET', newCallbacks);
-    request.send();
+    if(request !== null){
+      request.send();
+    }
   }
 };

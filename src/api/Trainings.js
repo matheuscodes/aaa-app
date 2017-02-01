@@ -61,7 +61,9 @@ module.exports = {
 
     var url = ['/trainings/?page=',page].join('');
     var request = requestBuilder(url, 'GET', newCallbacks);
-    request.send();
+    if(request !== null){
+      request.send();
+    }
   },
   save: function(training, callbacks) {
     function errorCall(request){
@@ -84,7 +86,9 @@ module.exports = {
                                'PUT', newCallbacks);
     }
 
-    request.send(processRequest(training));
+    if(request !== null){
+      request.send(processRequest(training));
+    }
   },
   delete: function(trainingId, callbacks) {
     function errorCall(request){
@@ -100,7 +104,8 @@ module.exports = {
 
     var request = requestBuilder(['/trainings/', trainingId, '/'].join(''),
                                  'DELETE', newCallbacks);
-
-    request.send();
+    if(request !== null){
+      request.send();
+    }
   }
 };

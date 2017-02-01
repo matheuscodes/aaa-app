@@ -15,7 +15,12 @@ const EndDistributionCard = React.createClass({
       context: this,
       success: function(report) {
         this.setState(report);
-      }
+      },
+      error: function(error){
+        if(API.isAuthError(error)){
+          this.props.switcher.switchTo('loginPage');
+        }
+      },
     };
     API.reports.getAssessmentsOverview(callbacks);
   },
