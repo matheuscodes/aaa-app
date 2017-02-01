@@ -11,9 +11,8 @@ module.exports = function(path, method, callbacks) {
     if (typeof archer !== 'undefined') {
       url += ['/archers/', archer.id].join('');
     } else {
-      callbacks.failure.call(callbacks.context,
-                             new ReferenceError('Missing Token.'));
-      return;
+      callbacks.failure.call(callbacks.context,{responseText:'Missing Token.'});
+      return null;
     }
   }
   url += path;

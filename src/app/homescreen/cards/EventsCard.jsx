@@ -20,7 +20,12 @@ const EventsCard = React.createClass({
         var current = this.state;
         current.events = list;
         this.setState(current);
-      }
+      },
+      error: function(error){
+        if(API.isAuthError(error)){
+          this.props.switcher.switchTo('loginPage');
+        }
+      },
     };
     var now = new Date();
     var next3months = new Date(now.getTime() + 1000 * 60 * 60 * 24 * 90);

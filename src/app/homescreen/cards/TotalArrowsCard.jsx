@@ -14,7 +14,12 @@ const TotalArrowsCard = React.createClass({
       context: this,
       success: function(days) {
         this.setState(days);
-      }
+      },
+      error: function(error){
+        if(API.isAuthError(error)){
+          this.props.switcher.switchTo('loginPage');
+        }
+      },
     };
     API.reports.getLastWeeksOverview(callbacks);
   },

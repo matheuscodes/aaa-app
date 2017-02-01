@@ -13,7 +13,12 @@ const YearOverviewCard = React.createClass({
       context: this,
       success: function(months) {
         this.setState({months});
-      }
+      },
+      error: function(error){
+        if(API.isAuthError(error)){
+          this.props.switcher.switchTo('loginPage');
+        }
+      },
     };
     API.reports.getYearOverview(callbacks);
   },

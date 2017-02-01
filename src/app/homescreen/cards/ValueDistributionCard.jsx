@@ -15,7 +15,12 @@ const ValueDistributionCard = React.createClass({
       context: this,
       success: function(distribution) {
         this.setState(distribution);
-      }
+      },
+      error: function(error){
+        if(API.isAuthError(error)){
+          this.props.switcher.switchTo('loginPage');
+        }
+      },
     };
     API.reports.getRingsOverview(callbacks);
   },
