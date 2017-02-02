@@ -21,7 +21,7 @@ const SeasonTile = React.createClass({
   getInitialState: function() {
     return this.props.data; // TODO maybe remove this?
   },
-  componentDidMount: function() {
+  componentWillReceiveProps: function() {
     var callbacks = {
       context: this,
       success: function(season) {

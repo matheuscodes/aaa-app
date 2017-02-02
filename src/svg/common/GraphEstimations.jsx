@@ -12,8 +12,8 @@ const GraphEstimations = React.createClass({
   },
   render: function() {
     const estimations = [];
-    var minResult = (this.props.min || 10);
-    var maxResult = (this.props.max || 0);
+    var minResult = (this.props.min || 0);
+    var maxResult = (this.props.max || 10);
     this.props.data.forEach(function(value, index) {
       if (typeof value !== 'undefined' && value > 0) {
         estimations.push(value);
@@ -34,7 +34,7 @@ const GraphEstimations = React.createClass({
         estimations.push(-1);
       }
     }, this);
-    
+
     var first = true;
     var path = ['M '];
     estimations.forEach(function(value, index) {

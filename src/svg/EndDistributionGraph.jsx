@@ -63,6 +63,8 @@ const EndDistributionGraph = React.createClass({
               'aaa-endDistributionGraph_', this.props.id,
               '_value_', group, '_', index
             ].join('')}
+            min={this.props.data.minAverage}
+            max={this.props.data.maxAverage}
             data={this.props.data.values[group]}
             size="1000" contentName={group} />
         );
