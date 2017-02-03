@@ -81,8 +81,6 @@ const translate = require('react-i18next').translate;
 
 const translateConfig = {withRef: true, wait: false};
 
-const debug = false;
-
 i18next.on('languageChanged', function(lng) {
   moment.locale(lng);
   // TODO add this to date pickers to get localized dialogs.
@@ -103,13 +101,15 @@ function formatter(value, format, lng) {
       return value;
   }
 }
+const serverDebug = JSON.parse(process.env.i18nServerDebug);
+const browserDebug = JSON.parse(process.env.i18nBrowserDebug);
 
 if (typeof window === 'undefined') { // If on Node.js
   module.exports.i18next
     .use(i18nextMiddleware.LanguageDetector)
     .use(fsBackend)
     .init({
-      debug,
+      debug: serverDebug,
       interpolation: {
         escapeValue: false // not needed for react!!
       },
@@ -134,7 +134,7 @@ if (typeof window === 'undefined') { // If on Node.js
     .use(browserLanguageDetector)
     .use(xhrBackend)
     .init({
-      debug: true,
+      debug: browserDebug,
       saveMissing: true,
       fallbackLng: 'en',
       fallbackNS: 'common',

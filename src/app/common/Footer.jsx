@@ -64,6 +64,13 @@ var Footer = React.createClass({
   propTypes: {
     t: React.PropTypes.func
   },
+  getInitialState: function(){
+    return {language:this.props.i18n.language}
+  },
+  changeLanguage: function(event, index, value){
+    this.props.i18n.changeLanguage(value);
+    this.setState({language:this.props.i18n.language});
+  },
   render: function() {
     var t = this.props.t;
     return (
@@ -85,7 +92,8 @@ var Footer = React.createClass({
         <MUI.DropDownMenu
           labelStyle={{color: MUI.palette.alternateTextColor}}
           style={{float: 'right'}}
-          value={'en'} >
+          onChange={this.changeLanguage}
+          value={this.state.language} >
           {languageNodes}
         </MUI.DropDownMenu>
         <LanguageIcon style={iconStyle} />
