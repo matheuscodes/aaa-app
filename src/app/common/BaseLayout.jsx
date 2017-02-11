@@ -38,7 +38,7 @@ module.exports = React.createClass({
             <div style={{width: '100%'}}>
               {this.props.children}
             </div>
-          <Footer />
+          <Footer switcher={this.props.switcher} />
         </div>
       </MUI.ThemeProvider>
     );

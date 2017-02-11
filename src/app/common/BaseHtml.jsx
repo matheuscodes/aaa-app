@@ -7,9 +7,12 @@ const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
 
 const htmlStyle = {
   fontFamily: 'Roboto, sans-serif',
-  minHeight: '100%',
-  position: 'relative',
-  overflowX: 'hidden'
+  overflowX: 'hidden',
+  margin: 0,
+};
+
+const bodyStyle = {
+  margin: 0,
 };
 
 /**
@@ -36,7 +39,7 @@ const BaseHtml = React.createClass({
               rel="stylesheet" type="text/css" />
             <title>{this.props.title}</title>
           </head>
-          <body style={{margin: '0 0 48pt'}}>
+          <body style={bodyStyle}>
             <I18nextProvider i18n={this.props.i18n}>
               <div>
                 <this.props.container

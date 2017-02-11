@@ -9,6 +9,7 @@ var trainingsPage = require('app/trainings/TrainingsPage');
 var assessmentsPage = require('app/assessments/AssessmentsPage');
 var reportsPage = require('app/reports/ReportsPage');
 var seasonsPage = require('app/seasons/SeasonsPage');
+var termsPage = require('app/static/TermsPage');
 
 /**
  * Controller for switching between pages.
@@ -26,6 +27,8 @@ function PageSwitcher(i18next) {
 
 const getPageReactClass = function(pageTitle) {
   switch (pageTitle) {
+    case 'termsPage':
+      return termsPage;
     case 'seasonsPage':
       return seasonsPage;
     case 'reportsPage':
@@ -47,6 +50,8 @@ const getPageReactClass = function(pageTitle) {
 // TODO find a better way to do universal rendering without conflict.
 const getPageNamespaces = function(pageTitle) {
   switch (pageTitle) {
+    case 'termsPage':
+      return ['common', 'terms'];
     case 'seasonsPage':
       return ['common', 'season'];
     case 'reportsPage':
@@ -67,6 +72,8 @@ const getPageNamespaces = function(pageTitle) {
 
 function getPageUrlPath(pageTitle) {
   switch (pageTitle) {
+    case 'termsPage':
+      return 'terms';
     case 'seasonsPage':
       return 'seasons';
     case 'reportsPage':
@@ -93,7 +100,7 @@ PageSwitcher.prototype.renderPage = function(pageTitle, callback) {
   // TODO move this to constants to share between server/app
   const props = {
     switcher: this,
-    userAgent: false,
+    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
     i18n: this.i18n
   };
 
@@ -132,7 +139,7 @@ PageSwitcher.prototype.serverString = function serverString(pageTitle,
   // TODO move this to constants to share between server/app
   const props = {
     switcher: this,
-    userAgent: false,
+    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
     i18n: request.i18n,
     title: request.i18n.t(['common:pageTitle.', pageTitle].join(''))
   };

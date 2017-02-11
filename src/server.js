@@ -25,6 +25,7 @@ app.use(express.static('content'));
 
 app.get("/*", function(req, res, next) {
   console.log('\n',req.path,new Date());
+  console.log(['user-agent',req.headers['user-agent']].join(': '));
   Object.keys(req.headers).forEach(function(header){
     if(header.match('[xX]-.*')){
       console.log([header,req.headers[header]].join(': '));
@@ -63,6 +64,11 @@ app.get(['/',pageSwitcher.getPageUrlPath('reportsPage')].join(''),
 app.get(['/',pageSwitcher.getPageUrlPath('seasonsPage')].join(''),
         function(req, res) {
   res.send(pageSwitcher.serverString('seasonsPage', req));
+});
+
+app.get(['/',pageSwitcher.getPageUrlPath('termsPage')].join(''),
+        function(req, res) {
+  res.send(pageSwitcher.serverString('termsPage', req));
 });
 
 var server = http.createServer(app);

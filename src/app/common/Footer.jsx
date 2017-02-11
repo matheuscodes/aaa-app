@@ -7,43 +7,31 @@ const LanguageIcon = require('svg/icon/Languages');
 
 const languages = require('constants/Languages');
 
+const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
+
 /* Styles used in the footer*/
 var footerStyle = {
-  position: 'absolute',
-  left: 0,
-  bottom: 0,
   width: '100%',
   backgroundColor: MUI.palette.darkAccent3Color
 };
 
 var copyrightStyle = {
-  display: 'inline-block',
-  lineHeight: '40pt',
+  lineHeight: '48pt',
   color: MUI.palette.accent3Color,
   fontSize: '80%',
   padding: '4pt'
 };
 
 var linkListStyle = {
-  display: 'inline-block'
-};
-
-var linkStyle = {
-  display: 'inline-block',
-  lineHeight: '40pt',
-  color: MUI.palette.alternateTextColor,
-  fontSize: '90%',
-  padding: '4pt'
 };
 
 var iconStyle = {
-  float: 'right',
-  display: 'inline-block',
-  lineHeight: '48pt',
-  width: '24pt',
-  height: '24pt',
+  float:'right',
+  lineHeight: 48,
+  width: 24,
+  height: 24,
   fill: '#FFF',
-  margin: '20px 0 0 0'
+  margin: '20 0 0 0'
 };
 
 /**
@@ -62,6 +50,7 @@ var languageNodes = languages.map(function(language) {
 
 var Footer = React.createClass({
   propTypes: {
+    switcher: ReactPageSwitcherType.isRequired,
     t: React.PropTypes.func
   },
   getInitialState: function(){
@@ -71,24 +60,27 @@ var Footer = React.createClass({
     this.props.i18n.changeLanguage(value);
     this.setState({language:this.props.i18n.language});
   },
+  openTerms: function(event, index, value){
+  this.props.switcher.switchTo('termsPage');
+  },
+  openAbout: function(event, index, value){
+  this.props.switcher.switchTo('aboutPage');
+  },
   render: function() {
     var t = this.props.t;
     return (
       <footer style={footerStyle}>
-        <div style={copyrightStyle}>
-          Matheus Borges Teixeira &copy; 2016
-        </div>
-        <div style={linkListStyle}>
-          <a style={linkStyle} href="#">
-            {t('common:footlinks.about')}
-          </a>
-          <a style={linkStyle} href="#">
-            {t('common:footlinks.impressum')}
-          </a>
-          <a style={linkStyle} href="#">
-            {t('common:footlinks.privacyAndTerms')}
-          </a>
-        </div>
+          <span style={copyrightStyle}>
+            Matheus Borges Teixeira &copy; 2016
+          </span>
+          <MUI.FlatButton
+            label={t('common:footlinks.about')}
+            primary={true}
+            onTouchTap={this.openAbout} />
+          <MUI.FlatButton
+            label={t('common:footlinks.impressum')}
+            primary={true}
+            onTouchTap={this.openTerms} />
         <MUI.DropDownMenu
           labelStyle={{color: MUI.palette.alternateTextColor}}
           style={{float: 'right'}}
