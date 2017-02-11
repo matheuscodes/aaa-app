@@ -115,7 +115,7 @@ const LoginCard = React.createClass({
         </MUI.CardMedia>
         <MUI.CardText>
           <MUI.GridList cellHeight={72} cols={1} padding={10} >
-            <MUI.GridTile cols={1} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
               <MUI.TextField
                 style={{width: '100%'}}
                 id={'aaa-loginEmail'}
@@ -124,7 +124,7 @@ const LoginCard = React.createClass({
                 hintText={t('login:emailTextField.hint')}
                 floatingLabelText={t('login:emailTextField.label')} />
             </MUI.GridTile>
-            <MUI.GridTile cols={1} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
               <MUI.TextField
                 style={{width: '100%'}}
                 id={'aaa-loginPassword'}

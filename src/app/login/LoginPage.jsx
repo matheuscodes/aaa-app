@@ -28,10 +28,10 @@ const LoginPage = React.createClass({
           cellHeight={'auto'}
           cols={4} padding={10}
           style={{witdth: '100%'}} >
-          <MUI.GridTile style={{padding: '5pt'}} cols={1} >
+          <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
             {' '}
           </MUI.GridTile>
-          <MUI.GridTile style={{padding: '5pt'}} cols={2} >
+          <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
             <LoginCard switcher={this.props.switcher} />
           </MUI.GridTile>
         </MUI.GridList>
