@@ -230,7 +230,6 @@ const NewTrainingCard = React.createClass({
                   <MUI.TextField
                     style={{width: '70%'}}
                     id={'newTrainingCardNewDistance'}
-                    defaultValue={this.state.newDistance}
                     hintText={t('training:newTraining.distanceTextField.hint')}
                     floatingLabelText={
                       t('training:newTraining.distanceTextField.label')
