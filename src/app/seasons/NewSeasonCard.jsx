@@ -24,9 +24,9 @@ function newSeason(context) {
     return (
       <MUI.GridTile
         key={['aaa-newSeasonGoal_', index].join('')}
-        style={{padding: '5pt'}} cols={1} >
+        style={MUI.styles.GridTile} cols={1} >
         <MUI.GridList cellHeight={'auto'} cols={1} padding={10} >
-          <MUI.GridTile style={{padding: '5pt'}} cols={1} >
+          <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
             <MUI.TextField
               style={{width: '100%'}}
               id={['aaa-newSeasonArrowCount_', index].join('')}
@@ -37,7 +37,7 @@ function newSeason(context) {
                 t('season:newSeason.arrowCountTextField.label', goal)
               } />
           </MUI.GridTile>
-          <MUI.GridTile style={{padding: '5pt'}} cols={1} >
+          <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
             <MUI.TextField
               style={{width: '100%'}}
               id={['aaa-newSeasonTargetShare_', index].join('')}
@@ -55,7 +55,7 @@ function newSeason(context) {
 
   return (
     <MUI.GridList cellHeight={'auto'} cols={4} padding={10} >
-      <MUI.GridTile style={{padding: '5pt'}} cols={4} >
+      <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
         <MUI.TextField
           style={{width: '100%'}}
           id={'aaa-newSeasonName'}
@@ -64,7 +64,7 @@ function newSeason(context) {
           hintText={t('season:newSeason.nameTextField.hint')}
           floatingLabelText={t('season:newSeason.nameTextField.label')} />
       </MUI.GridTile>
-      <MUI.GridTile style={{padding: '5pt'}} cols={4} >
+      <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
         <MUI.SelectField
           style={{width: '100%'}}
           id={'aaa-newSeasonEquipment'}
@@ -82,7 +82,7 @@ function newSeason(context) {
           {equipment}
         </MUI.SelectField>
       </MUI.GridTile>
-      <MUI.GridTile style={{padding: '5pt'}} cols={2} >
+      <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
         <MUI.DatePicker
           id={'aaa-seasonStartDate'}
           floatingLabelText={t('season:newSeason.startDateDatepicker.label')}
@@ -90,7 +90,7 @@ function newSeason(context) {
           defaultDate={context.state.season.start}
           onChange={context.changeStart} />
       </MUI.GridTile>
-      <MUI.GridTile style={{padding: '5pt'}} cols={2} >
+      <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
         <MUI.DatePicker
           id={'aaa-seasonEndDate'}
           floatingLabelText={t('season:newSeason.endDateDatepicker.label')}

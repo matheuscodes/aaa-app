@@ -103,7 +103,7 @@ const SeasonsPage = React.createClass({
       seasons = this.state.seasons.map(function(season, index) {
         return (
           <MUI.GridTile
-            key={'aaa-season_' + season.id} style={{padding: '5pt'}} cols={2} >
+            key={'aaa-season_' + season.id}  style={MUI.styles.GridTile} cols={2} >
             <SeasonTile
               seasonId={season.id}
               data={season}
@@ -150,11 +150,11 @@ const SeasonsPage = React.createClass({
           cols={4}
           padding={10}
           style={{width: '100%'}} >
-          <MUI.GridTile style={{padding: '5pt'}}
+          <MUI.GridTile style={MUI.styles.GridTile}
             cols={this.state.editSeason ? 2 : 4} >
             {(editSeason || newSeasonButton)}
           </MUI.GridTile>
-          {(seasons || <Waiting />)}
+          {(seasons || <MUI.GridTile cols={4} ><Waiting /></MUI.GridTile>)}
         </MUI.GridList>
         {message}
       </BaseLayout>

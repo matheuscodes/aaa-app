@@ -94,4 +94,11 @@ MUI.palette.primary2Color = MUI.colors.yellow800;
 MUI.palette.accent1Color = MUI.colors.red600;
 MUI.palette.pickerHeaderColor = MUI.colors.yellow600;
 
+MUI.styles = {
+   GridTile:{
+     height:'unset',
+     padding: '5pt',
+   }
+}
+
 module.exports = MUI;
