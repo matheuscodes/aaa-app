@@ -57,7 +57,7 @@ const ReportTile = React.createClass({
       }
       content = (
         <MUI.GridList cellHeight={'auto'} cols={1} padding={10} style={{width: '100%'}}>
-          <MUI.GridTile cols={1} >
+          <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
             <h2>{t('report:tableTitle', {date: new Date(this.props.year, this.props.month - 1, 1)})}</h2>
             <MonthReportTable data={this.state} allDays={allDays}/>
             <h3>{t('report:dailyGraphTitle')}</h3>

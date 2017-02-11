@@ -95,10 +95,10 @@ const ReportCard = React.createClass({
           subtitle={t('report:cardSubtitle')} />
         <MUI.CardText>
           <MUI.GridList cellHeight={'auto'} cols={12} padding={10} style={{width: '100%'}}>
-            <MUI.GridTile cols={3} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
               {' '}
             </MUI.GridTile>
-            <MUI.GridTile cols={3} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={5} >
               <MUI.SelectField
                 style={{width: '100%'}}
                 id={'aaa-reportSeason'}
@@ -110,7 +110,7 @@ const ReportCard = React.createClass({
                 {seasons}
               </MUI.SelectField>
             </MUI.GridTile>
-            <MUI.GridTile cols={1} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
               <MUI.SelectField
                 style={{width: '100%'}}
                 id={'aaa-reportYear'}
@@ -122,7 +122,7 @@ const ReportCard = React.createClass({
                 {years}
               </MUI.SelectField>
             </MUI.GridTile>
-            <MUI.GridTile cols={2} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={3} >
               <MUI.SelectField
                 style={{width: '100%'}}
                 id={'aaa-reportMonth'}
@@ -134,7 +134,7 @@ const ReportCard = React.createClass({
                 {months}
               </MUI.SelectField>
             </MUI.GridTile>
-            <MUI.GridTile cols={12} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={12} >
               {this.state.seasonId &&
                this.state.selectedYear &&
                typeof this.state.selectedMonth !== 'undefined' ?
