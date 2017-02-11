@@ -34,7 +34,7 @@ const SeasonsCard = React.createClass({
       seasons = this.state.seasons.map(function(season, index) {
         return (
           <MUI.GridTile
-            key={'aaa-season_' + season.id} style={{padding: '5pt'}} cols={2} >
+            key={'aaa-season_' + season.id} style={MUI.styles.GridTile} cols={2} >
             <SeasonTile
               seasonId={season.id}
               data={season}
