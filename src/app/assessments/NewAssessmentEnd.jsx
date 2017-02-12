@@ -38,9 +38,64 @@ const NewAssessmentEnd = React.createClass({
     current.arrows = [];
     this.setState(current);
   },
-  pushArrow: function(event) {
+  pushArrowM: function() {
     var current = this.state;
-    current.arrows.push(event.target.id.split('_')[1]);
+    current.arrows.push('M');
+    this.setState(current);
+  },
+  pushArrow1: function() {
+    var current = this.state;
+    current.arrows.push('1');
+    this.setState(current);
+  },
+  pushArrow2: function() {
+    var current = this.state;
+    current.arrows.push('2');
+    this.setState(current);
+  },
+  pushArrow3: function() {
+    var current = this.state;
+    current.arrows.push('3');
+    this.setState(current);
+  },
+  pushArrow4: function() {
+    var current = this.state;
+    current.arrows.push('4');
+    this.setState(current);
+  },
+  pushArrow5: function() {
+    var current = this.state;
+    current.arrows.push('5');
+    this.setState(current);
+  },
+  pushArrow6: function() {
+    var current = this.state;
+    current.arrows.push('6');
+    this.setState(current);
+  },
+  pushArrow7: function() {
+    var current = this.state;
+    current.arrows.push('7');
+    this.setState(current);
+  },
+  pushArrow8: function() {
+    var current = this.state;
+    current.arrows.push('8');
+    this.setState(current);
+  },
+  pushArrow9: function() {
+    var current = this.state;
+    current.arrows.push('9');
+    this.setState(current);
+  },
+  pushArrow10: function() {
+    var current = this.state;
+    current.arrows.push('10');
+    this.setState(current);
+  },
+  pushArrowX: function() {
+    var current = this.state;
+    current.arrows.push('X');
     this.setState(current);
   },
   render: function() {
@@ -57,7 +112,7 @@ const NewAssessmentEnd = React.createClass({
           backgroundColor={valueConverter.backgroundColor[value]}
           labelStyle={{color: valueConverter.color[value]}}
           label={value}
-          onTouchTap={this.pushArrow} />
+          onTouchTap={this[['pushArrow',value].join('')]} />
       );
       }, this);
     actions.push(<br/>);
