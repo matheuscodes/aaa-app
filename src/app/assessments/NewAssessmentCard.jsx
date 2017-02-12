@@ -295,11 +295,7 @@ const NewAssessmentCard = React.createClass({
             <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
               <Thermometer
                 height={32}
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  right: 0
-                }}/>
+                style={{ height:32, float:'right' }} />
             </MUI.GridTile>
             <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
               <MUI.TextField
@@ -324,11 +320,7 @@ const NewAssessmentCard = React.createClass({
             <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
               <Windmills
                 height={32}
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  right: 0
-                }}/>
+                style={{ height:32, float:'right' }} />
             </MUI.GridTile>
             <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
               <MUI.TextField
@@ -357,11 +349,7 @@ const NewAssessmentCard = React.createClass({
             <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
               <ArcherAnchored
                 height={32}
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  right: 0
-                }}/>
+                style={{ height:32, float:'right' }} />
             </MUI.GridTile>
             <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
               <DirectionSelector

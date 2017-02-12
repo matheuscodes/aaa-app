@@ -18,8 +18,8 @@ module.exports = React.createClass({
         <MUI.MenuItem
           key={'aaa-weatherChoice_' + weather}
           value={weather}
-          label={<CurrentIcon height={'24pt'} style={{padding: '5pt'}} />}
-          primaryText={<CurrentIcon height={'100%'} />} />
+          label={<CurrentIcon height={32} style={{padding: '5pt'}} />}
+          primaryText={<CurrentIcon height={48} />} />
       );
     }
     this.setState(current);
@@ -34,8 +34,6 @@ module.exports = React.createClass({
         floatingLabelFixed={true}
         floatingLabelText={" "}
         hintText={this.props.hintText} >
-        {/* FIXME temporary fix for https://github.com/callemall/material-ui/issues/2446*/}
-        <MUI.MenuItem value={'undefined'} primaryText={" "} />
         {this.state.weathers}
       </MUI.SelectField>
     );
