@@ -22,29 +22,32 @@ const AssessmentReport = React.createClass({
     assessmentId: React.PropTypes.number
   },
   getInitialState: function(){
-    return {};
+    return {called:false,assessment:{}};
   },
   onDelete: function() {
     this.props.onDelete(this.props.assessmentId);
   },
   componentWillReceiveProps: function(nextProps) {
-    if(nextProps.open === true){
+    if(nextProps.open === true && !this.state.called){
       var callbacks = {
         context: this,
         success: function(assessment) {
-          this.setState(assessment);
+          console.log({assessment:assessment,called:false})
+          this.setState({assessment:assessment,called:false});
         }
       };
       API.assessments.reportById(this.props.assessmentId, callbacks);
+      this.state.called = true;
+      this.setState(this.state);
     }
   },
   render: function() {
     const t = this.props.t;
 
     let rounds = <Waiting />;
-    if (typeof this.state.rounds !== 'undefined') {
-      if(this.state.rounds.length > 0){
-        rounds = this.state.rounds.map(
+    if (typeof this.state.assessment.rounds !== 'undefined') {
+      if(this.state.assessment.rounds.length > 0){
+        rounds = this.state.assessment.rounds.map(
           function(round, roundIndex) {
             round.index = roundIndex;
             var summary = {
@@ -90,19 +93,19 @@ const AssessmentReport = React.createClass({
     }
 
     let comparison = <MUI.GridTile cols={8} ><Waiting /></MUI.GridTile>;
-    if(typeof this.state.ringComparison !== 'undefined'){
+    if(typeof this.state.assessment.ringComparison !== 'undefined'){
       comparison = (
         <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
-          <DistributionComparisonGraph data={this.state.ringComparison} />
+          <DistributionComparisonGraph data={this.state.assessment.ringComparison} />
         </MUI.GridTile>
       );
     }
 
-    const CurrentWeather = WeatherIcons[WeatherConditions[this.state.weather]];
+    const CurrentWeather = WeatherIcons[WeatherConditions[this.state.assessment.weather]];
 
     return (
       <MUI.Dialog
-          title={ this.state.event ? this.state.event.name :
+          title={ this.state.assessment.event ? this.state.assessment.event.name :
                   t('assessment:report.title', this.props.data)}
           modal={false}
           actions={[
@@ -124,14 +127,14 @@ const AssessmentReport = React.createClass({
               {t('assessment:report.overviewTitle', this.props.data)}
             </h4>
             <p>
-              {this.state.targetName ? this.state.targetName : ''}
+              {this.state.assessment.targetName ? this.state.assessment.targetName : ''}
             </p>
             <p>
               {t('assessment:report.totalPoints', this.props.data)} <br/>
               {t('assessment:report.averagePoints', this.props.data)}
             </p>
             {
-              this.state.weather ?
+              this.state.assessment.weather ?
               [
                 <h4>
                   {t('assessment:report.weatherTitle', this.props.data)}
@@ -143,31 +146,31 @@ const AssessmentReport = React.createClass({
                         <CurrentWeather
                            height={'48pt'} style={{padding: '5pt'}} />
                       </td>
-                      { this.state.windSpeed ?
+                      { this.state.assessment.windSpeed ?
                         [<td width={'1%'} style={{textAlign: 'right',color:MUI.palette.accent3Color}}>
                           <p>
                             {t('assessment:report.windLabel')}
                           </p>
                         </td>,
                         <td width={'1%'}>
-                          <Compass direction={this.state.windDirection} height={'24pt'} />
+                          <Compass direction={this.state.assessment.windDirection} height={'24pt'} />
                         </td>,
                         <td width={'99%'} style={{color:MUI.palette.accent3Color}}>
                           <p>
-                            {this.state.windSpeed}
-                            {t('assessment:report.windSpeedInfo', this.state)}
+                            {this.state.assessment.windSpeed}
+                            {t('assessment:report.windSpeedInfo', this.state.assessment)}
                           </p>
                         </td>] : [] }
                     </tr>
                     <tr>
-                      { this.state.shootDirection ?
+                      { this.state.assessment.shootDirection ?
                         [<td width={'1%'} style={{textAlign: 'right',color:MUI.palette.accent3Color}}>
                           <p>
                             {t('assessment:report.targetLabel')}
                           </p>
                         </td>,
                         <td width={'1%'}>
-                          <Compass direction={this.state.shootDirection} height={'24pt'} />
+                          <Compass direction={this.state.assessment.shootDirection} height={'24pt'} />
                         </td>]
                          : [] }
                     </tr>
