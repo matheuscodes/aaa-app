@@ -22,9 +22,12 @@ module.exports = function(path, method, callbacks) {
   url += path;
 
   xmlhttp.open(method, url, true);
+  xmlhttp.setRequestHeader("Content-type", "application/json");
   if (path !== '/login/') {
     xmlhttp.setRequestHeader("X-AAA-Authorization", localStorage.loggedToken);
   }
+
+
 
   if (typeof callbacks !== 'undefined') {
     xmlhttp.onreadystatechange = function() {

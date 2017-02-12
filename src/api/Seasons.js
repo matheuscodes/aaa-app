@@ -138,9 +138,7 @@ module.exports = {
     });
 
     var data = JSON.stringify(season);
-
-    request.setRequestHeader("Content-type", "application/json");
-
+    
     request.send(data);
   },
   delete: function(seasonId, callbacks) {

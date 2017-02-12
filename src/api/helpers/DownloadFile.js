@@ -1,7 +1,6 @@
 module.exports = function(url, callbacks) {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.open('GET', url, true);
-  xmlhttp.setRequestHeader("Connection", "close");
 
   if (typeof callbacks !== 'undefined') {
     xmlhttp.onreadystatechange = function() {
