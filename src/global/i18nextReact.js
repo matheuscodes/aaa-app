@@ -54,7 +54,7 @@ const detectionServerOptions = {
 
 const detectionClientOptions = {
   // order and from where user language should be detected
-  order: ['querystring', 'cookie'/* , 'localStorage', 'navigator', 'htmlTag'*/],
+  order: [/*'querystring',*/ 'cookie'/* , 'localStorage', 'navigator', 'htmlTag'*/],
 
   // keys or params to lookup language from
   lookupQuerystring: 'lng',
@@ -147,6 +147,11 @@ if (typeof window === 'undefined') { // If on Node.js
         format: formatter
       }
     });
+  // FIXME hack because language detection is not working.
+  if(document.cookie.includes('i18next=')){
+    console.log("Hacking to... ",document.cookie.split('i18next=')[1]);
+    module.exports.i18next.changeLanguage(document.cookie.split('i18next=')[1]);
+  }
 }
 
 module.exports.setupTranslation = function setupTranslation(namespaces,
