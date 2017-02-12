@@ -61,13 +61,13 @@ const AssessmentTile = React.createClass({
             }/>
           <MUI.CardText>
             <MUI.GridList cellHeight={'auto'} cols={2} padding={10} >
-              <MUI.GridTile style={{padding: '5pt'}} cols={1} >
+              <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
                 <p style={{margin: 0}}>
                   {t('assessment:report.totalPoints', this.props.data)} <br/>
                   {t('assessment:report.averagePoints', this.props.data)}
                 </p>
               </MUI.GridTile>
-              <MUI.GridTile style={{padding: '5pt'}} cols={1} >
+              <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
                 <MUI.RaisedButton
                   label={t('assessment:detailsButton')}
                   secondary={true}

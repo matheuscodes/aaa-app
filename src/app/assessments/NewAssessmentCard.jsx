@@ -228,13 +228,13 @@ const NewAssessmentCard = React.createClass({
           cols={2}
           padding={10}
           style={{width: '100%'}}>
-          <MUI.GridTile cols={1} >
+          <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
           <MUI.GridList
             cellHeight={'auto'}
             cols={4}
             padding={10}
             style={{width: '100%'}}>
-            <MUI.GridTile cols={4} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
               <MUI.SelectField
                 style={{width: '100%'}}
                 id={'aaa-newAssessmentSeason'}
@@ -246,7 +246,7 @@ const NewAssessmentCard = React.createClass({
                 {seasons}
               </MUI.SelectField>
             </MUI.GridTile>
-            <MUI.GridTile cols={2} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
               <MUI.DatePicker
                 style={{width: '100%'}}
                 id={'aaa-newAssessmentDate'}
@@ -257,7 +257,7 @@ const NewAssessmentCard = React.createClass({
                 value={this.state.date}
                 onChange={this.changeDate} />
             </MUI.GridTile>
-            <MUI.GridTile cols={2} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
               <MUI.TextField
                 style={{width: '100%'}}
                 id={'aaa-newAssessmentDistance'}
@@ -268,7 +268,7 @@ const NewAssessmentCard = React.createClass({
                 defaultValue={this.state.distance}
                 onChange={this.changeDistance} />
             </MUI.GridTile>
-            <MUI.GridTile cols={4} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
               <MUI.SelectField
                 style={{width: '100%'}}
                 id={'aaa-newAssessmentTarget'}
@@ -280,7 +280,7 @@ const NewAssessmentCard = React.createClass({
                 {targets}
               </MUI.SelectField>
             </MUI.GridTile>
-            <MUI.GridTile cols={4} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
               <MUI.SelectField
                 style={{width: '100%'}}
                 id={'aaa-newAssessmentEvent'}
@@ -292,7 +292,7 @@ const NewAssessmentCard = React.createClass({
                 {events}
               </MUI.SelectField>
             </MUI.GridTile>
-            <MUI.GridTile cols={1} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
               <Thermometer
                 height={32}
                 style={{
@@ -301,7 +301,7 @@ const NewAssessmentCard = React.createClass({
                   right: 0
                 }}/>
             </MUI.GridTile>
-            <MUI.GridTile cols={2} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
               <MUI.TextField
                 style={{width: '100%'}}
                 id={'aaa-newAssessmentTemperature'}
@@ -314,14 +314,14 @@ const NewAssessmentCard = React.createClass({
                 defaultValue={this.state.temperature}
                 onChange={this.changeTemperature} />
             </MUI.GridTile>
-            <MUI.GridTile cols={1} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
               <WeatherSelector
                 style={{width: '100%'}}
                 value={this.state.weather}
                 onChange={this.changeWeather}
                 hintText={t('assessment:newAssessment.weatherSelector.hint')} />
             </MUI.GridTile>
-            <MUI.GridTile cols={1} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
               <Windmills
                 height={32}
                 style={{
@@ -330,7 +330,7 @@ const NewAssessmentCard = React.createClass({
                   right: 0
                 }}/>
             </MUI.GridTile>
-            <MUI.GridTile cols={2} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
               <MUI.TextField
                 style={{width: '100%'}}
                 id={'aaa-newAssessmentWindSpeed'}
@@ -343,7 +343,7 @@ const NewAssessmentCard = React.createClass({
                 defaultValue={this.state.windSpeed}
                 onChange={this.changeWindSpeed} />
             </MUI.GridTile>
-            <MUI.GridTile cols={1} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
               <DirectionSelector
                 style={{width: '100%'}}
                 type={'WindDirection'}
@@ -354,7 +354,7 @@ const NewAssessmentCard = React.createClass({
                 } />
             </MUI.GridTile>
 
-            <MUI.GridTile cols={1} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
               <ArcherAnchored
                 height={32}
                 style={{
@@ -363,7 +363,7 @@ const NewAssessmentCard = React.createClass({
                   right: 0
                 }}/>
             </MUI.GridTile>
-            <MUI.GridTile cols={1} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
               <DirectionSelector
                 style={{width: '100%'}}
                 type={'ShootDirection'}
@@ -375,9 +375,9 @@ const NewAssessmentCard = React.createClass({
             </MUI.GridTile>
           </MUI.GridList>
           </MUI.GridTile>
-          <MUI.GridTile cols={1} >
+          <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
           <MUI.GridList cellHeight={'auto'} cols={1} style={{width: '100%'}}>
-            <MUI.GridTile style={{padding: 5}} cols={1} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
               <MUI.RaisedButton
                 label={t('assessment:addRound')}
                 style={style}
@@ -385,7 +385,7 @@ const NewAssessmentCard = React.createClass({
             </MUI.GridTile>
             {this.state.rounds.map(function(round, index) {
               round.index = index;
-              return (<MUI.GridTile cols={1} style={{padding: '5pt'}}>
+              return (<MUI.GridTile cols={1} style={MUI.styles.GridTile}>
                 <MUI.Paper
                   zDepth={2}
                   style={{display: 'inline-block', width: '100%'}}>
@@ -394,12 +394,12 @@ const NewAssessmentCard = React.createClass({
                     cols={1}
                     padding={10}
                     style={{width: '100%'}}>
-                    <MUI.GridTile style={{padding: 10}} cols={1} >
+                    <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
                       <NewAssessmentEnd
                         roundIndex={round.index}
                         addEnd={this.addEnd} />
                     </MUI.GridTile>
-                    <MUI.GridTile style={{padding: 5}} cols={1} >
+                    <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
                       <AssessmentArrowTable
                         data={round}
                         deleteEnd={this.deleteEnd} />

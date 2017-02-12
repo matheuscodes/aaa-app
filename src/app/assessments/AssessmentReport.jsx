@@ -63,12 +63,12 @@ const AssessmentReport = React.createClass({
             return (
               <MUI.GridTile
                 key={'aaa-assessmentRound_' + roundIndex}
-                style={{padding: '5pt'}} cols={8} >
+                style={MUI.styles.GridTile} cols={8} >
                 <MUI.GridList cellHeight={'auto'} cols={2} padding={10} >
-                  <MUI.GridTile style={{padding: '5pt'}} cols={1} >
+                  <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
                     <AssessmentArrowTable data={round} />
                   </MUI.GridTile>
-                  <MUI.GridTile style={{padding: '5pt'}} cols={1} >
+                  <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
                     <EndDistributionGraph
                       id={'aaa-assessmentGraph_' + roundIndex}
                       height={'230pt'}
@@ -82,7 +82,7 @@ const AssessmentReport = React.createClass({
       } else {
         rounds = (
           <MUI.GridTile
-            style={{padding: '5pt'}} cols={8} >
+            style={MUI.styles.GridTile} cols={8} >
             {t('assessment:report.noRounds')}
           </MUI.GridTile>
         );
@@ -92,7 +92,7 @@ const AssessmentReport = React.createClass({
     let comparison = <MUI.GridTile cols={8} ><Waiting /></MUI.GridTile>;
     if(typeof this.state.ringComparison !== 'undefined'){
       comparison = (
-        <MUI.GridTile style={{padding: '5pt'}} cols={4} >
+        <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
           <DistributionComparisonGraph data={this.state.ringComparison} />
         </MUI.GridTile>
       );
@@ -119,7 +119,7 @@ const AssessmentReport = React.createClass({
           onRequestClose={this.props.handleClose} >
 
         <MUI.GridList cellHeight={'auto'} cols={8} padding={10} >
-          <MUI.GridTile style={{padding: '5pt'}} cols={4} >
+          <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
             <h4>
               {t('assessment:report.overviewTitle', this.props.data)}
             </h4>
@@ -176,7 +176,7 @@ const AssessmentReport = React.createClass({
               ] : []
             }
           </MUI.GridTile>
-          <MUI.GridTile style={{padding: '5pt'}} cols={4} >
+          <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
             <h4>
               {t('assessment:report.comparisonTitle')}
             </h4>
