@@ -12,6 +12,8 @@ var MUI = {
   getTheme: require('material-ui/styles/getMuiTheme').default,
   AppBar: require('material-ui/AppBar').default,
   Avatar: require('material-ui/Avatar').default,
+  BottomNavigation: require('material-ui/BottomNavigation').default,
+  BottomNavigationItem: require('material-ui/BottomNavigation').BottomNavigationItem,
   Drawer: require('material-ui/Drawer').default,
   DatePicker: require('material-ui/DatePicker').default,
   Divider: require('material-ui/Divider').default,
@@ -52,12 +54,15 @@ var MUI = {
 MUI.icons = {
   action: {
     home: require('material-ui/svg-icons/action/home').default,
+    assessment: require('material-ui/svg-icons/action/assessment').default,
     assignment_ind: require('material-ui/svg-icons/action/assignment-ind').default,
     history: require('material-ui/svg-icons/action/history').default,
     help_outline: require('material-ui/svg-icons/action/help-outline').default,
     exit_to_app: require('material-ui/svg-icons/action/exit-to-app').default,
     settings: require('material-ui/svg-icons/action/settings').default,
     backup: require('material-ui/svg-icons/action/backup').default,
+    timeline: require('material-ui/svg-icons/action/timeline').default,
+    today: require('material-ui/svg-icons/action/today').default,
     delete: require('material-ui/svg-icons/action/delete').default,
     done: require('material-ui/svg-icons/action/done').default,
     code: require('material-ui/svg-icons/action/code').default

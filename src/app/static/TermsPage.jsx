@@ -13,7 +13,7 @@ const styles = {
   }
 };
 
-const TrainingsPage = React.createClass({
+const TermsPage = React.createClass({
   propTypes: {
     switcher: ReactPageSwitcherType.isRequired,
     userAgent: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]).isRequired,
@@ -99,4 +99,4 @@ const TrainingsPage = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['terms'], TrainingsPage);
+module.exports = i18nextReact.setupTranslation(['terms'], TermsPage);

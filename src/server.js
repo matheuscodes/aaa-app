@@ -71,6 +71,11 @@ app.get(['/',pageSwitcher.getPageUrlPath('termsPage')].join(''),
   res.send(pageSwitcher.serverString('termsPage', req));
 });
 
+app.get(['/',pageSwitcher.getPageUrlPath('aboutPage')].join(''),
+        function(req, res) {
+  res.send(pageSwitcher.serverString('aboutPage', req));
+});
+
 var server = http.createServer(app);
 server.listen(9090);
 console.log("Listening to 9090");

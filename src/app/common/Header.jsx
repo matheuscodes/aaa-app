@@ -58,12 +58,12 @@ const Header = React.createClass({
     <MUI.Menu>
       <MUI.MenuItem
         onTouchTap={this.openHomePage}
-        leftIcon={<MUI.icons.action.home />} >
+        leftIcon={<MUI.icons.action.assessment />} >
         {t('common:menuDrawer.homePage')}
       </MUI.MenuItem>
       <MUI.MenuItem
         onTouchTap={this.openSeasonsPage}
-        leftIcon={<MUI.icons.content.create />}>
+        leftIcon={<MUI.icons.action.today />}>
         {t('common:menuDrawer.seasonsPage')}
       </MUI.MenuItem>
       <MUI.MenuItem
@@ -73,7 +73,7 @@ const Header = React.createClass({
       </MUI.MenuItem>
       <MUI.MenuItem
         onTouchTap={this.openAssessmentsPage}
-        leftIcon={<MUI.icons.content.create />}>
+        leftIcon={<MUI.icons.action.timeline />}>
         {t('common:menuDrawer.assessmentsPage')}
       </MUI.MenuItem>
       <MUI.MenuItem

@@ -10,6 +10,7 @@ var assessmentsPage = require('app/assessments/AssessmentsPage');
 var reportsPage = require('app/reports/ReportsPage');
 var seasonsPage = require('app/seasons/SeasonsPage');
 var termsPage = require('app/static/TermsPage');
+var aboutPage = require('app/static/AboutPage');
 
 /**
  * Controller for switching between pages.
@@ -27,6 +28,8 @@ function PageSwitcher(i18next) {
 
 const getPageReactClass = function(pageTitle) {
   switch (pageTitle) {
+    case 'aboutPage':
+      return aboutPage;
     case 'termsPage':
       return termsPage;
     case 'seasonsPage':
@@ -50,6 +53,8 @@ const getPageReactClass = function(pageTitle) {
 // TODO find a better way to do universal rendering without conflict.
 const getPageNamespaces = function(pageTitle) {
   switch (pageTitle) {
+    case 'aboutPage':
+      return ['common', 'about'];
     case 'termsPage':
       return ['common', 'terms'];
     case 'seasonsPage':
@@ -72,6 +77,8 @@ const getPageNamespaces = function(pageTitle) {
 
 function getPageUrlPath(pageTitle) {
   switch (pageTitle) {
+    case 'aboutPage':
+      return 'about';
     case 'termsPage':
       return 'terms';
     case 'seasonsPage':
