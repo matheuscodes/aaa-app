@@ -32,6 +32,7 @@ const TermsPage = React.createClass({
             title={t('terms:title')}
             subtitle={t('terms:subtitle')} />
           <MUI.CardText>
+            <img src='img/impressum.png' width={'400px'}  height={'150px'} />
             <h2>{t('terms:disclaimer.title')}</h2>
               <h3>{t('terms:disclaimer.content.title')}</h3>
               <p>{t('terms:disclaimer.content.paragraph')}</p>
