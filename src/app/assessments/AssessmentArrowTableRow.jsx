@@ -9,7 +9,7 @@ const styles = {
   arrowSize: 30
 };
 
-const AssessmentArrowTable = React.createClass({
+const AssessmentArrowTableRow = React.createClass({
   propTypes: {
     deleteEnd: React.PropTypes.func,
     t: React.PropTypes.func
@@ -52,4 +52,4 @@ const AssessmentArrowTable = React.createClass({
 });
 
 module.exports = i18nextReact.setupTranslation(['assessment'],
-                                               AssessmentArrowTable);
+                                               AssessmentArrowTableRow);

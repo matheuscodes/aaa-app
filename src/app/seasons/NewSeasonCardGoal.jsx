@@ -8,7 +8,7 @@ const API = require('api');
 const Waiting = require('app/common/Waiting');
 const Notice = require('app/common/Notice');
 
-const NewSeasonCard = React.createClass({
+const NewSeasonCardGoal = React.createClass({
   propTypes: {
     onClose: React.PropTypes.func,
     t: React.PropTypes.func
@@ -58,4 +58,4 @@ const NewSeasonCard = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['season'], NewSeasonCard);
+module.exports = i18nextReact.setupTranslation(['season'], NewSeasonCardGoal);
