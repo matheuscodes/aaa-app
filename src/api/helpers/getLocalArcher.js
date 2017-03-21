@@ -4,9 +4,6 @@ module.exports = function getLocalArcher() {
     var payload = atob(localStorage.loggedToken.split('.')[1]);
     var decodedToken = JSON.parse(payload);
     var archer = JSON.parse(decodedToken.archerData);
-    console.log('Expiration',(decodedToken.exp * 1000),
-                             new Date().getTime(),
-                             (decodedToken.exp * 1000) < new Date().getTime());
     if((decodedToken.exp * 1000) > new Date().getTime()){
       return archer;
     } else {

@@ -7,6 +7,7 @@ const MUI = require('app/common/MaterialUI');
 const API = require('api');
 
 const Notice = require('app/common/Notice');
+const NewTrainingCell = require('app/trainings/NewTrainingCell');
 
 const style = {
   arrowCountField: {
@@ -66,13 +67,8 @@ const NewTrainingCard = React.createClass({
     current.training.date.setHours(18);
     this.setState(current);
   },
-  setArrowCount: function(event) {
-    var split = event.target.id.split('_');
-    var current = this.state;
-    var arrows = current.training.arrows;
-    arrows[split[1]][split[2]] = parseInt(event.target.value, 10);
-    current.training.arrows = arrows; // FIXME Needed?
-    this.setState(current);
+  setArrowCount: function(distance, type, value) {
+    this.state.training.arrows[distance][type] = value;
   },
   createNewDistance: function() {
     const t = this.props.t;
@@ -156,17 +152,11 @@ const NewTrainingCard = React.createClass({
     // TODO move styles up, too much repetition
     Object.keys(this.state.training.arrows).forEach(function(distance) {
       row[distance] = TrainingTypes.map(function(type) {
-        return (
-          <MUI.TableRowColumn
-            key={['newTrainingCard_', distance, '_', type].join('')}>
-            <MUI.TextField
-              style={style.arrowCountField}
-              inputStyle={style.arrowCountInput}
-              id={['newTrainingCardText_', distance, '_', type].join('')}
-              defaultValue={this.state.training.arrows[distance][type]}
-              onChange={this.setArrowCount} />
-          </MUI.TableRowColumn>
-        );
+        return ( <NewTrainingCell
+                    setArrowCount={this.setArrowCount}
+                    distance={distance}
+                    type={type}
+                    arrows={this.state.training.arrows} /> );
       }, this);
     }, this);
 

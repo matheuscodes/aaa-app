@@ -5,6 +5,7 @@ const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 const API = require('api');
 
+const NewSeasonCardGoal = require('app/seasons/NewSeasonCardGoal');
 const Waiting = require('app/common/Waiting');
 const Notice = require('app/common/Notice');
 
@@ -21,36 +22,11 @@ function newSeason(context) {
   });
 
   var weekPlans = context.state.season.goals.map(function(goal, index) {
-    return (
-      <MUI.GridTile
-        key={['aaa-newSeasonGoal_', index].join('')}
-        style={MUI.styles.GridTile} cols={1} >
-        <MUI.GridList cellHeight={'auto'} cols={1} padding={10} >
-          <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
-            <MUI.TextField
-              style={{width: '100%'}}
-              id={['aaa-newSeasonArrowCount_', index].join('')}
-              defaultValue={goal.arrowCount}
-              onChange={context.changeWeekPlan}
-              hintText={t('season:newSeason.arrowCountTextField.hint', goal)}
-              floatingLabelText={
-                t('season:newSeason.arrowCountTextField.label', goal)
-              } />
-          </MUI.GridTile>
-          <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
-            <MUI.TextField
-              style={{width: '100%'}}
-              id={['aaa-newSeasonTargetShare_', index].join('')}
-              defaultValue={goal.targetShare}
-              onChange={context.changeWeekShare}
-              hintText={t('season:newSeason.targetShareTextField.hint', goal)}
-              floatingLabelText={
-                t('season:newSeason.targetShareTextField.label', goal)
-              } />
-          </MUI.GridTile>
-        </MUI.GridList>
-      </MUI.GridTile>
-    );
+    return ( <NewSeasonCardGoal
+                goal={goal}
+                goalIndex={index}
+                changeWeekPlan={context.changeWeekPlan}
+                changeWeekShare={context.changeWeekShare} /> );
   });
 
   return (
@@ -129,25 +105,17 @@ const NewSeasonCard = React.createClass({
       API.seasons.getById(this.props.seasonId, callbacks);
     }
   },
-  changeWeekPlan: function(event) {
+  changeWeekPlan: function(index,value) {
     var current = this.state;
-    var index = event.target.id.split('_')[1];
-    current.season.goals[index].arrowCount = event.target.value;
-    // TODO verify if this is not required, removed for performance.
-    // this.setState(current);
+    current.season.goals[index].arrowCount = value;
   },
-  changeWeekShare: function(event) {
+  changeWeekShare: function(index,value) {
     var current = this.state;
-    var index = event.target.id.split('_')[1];
-    current.season.goals[index].targetShare = event.target.value;
-    // TODO verify if this is not required, removed for performance.
-    // this.setState(current);
+    current.season.goals[index].targetShare = value;
   },
   changeName: function(event) {
     var current = this.state;
     current.season.name = event.target.value;
-    // TODO verify if this is not required, removed for performance.
-    // this.setState(current);
   },
   updateWeeks: function(current) {
     if (typeof current.season.start !== 'undefined' &&
