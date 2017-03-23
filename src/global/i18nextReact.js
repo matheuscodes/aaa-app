@@ -135,7 +135,7 @@ if (typeof window === 'undefined') { // If on Node.js
     .use(xhrBackend)
     .init({
       debug: browserDebug,
-      saveMissing: true,
+      saveMissing: false,
       fallbackLng: 'en',
       fallbackNS: 'common',
       ns: ['common'],
