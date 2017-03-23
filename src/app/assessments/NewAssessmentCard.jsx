@@ -388,11 +388,11 @@ const NewAssessmentCard = React.createClass({
                     style={{width: '100%'}}>
                     <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
                       <NewAssessmentEnd
-                        style={{maxWidth:'40%',float:'left', padding:'0 5'}}
+                        style={{padding:5}}
                         roundIndex={round.index}
                         addEnd={this.addEnd} />
                       <NewAssessmentRound
-                        style={{maxWidth:'40%',float:'left', padding:'0 5'}}
+                        style={{padding:5}}
                         roundIndex={round.index}
                         addRound={this.addRound} />
                     </MUI.GridTile>
