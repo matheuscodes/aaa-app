@@ -12,6 +12,7 @@ const ArcherAnchored = require('svg/icon/ArcherAnchored');
 
 const AssessmentArrowTable = require('app/assessments/AssessmentArrowTable');
 const NewAssessmentEnd = require('app/assessments/NewAssessmentEnd');
+const NewAssessmentRound = require('app/assessments/NewAssessmentRound');
 const DirectionSelector = require('app/common/DirectionSelector');
 const WeatherSelector = require('app/common/WeatherSelector');
 
@@ -131,10 +132,13 @@ const NewAssessmentCard = React.createClass({
     current.shootDirection = value;
     this.setState(current);
   },
-  addRound: function() {
-    var current = this.state;
-    current.rounds.push({ends: []});
-    this.setState(current);
+  addRound: function(roundIndex,round) {
+    if(typeof roundIndex === 'undefined' || typeof round === 'undefined'){
+      this.state.rounds.push({ends: []});
+    } else {
+      this.state.rounds[roundIndex] = round;
+    }
+    this.setState(this.state);
   },
   addEnd: function(roundIndex, end) {
     var current = this.state;
@@ -384,8 +388,13 @@ const NewAssessmentCard = React.createClass({
                     style={{width: '100%'}}>
                     <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
                       <NewAssessmentEnd
+                        style={{padding:5}}
                         roundIndex={round.index}
                         addEnd={this.addEnd} />
+                      <NewAssessmentRound
+                        style={{padding:5}}
+                        roundIndex={round.index}
+                        addRound={this.addRound} />
                     </MUI.GridTile>
                     <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
                       <AssessmentArrowTable
