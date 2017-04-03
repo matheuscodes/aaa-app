@@ -28,7 +28,7 @@ const NewTrainingCard = React.createClass({
   getInitialState: function() {
     const today = new Date();
     today.setHours(18);
-    return {seasons: [], training: {
+    return {seasons: [], open: this.props.open, training: {
       date: today,
       arrows: {
         5: {},
@@ -85,20 +85,13 @@ const NewTrainingCard = React.createClass({
     this.setState(current);
   },
   showMessage: function(message, type) {
-    // TODO move this to a module or class
-    // It has been used in several places already
-    var current = this.state;
-    current.message = {
-      text: message,
-      open: true,
-      type: type
-    };
-    this.setState(current);
-  },
-  hideMessage: function() {
-    var current = this.state;
-    current.message.open = false;
-    this.setState(current);
+    if(typeof this.props.messenger !== 'undefined'){
+      this.props.messenger.sendMessage({
+        text: message,
+        open: true,
+        type: type
+      });
+    }
   },
 
   submitTraining: function() {
@@ -108,7 +101,7 @@ const NewTrainingCard = React.createClass({
       context: this,
       success: function() {
         this.showMessage(t('training:messages.newSaved'), "MESSAGE");
-        this.props.onClose(true);
+        this.handleClose(true);
       },
       warning: function() {
         this.showMessage(t('training:messages.newSaved'), "WARNING");
@@ -124,6 +117,20 @@ const NewTrainingCard = React.createClass({
     var current = this.state;
     current.training.seasonId = value;
     this.setState(current);
+  },
+
+  componentWillReceiveProps(nextProps){
+    if(typeof nextProps.open !== 'undefined'){
+      this.state.open = nextProps.open;
+    }
+    this.setState(this.state);
+  },
+
+  handleClose: function(refresh) {
+    const initial = this.getInitialState();
+    initial.seasons = this.state.seasons;
+    this.setState(initial);
+    this.props.onRequestClose(refresh);
   },
 
   render: function() {
@@ -173,19 +180,28 @@ const NewTrainingCard = React.createClass({
       );
     });
 
-    var message = '';
-    if (typeof this.state.message !== 'undefined') {
-      message = (
-        <Notice message={this.state.message} onClose={this.hideMessage} />
-      );
-    }
+    const actions = [
+      <MUI.FloatingActionButton
+        mini={true} secondary={true}
+        style={{margin: '5pt'}} onTouchTap={this.handleClose}>
+        <MUI.icons.navigation.cancel />
+      </MUI.FloatingActionButton>,
+      <MUI.FloatingActionButton
+        style={{margin: '5pt'}} onTouchTap={this.submitTraining}>
+        <MUI.icons.action.backup />
+      </MUI.FloatingActionButton>
+    ];
 
     return (
-      <MUI.Card>
-        <MUI.CardHeader
+      <MUI.Dialog
           title={t('training:newTraining.title')}
-          subtitle={t('training:newTraining.subtitle')} />
-        <MUI.CardText>
+          modal={false}
+          actions={actions}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+          autoScrollBodyContent={true}>
+        <div>
+          <h5>{t('training:newTraining.subtitle')}</h5>
           <MUI.DatePicker
             id={'aaa-newTrainingDate'}
             floatingLabelText={t('training:newTraining.dateDatepicker.label')}
@@ -232,21 +248,8 @@ const NewTrainingCard = React.createClass({
               </MUI.TableRow>
             </MUI.TableBody>
           </MUI.Table>
-        </MUI.CardText>
-
-        <MUI.CardActions style={{textAlign: 'right'}}>
-          <MUI.FloatingActionButton
-            mini={true} secondary={true}
-            style={{margin: '5pt'}} onTouchTap={this.props.onClose}>
-            <MUI.icons.navigation.cancel />
-          </MUI.FloatingActionButton>
-          <MUI.FloatingActionButton
-            style={{margin: '5pt'}} onTouchTap={this.submitTraining}>
-            <MUI.icons.action.backup />
-          </MUI.FloatingActionButton>
-        </MUI.CardActions>
-        {message}
-      </MUI.Card>
+        </div>
+      </MUI.Dialog>
     );
   }
 });

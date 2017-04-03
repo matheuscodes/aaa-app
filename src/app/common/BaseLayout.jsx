@@ -28,15 +28,19 @@ module.exports = React.createClass({
       React.PropTypes.arrayOf(React.PropTypes.node)
     ])
   },
-  sendMessage(message){
+  getInitialState: function() {
+    return {message:{open:false}}
+  },
+  sendMessage: function(message){
+    console.log(message)
     this.setState({message});
   },
-  eraseMessage(message){
+  eraseMessage: function(){
     const current = this.state;
     current.message.open = false;
     this.setState(current);
   },
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps: function(nextProps){
     if(typeof nextProps.messageSubscriber !== 'undefined'){
       nextProps.messageSubscriber.subscribe(this);
     }
@@ -53,6 +57,7 @@ module.exports = React.createClass({
               {this.props.children}
             </div>
           <Footer switcher={this.props.switcher} />
+          <Notice message={this.state.message} onClose={this.eraseMessage} />
         </div>
       </MUI.ThemeProvider>
     );

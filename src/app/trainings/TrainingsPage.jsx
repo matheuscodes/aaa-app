@@ -192,11 +192,6 @@ const TrainingsPage = React.createClass({
         onTouchTap={this.newTraining} />
     );
 
-    var editTraining = '';
-    if (this.state.editTraining) {
-      editTraining = (<NewTrainingCard onClose={this.closeEdit} />);
-    }
-
     var previousButton = '';
     if(typeof this.state.previous !== 'undefined'){
       previousButton = (
@@ -236,7 +231,7 @@ const TrainingsPage = React.createClass({
         <MUI.GridList cellHeight={'auto'} cols={4} padding={10} style={styles.gridList} >
           <MUI.GridTile style={MUI.styles.GridTile}
             cols={this.state.editTraining ? 2 : 4} >
-            {(editTraining || newTrainingButton)}
+            {newTrainingButton}
           </MUI.GridTile>
 
           <MUI.GridTile style={MUI.styles.GridTile} cols={this.state.editTraining ? 2 : 4} >
@@ -265,6 +260,10 @@ const TrainingsPage = React.createClass({
             </MUI.GridList>
           </MUI.GridTile>
         </MUI.GridList>
+        <NewTrainingCard
+          messenger={this.messenger} 
+          open={this.state.editTraining}
+          onRequestClose={this.closeEdit} />
       </BaseLayout>
     );
   }
