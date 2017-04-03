@@ -230,14 +230,14 @@ const TrainingsPage = React.createClass({
         title={t('training:appBarTitle')} >
         <MUI.GridList cellHeight={'auto'} cols={4} padding={10} style={styles.gridList} >
           <MUI.GridTile style={MUI.styles.GridTile}
-            cols={this.state.editTraining ? 2 : 4} >
+            cols={4} >
             {newTrainingButton}
           </MUI.GridTile>
 
-          <MUI.GridTile style={MUI.styles.GridTile} cols={this.state.editTraining ? 2 : 4} >
+          <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
             <MUI.GridList
               cellHeight={'auto'}
-              cols={this.state.editTraining ? 2 : 4}
+              cols={4}
               padding={10}
               style={styles.gridList} >
             {(trainings || <MUI.GridTile cols={4} ><Waiting /></MUI.GridTile>)}
@@ -245,15 +245,11 @@ const TrainingsPage = React.createClass({
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
             <MUI.GridList cols={4} padding={10} style={styles.gridList} >
-              {this.state.editTraining ?
-                [<MUI.GridTile style={MUI.styles.GridTile} key={1}>{''}</MUI.GridTile>,
-                <MUI.GridTile style={MUI.styles.GridTile} key={2}>{''}</MUI.GridTile>] : []}
               <MUI.GridTile style={MUI.styles.GridTile}>
                 {previousButton}
               </MUI.GridTile>
-              {this.state.editTraining === false ?
-                [<MUI.GridTile key={1}>{''}</MUI.GridTile>,
-                <MUI.GridTile key={2}>{''}</MUI.GridTile>] : []}
+              <MUI.GridTile>{''}</MUI.GridTile>
+              <MUI.GridTile>{''}</MUI.GridTile>
               <MUI.GridTile style={MUI.styles.GridTile}>
                 {nextButton}
               </MUI.GridTile>
@@ -261,7 +257,7 @@ const TrainingsPage = React.createClass({
           </MUI.GridTile>
         </MUI.GridList>
         <NewTrainingCard
-          messenger={this.messenger} 
+          messenger={this.messenger}
           open={this.state.editTraining}
           onRequestClose={this.closeEdit} />
       </BaseLayout>
