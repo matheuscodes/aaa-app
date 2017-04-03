@@ -7,7 +7,6 @@ const API = require('api');
 const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
 const BaseLayout = require('app/common/BaseLayout');
 const Waiting = require('app/common/Waiting');
-const Notice = require('app/common/Notice');
 
 const TrainingTile = require('app/trainings/TrainingTile');
 const NewTrainingCard = require('app/trainings/NewTrainingCard');
@@ -36,6 +35,7 @@ const TrainingsPage = React.createClass({
       },
       error: function(error) {
         if(API.isAuthError(error)){
+          this.showMessage(t('common:messages.notLoggedIn'), "ERROR");
           this.props.switcher.switchTo('loginPage');
         }
         this.showMessage(t('training:messages.listError'), "ERROR");
@@ -53,10 +53,9 @@ const TrainingsPage = React.createClass({
         this.setState(current);
       },
       error: function(error) {
-        if (error instanceof ReferenceError) {
-          if (error.message === 'Missing Token.') {
-            this.props.switcher.switchTo('loginPage');
-          }
+        if(API.isAuthError(error)){
+          this.showMessage(t('common:messages.notLoggedIn'), "ERROR");
+          this.props.switcher.switchTo('loginPage');
         }
         this.showMessage(t('training:messages.listError'), "ERROR");
       }
@@ -83,10 +82,9 @@ const TrainingsPage = React.createClass({
         this.setState(current);
       },
       error: function(error) {
-        if (error instanceof ReferenceError) {
-          if (error.message === 'Missing Token.') {
-            this.props.switcher.switchTo('loginPage');
-          }
+        if(API.isAuthError(error)){
+          this.showMessage(t('common:messages.notLoggedIn'), "ERROR");
+          this.props.switcher.switchTo('loginPage');
         }
         this.showMessage(t('training:messages.listError'), "ERROR");
       }
@@ -160,18 +158,16 @@ const TrainingsPage = React.createClass({
     this.setState(current);
   },
   showMessage: function(message, type) {
-    var current = this.state;
-    current.message = {
-      text: message,
-      open: true,
-      type: type
-    };
-    this.setState(current);
+    if(typeof this.messenger !== 'undefined'){
+      this.messenger.sendMessage({
+        text: message,
+        open: true,
+        type: type
+      });
+    }
   },
-  hideMessage: function() {
-    var current = this.state;
-    current.message.open = false;
-    this.setState(current);
+  subscribe: function(sender) {
+    this.messenger = sender;
   },
   render: function() {
     const t = this.props.t;
@@ -186,13 +182,6 @@ const TrainingsPage = React.createClass({
           </MUI.GridTile>
         );
       }, this);
-    }
-
-    var message = '';
-    if (typeof this.state.message !== 'undefined') {
-      message = (
-        <Notice message={this.state.message} onClose={this.hideMessage} />
-      );
     }
 
     var newTrainingButton = (
@@ -240,8 +229,9 @@ const TrainingsPage = React.createClass({
     return (
       <BaseLayout
         switcher={this.props.switcher}
-        layoutName="trainingsPage"
         userAgent={this.props.userAgent}
+        messageSubscriber={this}
+        layoutName="trainingsPage"
         title={t('training:appBarTitle')} >
         <MUI.GridList cellHeight={'auto'} cols={4} padding={10} style={styles.gridList} >
           <MUI.GridTile style={MUI.styles.GridTile}
@@ -275,7 +265,6 @@ const TrainingsPage = React.createClass({
             </MUI.GridList>
           </MUI.GridTile>
         </MUI.GridList>
-        {message}
       </BaseLayout>
     );
   }

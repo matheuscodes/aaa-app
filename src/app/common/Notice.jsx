@@ -1,9 +1,8 @@
-'use strict';
-var React = require('react');
+const React = require('react');
 
-var MUI = require('app/common/MaterialUI');
+const MUI = require('app/common/MaterialUI');
 
-var color = {
+const color = {
   ERROR: {color: MUI.colors.red500},
   WARNING: {color: MUI.colors.amber500},
   MESSAGE: {color: MUI.colors.grey100}
