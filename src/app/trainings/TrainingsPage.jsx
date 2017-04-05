@@ -7,7 +7,6 @@ const API = require('api');
 const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
 const BaseLayout = require('app/common/BaseLayout');
 const Waiting = require('app/common/Waiting');
-const Notice = require('app/common/Notice');
 
 const TrainingTile = require('app/trainings/TrainingTile');
 const NewTrainingCard = require('app/trainings/NewTrainingCard');
@@ -36,6 +35,7 @@ const TrainingsPage = React.createClass({
       },
       error: function(error) {
         if(API.isAuthError(error)){
+          this.showMessage(t('common:messages.notLoggedIn'), "ERROR");
           this.props.switcher.switchTo('loginPage');
         }
         this.showMessage(t('training:messages.listError'), "ERROR");
@@ -53,10 +53,9 @@ const TrainingsPage = React.createClass({
         this.setState(current);
       },
       error: function(error) {
-        if (error instanceof ReferenceError) {
-          if (error.message === 'Missing Token.') {
-            this.props.switcher.switchTo('loginPage');
-          }
+        if(API.isAuthError(error)){
+          this.showMessage(t('common:messages.notLoggedIn'), "ERROR");
+          this.props.switcher.switchTo('loginPage');
         }
         this.showMessage(t('training:messages.listError'), "ERROR");
       }
@@ -83,10 +82,9 @@ const TrainingsPage = React.createClass({
         this.setState(current);
       },
       error: function(error) {
-        if (error instanceof ReferenceError) {
-          if (error.message === 'Missing Token.') {
-            this.props.switcher.switchTo('loginPage');
-          }
+        if(API.isAuthError(error)){
+          this.showMessage(t('common:messages.notLoggedIn'), "ERROR");
+          this.props.switcher.switchTo('loginPage');
         }
         this.showMessage(t('training:messages.listError'), "ERROR");
       }
@@ -160,18 +158,16 @@ const TrainingsPage = React.createClass({
     this.setState(current);
   },
   showMessage: function(message, type) {
-    var current = this.state;
-    current.message = {
-      text: message,
-      open: true,
-      type: type
-    };
-    this.setState(current);
+    if(typeof this.messenger !== 'undefined'){
+      this.messenger.sendMessage({
+        text: message,
+        open: true,
+        type: type
+      });
+    }
   },
-  hideMessage: function() {
-    var current = this.state;
-    current.message.open = false;
-    this.setState(current);
+  subscribe: function(sender) {
+    this.messenger = sender;
   },
   render: function() {
     const t = this.props.t;
@@ -188,13 +184,6 @@ const TrainingsPage = React.createClass({
       }, this);
     }
 
-    var message = '';
-    if (typeof this.state.message !== 'undefined') {
-      message = (
-        <Notice message={this.state.message} onClose={this.hideMessage} />
-      );
-    }
-
     var newTrainingButton = (
       <MUI.RaisedButton
         label={t('training:newTraining.button')}
@@ -202,11 +191,6 @@ const TrainingsPage = React.createClass({
         primary={true}
         onTouchTap={this.newTraining} />
     );
-
-    var editTraining = '';
-    if (this.state.editTraining) {
-      editTraining = (<NewTrainingCard onClose={this.closeEdit} />);
-    }
 
     var previousButton = '';
     if(typeof this.state.previous !== 'undefined'){
@@ -240,19 +224,20 @@ const TrainingsPage = React.createClass({
     return (
       <BaseLayout
         switcher={this.props.switcher}
-        layoutName="trainingsPage"
         userAgent={this.props.userAgent}
+        messageSubscriber={this}
+        layoutName="trainingsPage"
         title={t('training:appBarTitle')} >
         <MUI.GridList cellHeight={'auto'} cols={4} padding={10} style={styles.gridList} >
           <MUI.GridTile style={MUI.styles.GridTile}
-            cols={this.state.editTraining ? 2 : 4} >
-            {(editTraining || newTrainingButton)}
+            cols={4} >
+            {newTrainingButton}
           </MUI.GridTile>
 
-          <MUI.GridTile style={MUI.styles.GridTile} cols={this.state.editTraining ? 2 : 4} >
+          <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
             <MUI.GridList
               cellHeight={'auto'}
-              cols={this.state.editTraining ? 2 : 4}
+              cols={4}
               padding={10}
               style={styles.gridList} >
             {(trainings || <MUI.GridTile cols={4} ><Waiting /></MUI.GridTile>)}
@@ -260,22 +245,21 @@ const TrainingsPage = React.createClass({
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
             <MUI.GridList cols={4} padding={10} style={styles.gridList} >
-              {this.state.editTraining ?
-                [<MUI.GridTile style={MUI.styles.GridTile} key={1}>{''}</MUI.GridTile>,
-                <MUI.GridTile style={MUI.styles.GridTile} key={2}>{''}</MUI.GridTile>] : []}
               <MUI.GridTile style={MUI.styles.GridTile}>
                 {previousButton}
               </MUI.GridTile>
-              {this.state.editTraining === false ?
-                [<MUI.GridTile key={1}>{''}</MUI.GridTile>,
-                <MUI.GridTile key={2}>{''}</MUI.GridTile>] : []}
+              <MUI.GridTile>{''}</MUI.GridTile>
+              <MUI.GridTile>{''}</MUI.GridTile>
               <MUI.GridTile style={MUI.styles.GridTile}>
                 {nextButton}
               </MUI.GridTile>
             </MUI.GridList>
           </MUI.GridTile>
         </MUI.GridList>
-        {message}
+        <NewTrainingCard
+          messenger={this.messenger}
+          open={this.state.editTraining}
+          onRequestClose={this.closeEdit} />
       </BaseLayout>
     );
   }

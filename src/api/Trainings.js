@@ -22,8 +22,9 @@ function processResponseList(response) {
   return results;
 };
 
-function processRequest(training) {
-  training.date = training.date.toISOString();
+function processRequest(original) {
+  const training = JSON.parse(JSON.stringify(original)); //FIXME find optimal way of cloning.
+  training.date = new Date(training.date);
 
   var arrows = [];
   Object.keys(training.arrows).forEach(function distances(distance) {

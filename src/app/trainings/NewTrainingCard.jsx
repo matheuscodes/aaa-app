@@ -11,8 +11,8 @@ const NewTrainingCell = require('app/trainings/NewTrainingCell');
 
 const style = {
   arrowCountField: {
-    width: '90%',
-    padding: '0 5% 0 5%'
+    width: '100%',
+    padding: '0 5 0 5'
   },
   arrowCountInput: {
     textAlign: 'center',
@@ -28,7 +28,7 @@ const NewTrainingCard = React.createClass({
   getInitialState: function() {
     const today = new Date();
     today.setHours(18);
-    return {seasons: [], training: {
+    return {seasons: [], open: this.props.open, training: {
       date: today,
       arrows: {
         5: {},
@@ -85,20 +85,13 @@ const NewTrainingCard = React.createClass({
     this.setState(current);
   },
   showMessage: function(message, type) {
-    // TODO move this to a module or class
-    // It has been used in several places already
-    var current = this.state;
-    current.message = {
-      text: message,
-      open: true,
-      type: type
-    };
-    this.setState(current);
-  },
-  hideMessage: function() {
-    var current = this.state;
-    current.message.open = false;
-    this.setState(current);
+    if(typeof this.props.messenger !== 'undefined'){
+      this.props.messenger.sendMessage({
+        text: message,
+        open: true,
+        type: type
+      });
+    }
   },
 
   submitTraining: function() {
@@ -108,7 +101,7 @@ const NewTrainingCard = React.createClass({
       context: this,
       success: function() {
         this.showMessage(t('training:messages.newSaved'), "MESSAGE");
-        this.props.onClose(true);
+        this.handleClose(true);
       },
       warning: function() {
         this.showMessage(t('training:messages.newSaved'), "WARNING");
@@ -117,7 +110,11 @@ const NewTrainingCard = React.createClass({
         this.showMessage(t('training:messages.newError'), "ERROR");
       }
     };
-    API.trainings.save(this.state.training, callbacks);
+    if(typeof this.state.training.seasonId !== 'undefined'){
+      API.trainings.save(this.state.training, callbacks);
+    } else {
+      this.showMessage(t('training:messages.newErrorMissingSeason'), "ERROR");
+    }
   },
 
   changeSeason: function(event, index, value) {
@@ -126,12 +123,26 @@ const NewTrainingCard = React.createClass({
     this.setState(current);
   },
 
+  componentWillReceiveProps(nextProps){
+    if(typeof nextProps.open !== 'undefined'){
+      this.state.open = nextProps.open;
+    }
+    this.setState(this.state);
+  },
+
+  handleClose: function(refresh) {
+    const initial = this.getInitialState();
+    initial.seasons = this.state.seasons;
+    this.setState(initial);
+    this.props.onRequestClose(refresh);
+  },
+
   render: function() {
     const t = this.props.t;
     var seasons = this.state.seasons.map(function(season, index) {
       return (
         <MUI.MenuItem
-          key={['aaa-newAssessmentSeason_', index].join('')}
+          key={['aaa-newTrainingSeason_', index].join('')}
           value={season.id}
           primaryText={season.name} />
       );
@@ -141,7 +152,7 @@ const NewTrainingCard = React.createClass({
     var headers = TrainingTypes.map(function(type) {
       return (
         <MUI.TableHeaderColumn
-          style={{textAlign:'center'}}
+          style={{textAlign:'center', whiteSpace:'normal', padding:'0 5 0 5'}}
           key={['newTrainingCardType_', type].join('')}>
           {t(['training:trainingTypes.', type].join(''))}
         </MUI.TableHeaderColumn>
@@ -151,8 +162,9 @@ const NewTrainingCard = React.createClass({
     var row = {};
     // TODO move styles up, too much repetition
     Object.keys(this.state.training.arrows).forEach(function(distance) {
-      row[distance] = TrainingTypes.map(function(type) {
+      row[distance] = TrainingTypes.map(function(type,index) {
         return ( <NewTrainingCell
+                    key={['aaa-newTrainingCell_', index].join('')}
                     setArrowCount={this.setArrowCount}
                     distance={distance}
                     type={type}
@@ -173,19 +185,28 @@ const NewTrainingCard = React.createClass({
       );
     });
 
-    var message = '';
-    if (typeof this.state.message !== 'undefined') {
-      message = (
-        <Notice message={this.state.message} onClose={this.hideMessage} />
-      );
-    }
+    const actions = [
+      <MUI.FloatingActionButton
+        mini={true} secondary={true}
+        style={{margin: '5pt'}} onTouchTap={this.handleClose}>
+        <MUI.icons.navigation.cancel />
+      </MUI.FloatingActionButton>,
+      <MUI.FloatingActionButton
+        style={{margin: '5pt'}} onTouchTap={this.submitTraining}>
+        <MUI.icons.action.backup />
+      </MUI.FloatingActionButton>
+    ];
 
     return (
-      <MUI.Card>
-        <MUI.CardHeader
+      <MUI.Dialog
           title={t('training:newTraining.title')}
-          subtitle={t('training:newTraining.subtitle')} />
-        <MUI.CardText>
+          modal={false}
+          actions={actions}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+          autoScrollBodyContent={true}>
+        <div>
+          <h5>{t('training:newTraining.subtitle')}</h5>
           <MUI.DatePicker
             id={'aaa-newTrainingDate'}
             floatingLabelText={t('training:newTraining.dateDatepicker.label')}
@@ -207,7 +228,7 @@ const NewTrainingCard = React.createClass({
               displaySelectAll={false}
               adjustForCheckbox={false} >
               <MUI.TableRow>
-                <MUI.TableHeaderColumn style={{textAlign:'center'}}>
+                <MUI.TableHeaderColumn style={{textAlign:'center',whiteSpace:'normal', padding:'0 5 0 5'}}>
                   {t('training:newTraining.headers.distance')}
                 </MUI.TableHeaderColumn>
                 {headers}
@@ -232,21 +253,8 @@ const NewTrainingCard = React.createClass({
               </MUI.TableRow>
             </MUI.TableBody>
           </MUI.Table>
-        </MUI.CardText>
-
-        <MUI.CardActions style={{textAlign: 'right'}}>
-          <MUI.FloatingActionButton
-            mini={true} secondary={true}
-            style={{margin: '5pt'}} onTouchTap={this.props.onClose}>
-            <MUI.icons.navigation.cancel />
-          </MUI.FloatingActionButton>
-          <MUI.FloatingActionButton
-            style={{margin: '5pt'}} onTouchTap={this.submitTraining}>
-            <MUI.icons.action.backup />
-          </MUI.FloatingActionButton>
-        </MUI.CardActions>
-        {message}
-      </MUI.Card>
+        </div>
+      </MUI.Dialog>
     );
   }
 });

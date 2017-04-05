@@ -1,10 +1,11 @@
-var React = require('react');
+const React = require('react');
 
-var MUI = require('app/common/MaterialUI');
+const MUI = require('app/common/MaterialUI');
 
-var Header = require('app/common/Header');
-var Footer = require('app/common/Footer');
 const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
+const Header = require('app/common/Header');
+const Footer = require('app/common/Footer');
+const Notice = require('app/common/Notice');
 
 /**
  * Base layout for page rendering.
@@ -27,6 +28,23 @@ module.exports = React.createClass({
       React.PropTypes.arrayOf(React.PropTypes.node)
     ])
   },
+  getInitialState: function() {
+    return {message:{open:false}}
+  },
+  sendMessage: function(message){
+    console.log(message)
+    this.setState({message});
+  },
+  eraseMessage: function(){
+    const current = this.state;
+    current.message.open = false;
+    this.setState(current);
+  },
+  componentWillReceiveProps: function(nextProps){
+    if(typeof nextProps.messageSubscriber !== 'undefined'){
+      nextProps.messageSubscriber.subscribe(this);
+    }
+  },
   render: function() {
     var muiTheme = MUI.getTheme({
       userAgent: this.props.userAgent
@@ -39,6 +57,7 @@ module.exports = React.createClass({
               {this.props.children}
             </div>
           <Footer switcher={this.props.switcher} />
+          <Notice message={this.state.message} onClose={this.eraseMessage} />
         </div>
       </MUI.ThemeProvider>
     );

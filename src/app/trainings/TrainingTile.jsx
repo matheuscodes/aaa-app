@@ -22,6 +22,7 @@ const TrainingTile = React.createClass({
     var headers = TrainingTypes.map(function(type) {
       return (
         <MUI.TableHeaderColumn
+          style={{textAlign:'center', whiteSpace:'normal', padding:'0 5 0 5'}}
           key={['trainingHeader_', type].join('')}>
           {t(['training:trainingTypes.', type].join(''))}
         </MUI.TableHeaderColumn>
@@ -32,7 +33,9 @@ const TrainingTile = React.createClass({
     Object.keys(this.props.data.arrows).forEach(function(distance) {
       row[distance] = TrainingTypes.map(function(type, index) {
         return (
-          <MUI.TableRowColumn key={'aaa-trainingCell_' + index}>
+          <MUI.TableRowColumn
+            style={{textAlign:'center', whiteSpace:'normal', padding:'0 5 0 5'}}
+            key={'aaa-trainingCell_' + index}>
             {this.props.data.arrows[distance][type] ?
               this.props.data.arrows[distance][type] : " - "}
           </MUI.TableRowColumn>
@@ -44,7 +47,8 @@ const TrainingTile = React.createClass({
     Object.keys(row).forEach(function(distance) {
       rows.push(
         <MUI.TableRow key={['aaa-trainingRow_', distance].join('')}>
-          <MUI.TableRowColumn>{distance} m</MUI.TableRowColumn>
+          <MUI.TableRowColumn
+            style={{textAlign:'center', whiteSpace:'normal', padding:'0 5 0 5'}}>{distance} m</MUI.TableRowColumn>
           {row[distance]}
         </MUI.TableRow>
       );
@@ -69,7 +73,8 @@ const TrainingTile = React.createClass({
                 displaySelectAll={false}
                 adjustForCheckbox={false} >
                 <MUI.TableRow>
-                  <MUI.TableHeaderColumn>
+                  <MUI.TableHeaderColumn
+                    style={{textAlign:'center', whiteSpace:'normal', padding:'0 5 0 5'}}>
                     {t('training:tile.headers.distance')}
                   </MUI.TableHeaderColumn>
                   {headers}
