@@ -110,7 +110,11 @@ const NewTrainingCard = React.createClass({
         this.showMessage(t('training:messages.newError'), "ERROR");
       }
     };
-    API.trainings.save(this.state.training, callbacks);
+    if(typeof this.state.training.seasonId !== 'undefined'){
+      API.trainings.save(this.state.training, callbacks);
+    } else {
+      this.showMessage(t('training:messages.newErrorMissingSeason'), "ERROR");
+    }
   },
 
   changeSeason: function(event, index, value) {
@@ -138,7 +142,7 @@ const NewTrainingCard = React.createClass({
     var seasons = this.state.seasons.map(function(season, index) {
       return (
         <MUI.MenuItem
-          key={['aaa-newAssessmentSeason_', index].join('')}
+          key={['aaa-newTrainingSeason_', index].join('')}
           value={season.id}
           primaryText={season.name} />
       );
@@ -158,8 +162,9 @@ const NewTrainingCard = React.createClass({
     var row = {};
     // TODO move styles up, too much repetition
     Object.keys(this.state.training.arrows).forEach(function(distance) {
-      row[distance] = TrainingTypes.map(function(type) {
+      row[distance] = TrainingTypes.map(function(type,index) {
         return ( <NewTrainingCell
+                    key={['aaa-newTrainingCell_', index].join('')}
                     setArrowCount={this.setArrowCount}
                     distance={distance}
                     type={type}
