@@ -76,6 +76,11 @@ app.get(['/',pageSwitcher.getPageUrlPath('aboutPage')].join(''),
   res.send(pageSwitcher.serverString('aboutPage', req));
 });
 
+app.get('/printable', function(req, res) {
+  //TODO move this to a file.
+  res.send('<html style="font-family: Roboto, sans-serif;"><head><link href="https://fonts.googleapis.com/css?family=Roboto:400,300,500" rel="stylesheet" type="text/css" data-reactid="3" /></head><body></body></html>');
+});
+
 var server = http.createServer(app);
 server.listen(9090);
 console.log("Listening to 9090");

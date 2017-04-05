@@ -53,6 +53,7 @@ var MUI = {
 
 MUI.icons = {
   action: {
+    print: require('material-ui/svg-icons/action/print').default,
     home: require('material-ui/svg-icons/action/home').default,
     assessment: require('material-ui/svg-icons/action/assessment').default,
     assignment_ind: require('material-ui/svg-icons/action/assignment-ind').default,

@@ -59,6 +59,19 @@ const ReportCard = React.createClass({
     current.selectedMonth = this.state.months[index];
     this.setState(current);
   },
+  printReport: function() {
+    if(document.getElementById('aaa-reportPrintableArea')){
+      const newWindow =  window.open('printable?document=monthReport');
+      const dataToPrint = document.getElementById('aaa-reportPrintableArea').innerHTML;
+      newWindow.onload = () => {
+        newWindow.document.body.innerHTML=dataToPrint;
+        newWindow.print();
+        newWindow.close();
+      }
+    } else {
+      //TODO send a message it can't print!
+    }
+  },
   render: function() {
     const t = this.props.t;
     var seasons = this.state.seasons.map(function(season, index) {
@@ -146,6 +159,14 @@ const ReportCard = React.createClass({
             </MUI.GridTile>
           </MUI.GridList>
         </MUI.CardText>
+        <MUI.CardActions style={{textAlign: 'right'}}>
+          <MUI.FloatingActionButton
+            mini={true}
+            style={{margin: '5pt'}}
+            onTouchTap={this.printReport}>
+            <MUI.icons.action.print />
+          </MUI.FloatingActionButton>
+        </MUI.CardActions>
       </MUI.Card>
     );
   }
