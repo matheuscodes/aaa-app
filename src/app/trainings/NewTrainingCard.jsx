@@ -11,8 +11,8 @@ const NewTrainingCell = require('app/trainings/NewTrainingCell');
 
 const style = {
   arrowCountField: {
-    width: '90%',
-    padding: '0 5% 0 5%'
+    width: '100%',
+    padding: '0 5 0 5'
   },
   arrowCountInput: {
     textAlign: 'center',
@@ -148,7 +148,7 @@ const NewTrainingCard = React.createClass({
     var headers = TrainingTypes.map(function(type) {
       return (
         <MUI.TableHeaderColumn
-          style={{textAlign:'center'}}
+          style={{textAlign:'center', whiteSpace:'normal', padding:'0 5 0 5'}}
           key={['newTrainingCardType_', type].join('')}>
           {t(['training:trainingTypes.', type].join(''))}
         </MUI.TableHeaderColumn>
@@ -223,7 +223,7 @@ const NewTrainingCard = React.createClass({
               displaySelectAll={false}
               adjustForCheckbox={false} >
               <MUI.TableRow>
-                <MUI.TableHeaderColumn style={{textAlign:'center'}}>
+                <MUI.TableHeaderColumn style={{textAlign:'center',whiteSpace:'normal', padding:'0 5 0 5'}}>
                   {t('training:newTraining.headers.distance')}
                 </MUI.TableHeaderColumn>
                 {headers}

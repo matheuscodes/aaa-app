@@ -10,8 +10,7 @@ const Notice = require('app/common/Notice');
 
 const style = {
   arrowCountField: {
-    width: '90%',
-    padding: '0 5% 0 5%'
+    width: '100%'
   },
   arrowCountInput: {
     textAlign: 'center',
@@ -32,7 +31,7 @@ const NewTrainingCell = React.createClass({
     const t = this.props.t;
 
     return (
-      <MUI.TableRowColumn>
+      <MUI.TableRowColumn style={{padding:'0 5 0 5'}}>
         <MUI.TextField
           style={style.arrowCountField}
           inputStyle={style.arrowCountInput}

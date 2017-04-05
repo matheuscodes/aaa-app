@@ -4,16 +4,17 @@
   "description": "AAA - Advanced Archery Application",
   "main": "src/server.js",
   "scripts": {
-    "uglify": "npm run bundle && uglifyjs build/app.js -o build/app.js",
     "bundle": "browserify src/app.js -t babelify --outfile build/app.js --extension=.jsx --extension=.svg",
-    "compile": "babel src -d build",
     "build": "rm -rf build && mkdir build && npm run compile && npm run uglify",
     "build-production":"env-cmd production npm run build",
+    "clean": "rm -rf node_modules && rm -rf build",
+    "compile": "babel src -d build",
+    "eslint": "eslint --fix src --ext .jsx,.svg",
+    "fetch-languages":"rm -rf node_modules/aaa-languages && cp -R ../aaa-languages node_modules/",
     "serve": "npm run bundle && babel-node src/server.js",
     "serve-development": "env-cmd development npm run serve",
     "serve-production": "env-cmd production node build/server.js",
-    "eslint": "eslint --fix src --ext .jsx,.svg",
-    "clean": "rm -rf node_modules && rm -rf build"
+    "uglify": "npm run bundle && uglifyjs build/app.js -o build/app.js"
   },
   "repository": {
     "type": "git",

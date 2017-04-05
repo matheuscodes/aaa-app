@@ -1,1 +1,1 @@
-module.exports = ["WARMUP", "WARMOUT", "BOARD", "TARGET"]
+module.exports = ["WARMUP", "WARMOUT", "BOARD", "TARGET", "TARGET_FACE", "STRIPE_HORIZONTAL", "STRIPE_VERTICAL", "BLIND"]
