@@ -108,6 +108,12 @@ const SeasonGraph = React.createClass({
               min={this.props.data.minValue} max={this.props.data.maxValue}
               offset={totalWeeks * 100}/>
           </g>
+          <g id="aaa-holgerCopyright"
+            transform={'translate(' + sideLabelsSize * 2 + ',0)'}>
+            <text fontSize={'24pt'}>
+              <tspan y="-5" x="0">{this.props.t("common:copyright.holger.short")}</tspan>
+            </text>
+          </g>
         </g>
       </svg>
     );

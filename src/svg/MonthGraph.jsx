@@ -1,5 +1,7 @@
 const React = require('react');
 
+const i18nextReact = require('global/i18nextReact');
+
 const GraphStyle = require('svg/common/GraphStyle');
 const GraphBottomLabels = require('svg/common/GraphBottomLabels');
 const GraphAxisLabels = require('svg/common/GraphAxisLabels');
@@ -72,10 +74,16 @@ const MonthGraph = React.createClass({
               min={this.props.data.minValue} max={this.props.data.maxValue}
               offset={this.props.data.overview.length * columnWidth}/>
           </g>
+          <g id="aaa-holgerCopyright"
+            transform={'translate(' + sideLabelsSize * 2 + ',-50)'}>
+            <text fontSize={'24pt'}>
+              <tspan y="-5" x="0">{this.props.t("common:copyright.holger.short")}</tspan>
+            </text>
+          </g>
         </g>
       </svg>
     );
   }
 });
 
-module.exports = MonthGraph;
+module.exports = i18nextReact.setupTranslation(['common'], MonthGraph);
