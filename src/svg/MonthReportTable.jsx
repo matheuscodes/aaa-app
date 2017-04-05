@@ -24,6 +24,7 @@ const sideLabelsSize = 100;
 const sideLabelsGap = 2.6;
 const columnWidth = 26;
 const rowHeight = 11;
+const copyrightHeight = 40;
 
 const oneDay = 24 * 60 * 60 * 1000;
 const oneWeek = oneDay * 7;
@@ -426,7 +427,7 @@ const MonthReportTable = React.createClass({
         viewBox={[
           '-10 -10 ',
           (columnWidth * this.props.allDays.count + sideLabelsSize * 2.5 + 20),
-          ' ' + (rows * rowHeight + 20)
+          ' ' + (rows * rowHeight + copyrightHeight + 20)
         ].join('')}
         preserveAspectRatio="xMidYMid meet"
         width={'100%'}>
@@ -450,6 +451,13 @@ const MonthReportTable = React.createClass({
           <g transform={'translate(' + (sideLabelsSize * 2) + ',0)'}>
             {weekColumns}
           </g>
+        </g>
+
+        <g id="aaa-holgerCopyright"
+          transform={'translate(' + sideLabelsSize * 2 + ',' + ((rows + 1) * rowHeight + 10)  +')'}>
+          <text fontSize={'8pt'}>
+            <tspan y="-5" x="0">{this.props.t("common:copyright.holger.long")}</tspan>
+          </text>
         </g>
       </svg>
     );
