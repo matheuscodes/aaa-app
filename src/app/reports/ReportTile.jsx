@@ -56,20 +56,22 @@ const ReportTile = React.createClass({
         allDays.count++;
       }
       content = (
-        <MUI.GridList cellHeight={'auto'} cols={1} padding={10} style={{width: '100%'}}>
-          <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
-            <h2>{t('report:tableTitle', {date: new Date(this.props.year, this.props.month - 1, 1)})}</h2>
-            <MonthReportTable data={this.state} allDays={allDays}/>
-            <h3>{t('report:dailyGraphTitle')}</h3>
-            <MonthGraph data={dailyGraphData} graphId={'aaa_reports_month_graph'} />
-            <h3>{t('report:seasonGraphTitle')}</h3>
-            <SeasonGraph
-              data={this.state.season}
-              extraPadding={
-                dailyGraphData.overview.length - this.state.season.goals.length
-              } />
-          </MUI.GridTile>
-        </MUI.GridList>
+        <div id="aaa-reportPrintableArea">
+          <MUI.GridList cellHeight={'auto'} cols={1} padding={10} style={{width: '100%'}}>
+            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
+              <h2>{t('report:tableTitle', {date: new Date(this.props.year, this.props.month - 1, 1)})}</h2>
+              <MonthReportTable data={this.state} allDays={allDays}/>
+              <h3>{t('report:dailyGraphTitle')}</h3>
+              <MonthGraph data={dailyGraphData} graphId={'aaa_reports_month_graph'} />
+              <h3>{t('report:seasonGraphTitle')}</h3>
+              <SeasonGraph
+                data={this.state.season}
+                extraPadding={
+                  dailyGraphData.overview.length - this.state.season.goals.length
+                } />
+            </MUI.GridTile>
+          </MUI.GridList>
+        </div>
       );
     }
 
