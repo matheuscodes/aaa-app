@@ -37,6 +37,9 @@ const BaseHtml = React.createClass({
             <link
               href="https://fonts.googleapis.com/css?family=Roboto:400,300,500"
               rel="stylesheet" type="text/css" />
+            <link rel="icon"
+              type="image/png"
+              href="favicon.png" />
             <title>{this.props.title}</title>
           </head>
           <body style={bodyStyle}>
