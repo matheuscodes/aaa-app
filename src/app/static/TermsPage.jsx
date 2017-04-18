@@ -1,6 +1,7 @@
 const React = require('react');
 
 const i18nextReact = require('global/i18nextReact');
+const LogoName = require('svg/LogoName');
 const MUI = require('app/common/MaterialUI');
 const API = require('api');
 
@@ -32,6 +33,9 @@ const TermsPage = React.createClass({
             title={t('terms:title')}
             subtitle={t('terms:subtitle')} />
           <MUI.CardText>
+            <div style={{padding:12}}>
+              <LogoName width={'100%'} height={96} />
+            </div>
             <img src='img/impressum.png' width={'400px'}  height={'150px'} />
             <h2>{t('terms:disclaimer.title')}</h2>
               <h3>{t('terms:disclaimer.content.title')}</h3>
