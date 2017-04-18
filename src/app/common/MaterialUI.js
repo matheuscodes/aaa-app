@@ -100,6 +100,7 @@ MUI.palette.primary2Color = MUI.colors.yellow800;
 MUI.palette.accent1Color = MUI.colors.red600;
 MUI.palette.pickerHeaderColor = MUI.colors.yellow600;
 
+//TODO remove this
 MUI.styles = {
    GridTile:{
      height:'unset',
