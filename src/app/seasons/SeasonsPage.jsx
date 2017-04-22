@@ -74,11 +74,6 @@ const SeasonsPage = React.createClass({
     };
     this.setState(current);
   },
-  hideMessage: function() {
-    var current = this.state;
-    current.message.open = false;
-    this.setState(current);
-  },
   deleteSeason: function(seasonId) {
     const t = this.props.t;
     var callbacks = {
@@ -96,6 +91,18 @@ const SeasonsPage = React.createClass({
     };
     API.seasons.delete(seasonId, callbacks);
   },
+  showMessage: function(message, type) {
+    if(typeof this.messenger !== 'undefined'){
+      this.messenger.sendMessage({
+        text: message,
+        open: true,
+        type: type
+      });
+    }
+  },
+  subscribe: function(sender) {
+    this.messenger = sender;
+  },
   render: function() {
     const t = this.props.t;
     var seasons;
@@ -103,7 +110,7 @@ const SeasonsPage = React.createClass({
       seasons = this.state.seasons.map(function(season, index) {
         return (
           <MUI.GridTile
-            key={'aaa-season_' + season.id}  style={MUI.styles.GridTile} cols={2} >
+            key={'aaa-season_' + season.id} style={{height:200,padding:5}} cols={2} >
             <SeasonTile
               seasonId={season.id}
               data={season}
@@ -115,48 +122,31 @@ const SeasonsPage = React.createClass({
       }, this);
     }
 
-    var message = '';
-    if (typeof this.state.message !== 'undefined') {
-      message = (
-        <Notice message={this.state.message} onClose={this.hideMessage} />
-      );
-    }
-
-    var newSeasonButton = (
-      <MUI.RaisedButton
-        label={t('season:newSeason.button')}
-        fullWidth={true}
-        primary={true}
-        onTouchTap={this.newSeason} />
-    );
-
-    var editSeason = '';
-    if (this.state.editSeason) {
-      editSeason = (
-        <NewSeasonCard
-          seasonId={this.state.seasonId}
-          onClose={this.closeEdit} />
-      );
-    }
-
     return (
       <BaseLayout
         switcher={this.props.switcher}
         layoutName="seasonsPage"
         userAgent={this.props.userAgent}
+        messageSubscriber={this}
         title={t('season:appBarTitle')} >
         <MUI.GridList
-          cellHeight={'auto'}
           cols={4}
           padding={10}
           style={{width: '100%'}} >
-          <MUI.GridTile style={MUI.styles.GridTile}
-            cols={this.state.editSeason ? 2 : 4} >
-            {(editSeason || newSeasonButton)}
+          <MUI.GridTile cols={4}  style={{padding:5}} >
+            <MUI.RaisedButton
+              label={t('season:newSeason.button')}
+              fullWidth={true}
+              primary={true}
+              onTouchTap={this.newSeason} />
           </MUI.GridTile>
           {(seasons || <MUI.GridTile cols={4} ><Waiting /></MUI.GridTile>)}
         </MUI.GridList>
-        {message}
+        <NewSeasonCard
+          messenger={this.messenger}
+          seasonId={this.state.seasonId}
+          open={this.state.editSeason}
+          onRequestClose={this.closeEdit} />
       </BaseLayout>
     );
   }

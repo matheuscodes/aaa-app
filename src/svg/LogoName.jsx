@@ -10,7 +10,7 @@ const LogoName = React.createClass({
     return (
       <svg width={this.props.width} height={this.props.height} viewBox="0 0 100 100" >
         <g transform={'translate(-140,0)'}><Logo /></g>
-    		<text y={83} x={50} style={{
+    		<text y={83} x={49} style={{
             fontSize: 24,
             textAnchor: 'middle',
             fontFamily: 'Arial',
