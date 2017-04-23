@@ -19,6 +19,14 @@ const NewSeasonCard = React.createClass({
     return {equipment: []};
   },
   componentDidMount: function() {
+    this.updateContent();
+  },
+  componentDidUpdate: function(prevProps) {
+    if(this.props.seasonId !== prevProps.seasonId){
+      this.updateContent();
+    }
+  },
+  updateContent: function() {
     if (typeof this.props.seasonId === 'undefined') {
       API.equipment.getList(this, function(list) {
         this.setState({equipment: list, season: new Season()});
@@ -33,6 +41,8 @@ const NewSeasonCard = React.createClass({
         }
       };
       API.seasons.getById(this.props.seasonId, callbacks);
+      this.state.season = null;
+      this.setState(this.state);
     }
   },
   submitSeason: function() {

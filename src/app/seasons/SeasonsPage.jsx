@@ -116,7 +116,6 @@ const SeasonsPage = React.createClass({
             <SeasonTile
               seasonId={season.id}
               data={season}
-              readOnly={this.state.editSeason}
               onDelete={this.deleteSeason}
               onEdit={this.editSeason} />
           </MUI.GridTile>

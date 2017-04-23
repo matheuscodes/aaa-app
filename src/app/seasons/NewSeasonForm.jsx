@@ -16,6 +16,9 @@ const NewSeasonCardForm = React.createClass({
   getInitialState: function(){
     return {season: this.props.season, events: []}
   },
+  componentDidMount: function(){
+    this.loadEvents();
+  },
   changeName: function(event) {
     this.state.season.name = event.target.value;
   },
@@ -62,7 +65,7 @@ const NewSeasonCardForm = React.createClass({
     this.setState(this.state);
     this.loadEvents();
   },
-  loadEvents: function(from,to){
+  loadEvents: function(){
     const callbacks = {
       context: this,
       success: function(list) {
@@ -131,6 +134,7 @@ const NewSeasonCardForm = React.createClass({
                 floatingLabelText={t('season:newSeason.startDateDatepicker.label')}
                 autoOk={true}
                 defaultDate={this.props.season.start}
+                maxDate={this.props.season.end}
                 onChange={this.changeStart} />
             </MUI.GridTile>
             <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
@@ -139,6 +143,7 @@ const NewSeasonCardForm = React.createClass({
                 floatingLabelText={t('season:newSeason.endDateDatepicker.label')}
                 autoOk={true}
                 defaultDate={this.props.season.end}
+                minDate={this.props.season.start}
                 onChange={this.changeEnd} />
             </MUI.GridTile>
           </MUI.GridList>

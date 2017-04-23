@@ -13,7 +13,6 @@ const SeasonTile = React.createClass({
     // TODO create class to validate
     data: React.PropTypes.object,
     seasonId: React.PropTypes.number,
-    readOnly: React.PropTypes.bool,
     onEdit: React.PropTypes.func,
     onDelete: React.PropTypes.func,
     t: React.PropTypes.func
@@ -50,20 +49,18 @@ const SeasonTile = React.createClass({
           </MUI.CardText>
 
           <MUI.CardActions style={{textAlign: 'right'}}>
-            {!this.props.readOnly ?
-              <MUI.FloatingActionButton
-                mini={true}
-                onTouchTap={this.onEdit}
-                style={{margin: '5pt'}}>
-                <MUI.icons.editor.mode_edit />
-              </MUI.FloatingActionButton> : ''}
-            {!this.props.readOnly ?
-              <MUI.FloatingActionButton
-                mini={true}
-                onTouchTap={this.onDelete}
-                secondary={true} style={{margin: '5pt'}}>
-                <MUI.icons.action.delete />
-              </MUI.FloatingActionButton> : ''}
+            <MUI.FloatingActionButton
+              mini={true}
+              onTouchTap={this.onEdit}
+              style={{margin: '5pt'}}>
+              <MUI.icons.editor.mode_edit />
+            </MUI.FloatingActionButton>
+            <MUI.FloatingActionButton
+              mini={true}
+              onTouchTap={this.onDelete}
+              secondary={true} style={{margin: '5pt'}}>
+              <MUI.icons.action.delete />
+            </MUI.FloatingActionButton>
           </MUI.CardActions>
         </MUI.Card>
       </MUI.Paper>
