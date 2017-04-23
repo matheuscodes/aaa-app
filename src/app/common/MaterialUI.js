@@ -25,6 +25,7 @@ var MUI = {
   CardActions: require('material-ui/Card').CardActions,
   CardText: require('material-ui/Card').CardText,
   CardHeader: require('material-ui/Card').CardHeader,
+  Checkbox: require('material-ui/Checkbox').default,
   CircularProgress: require('material-ui/CircularProgress').default,
   FlatButton: require('material-ui/FlatButton').default,
   FloatingActionButton: require('material-ui/FloatingActionButton').default,

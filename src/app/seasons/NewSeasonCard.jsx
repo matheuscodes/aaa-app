@@ -74,7 +74,7 @@ const NewSeasonCard = React.createClass({
     actions.push(
       <MUI.FloatingActionButton
         mini={true} secondary={true}
-        style={{margin: '5pt'}}
+        style={{margin: 5}}
         onTouchTap={this.handleClose}>
         <MUI.icons.navigation.cancel />
       </MUI.FloatingActionButton>
@@ -82,7 +82,7 @@ const NewSeasonCard = React.createClass({
 
     actions.push(
       <MUI.FloatingActionButton
-        style={{margin: '5pt'}}
+        style={{margin: 5}}
         onTouchTap={this.submitSeason} >
         <MUI.icons.action.backup />
       </MUI.FloatingActionButton>
@@ -91,7 +91,9 @@ const NewSeasonCard = React.createClass({
     return (
       <MUI.Dialog
           title={t('season:newSeason.title')}
-          modal={true}
+          autoDetectWindowHeight={true}
+          contentStyle={{width:'100%', maxWidth: 'none'}}
+          modal={false}
           actions={actions}
           open={this.props.open}
           onRequestClose={this.handleClose}

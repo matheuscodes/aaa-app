@@ -14,33 +14,39 @@ export default class Season {
         this.goals = [];
       }
 
+      if(typeof this.max === 'undefined'){
+        this.max = 1;
+      }
+
     }
 
     changeWeekPlan(index, count){
       if(typeof this.goals[index] === 'undefined'){
         this.goals[index] = {}
       }
-      this.goals[index].arrowCount = count;
+      this.goals[index].arrowCount = parseInt(count) || 0;
+      if(this.goals[index].arrowCount > this.max){
+        this.max = this.goals[index].arrowCount;
+      }
     }
 
     changeWeekTargetShare(index, count){
       if(typeof this.goals[index] === 'undefined'){
         this.goals[index] = {}
       }
-      this.goals[index].targetShare = count;
+      this.goals[index].targetShare = parseInt(count) || 0;
+      if(this.goals[index].targetShare > this.max){
+        this.max = this.goals[index].targetShare;
+      }
     }
-
 
     updateWeeks() {
       if (typeof this.start !== 'undefined' &&
           typeof this.end !== 'undefined') {
-        const oneWeek = 7 * 24 * 60 * 60 * 1000;
-        const oneDay = oneWeek / 7;
         const weeks = {};
-        const weekStart = this.start.getTime();
-        const weekEnd = this.end.getTime();
-        const stop = weekEnd + oneDay;
-        for (let i = weekStart; i < stop; i += oneWeek) {
+        const dateStart = moment(this.start).startOf('isoWeek');
+        const dateEnd = moment(this.end).startOf('isoWeek');
+        for (let i = moment(dateStart); i <= dateEnd; i.add(1,'weeks')) {
           const week1 = moment(i).isoWeek();
           weeks[week1] = {week: week1, arrowCount: 0, targetShare: 0};
           if (typeof this.id !== 'undefined') {
@@ -53,8 +59,8 @@ export default class Season {
           }
         });
         this.goals = [];
-        for (let j = weekStart; j < stop; j += oneWeek) {
-          var week2 = moment(j).isoWeek();
+        for (let i = moment(dateStart); i <= dateEnd; i.add(1,'weeks')) {
+          const week2 = moment(i).isoWeek();
           this.goals.push(weeks[week2]);
         }
       }

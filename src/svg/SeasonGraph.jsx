@@ -28,7 +28,8 @@ const SeasonGraph = React.createClass({
     const t = this.props.t;
 
     const weekStart = moment(this.props.data.start).isoWeek();
-    const dateEnd = moment(this.props.data.end);
+    const dateStart = moment(this.props.data.start).startOf('isoWeek');
+    const dateEnd = moment(this.props.data.end).startOf('isoWeek');
 
     const mapData = {};
     this.props.data.goals.map(function(single) {
@@ -37,10 +38,12 @@ const SeasonGraph = React.createClass({
 
     const weeks = [];
     const sortedData = [];
-    for (var i = moment(this.props.data.start); i <= dateEnd; i.date(i.date() + 7)) {
+    for (let i = dateStart; i <= dateEnd; i.add(1,'weeks')) {
       const localWeek = i.isoWeek();
       weeks.push(localWeek);
-      sortedData.push(mapData[localWeek]);
+      if(typeof mapData[localWeek] !== 'undefined'){
+        sortedData.push(mapData[localWeek]);
+      }
     }
 
     const totalWeeks = weeks.length;
@@ -52,9 +55,9 @@ const SeasonGraph = React.createClass({
 
     var values = [];
 
-    var seasonBars = sortedData.map(function(single, index) {
-      var barUnit = 1000 / this.props.data.max;
-
+    const seasonBars = sortedData.map(function(single, index) {
+      const barUnit = 1000 / this.props.data.max;
+      
       values.push(single.averageGrade);
       // TODO maybe move unit to the components themselves?
       return (
@@ -78,6 +81,7 @@ const SeasonGraph = React.createClass({
 
     return (
       <svg id={this.props.graphId}
+            style={this.props.style}
             version="1.1"
             viewBox={[
               '0 ', (-generalHeight),
