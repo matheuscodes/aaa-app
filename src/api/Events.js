@@ -11,6 +11,32 @@ var processResponseList = function(response) {
   return processed;
 };
 
+function updateRegistration(eventId, callbacks, unregister) {
+  let method = 'POST';
+
+  if(unregister){
+    method = 'DELETE';
+  }
+
+  function errorCall(request){
+    let error = new Error(request.responseText.toString());
+    callbacks.error.call(callbacks.context, error);
+  }
+
+  var newCallbacks = {
+    context: callbacks.context,
+    201: callbacks.success,
+    204: callbacks.success,
+    failure: errorCall
+  };
+
+  var request = requestBuilder(['/events/', eventId, '/'].join(''),
+                               method, newCallbacks);
+  if(request !== null){
+    request.send();
+  }
+}
+
 module.exports = {
   getList: function(callbacks, from, to) {
     var successCall = function(request) {
@@ -53,5 +79,11 @@ module.exports = {
     if(request !== null){
       request.send();
     }
+  },
+  register: function (eventId,callbacks){
+    updateRegistration(eventId,callbacks);
+  },
+  unregister: function (eventId,callbacks){
+    updateRegistration(eventId,callbacks,true);
   }
 };

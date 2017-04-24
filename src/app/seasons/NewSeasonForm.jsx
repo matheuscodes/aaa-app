@@ -14,10 +14,10 @@ const NewSeasonCardForm = React.createClass({
     t: React.PropTypes.func
   },
   getInitialState: function(){
-    return {season: this.props.season, events: []}
+    return {season: this.props.season, events: [], chosen:{}, disabled:{}, registeredEvents:[]}
   },
   componentDidMount: function(){
-    this.loadEvents();
+    this.loadRegisteredEvents();
   },
   changeName: function(event) {
     this.state.season.name = event.target.value;
@@ -57,13 +57,13 @@ const NewSeasonCardForm = React.createClass({
     this.state.season.start = date;
     this.state.season.updateWeeks();
     this.setState(this.state);
-    this.loadEvents();
+    this.loadRegisteredEvents();
   },
   changeEnd: function(event, date) {
     this.state.season.end = date;
     this.state.season.updateWeeks();
     this.setState(this.state);
-    this.loadEvents();
+    this.loadRegisteredEvents();
   },
   loadEvents: function(){
     const callbacks = {
@@ -81,21 +81,80 @@ const NewSeasonCardForm = React.createClass({
       this.setState(this.state);
     }
   },
-  render: function() {
+  loadRegisteredEvents: function() {
+    const callbacks = {
+      context: this,
+      success: function(events) {
+        this.state.registeredEvents = events;
+        events.forEach((event) => {
+          this.state.chosen[event.id] = true;
+        },this);
+        console.log(events);
+        console.log(this.state);
+        this.setState(this.state);
+        this.loadEvents();
+      },
+      error: function(){
+        this.loadEvents();
+      }
+    };
+    API.events.getList(callbacks, this.state.season.start, this.state.season.end);
+  },
+  getEvents: function() {
     const t = this.props.t;
 
-    let events = t('season:newSeason.events.noEvents');
     if(this.state.events && this.state.events.length > 0)
-      events = this.state.events.map(
-        (event,index) => <MUI.ListItem
+      return this.state.events.map( (event,index) => {
+        function checkFunction(ignoreThis, isInputChecked){
+          this.state.disabled[event.id] = true;
+          const callbacks = {
+            context: this,
+            success: function() {
+              this.state.chosen[event.id] = isInputChecked;
+              this.state.disabled[event.id] = false;
+              this.state.registeredEvents.push(event);
+              this.setState(this.state);
+              this.showMessage(t('season:messages.registerSuccess'), "SUCCESS");
+            },
+            error: function() {
+              this.state.chosen[event.id] = !isInputChecked;
+              this.state.disabled[event.id] = false;
+              this.setState(this.state);
+              this.showMessage(t('season:messages.registerError'), "ERROR");
+            }
+          };
+          if(isInputChecked){
+            API.events.register(event.id,callbacks);
+          } else {
+            API.events.unregister(event.id,callbacks);
+          }
+          this.setState(this.state);
+        }
+        return <MUI.ListItem
           key={['aaa-events', index].join('_')}
-          leftCheckbox={<MUI.Checkbox />}
+          leftCheckbox={<MUI.Checkbox
+                          checked={this.state.chosen[event.id]}
+                          disabled={this.state.disabled[event.id] === true}
+                          onCheck={checkFunction.bind(this)}/>}
           primaryText={t('season:newSeason.events.primaryText',event)}
           secondaryText={t('season:newSeason.events.secondaryText',event)} />
-      );
+      }, this);
     else if(this.state.events === null){
-      events = <Waiting />;
+      return <Waiting />;
     }
+    return t('season:newSeason.events.noEvents');
+  },
+  showMessage: function(message, type) {
+    if(typeof this.props.messenger !== 'undefined'){
+      this.props.messenger.sendMessage({
+        text: message,
+        open: true,
+        type: type
+      });
+    }
+  },
+  render: function() {
+    const t = this.props.t;
 
     return (
       <MUI.GridList cellHeight={'auto'} cols={8} padding={10} >
@@ -153,7 +212,7 @@ const NewSeasonCardForm = React.createClass({
             <MUI.Subheader>
               {t('season:newSeason.events.subheader')}
             </MUI.Subheader>
-            {events}
+            {this.getEvents()}
           </MUI.List>
         </MUI.GridTile>
         <MUI.GridTile style={MUI.styles.GridTile} cols={5} >

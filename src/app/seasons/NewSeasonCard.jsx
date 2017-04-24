@@ -112,6 +112,7 @@ const NewSeasonCard = React.createClass({
           <h5>{t('season:newSeason.subtitle')}</h5>
           {this.state.season ?
             <NewSeasonForm
+              messenger={this.props.messenger}
               equipment={this.state.equipment}
               season={this.state.season} /> : <Waiting />}
         </div>
