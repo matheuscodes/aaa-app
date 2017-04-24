@@ -216,7 +216,7 @@ const NewSeasonCardForm = React.createClass({
           </MUI.List>
         </MUI.GridTile>
         <MUI.GridTile style={MUI.styles.GridTile} cols={5} >
-          <SeasonGraph style={{maxHeight:300}} data={this.state.season} />
+          <SeasonGraph style={{maxHeight:300}} data={this.state.season} events={this.state.registeredEvents} />
         </MUI.GridTile>
         <MUI.GridTile style={MUI.styles.GridTile} cols={8} >
           <MUI.GridList cellHeight={'auto'} cols={6} padding={10} >

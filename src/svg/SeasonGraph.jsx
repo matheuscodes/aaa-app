@@ -11,6 +11,7 @@ const GraphGrid = require('svg/common/GraphGrid');
 
 const ActualBar = require('svg/season/ActualBar');
 const PlanBar = require('svg/season/PlanBar');
+const EventBar = require('svg/season/EventBar');
 const SeasonLabels = require('svg/season/SeasonLabels');
 const ShareBar = require('svg/season/ShareBar');
 
@@ -38,8 +39,12 @@ const SeasonGraph = React.createClass({
 
     const weeks = [];
     const sortedData = [];
+    let index = 0;
+    const weekIndex = {};
     for (let i = dateStart; i <= dateEnd; i.add(1,'weeks')) {
       const localWeek = i.isoWeek();
+      weekIndex[localWeek] = index;
+      index += 1;
       weeks.push(localWeek);
       if(typeof mapData[localWeek] !== 'undefined'){
         sortedData.push(mapData[localWeek]);
@@ -57,7 +62,7 @@ const SeasonGraph = React.createClass({
 
     const seasonBars = sortedData.map(function(single, index) {
       const barUnit = 1000 / this.props.data.max;
-      
+
       values.push(single.averageGrade);
       // TODO maybe move unit to the components themselves?
       return (
@@ -75,6 +80,15 @@ const SeasonGraph = React.createClass({
             value={(single.arrowCount - single.targetShare) * barUnit}
             column={index}
             max={this.props.data.max} />
+        </g>
+      );
+    }, this);
+
+    const eventBars = (this.props.events || []).map(function(single, index) {
+      return (
+        <g>
+          <EventBar event={single}
+                    column={weekIndex[moment(single.date).isoWeek()]} />
         </g>
       );
     }, this);
@@ -103,6 +117,7 @@ const SeasonGraph = React.createClass({
             <GraphAxisLabels
               type="left" min="0" max={this.props.data.max}
               title="arrow_count" size="1000" />
+            {eventBars}
             {seasonBars}
             <GraphEstimations
               data={values} size="1000" estimate={true}

@@ -35,6 +35,24 @@ const SeasonTile = React.createClass({
   onEdit: function() {
     this.props.onEdit(this.props.seasonId);
   },
+  getCardActions: function() {
+    return (
+      <MUI.CardActions style={{textAlign: 'right'}}>
+        <MUI.FloatingActionButton
+          mini={true}
+          onTouchTap={this.onEdit}
+          style={{margin: '5pt'}}>
+          <MUI.icons.editor.mode_edit />
+        </MUI.FloatingActionButton>
+        <MUI.FloatingActionButton
+          mini={true}
+          onTouchTap={this.onDelete}
+          secondary={true} style={{margin: '5pt'}}>
+          <MUI.icons.action.delete />
+        </MUI.FloatingActionButton>
+      </MUI.CardActions>
+    );
+  },
   render: function() {
     const t = this.props.t;
 
@@ -45,23 +63,9 @@ const SeasonTile = React.createClass({
             title={this.state.name}
             subtitle={t('season:tile.subtitle', this.state)} />
           <MUI.CardText>
-            {this.state.goals ? <SeasonGraph data={this.state} /> : <Waiting />}
+            {this.state.goals ? <SeasonGraph data={this.state} events={this.state.events} /> : <Waiting />}
           </MUI.CardText>
-
-          <MUI.CardActions style={{textAlign: 'right'}}>
-            <MUI.FloatingActionButton
-              mini={true}
-              onTouchTap={this.onEdit}
-              style={{margin: '5pt'}}>
-              <MUI.icons.editor.mode_edit />
-            </MUI.FloatingActionButton>
-            <MUI.FloatingActionButton
-              mini={true}
-              onTouchTap={this.onDelete}
-              secondary={true} style={{margin: '5pt'}}>
-              <MUI.icons.action.delete />
-            </MUI.FloatingActionButton>
-          </MUI.CardActions>
+          {this.props.readOnly ? '' : this.getCardActions()}
         </MUI.Card>
       </MUI.Paper>
     );

@@ -66,6 +66,7 @@ const ReportTile = React.createClass({
               <h3>{t('report:seasonGraphTitle')}</h3>
               <SeasonGraph
                 data={this.state.season}
+                events={this.state.season.events}
                 extraPadding={
                   dailyGraphData.overview.length - this.state.season.goals.length
                 } />
