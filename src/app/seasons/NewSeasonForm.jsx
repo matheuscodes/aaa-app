@@ -89,8 +89,6 @@ const NewSeasonCardForm = React.createClass({
         events.forEach((event) => {
           this.state.chosen[event.id] = true;
         },this);
-        console.log(events);
-        console.log(this.state);
         this.setState(this.state);
         this.loadEvents();
       },

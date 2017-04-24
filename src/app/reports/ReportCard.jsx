@@ -1,5 +1,7 @@
 const React = require('react');
 
+const getLocalArcher = require('api/helpers/getLocalArcher');
+
 const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 const API = require('api');
@@ -64,7 +66,15 @@ const ReportCard = React.createClass({
       const newWindow =  window.open('printable?document=monthReport');
       const dataToPrint = document.getElementById('aaa-reportPrintableArea').innerHTML;
       newWindow.onload = () => {
-        newWindow.document.body.innerHTML=dataToPrint;
+        newWindow.document.body.innerHTML=[
+          '<div style="text-align:center"><img height="96" src="aaa-logo.png" /></div>',
+          '<div style="text-align:center"><h2>',
+          getLocalArcher().name,
+          '</h2></div>',
+          dataToPrint,
+          '<br/><br/><br/><br/>',
+          '<div style="text-align:center;font-size:8pt">Advanced Archery App - Copyright © Matheus Borges Teixeira</div>',
+        ].join('');
         newWindow.print();
         newWindow.close();
       }
