@@ -13,7 +13,6 @@ const SeasonTile = React.createClass({
     // TODO create class to validate
     data: React.PropTypes.object,
     seasonId: React.PropTypes.number,
-    readOnly: React.PropTypes.bool,
     onEdit: React.PropTypes.func,
     onDelete: React.PropTypes.func,
     t: React.PropTypes.func
@@ -36,6 +35,24 @@ const SeasonTile = React.createClass({
   onEdit: function() {
     this.props.onEdit(this.props.seasonId);
   },
+  getCardActions: function() {
+    return (
+      <MUI.CardActions style={{textAlign: 'right'}}>
+        <MUI.FloatingActionButton
+          mini={true}
+          onTouchTap={this.onEdit}
+          style={{margin: '5pt'}}>
+          <MUI.icons.editor.mode_edit />
+        </MUI.FloatingActionButton>
+        <MUI.FloatingActionButton
+          mini={true}
+          onTouchTap={this.onDelete}
+          secondary={true} style={{margin: '5pt'}}>
+          <MUI.icons.action.delete />
+        </MUI.FloatingActionButton>
+      </MUI.CardActions>
+    );
+  },
   render: function() {
     const t = this.props.t;
 
@@ -46,25 +63,9 @@ const SeasonTile = React.createClass({
             title={this.state.name}
             subtitle={t('season:tile.subtitle', this.state)} />
           <MUI.CardText>
-            {this.state.goals ? <SeasonGraph data={this.state} /> : <Waiting />}
+            {this.state.goals ? <SeasonGraph data={this.state} events={this.state.events} /> : <Waiting />}
           </MUI.CardText>
-
-          <MUI.CardActions style={{textAlign: 'right'}}>
-            {!this.props.readOnly ?
-              <MUI.FloatingActionButton
-                mini={true}
-                onTouchTap={this.onEdit}
-                style={{margin: '5pt'}}>
-                <MUI.icons.editor.mode_edit />
-              </MUI.FloatingActionButton> : ''}
-            {!this.props.readOnly ?
-              <MUI.FloatingActionButton
-                mini={true}
-                onTouchTap={this.onDelete}
-                secondary={true} style={{margin: '5pt'}}>
-                <MUI.icons.action.delete />
-              </MUI.FloatingActionButton> : ''}
-          </MUI.CardActions>
+          {this.props.readOnly ? '' : this.getCardActions()}
         </MUI.Card>
       </MUI.Paper>
     );

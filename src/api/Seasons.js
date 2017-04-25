@@ -1,11 +1,10 @@
 var requestBuilder = require('api/helpers/RequestBuilder');
 var moment = require('moment');
+import Season from 'model/Season';
 
 var processSeason = function(response) {
   var season = JSON.parse(response.toString());
-  season.start = new Date(season.start);
-  season.end = new Date(season.end);
-  return season;
+  return new Season(season);
 };
 
 var processReport = function(response) {
@@ -138,7 +137,7 @@ module.exports = {
     });
 
     var data = JSON.stringify(season);
-    
+
     request.send(data);
   },
   delete: function(seasonId, callbacks) {

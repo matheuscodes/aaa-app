@@ -110,21 +110,26 @@ const LoginCard = React.createClass({
     return (
       <MUI.Card>
         <MUI.CardMedia
-          overlay={ <MUI.CardTitle title={title} subtitle={subtitle} /> } >
-          <div style={{height: 300, width: '100%', background}} />
+          overlay={
+            <MUI.CardTitle
+              style={{height:36}}
+              titleStyle={{fontSize:'12pt'}}
+              subtitleStyle={{fontSize:'8pt'}}
+              title={title}
+              subtitle={subtitle} /> } >
+          <div style={{height: 192, width: '100%', background}} />
         </MUI.CardMedia>
         <MUI.CardText>
-          <MUI.GridList cellHeight={72} cols={1} padding={10} >
-            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
+          <MUI.GridList cellHeight={72} cols={1} padding={5} >
+            <MUI.GridTile cols={1} >
               <MUI.TextField
                 style={{width: '100%'}}
                 id={'aaa-loginEmail'}
                 onChange={this.changeEmail}
-                type='email'
                 hintText={t('login:emailTextField.hint')}
                 floatingLabelText={t('login:emailTextField.label')} />
             </MUI.GridTile>
-            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
+            <MUI.GridTile cols={1} >
               <MUI.TextField
                 style={{width: '100%'}}
                 id={'aaa-loginPassword'}
@@ -136,14 +141,16 @@ const LoginCard = React.createClass({
           </MUI.GridList>
         </MUI.CardText>
         <MUI.CardActions>
-          <MUI.RaisedButton
-            style={{width: '100%'}}
-            label={t('login:loginButton.label')}
-            labelPosition="before"
-            primary={true}
-            type={'submit'}
-            onTouchTap={this.doLogin}
-            icon={<MUI.icons.navigation.chevron_right />} />
+          <div style={{padding:'10 0'}}>
+            <MUI.RaisedButton
+              style={{width: '100%'}}
+              label={t('login:loginButton.label')}
+              labelPosition="before"
+              primary={true}
+              type={'submit'}
+              onTouchTap={this.doLogin}
+              icon={<MUI.icons.navigation.chevron_right />} />
+          </div>
         </MUI.CardActions>
         {message}
       </MUI.Card>

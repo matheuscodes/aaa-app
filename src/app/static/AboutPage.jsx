@@ -5,6 +5,7 @@ const MUI = require('app/common/MaterialUI');
 const API = require('api');
 
 const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
+const LogoName = require('svg/LogoName');
 const BaseLayout = require('app/common/BaseLayout');
 
 const AboutHome = require('app/static/about/AboutHome');
@@ -52,6 +53,9 @@ const AboutPage = React.createClass({
             title={t('about:title')}
             subtitle={t('about:subtitle')} />
           <MUI.CardText>
+            <div style={{padding:12}}>
+              <LogoName width={'100%'} height={96} />
+            </div>
             <MUI.BottomNavigation selectedIndex={this.state.selectedIndex}>
               <MUI.BottomNavigationItem
                   label={t('common:menuDrawer.homePage')}

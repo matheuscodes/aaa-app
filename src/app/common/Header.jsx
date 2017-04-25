@@ -3,6 +3,8 @@ const React = require('react');
 const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 
+const LogoName = require('svg/LogoName');
+
 const getLocalArcher = require('api/helpers/getLocalArcher');
 const deleteLocalArcher = require('api/helpers/deleteLocalArcher');
 
@@ -105,8 +107,8 @@ const Header = React.createClass({
             open={this.state.open}
             onRequestChange={this.handleClose} >
             <MUI.List>
-              <MUI.Subheader inset={true}>
-                {t('common:appTitle')}
+              <MUI.Subheader style={{padding:12}} inset={true}>
+                <LogoName width={'100%'} height={64} />
               </MUI.Subheader>
               <MUI.ListItem
                 primaryText={ this.state.archer ? this.state.archer.name : null }

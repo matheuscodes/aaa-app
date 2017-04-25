@@ -2,6 +2,7 @@ const React = require('react');
 
 const MUI = require('app/common/MaterialUI');
 const i18nextReact = require('global/i18nextReact');
+const LogoName = require('svg/LogoName');
 
 const BaseLayout = require('app/common/BaseLayout');
 const LoginCard = require('app/login/LoginCard');
@@ -24,9 +25,12 @@ const LoginPage = React.createClass({
         layoutName="loginPage"
         userAgent={this.props.userAgent}
         title={t('login:appBarTitle')} >
+        <div style={{padding:12}}>
+          <LogoName width={'100%'} height={96} />
+        </div>
         <MUI.GridList
           cellHeight={'auto'}
-          cols={4} padding={10}
+          cols={4} padding={5}
           style={{witdth: '100%'}} >
           <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
             {' '}
