@@ -114,7 +114,10 @@ module.exports = {
       request.send();
     }
   },
-  save: function(season, callbacks) {
+  save: function(newSeason, callbacks) {
+    //FIXME quick fix for regression.
+
+    let season = JSON.parse(JSON.stringify(newSeason));
     var newCallbacks = {
       context: callbacks.context,
       200: callbacks.success,
@@ -127,6 +130,7 @@ module.exports = {
       request = requestBuilder('/seasons/' + season.id, 'PUT', newCallbacks);
     }
 
+    delete season.events;
     season.start = moment(season.start).format('YYYY-MM-DD');
     season.end = moment(season.end).format('YYYY-MM-DD');
 
