@@ -237,9 +237,9 @@ const NewTrainingCard = React.createClass({
             <MUI.TableBody displayRowCheckbox={false} >
               {rows}
               <MUI.TableRow>
-                <MUI.TableRowColumn colSpan={'2'}>
+                <MUI.TableRowColumn colSpan={'3'}>
                   <MUI.TextField
-                    style={{width: '70%'}}
+                    style={{width: '60%'}}
                     id={'newTrainingCardNewDistance'}
                     hintText={t('training:newTraining.distanceTextField.hint')}
                     floatingLabelText={
