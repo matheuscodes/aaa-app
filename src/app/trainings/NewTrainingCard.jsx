@@ -176,6 +176,7 @@ const NewTrainingCard = React.createClass({
     Object.keys(row).forEach(function(distance) {
       rows.push(
         <MUI.TableRow
+          selectable={false}
           key={['newTrainingCardType_', distance, '_distance'].join('')} >
           <MUI.TableRowColumn style={{textAlign:'center'}} >
             {distance} m
@@ -227,7 +228,7 @@ const NewTrainingCard = React.createClass({
             <MUI.TableHeader
               displaySelectAll={false}
               adjustForCheckbox={false} >
-              <MUI.TableRow>
+              <MUI.TableRow selectable={false} >
                 <MUI.TableHeaderColumn style={{textAlign:'center',whiteSpace:'normal', padding:'0 5 0 5'}}>
                   {t('training:newTraining.headers.distance')}
                 </MUI.TableHeaderColumn>
@@ -236,11 +237,15 @@ const NewTrainingCard = React.createClass({
             </MUI.TableHeader>
             <MUI.TableBody displayRowCheckbox={false} >
               {rows}
-              <MUI.TableRow>
-                <MUI.TableRowColumn colSpan={'3'}>
+              <MUI.TableRow selectable={false} >
+                <MUI.TableRowColumn colSpan={'3'}  style={{padding:'0 5 0 5'}}>
                   <MUI.TextField
                     style={{width: '60%'}}
                     id={'newTrainingCardNewDistance'}
+                    inputStyle={{
+                      textAlign: 'center',
+                      fontSize: '80%',
+                    }}
                     hintText={t('training:newTraining.distanceTextField.hint')}
                     floatingLabelText={
                       t('training:newTraining.distanceTextField.label')
