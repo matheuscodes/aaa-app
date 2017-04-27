@@ -54,6 +54,9 @@ const Header = React.createClass({
     deleteLocalArcher();
     this.props.switcher.switchTo('loginPage');
   },
+  openTrainerReportsPage: function() {
+    this.props.switcher.switchTo('trainerReportsPage');
+  },
   render: function() {
     const t = this.props.t;
     const menu = (
@@ -123,6 +126,19 @@ const Header = React.createClass({
             </MUI.List>
             <MUI.Divider />
             {menu}
+            <MUI.List>
+              <MUI.ListItem
+                primaryText={ this.state.archer ? this.state.archer.name : null }
+                secondaryText={ this.state.archer ? this.state.archer.email : null }
+                disabled={true}
+                nestedItems={[
+                  <MUI.ListItem key={'aaa-headerLogout'}
+                    onTouchTap={this.openTrainerReportsPage}
+                    primaryText={t('common:menuDrawer.trainer.trainerReportsPage')}
+                    leftIcon={<MUI.icons.action.history />} />
+                ]} />
+            </MUI.List>
+            <MUI.Divider />
         </MUI.Drawer>
       </div>
     );
