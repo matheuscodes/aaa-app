@@ -74,7 +74,7 @@ const getPageNamespaces = function(pageTitle) {
     case 'loginPage':
       return ['common', 'login'];
     case 'trainerReportsPage':
-      return ['common', 'trainer'];
+      return ['common', 'report', 'trainer'];
     default:
       console.error(new ReferenceError("Page not found!"));
       return [];
@@ -100,7 +100,7 @@ function getPageUrlPath(pageTitle) {
     case 'loginPage':
       return 'login';
     case 'trainerReportsPage':
-      return 'trainer/reports';
+      return 'trainer-reports';
     default:
       console.error(new ReferenceError("Page not found!"));
       return [];

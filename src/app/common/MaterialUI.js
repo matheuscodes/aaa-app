@@ -11,6 +11,7 @@ var MUI = {
   ThemeProvider: require('material-ui/styles/MuiThemeProvider').default,
   getTheme: require('material-ui/styles/getMuiTheme').default,
   AppBar: require('material-ui/AppBar').default,
+  AutoComplete: require('material-ui/AutoComplete').default,
   Avatar: require('material-ui/Avatar').default,
   BottomNavigation: require('material-ui/BottomNavigation').default,
   BottomNavigationItem: require('material-ui/BottomNavigation').BottomNavigationItem,

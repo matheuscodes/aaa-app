@@ -131,6 +131,7 @@ module.exports = {
     }
 
     delete season.events;
+    delete season.permissions;
     season.start = moment(season.start).format('YYYY-MM-DD');
     season.end = moment(season.end).format('YYYY-MM-DD');
 
@@ -153,6 +154,38 @@ module.exports = {
 
     var request;
     request = requestBuilder('/seasons/' + seasonId, 'DELETE', newCallbacks);
+    request.send();
+  },
+  permit: function(seasonId,trainerId, callbacks) {
+    var newCallbacks = {
+      context: callbacks.context,
+      204: callbacks.success,
+      failure: callbacks.error
+    };
+
+    const path = [
+      '/seasons',
+      seasonId,
+      'permissions',
+      trainerId
+    ].join('/')
+    const request = requestBuilder(path, 'POST', newCallbacks);
+    request.send();
+  },
+  deny: function(seasonId,trainerId, callbacks) {
+    var newCallbacks = {
+      context: callbacks.context,
+      204: callbacks.success,
+      failure: callbacks.error
+    };
+
+    const path = [
+      '/seasons',
+      seasonId,
+      'permissions',
+      trainerId
+    ].join('/')
+    const request = requestBuilder(path, 'DELETE', newCallbacks);
     request.send();
   }
 };

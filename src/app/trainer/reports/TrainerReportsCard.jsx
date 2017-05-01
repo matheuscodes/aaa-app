@@ -10,15 +10,19 @@ const ReportTile = require('app/reports/ReportTile');
 
 const ReportCard = React.createClass({
   getInitialState: function() {
-    return {seasons: [], years: [], months: []};
+    return {archerList: [], archers: {}, seasons: [], months: []};
   },
   componentDidMount: function() {
     var callbacks = {
       context: this,
-      success: function(seasons) {
-        var current = this.state;
-        current.seasons = seasons;
-        this.setState(current);
+      success: function(archers) {
+        if(Array.isArray(archers)){
+          archers.forEach(archer => {
+            this.state.archerList.push(archer.archerName);
+            this.state.archers[archer.archerName] = archer;
+            this.setState(this.state);
+          }, this);
+        }
       },
       error: function(error) {
         if(API.isAuthError(error)){
@@ -26,7 +30,35 @@ const ReportCard = React.createClass({
         }
       }
     };
-    API.seasons.getList(callbacks);
+    API.trainers.archers.list(callbacks);
+  },
+  changeArcher: function(chosenRequest) {
+    if(typeof this.state.archers[chosenRequest] !== 'undefined'){
+      this.state.selectedPupilId = this.state.archers[chosenRequest].id;
+      this.state.seasons = [];
+      this.state.months = [];
+      delete this.state.seasonId;
+      delete this.state.selectedYear;
+      delete this.state.selectedMonth;
+      delete this.state.selectedYearMonth;
+    } else {
+      this.state.selectedError = this.props.t('trainer:archerAutoComplete.error');
+    }
+    this.setState(this.state);
+
+    const callbacks = {
+      context: this,
+      success: function(seasons) {
+        this.state.seasons = seasons;
+        this.setState(this.state);
+      },
+      error: function(error) {
+        if(API.isAuthError(error)){
+          this.props.switcher.switchTo('loginPage');
+        }
+      }
+    };
+    API.trainers.seasons.list(this.state.selectedPupilId, callbacks);
   },
   changeSeason: function(event, index, value) {
     var season = this.state.seasons[index];
@@ -105,9 +137,20 @@ const ReportCard = React.createClass({
         <MUI.CardText>
           <MUI.GridList cellHeight={'auto'} cols={12} padding={10} style={{width: '100%'}}>
             <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
-              {' '}
+              {''}
             </MUI.GridTile>
-            <MUI.GridTile style={MUI.styles.GridTile} cols={5} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={3} >
+              <MUI.AutoComplete
+                  fullWidth={true}
+                  floatingLabelText={t('trainer:archerAutoComplete.label')}
+                  errorText={this.state.selectedError}
+                  id={'aaa-reportArcher'}
+                  filter={MUI.AutoComplete.fuzzyFilter}
+                  dataSource={this.state.archerList}
+                  onNewRequest={this.changeArcher}
+                  maxSearchResults={5} />
+            </MUI.GridTile>
+            <MUI.GridTile style={MUI.styles.GridTile} cols={3} >
               <MUI.SelectField
                 style={{width: '100%'}}
                 id={'aaa-reportSeason'}
@@ -119,7 +162,7 @@ const ReportCard = React.createClass({
                 {seasons}
               </MUI.SelectField>
             </MUI.GridTile>
-            <MUI.GridTile style={MUI.styles.GridTile} cols={3} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
               <MUI.SelectField
                 style={{width: '100%'}}
                 id={'aaa-reportMonth'}
@@ -139,6 +182,7 @@ const ReportCard = React.createClass({
                this.state.selectedYear &&
                typeof this.state.selectedMonth !== 'undefined' ?
               <ReportTile
+                pupilId={this.state.selectedPupilId}
                 seasonId={this.state.seasonId}
                 year={this.state.selectedYear}
                 month={this.state.selectedMonth > 8 ? (this.state.selectedMonth + 1) : '0' + (this.state.selectedMonth + 1)} />
@@ -159,4 +203,4 @@ const ReportCard = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common', 'report'], ReportCard);
+module.exports = i18nextReact.setupTranslation(['common', 'report', 'trainer'], ReportCard);

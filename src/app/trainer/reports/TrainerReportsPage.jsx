@@ -27,4 +27,4 @@ const ReportsPage = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['trainer'], ReportsPage);
+module.exports = i18nextReact.setupTranslation(['common','trainer'], ReportsPage);
