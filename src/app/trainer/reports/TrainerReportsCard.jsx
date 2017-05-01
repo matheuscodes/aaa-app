@@ -35,6 +35,7 @@ const ReportCard = React.createClass({
   changeArcher: function(chosenRequest) {
     if(typeof this.state.archers[chosenRequest] !== 'undefined'){
       this.state.selectedPupilId = this.state.archers[chosenRequest].id;
+      this.state.selectedArcherName = chosenRequest;
       this.state.seasons = [];
       this.state.months = [];
       delete this.state.seasonId;
@@ -42,7 +43,7 @@ const ReportCard = React.createClass({
       delete this.state.selectedMonth;
       delete this.state.selectedYearMonth;
     } else {
-      this.state.selectedError = this.props.t('trainer:archerAutoComplete.error');
+      this.state.selectedError = this.props.t('trainer:report.archerAutoComplete.error');
     }
     this.setState(this.state);
 
@@ -86,13 +87,14 @@ const ReportCard = React.createClass({
   },
   printReport: function() {
     if(document.getElementById('aaa-reportPrintableArea')){
+      const archerName = this.state.selectedArcherName;
       const newWindow =  window.open('printable?document=monthReport');
       const dataToPrint = document.getElementById('aaa-reportPrintableArea').innerHTML;
       newWindow.onload = () => {
         newWindow.document.body.innerHTML=[
           '<div style="text-align:center"><img height="96" src="aaa-logo.png" /></div>',
           '<div style="text-align:center"><h2>',
-          getLocalArcher().name,
+          archerName,
           '</h2></div>',
           dataToPrint,
           '<br/><br/><br/><br/>',
@@ -142,7 +144,7 @@ const ReportCard = React.createClass({
             <MUI.GridTile style={MUI.styles.GridTile} cols={3} >
               <MUI.AutoComplete
                   fullWidth={true}
-                  floatingLabelText={t('trainer:archerAutoComplete.label')}
+                  floatingLabelText={t('trainer:report.archerAutoComplete.label')}
                   errorText={this.state.selectedError}
                   id={'aaa-reportArcher'}
                   filter={MUI.AutoComplete.fuzzyFilter}

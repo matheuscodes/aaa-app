@@ -132,6 +132,7 @@ module.exports = {
 
     delete season.events;
     delete season.permissions;
+    delete season.permitted;
     season.start = moment(season.start).format('YYYY-MM-DD');
     season.end = moment(season.end).format('YYYY-MM-DD');
 
