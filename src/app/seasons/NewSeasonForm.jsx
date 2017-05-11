@@ -1,6 +1,8 @@
 const React = require('react');
 const moment = require('moment');
 
+const getLocalArcher = require('api/helpers/getLocalArcher');
+
 const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 const API = require('api');
@@ -14,7 +16,14 @@ const NewSeasonCardForm = React.createClass({
     t: React.PropTypes.func
   },
   getInitialState: function(){
-    return {season: this.props.season, events: [], chosen:{}, disabled:{}, registeredEvents:[]}
+    return {
+      season: this.props.season,
+      events: [],
+      chosen:{},
+      disabled:{},
+      disabledTrainers:{},
+      registeredEvents:[],
+      trainers: getLocalArcher().trainers}
   },
   componentDidMount: function(){
     this.loadRegisteredEvents();
@@ -142,6 +151,51 @@ const NewSeasonCardForm = React.createClass({
     }
     return t('season:newSeason.events.noEvents');
   },
+  getTrainers: function() {
+    const t = this.props.t;
+
+    if(this.state.trainers && this.state.trainers.length > 0) {
+      return this.state.trainers.map( (trainer,index) => {
+        function checkTrainerFunction(ignoreThis, isInputChecked){
+          const callbacks = {
+            context: this,
+            success: function() {
+              this.state.season.setPermission(trainer.trainerId,isInputChecked);
+              this.state.disabledTrainers[trainer.trainerId] = false;
+              this.setState(this.state);
+              this.showMessage(t('season:messages.permissionSuccess'), "SUCCESS");
+            },
+            error: function() {
+              this.state.season.setPermission(trainer.trainerId,!isInputChecked);
+              this.state.disabledTrainers[trainer.trainerId] = false;
+              this.setState(this.state);
+              this.showMessage(t('season:messages.permissionError'), "ERROR");
+            }
+          };
+          if(this.state.season.id){
+            this.state.disabledTrainers[trainer.trainerId] = true;
+            if(isInputChecked){
+              API.seasons.permit(this.state.season.id,trainer.trainerId,callbacks);
+            } else {
+              API.seasons.deny(this.state.season.id,trainer.trainerId,callbacks);
+            }
+          } else {
+            this.state.season.setPermission(trainer.trainerId,isInputChecked);
+            this.state.disabledTrainers[trainer.trainerId] = false;
+          }
+          this.setState(this.state);
+        }
+        return <MUI.ListItem
+          key={['aaa-events', index].join('_')}
+          leftCheckbox={<MUI.Checkbox
+                          checked={this.state.season.permissions[trainer.trainerId]}
+                          disabled={this.state.disabledTrainers[trainer.trainerId] === true}
+                          onCheck={checkTrainerFunction.bind(this)}/>}
+          primaryText={t('season:newSeason.trainers.primaryText',trainer)} />
+      }, this);
+    }
+    return t('season:newSeason.trainers.noTrainers');
+  },
   showMessage: function(message, type) {
     if(typeof this.props.messenger !== 'undefined'){
       this.props.messenger.sendMessage({
@@ -205,6 +259,22 @@ const NewSeasonCardForm = React.createClass({
             </MUI.GridTile>
           </MUI.GridList>
         </MUI.GridTile>
+        <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
+          <MUI.List>
+            <MUI.Subheader>
+              {t('season:newSeason.trainers.subheader')}
+            </MUI.Subheader>
+            {this.getTrainers()}
+          </MUI.List>
+        </MUI.GridTile>
+        <MUI.GridTile style={MUI.styles.GridTile} cols={6} >
+          <SeasonGraph style={{maxHeight:300}} data={this.state.season} events={this.state.registeredEvents} />
+        </MUI.GridTile>
+        <MUI.GridTile style={MUI.styles.GridTile} cols={5} >
+          <MUI.GridList cellHeight={'auto'} cols={5} padding={10} >
+            {this.getWeekPlans()}
+          </MUI.GridList>
+        </MUI.GridTile>
         <MUI.GridTile style={MUI.styles.GridTile} cols={3} >
           <MUI.List>
             <MUI.Subheader>
@@ -212,14 +282,6 @@ const NewSeasonCardForm = React.createClass({
             </MUI.Subheader>
             {this.getEvents()}
           </MUI.List>
-        </MUI.GridTile>
-        <MUI.GridTile style={MUI.styles.GridTile} cols={5} >
-          <SeasonGraph style={{maxHeight:300}} data={this.state.season} events={this.state.registeredEvents} />
-        </MUI.GridTile>
-        <MUI.GridTile style={MUI.styles.GridTile} cols={8} >
-          <MUI.GridList cellHeight={'auto'} cols={6} padding={10} >
-            {this.getWeekPlans()}
-          </MUI.GridList>
         </MUI.GridTile>
       </MUI.GridList>
     );

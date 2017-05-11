@@ -1,6 +1,7 @@
 const React = require('react');
 
 const i18nextReact = require('global/i18nextReact');
+const UserTypes = require('constants/UserTypes');
 const MUI = require('app/common/MaterialUI');
 
 const LogoName = require('svg/LogoName');
@@ -54,6 +55,9 @@ const Header = React.createClass({
     deleteLocalArcher();
     this.props.switcher.switchTo('loginPage');
   },
+  openTrainerReportsPage: function() {
+    this.props.switcher.switchTo('trainerReportsPage');
+  },
   render: function() {
     const t = this.props.t;
     const menu = (
@@ -94,6 +98,20 @@ const Header = React.createClass({
       <MUI.icons.navigation.menu />
     </MUI.IconButton>);
 
+    const trainerArea = (
+      <MUI.List>
+        <MUI.ListItem
+          primaryText={t('common:menuDrawer.trainer.trainerAreaTitle')}
+          disabled={true}
+          nestedItems={[
+            <MUI.ListItem key={'aaa-trainerReports'}
+              onTouchTap={this.openTrainerReportsPage}
+              primaryText={t('common:menuDrawer.trainer.trainerReportsPage')}
+              leftIcon={<MUI.icons.action.history />} />
+          ]} />
+      </MUI.List>
+    );
+
     return (
       <div>
         <MUI.AppBar
@@ -123,6 +141,8 @@ const Header = React.createClass({
             </MUI.List>
             <MUI.Divider />
             {menu}
+            {this.state.archer && this.state.archer.type === UserTypes.TRAINER ? trainerArea : ''}
+            <MUI.Divider />
         </MUI.Drawer>
       </div>
     );

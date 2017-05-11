@@ -23,9 +23,18 @@ const ReportTile = React.createClass({
         this.setState(report);
       }
     };
-    API.seasons.getMonthReport(nextProps.seasonId,
-                            nextProps.year,
-                            nextProps.month, callbacks);
+    console.log(">"+nextProps.pupilId)
+    if(nextProps.pupilId){
+      console.log('dafuk')
+      API.trainers.seasons.getMonthReport(nextProps.pupilId,
+                              nextProps.seasonId,
+                              nextProps.year,
+                              nextProps.month, callbacks);
+    } else {
+      API.seasons.getMonthReport(nextProps.seasonId,
+                              nextProps.year,
+                              nextProps.month, callbacks);
+    }
     delete this.state.firstDay; // Showing the loading again.
   },
   componentWillReceiveProps: function(nextProps) {

@@ -17,6 +17,10 @@ export default class Season {
       if(typeof this.max === 'undefined'){
         this.max = 1;
       }
+      this.permissions = {}
+      if(Array.isArray(this.permitted)){
+        this.permitted.forEach(trainerId => this.setPermission(trainerId,true));
+      }
 
     }
 
@@ -64,5 +68,12 @@ export default class Season {
           this.goals.push(weeks[week2]);
         }
       }
+    }
+
+    setPermission(trainerId,permission){
+      if(typeof this.permissions === 'undefined'){
+        this.permissions = {};
+      }
+      this.permissions[trainerId] = permission;
     }
 }

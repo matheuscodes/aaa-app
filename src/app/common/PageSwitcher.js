@@ -12,6 +12,8 @@ var seasonsPage = require('app/seasons/SeasonsPage');
 var termsPage = require('app/static/TermsPage');
 var aboutPage = require('app/static/AboutPage');
 
+var trainerReportsPage = require('app/trainer/reports/TrainerReportsPage');
+
 /**
  * Controller for switching between pages.
  * @param {Object} i18next controller to translations
@@ -44,6 +46,8 @@ const getPageReactClass = function(pageTitle) {
       return homePage;
     case 'loginPage':
       return loginPage;
+    case 'trainerReportsPage':
+      return trainerReportsPage;
     default:
       console.error(new ReferenceError("Page not found!"));
       return undefined;
@@ -69,6 +73,8 @@ const getPageNamespaces = function(pageTitle) {
       return ['common', 'home'];
     case 'loginPage':
       return ['common', 'login'];
+    case 'trainerReportsPage':
+      return ['common', 'report', 'trainer'];
     default:
       console.error(new ReferenceError("Page not found!"));
       return [];
@@ -93,6 +99,8 @@ function getPageUrlPath(pageTitle) {
       return 'home';
     case 'loginPage':
       return 'login';
+    case 'trainerReportsPage':
+      return 'trainer-reports';
     default:
       console.error(new ReferenceError("Page not found!"));
       return [];
