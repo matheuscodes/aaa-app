@@ -10,12 +10,25 @@ const Notice = require('app/common/Notice');
 const PageSwitcher = require('app/common/PageSwitcher');
 const getLocalArcher = require('api/helpers/getLocalArcher');
 
+import { Style } from 'global/StyleProvider';
+
+class LoginCardStyle extends Style {
+  get cardWidth() {
+    return this.styleProvider.select({
+      phone: this.styleProvider.percent(100),
+      tablet: this.styleProvider.percent(50),
+      desktop: this.styleProvider.percent(100/3),
+    });
+  }
+}
+
 const LoginCard = React.createClass({
   propTypes: {
     switcher: React.PropTypes.instanceOf(PageSwitcher),
     t: React.PropTypes.func
   },
   getInitialState: function() {
+    this.style = new LoginCardStyle(this.props.styleProvider);
     return {login: {}};
   },
   componentDidMount: function() {

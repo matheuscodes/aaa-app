@@ -8,6 +8,18 @@ const BaseLayout = require('app/common/BaseLayout');
 const LoginCard = require('app/login/LoginCard');
 const PageSwitcher = require('app/common/PageSwitcher');
 
+import { Style } from 'global/StyleProvider';
+
+class LoginPageStyle extends Style {
+  get cardPadding() {
+    return this.styleProvider.select({
+      phone: `${this.defaultPadding}`,
+      tablet: `${this.defaultPadding} ${this.styleProvider.percent(15)}`,
+      desktop: `${this.defaultPadding} ${this.styleProvider.percent(30)}`,
+    });
+  }
+}
+
 const LoginPage = React.createClass({
   propTypes: {
     switcher: React.PropTypes.instanceOf(PageSwitcher),
@@ -15,30 +27,28 @@ const LoginPage = React.createClass({
     t: React.PropTypes.func
   },
   getInitialState: function() {
+    this.style = new LoginPageStyle(this.props.styleProvider);
     return {};
   },
   render: function() {
     const t = this.props.t;
+    console.log(this.props.styleProvider);
+    console.log(this.style.cardPadding);
     return (
       <BaseLayout
         switcher={this.props.switcher}
         layoutName="loginPage"
         userAgent={this.props.userAgent}
+        styleProvider={this.props.styleProvider}
         title={t('login:appBarTitle')} >
         <div style={{padding:12}}>
           <LogoName width={'100%'} height={96} />
         </div>
-        <MUI.GridList
-          cellHeight={'auto'}
-          cols={4} padding={5}
-          style={{witdth: '100%'}} >
-          <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
-            {' '}
-          </MUI.GridTile>
-          <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
-            <LoginCard switcher={this.props.switcher} />
-          </MUI.GridTile>
-        </MUI.GridList>
+        <div style={{padding:this.style.cardPadding}}>
+          <LoginCard
+            switcher={this.props.switcher}
+            styleProvider={this.props.styleProvider} />
+        </div>
       </BaseLayout>
     );
   }

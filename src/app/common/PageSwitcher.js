@@ -115,7 +115,7 @@ PageSwitcher.prototype.renderPage = function(pageTitle, callback) {
   // TODO move this to constants to share between server/app
   const props = {
     switcher: this,
-    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+    userAgent: navigator.userAgent,
     i18n: this.i18n
   };
 
@@ -154,7 +154,7 @@ PageSwitcher.prototype.serverString = function serverString(pageTitle,
   // TODO move this to constants to share between server/app
   const props = {
     switcher: this,
-    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+    userAgent: request.headers['user-agent'],
     i18n: request.i18n,
     title: request.i18n.t(['common:pageTitle.', pageTitle].join(''))
   };

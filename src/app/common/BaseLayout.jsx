@@ -45,6 +45,12 @@ module.exports = React.createClass({
       nextProps.messageSubscriber.subscribe(this);
     }
   },
+  componentDidMount(){
+    if(!this.props.styleProvider.loaded){
+      this.props.styleProvider.loadScreenSizes();
+      this.setState(this.state);
+    }
+  },
   render: function() {
     var muiTheme = MUI.getTheme({
       userAgent: this.props.userAgent
