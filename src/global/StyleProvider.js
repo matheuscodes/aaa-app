@@ -80,10 +80,55 @@ export class StyleProvider {
 
 
 export class Style {
+
   get defaultPadding() {
-    return this.styleProvider.percent(1);
+    return this.styleProvider.percent(2);
   }
+
+  get baseFontsize() {
+    return this.styleProvider.select({
+      phone: this.styleProvider.percent(4.5),
+      tablet: this.styleProvider.percent(3),
+      desktop: this.styleProvider.percent(1.2),
+    });
+  }
+
+  get baseLineHeight() {
+    return  1.5 * this.baseFontsize;
+  }
+
+  get TextField() {
+    const baseFontsize = this.baseFontsize;
+    const lineHeight = this.baseLineHeight;
+
+    return {
+      width: '100%',
+      height: lineHeight * 3,
+      fontSize: baseFontsize,
+      lineHeight: `${lineHeight}px`,
+      inputStyle: {
+        marginTop: `${baseFontsize}px`,
+      },
+      errorStyle: {
+      },
+      hintStyle: {
+        bottom: `${0.5 * baseFontsize}px`,
+      },
+      floatingLabelStyle: {
+        top: `${lineHeight + baseFontsize}px`,
+        lineHeight: `${lineHeight}px`,
+      },
+      floatingLabelShrinkStyle:{
+        transform: `scale(0.75) translate(0, -${1.25*lineHeight}px)`
+      },
+      underlineStyle:{
+        bottom: `${0.5 * baseFontsize}px`
+      },
+    }
+  }
+
   constructor(styleProvider){
     this.styleProvider = styleProvider;
   }
+
 }

@@ -14,6 +14,8 @@ var aboutPage = require('app/static/AboutPage');
 
 var trainerReportsPage = require('app/trainer/reports/TrainerReportsPage');
 
+import { StyleProvider } from 'global/StyleProvider';
+
 /**
  * Controller for switching between pages.
  * @param {Object} i18next controller to translations
@@ -116,13 +118,16 @@ PageSwitcher.prototype.renderPage = function(pageTitle, callback) {
   const props = {
     switcher: this,
     userAgent: navigator.userAgent,
-    i18n: this.i18n
+    styleProvider: new StyleProvider(navigator.userAgent),
+    i18n: this.i18n,
   };
 
   props.container = getPageReactClass(pageTitle);
   this.i18n.loadNamespaces(getPageNamespaces(pageTitle), function(err, t) {
     if (!err) {
       props.title = props.i18n.t(['common:pageTitle.', pageTitle].join(''));
+      ReactDOM.render(React.createElement(baseHtml, props), renderParent);
+      props.styleProvider.loadScreenSizes();
       ReactDOM.render(React.createElement(baseHtml, props), renderParent);
       callback();
       return;
@@ -155,6 +160,7 @@ PageSwitcher.prototype.serverString = function serverString(pageTitle,
   const props = {
     switcher: this,
     userAgent: request.headers['user-agent'],
+    styleProvider: new StyleProvider(request.headers['user-agent']),
     i18n: request.i18n,
     title: request.i18n.t(['common:pageTitle.', pageTitle].join(''))
   };

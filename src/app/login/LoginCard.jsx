@@ -20,6 +20,51 @@ class LoginCardStyle extends Style {
       desktop: this.styleProvider.percent(100/3),
     });
   }
+
+  get loginButton() {
+    return {
+      width: '100%',
+      fontSize: `${this.baseFontsize * 1.1}px`,
+      lineHeight: `${this.baseLineHeight * 1.5}px`,
+      height: `${this.baseLineHeight * 1.5}px`,
+    }
+  }
+
+  get loginIcon() {
+    return {
+      height: `${this.baseLineHeight * 1.5}px`,
+      width: `${this.baseLineHeight * 1.5}px`,
+    }
+  }
+
+  get loginButtonContainer() {
+    return {
+      margin: 0,
+      padding: `${0.1 * this.defaultPadding}px 0`,
+    }
+  }
+
+  archeryImage(background) {
+    return {
+      height:`${6 * this.baseLineHeight}px`,
+      width: '100%',
+      background,
+    }
+  }
+
+  get CardTitle() {
+    return {
+      height: `${this.baseLineHeight}px`,
+      titleStyle: {
+        fontSize: `${0.75 * this.baseFontsize}px`,
+        lineHeight: `${0.75 * this.baseLineHeight}px`,
+      },
+      subtitleStyle: {
+        fontSize: `${0.5 * this.baseFontsize}px`,
+        lineHeight: `${0.5 * this.baseLineHeight}px`,
+      },
+    }
+  }
 }
 
 const LoginCard = React.createClass({
@@ -125,18 +170,24 @@ const LoginCard = React.createClass({
         <MUI.CardMedia
           overlay={
             <MUI.CardTitle
-              style={{height:36}}
-              titleStyle={{fontSize:'12pt'}}
-              subtitleStyle={{fontSize:'8pt'}}
+              style={this.style.CardTitle}
+              titleStyle={this.style.CardTitle.titleStyle}
+              subtitleStyle={this.style.CardTitle.subtitleStyle}
               title={title}
               subtitle={subtitle} /> } >
-          <div style={{height: 192, width: '100%', background}} />
+          <div style={this.style.archeryImage(background)} />
         </MUI.CardMedia>
         <MUI.CardText>
-          <MUI.GridList cellHeight={72} cols={1} padding={5} >
+          <MUI.GridList cellHeight={this.style.TextField.height} cols={1} padding={5} >
             <MUI.GridTile cols={1} >
               <MUI.TextField
-                style={{width: '100%'}}
+                style={this.style.TextField}
+                inputStyle={this.style.TextField.inputStyle}
+                errorStyle={this.style.TextField.errorStyle}
+                hintStyle={this.style.TextField.hintStyle}
+                floatingLabelStyle={this.style.TextField.floatingLabelStyle}
+                underlineStyle={this.style.TextField.underlineStyle}
+                floatingLabelShrinkStyle={this.style.TextField.floatingLabelShrinkStyle}
                 id={'aaa-loginEmail'}
                 onChange={this.changeEmail}
                 hintText={t('login:emailTextField.hint')}
@@ -144,7 +195,12 @@ const LoginCard = React.createClass({
             </MUI.GridTile>
             <MUI.GridTile cols={1} >
               <MUI.TextField
-                style={{width: '100%'}}
+                style={this.style.TextField}
+                inputStyle={this.style.TextField.inputStyle}
+                errorStyle={this.style.TextField.errorStyle}
+                hintStyle={this.style.TextField.hintStyle}
+                floatingLabelStyle={this.style.TextField.floatingLabelStyle}
+                floatingLabelShrinkStyle={this.style.TextField.floatingLabelShrinkStyle}
                 id={'aaa-loginPassword'}
                 onChange={this.changePassword}
                 type='password'
@@ -154,15 +210,18 @@ const LoginCard = React.createClass({
           </MUI.GridList>
         </MUI.CardText>
         <MUI.CardActions>
-          <div style={{padding:'10 0'}}>
+          <div style={this.style.loginButtonContainer}>
             <MUI.RaisedButton
-              style={{width: '100%'}}
+              style={this.style.loginButton}
+              buttonStyle={this.style.loginButton}
+              labelStyle={this.style.loginButton}
               label={t('login:loginButton.label')}
               labelPosition="before"
               primary={true}
               type={'submit'}
               onTouchTap={this.doLogin}
-              icon={<MUI.icons.navigation.chevron_right />} />
+              icon={<MUI.icons.navigation.chevron_right
+                      style={this.style.loginIcon } />} />
           </div>
         </MUI.CardActions>
         {message}

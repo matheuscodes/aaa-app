@@ -11,12 +11,26 @@ const PageSwitcher = require('app/common/PageSwitcher');
 import { Style } from 'global/StyleProvider';
 
 class LoginPageStyle extends Style {
-  get cardPadding() {
-    return this.styleProvider.select({
-      phone: `${this.defaultPadding}`,
-      tablet: `${this.defaultPadding} ${this.styleProvider.percent(15)}`,
-      desktop: `${this.defaultPadding} ${this.styleProvider.percent(30)}`,
-    });
+  get card() {
+    return {
+      padding: this.styleProvider.select({
+        phone: `${this.defaultPadding}`,
+        tablet: `${this.defaultPadding} ${this.styleProvider.percent(15)}`,
+        desktop: `${this.defaultPadding} ${this.styleProvider.percent(30)}`,
+      }),
+    }
+  }
+
+  get logo() {
+    return {
+      height: this.styleProvider.select({
+        phone: this.styleProvider.percent(20),
+        tablet: this.styleProvider.percent(14),
+        desktop: this.styleProvider.percent(8),
+      }),
+      width: '100%',
+      padding: '12px',
+    }
   }
 }
 
@@ -32,8 +46,6 @@ const LoginPage = React.createClass({
   },
   render: function() {
     const t = this.props.t;
-    console.log(this.props.styleProvider);
-    console.log(this.style.cardPadding);
     return (
       <BaseLayout
         switcher={this.props.switcher}
@@ -41,10 +53,10 @@ const LoginPage = React.createClass({
         userAgent={this.props.userAgent}
         styleProvider={this.props.styleProvider}
         title={t('login:appBarTitle')} >
-        <div style={{padding:12}}>
-          <LogoName width={'100%'} height={96} />
+        <div style={{padding:this.style.logo.padding}}>
+          <LogoName width={this.style.logo.width} height={this.style.logo.height} />
         </div>
-        <div style={{padding:this.style.cardPadding}}>
+        <div style={this.style.card}>
           <LoginCard
             switcher={this.props.switcher}
             styleProvider={this.props.styleProvider} />

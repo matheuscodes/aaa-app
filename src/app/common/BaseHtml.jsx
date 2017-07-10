@@ -5,8 +5,6 @@ const I18nextProvider = require('react-i18next').I18nextProvider;
 
 const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
 
-import { StyleProvider } from 'global/StyleProvider';
-
 const htmlStyle = {
   fontFamily: 'Roboto, sans-serif',
   overflowX: 'hidden',
@@ -48,7 +46,7 @@ const BaseHtml = React.createClass({
             <I18nextProvider i18n={this.props.i18n}>
               <div>
                 <this.props.container
-                  styleProvider={new StyleProvider(this.props.userAgent)}
+                  styleProvider={this.props.styleProvider}
                   switcher={this.props.switcher}
                   userAgent={this.props.userAgent} />
               </div>
