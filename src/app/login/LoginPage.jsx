@@ -1,12 +1,10 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
-
-import MUI from 'app/common/MaterialUI';
+import PropTypes from 'prop-types';
+import {autobind} from 'core-decorators';
 
 import MessageablePage from 'components/MessageablePage';
-import { setupTranslation } from 'global/i18nextReact';
+import {setupTranslation} from 'global/i18nextReact';
 import pageSwitcherType from 'global/ReactPageSwitcherType';
-import PageSwitcher from 'app/common/PageSwitcher';
 import BaseLayout from 'app/common/BaseLayout';
 import LoginCard from 'app/login/LoginCard';
 import LoginPageStyle from 'app/login/LoginPage.style';
@@ -14,10 +12,12 @@ import LogoName from 'svg/LogoName';
 
 @autobind
 class LoginPage extends MessageablePage {
-  static propTypes: {
-    switcher: pageSwitcherType,
-    userAgent: React.PropTypes.string,
-    t: React.PropTypes.func
+  static get propTypes() {
+    return {
+      switcher: pageSwitcherType,
+      userAgent: PropTypes.string,
+      t: PropTypes.func,
+    };
   }
 
   constructor(props) {
@@ -36,7 +36,7 @@ class LoginPage extends MessageablePage {
         messageSubscriber={this}
         layoutName="loginPage"
         title={t('login:appBarTitle')} >
-        <div style={{padding:this.style.logo.padding}}>
+        <div style={{padding: this.style.logo.padding}}>
           <LogoName
             width={this.style.logo.width}
             height={this.style.logo.height} />

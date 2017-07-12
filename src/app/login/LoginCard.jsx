@@ -1,5 +1,6 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
+import PropTypes from 'prop-types';
+import {autobind} from 'core-decorators';
 
 import MUI from 'app/common/MaterialUI';
 
@@ -7,17 +8,20 @@ import API from 'api';
 import downloadFile from 'api/helpers/DownloadFile';
 import getLocalArcher from 'api/helpers/getLocalArcher';
 
-import { setupTranslation } from 'global/i18nextReact';
+import {setupTranslation} from 'global/i18nextReact';
 import pageSwitcherType from 'global/ReactPageSwitcherType';
-import PageSwitcher from 'app/common/PageSwitcher';
 import LoginCardStyle from 'app/login/LoginCard.style';
 import TextField from 'components/TextField';
 
 @autobind
 class LoginCard extends React.Component {
-  static propTypes: {
-    switcher: pageSwitcherType,
-    t: React.PropTypes.func
+  static get propTypes() {
+    return {
+      switcher: pageSwitcherType,
+      styleProvider: PropTypes.object,
+      messenger: PropTypes.object,
+      t: PropTypes.func,
+    };
   }
 
   constructor(props) {
@@ -28,20 +32,20 @@ class LoginCard extends React.Component {
 
   componentDidMount() {
     const selected = Math.floor(Math.random() * 17);
-    var callbacks = {
+    let callbacks = {
       context: this,
       200: function(request) {
-        var current = this.state;
+        let current = this.state;
         current.image = selected;
         current.imageData = JSON.parse(request.responseText);
         this.setState(current);
       },
       failure: function(request) {
         // TODO handle me
-        console.log("ERROR DOWNLOADING IMAGE INFO", request);
-      }
+        console.log('ERROR DOWNLOADING IMAGE INFO', request);
+      },
     };
-    if(typeof getLocalArcher() === 'undefined'){
+    if (typeof getLocalArcher() === 'undefined') {
       downloadFile('img/' + selected + '.json', callbacks);
     } else {
       this.props.switcher.switchTo('homePage');
@@ -49,8 +53,8 @@ class LoginCard extends React.Component {
   }
 
   doLogin() {
-    const { t, messenger, switcher } = this.props;
-    var callbacks = {
+    const {t, messenger, switcher} = this.props;
+    let callbacks = {
       context: this,
       success: function(request) {
         messenger.showMessage(t('login:messages.login'), 'MESSAGE');
@@ -58,30 +62,30 @@ class LoginCard extends React.Component {
       },
       error: function(request) {
         messenger.showMessage(t('login:messages.loginError'), 'ERROR');
-      }
+      },
     };
     API.login(this.state.login, callbacks);
   }
 
   changeEmail(event) {
-    var current = this.state;
+    let current = this.state;
     current.login.email = event.target.value;
   }
 
   changePassword(event) {
-    var current = this.state;
+    let current = this.state;
     current.login.password = event.target.value;
   }
 
   render() {
     const t = this.props.t;
 
-    var subtitle = '';
+    let subtitle = '';
     if (typeof this.state.imageData !== 'undefined') {
       subtitle = t('login:photoSubtitle', this.state.imageData);
     }
 
-    var title = '';
+    let title = '';
     if (typeof this.state.imageData !== 'undefined' &&
        typeof this.state.imageData.title !== 'undefined') {
       title = (<a
@@ -91,7 +95,7 @@ class LoginCard extends React.Component {
       </a>);
     }
 
-    var background = '';
+    let background = '';
     if (typeof this.state.image !== 'undefined') {
       background = ['url("img/',
                     this.state.image,

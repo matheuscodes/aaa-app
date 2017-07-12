@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import MUI from 'app/common/MaterialUI';
 
-export default function TextField(props){
+function TextField(props) {
   return (
     <MUI.TextField
       style={props.style.TextField}
@@ -18,3 +19,22 @@ export default function TextField(props){
       id={props.id} />
   );
 }
+
+TextField.propTypes = {
+  onChange: MUI.TextField.propTypes.onChange,
+  hintText: MUI.TextField.propTypes.hintText,
+  floatingLabelText: MUI.TextField.propTypes.floatingLabelText,
+  type: MUI.TextField.propTypes.type,
+  id: MUI.TextField.propTypes.id,
+  style: PropTypes.shape({
+    TextField: PropTypes.object,
+    inputStyle: PropTypes.object,
+    errorStyle: PropTypes.object,
+    hintStyle: PropTypes.object,
+    floatingLabelStyle: PropTypes.object,
+    underlineStyle: PropTypes.object,
+    floatingLabelShrinkStyle: PropTypes.object,
+  }).isRequired,
+};
+
+export default TextField;
