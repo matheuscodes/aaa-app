@@ -46,6 +46,7 @@ const BaseHtml = React.createClass({
             <I18nextProvider i18n={this.props.i18n}>
               <div>
                 <this.props.container
+                  styleProvider={this.props.styleProvider}
                   switcher={this.props.switcher}
                   userAgent={this.props.userAgent} />
               </div>
