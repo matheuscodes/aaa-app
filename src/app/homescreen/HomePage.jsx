@@ -18,6 +18,7 @@ const HomePage = React.createClass({
       <BaseLayout
         switcher={this.props.switcher}
         userAgent={this.props.userAgent}
+        styleProvider={this.props.styleProvider}
         layoutName="homePage"
         languages={this.props.languages}
         title={t('home:appBarTitle')} >
