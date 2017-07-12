@@ -1,4 +1,5 @@
 import MobileDetect from 'mobile-detect';
+import TextFieldStyle from 'components/TextField.style';
 
 export class StyleProvider {
 
@@ -98,33 +99,7 @@ export class Style {
   }
 
   get TextField() {
-    const baseFontsize = this.baseFontsize;
-    const lineHeight = this.baseLineHeight;
-
-    return {
-      width: '100%',
-      height: lineHeight * 3,
-      fontSize: baseFontsize,
-      lineHeight: `${lineHeight}px`,
-      inputStyle: {
-        marginTop: `${baseFontsize}px`,
-      },
-      errorStyle: {
-      },
-      hintStyle: {
-        bottom: `${0.5 * baseFontsize}px`,
-      },
-      floatingLabelStyle: {
-        top: `${lineHeight + baseFontsize}px`,
-        lineHeight: `${lineHeight}px`,
-      },
-      floatingLabelShrinkStyle:{
-        transform: `scale(0.75) translate(0, -${1.25*lineHeight}px)`
-      },
-      underlineStyle:{
-        bottom: `${0.5 * baseFontsize}px`
-      },
-    }
+    return TextFieldStyle(this);
   }
 
   constructor(styleProvider){

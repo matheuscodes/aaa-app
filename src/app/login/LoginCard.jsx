@@ -1,82 +1,32 @@
-const React = require('react');
+import React from 'react';
+import { autobind } from 'core-decorators';
 
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
-const i18nextReact = require('global/i18nextReact');
+import MUI from 'app/common/MaterialUI';
 
-const downloadFile = require('api/helpers/DownloadFile');
+import API from 'api';
+import downloadFile from 'api/helpers/DownloadFile';
+import getLocalArcher from 'api/helpers/getLocalArcher';
 
-const Notice = require('app/common/Notice');
-const PageSwitcher = require('app/common/PageSwitcher');
-const getLocalArcher = require('api/helpers/getLocalArcher');
+import { setupTranslation } from 'global/i18nextReact';
+import pageSwitcherType from 'global/ReactPageSwitcherType';
+import PageSwitcher from 'app/common/PageSwitcher';
+import LoginCardStyle from 'app/login/LoginCard.style';
+import TextField from 'components/TextField';
 
-import { Style } from 'global/StyleProvider';
-
-class LoginCardStyle extends Style {
-  get cardWidth() {
-    return this.styleProvider.select({
-      phone: this.styleProvider.percent(100),
-      tablet: this.styleProvider.percent(50),
-      desktop: this.styleProvider.percent(100/3),
-    });
-  }
-
-  get loginButton() {
-    return {
-      width: '100%',
-      fontSize: `${this.baseFontsize * 1.1}px`,
-      lineHeight: `${this.baseLineHeight * 1.5}px`,
-      height: `${this.baseLineHeight * 1.5}px`,
-    }
-  }
-
-  get loginIcon() {
-    return {
-      height: `${this.baseLineHeight * 1.5}px`,
-      width: `${this.baseLineHeight * 1.5}px`,
-    }
-  }
-
-  get loginButtonContainer() {
-    return {
-      margin: 0,
-      padding: `${0.1 * this.defaultPadding}px 0`,
-    }
-  }
-
-  archeryImage(background) {
-    return {
-      height:`${6 * this.baseLineHeight}px`,
-      width: '100%',
-      background,
-    }
-  }
-
-  get CardTitle() {
-    return {
-      height: `${this.baseLineHeight}px`,
-      titleStyle: {
-        fontSize: `${0.75 * this.baseFontsize}px`,
-        lineHeight: `${0.75 * this.baseLineHeight}px`,
-      },
-      subtitleStyle: {
-        fontSize: `${0.5 * this.baseFontsize}px`,
-        lineHeight: `${0.5 * this.baseLineHeight}px`,
-      },
-    }
-  }
-}
-
-const LoginCard = React.createClass({
-  propTypes: {
-    switcher: React.PropTypes.instanceOf(PageSwitcher),
+@autobind
+class LoginCard extends React.Component {
+  static propTypes: {
+    switcher: pageSwitcherType,
     t: React.PropTypes.func
-  },
-  getInitialState: function() {
+  }
+
+  constructor(props) {
+    super(props);
     this.style = new LoginCardStyle(this.props.styleProvider);
-    return {login: {}};
-  },
-  componentDidMount: function() {
+    this.state = {login: {}};
+  }
+
+  componentDidMount() {
     const selected = Math.floor(Math.random() * 17);
     var callbacks = {
       context: this,
@@ -96,44 +46,34 @@ const LoginCard = React.createClass({
     } else {
       this.props.switcher.switchTo('homePage');
     }
-  },
-  doLogin: function() {
-    const t = this.props.t;
+  }
+
+  doLogin() {
+    const { t, messenger, switcher } = this.props;
     var callbacks = {
       context: this,
       success: function(request) {
-        this.showMessage(t('login:messages.login'), 'MESSAGE');
-        this.props.switcher.switchTo('homePage');
+        messenger.showMessage(t('login:messages.login'), 'MESSAGE');
+        switcher.switchTo('homePage');
       },
       error: function(request) {
-        this.showMessage(t('login:messages.loginError'), 'ERROR');
+        messenger.showMessage(t('login:messages.loginError'), 'ERROR');
       }
     };
     API.login(this.state.login, callbacks);
-  },
-  showMessage: function(message, type) {
-    var current = this.state;
-    current.message = {
-      text: message,
-      open: true,
-      type: type
-    };
-    this.setState(current);
-  },
-  hideMessage: function() {
-    var current = this.state;
-    current.message.open = false;
-    this.setState(current);
-  },
-  changeEmail: function(event) {
+  }
+
+  changeEmail(event) {
     var current = this.state;
     current.login.email = event.target.value;
-  },
-  changePassword: function(event) {
+  }
+
+  changePassword(event) {
     var current = this.state;
     current.login.password = event.target.value;
-  },
-  render: function() {
+  }
+
+  render() {
     const t = this.props.t;
 
     var subtitle = '';
@@ -158,13 +98,6 @@ const LoginCard = React.createClass({
                     '.jpg") center / cover'].join('');
     }
 
-    var message = '';
-    if (typeof this.state.message !== 'undefined') {
-      message = (
-        <Notice message={this.state.message} onClose={this.hideMessage} />
-      );
-    }
-
     return (
       <MUI.Card>
         <MUI.CardMedia
@@ -178,32 +111,24 @@ const LoginCard = React.createClass({
           <div style={this.style.archeryImage(background)} />
         </MUI.CardMedia>
         <MUI.CardText>
-          <MUI.GridList cellHeight={this.style.TextField.height} cols={1} padding={5} >
+          <MUI.GridList
+            cellHeight={this.style.TextField.height}
+            cols={1}
+            padding={this.style.defaultPadding} >
             <MUI.GridTile cols={1} >
-              <MUI.TextField
-                style={this.style.TextField}
-                inputStyle={this.style.TextField.inputStyle}
-                errorStyle={this.style.TextField.errorStyle}
-                hintStyle={this.style.TextField.hintStyle}
-                floatingLabelStyle={this.style.TextField.floatingLabelStyle}
-                underlineStyle={this.style.TextField.underlineStyle}
-                floatingLabelShrinkStyle={this.style.TextField.floatingLabelShrinkStyle}
+              <TextField
+                style={this.style}
                 id={'aaa-loginEmail'}
                 onChange={this.changeEmail}
                 hintText={t('login:emailTextField.hint')}
                 floatingLabelText={t('login:emailTextField.label')} />
             </MUI.GridTile>
             <MUI.GridTile cols={1} >
-              <MUI.TextField
-                style={this.style.TextField}
-                inputStyle={this.style.TextField.inputStyle}
-                errorStyle={this.style.TextField.errorStyle}
-                hintStyle={this.style.TextField.hintStyle}
-                floatingLabelStyle={this.style.TextField.floatingLabelStyle}
-                floatingLabelShrinkStyle={this.style.TextField.floatingLabelShrinkStyle}
+              <TextField
+                style={this.style}
                 id={'aaa-loginPassword'}
                 onChange={this.changePassword}
-                type='password'
+                type={'password'}
                 hintText={t('login:passwordTextField.hint')}
                 floatingLabelText={t('login:passwordTextField.label')} />
             </MUI.GridTile>
@@ -224,10 +149,9 @@ const LoginCard = React.createClass({
                       style={this.style.loginIcon } />} />
           </div>
         </MUI.CardActions>
-        {message}
       </MUI.Card>
     );
   }
-});
+}
 
-module.exports = i18nextReact.setupTranslation(['login'], LoginCard);
+module.exports = setupTranslation(['login'], LoginCard);

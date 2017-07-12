@@ -1,69 +1,55 @@
-const React = require('react');
+import React from 'react';
+import { autobind } from 'core-decorators';
 
-const MUI = require('app/common/MaterialUI');
-const i18nextReact = require('global/i18nextReact');
-const LogoName = require('svg/LogoName');
+import MUI from 'app/common/MaterialUI';
 
-const BaseLayout = require('app/common/BaseLayout');
-const LoginCard = require('app/login/LoginCard');
-const PageSwitcher = require('app/common/PageSwitcher');
+import MessageablePage from 'components/MessageablePage';
+import { setupTranslation } from 'global/i18nextReact';
+import pageSwitcherType from 'global/ReactPageSwitcherType';
+import PageSwitcher from 'app/common/PageSwitcher';
+import BaseLayout from 'app/common/BaseLayout';
+import LoginCard from 'app/login/LoginCard';
+import LoginPageStyle from 'app/login/LoginPage.style';
+import LogoName from 'svg/LogoName';
 
-import { Style } from 'global/StyleProvider';
-
-class LoginPageStyle extends Style {
-  get card() {
-    return {
-      padding: this.styleProvider.select({
-        phone: `${this.defaultPadding}`,
-        tablet: `${this.defaultPadding} ${this.styleProvider.percent(15)}`,
-        desktop: `${this.defaultPadding} ${this.styleProvider.percent(30)}`,
-      }),
-    }
-  }
-
-  get logo() {
-    return {
-      height: this.styleProvider.select({
-        phone: this.styleProvider.percent(20),
-        tablet: this.styleProvider.percent(14),
-        desktop: this.styleProvider.percent(8),
-      }),
-      width: '100%',
-      padding: '12px',
-    }
-  }
-}
-
-const LoginPage = React.createClass({
-  propTypes: {
-    switcher: React.PropTypes.instanceOf(PageSwitcher),
+@autobind
+class LoginPage extends MessageablePage {
+  static propTypes: {
+    switcher: pageSwitcherType,
     userAgent: React.PropTypes.string,
     t: React.PropTypes.func
-  },
-  getInitialState: function() {
+  }
+
+  constructor(props) {
+    super(props);
     this.style = new LoginPageStyle(this.props.styleProvider);
-    return {};
-  },
-  render: function() {
+    this.state = {};
+  }
+
+  render() {
     const t = this.props.t;
     return (
       <BaseLayout
         switcher={this.props.switcher}
-        layoutName="loginPage"
         userAgent={this.props.userAgent}
         styleProvider={this.props.styleProvider}
+        messageSubscriber={this}
+        layoutName="loginPage"
         title={t('login:appBarTitle')} >
         <div style={{padding:this.style.logo.padding}}>
-          <LogoName width={this.style.logo.width} height={this.style.logo.height} />
+          <LogoName
+            width={this.style.logo.width}
+            height={this.style.logo.height} />
         </div>
         <div style={this.style.card}>
           <LoginCard
             switcher={this.props.switcher}
+            messenger={this}
             styleProvider={this.props.styleProvider} />
         </div>
       </BaseLayout>
     );
   }
-});
+}
 
-module.exports = i18nextReact.setupTranslation(['login'], LoginPage);
+module.exports = setupTranslation(['login'], LoginPage);
