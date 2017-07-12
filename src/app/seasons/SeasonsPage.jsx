@@ -128,6 +128,7 @@ const SeasonsPage = React.createClass({
         switcher={this.props.switcher}
         layoutName="seasonsPage"
         userAgent={this.props.userAgent}
+        styleProvider={this.props.styleProvider}
         messageSubscriber={this}
         title={t('season:appBarTitle')} >
         <MUI.GridList

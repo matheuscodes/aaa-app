@@ -47,6 +47,7 @@ const AboutPage = React.createClass({
         switcher={this.props.switcher}
         layoutName="aboutPage"
         userAgent={this.props.userAgent}
+        styleProvider={this.props.styleProvider}
         title={t('about:appBarTitle')} >
         <MUI.Card style={{margin:40,marginBottom:120}}>
           <MUI.CardHeader

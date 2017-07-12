@@ -252,6 +252,7 @@ const AssessmentsPage = React.createClass({
         switcher={this.props.switcher}
         layoutName="assessmentsPage"
         userAgent={this.props.userAgent}
+        styleProvider={this.props.styleProvider}
         title={t('assessment:appBarTitle')} >
         <MUI.GridList
           cellHeight={'auto'}

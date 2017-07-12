@@ -86,6 +86,18 @@ app.get('/printable', function(req, res) {
   res.send('<html style="font-family: Roboto, sans-serif;"><head><link href="https://fonts.googleapis.com/css?family=Roboto:400,300,500" rel="stylesheet" type="text/css" data-reactid="3" /></head><body></body></html>');
 });
 
+const MobileDetect = require('mobile-detect');
+
+app.get('/test', function(req,res){
+  const detect = new MobileDetect(req.headers['user-agent']);
+  const response = []
+  response.push(`mobile ${detect.mobile()}`);
+  response.push(`phone ${detect.phone()}`);
+  response.push(`tablet ${detect.tablet()}`);
+  response.push(`os ${detect.os()}`);
+  res.send(response.join('<br/>'));
+});
+
 var server = http.createServer(app);
 server.listen(9090);
 console.log("Listening to 9090");

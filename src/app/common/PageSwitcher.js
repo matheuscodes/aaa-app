@@ -14,6 +14,8 @@ var aboutPage = require('app/static/AboutPage');
 
 var trainerReportsPage = require('app/trainer/reports/TrainerReportsPage');
 
+import { StyleProvider } from 'global/StyleProvider';
+
 /**
  * Controller for switching between pages.
  * @param {Object} i18next controller to translations
@@ -115,14 +117,17 @@ PageSwitcher.prototype.renderPage = function(pageTitle, callback) {
   // TODO move this to constants to share between server/app
   const props = {
     switcher: this,
-    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
-    i18n: this.i18n
+    userAgent: navigator.userAgent,
+    styleProvider: new StyleProvider(navigator.userAgent),
+    i18n: this.i18n,
   };
 
   props.container = getPageReactClass(pageTitle);
   this.i18n.loadNamespaces(getPageNamespaces(pageTitle), function(err, t) {
     if (!err) {
       props.title = props.i18n.t(['common:pageTitle.', pageTitle].join(''));
+      ReactDOM.render(React.createElement(baseHtml, props), renderParent);
+      props.styleProvider.loadScreenSizes();
       ReactDOM.render(React.createElement(baseHtml, props), renderParent);
       callback();
       return;
@@ -154,7 +159,8 @@ PageSwitcher.prototype.serverString = function serverString(pageTitle,
   // TODO move this to constants to share between server/app
   const props = {
     switcher: this,
-    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+    userAgent: request.headers['user-agent'],
+    styleProvider: new StyleProvider(request.headers['user-agent']),
     i18n: request.i18n,
     title: request.i18n.t(['common:pageTitle.', pageTitle].join(''))
   };
