@@ -225,25 +225,28 @@ class NewAssessmentDialog extends React.Component {
         open={this.state.open}
         onRequestClose={this.handleClose}
         autoScrollBodyContent={true}>
-        <MUI.Step>
-          <MUI.StepLabel>Select campaign settings</MUI.StepLabel>
-          <MUI.StepContent>
-            <BaseStep
-              t={t}
-              events={this.state.events}
-              targets={this.state.targets}
-              seasons={this.state.seasons}
-              distance={this.state.distance}
-              date={this.state.date}
-              changeSeason={this.changeSeason}
-              changeTarget={this.changeTarget}
-              changeEvent={this.changeEvent}
-              changeDistance={this.changeDistance}
-              changeDate={this.changeDate} />
-          </MUI.StepContent>
-        </MUI.Step>
-
         <MUI.Stepper activeStep={stepIndex} orientation="vertical">
+          <MUI.Step>
+            <MUI.StepLabel>Select campaign settings</MUI.StepLabel>
+            <MUI.StepContent>
+              <BaseStep
+                t={t}
+                events={this.state.events}
+                targets={this.state.targets}
+                seasons={this.state.seasons}
+                distance={this.state.distance}
+                date={this.state.date}
+                eventId={this.state.eventId}
+                targetId={this.state.targetId}
+                seasonId={this.state.seasonId}
+                changeSeason={this.changeSeason}
+                changeTarget={this.changeTarget}
+                changeEvent={this.changeEvent}
+                changeDistance={this.changeDistance}
+                changeDate={this.changeDate} />
+            </MUI.StepContent>
+          </MUI.Step>
+
           <MUI.Step>
             <MUI.StepLabel>Create an ad group</MUI.StepLabel>
             <MUI.StepContent>

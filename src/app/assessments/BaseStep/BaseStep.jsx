@@ -57,7 +57,7 @@ export default function BaseStep(props){
               t={props.t}
               style={{width: '100%'}}
               eventId={props.eventId}
-              changeEvents={props.changeEvents}
+              changeEvent={props.changeEvent}
               events={props.events} />
           </MUI.GridTile>
         </MUI.GridList>
