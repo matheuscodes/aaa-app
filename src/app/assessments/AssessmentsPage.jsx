@@ -11,6 +11,7 @@ const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
 const BaseLayout = require('app/common/BaseLayout');
 const AssessmentTile = require('app/assessments/AssessmentTile');
 const NewAssessmentCard = require('app/assessments/NewAssessmentCard');
+const NewAssessmentDialog = require('app/assessments/NewAssessmentDialog');
 
 const styles = {
   gridList: {
@@ -290,6 +291,7 @@ const AssessmentsPage = React.createClass({
           </MUI.GridTile>
         </MUI.GridList>
         {message}
+        <NewAssessmentDialog open={true} />
       </BaseLayout>
     );
   }
