@@ -7,7 +7,9 @@ import { setupTranslation } from 'global/i18nextReact';
 import MUI from 'app/common/MaterialUI';
 import API from 'api';
 
+import NewAssessmentDialogStyle from 'app/assessments/NewAssessmentDialog.style';
 import BaseStep from 'app/assessments/BaseStep/BaseStep';
+
 
 @autobind
 class NewAssessmentDialog extends React.Component {
@@ -21,6 +23,7 @@ class NewAssessmentDialog extends React.Component {
   constructor(props) {
     super(props);
     const today = new Date();
+    this.style = new NewAssessmentDialogStyle(props.style.styleProvider);
     today.setHours(18);
     this.state = {
       open: props.open,
@@ -220,17 +223,21 @@ class NewAssessmentDialog extends React.Component {
     return (
       <MUI.Dialog
         title={t('assessment:newAssessment.title')}
-        modal={false}
+        modal={true}
         actions={this.renderStepActions(stepIndex)}
         open={this.state.open}
         onRequestClose={this.handleClose}
-        autoScrollBodyContent={true}>
+        contentStyle={this.style.contentStyle}
+        repositionOnUpdate={false}
+        autoDetectWindowHeight={true}
+        autoScrollBodyContent={true} >
         <MUI.Stepper activeStep={stepIndex} orientation="vertical">
           <MUI.Step>
             <MUI.StepLabel>Select campaign settings</MUI.StepLabel>
             <MUI.StepContent>
               <BaseStep
                 t={t}
+                style={this.style.BaseStep}
                 events={this.state.events}
                 targets={this.state.targets}
                 seasons={this.state.seasons}

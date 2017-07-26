@@ -5,7 +5,7 @@ import MUI from 'app/common/MaterialUI';
 export default function EventsMenu(props){
   return (
     <MUI.SelectField
-      style={{width: '100%'}}
+      style={props.style}
       id={'aaa-newAssessmentEvent'}
       value={props.eventId}
       onChange={props.changeEvent}

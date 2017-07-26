@@ -291,7 +291,7 @@ const AssessmentsPage = React.createClass({
           </MUI.GridTile>
         </MUI.GridList>
         {message}
-        <NewAssessmentDialog open={true} />
+        <NewAssessmentDialog open={true} style={{styleProvider:this.props.styleProvider}}/>
       </BaseLayout>
     );
   }

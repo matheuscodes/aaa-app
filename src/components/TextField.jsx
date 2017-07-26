@@ -15,6 +15,7 @@ function TextField(props) {
       onChange={props.onChange}
       hintText={props.hintText}
       floatingLabelText={props.floatingLabelText}
+      defaultValue={props.defaultValue}
       type={props.type}
       id={props.id} />
   );

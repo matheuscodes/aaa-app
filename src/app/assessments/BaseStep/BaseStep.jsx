@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MUI from 'app/common/MaterialUI';
 
+import TextField from 'components/TextField';
+import DatePicker from 'components/DatePicker';
+
 import EventsMenu from 'app/assessments/BaseStep/EventsMenu';
 import TargetsMenu from 'app/assessments/BaseStep/TargetsMenu';
 import SeasonsMenu from 'app/assessments/BaseStep/SeasonsMenu';
@@ -10,21 +13,21 @@ export default function BaseStep(props){
   return (
       <div>
         <MUI.GridList
-          cellHeight={'auto'}
           cols={4}
           padding={10}
-          style={{width: '100%'}}>
+          cellHeight={props.style.cellHeight}
+          style={props.style}>
           <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
             <SeasonsMenu
               t={props.t}
-              style={{width: '100%'}}
+              style={props.style.SeasonsMenu}
               seasonId={props.seasonId}
               changeSeason={props.changeSeason}
               seasons={props.seasons} />
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
-            <MUI.DatePicker
-              style={{width: '100%'}}
+            <DatePicker
+              style={props.style}
               id={'aaa-newAssessmentDate'}
               floatingLabelText={
                 props.t('assessment:newAssessment.dateDatepicker.label')
@@ -34,8 +37,8 @@ export default function BaseStep(props){
               onChange={props.changeDate} />
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
-            <MUI.TextField
-              style={{width: '100%'}}
+            <TextField
+              style={props.style}
               id={'aaa-newAssessmentDistance'}
               hintText={props.t('assessment:newAssessment.distanceTextField.hint')}
               floatingLabelText={
@@ -47,7 +50,7 @@ export default function BaseStep(props){
           <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
             <TargetsMenu
               t={props.t}
-              style={{width: '100%'}}
+              style={props.style.TargetsMenu}
               targetId={props.targetId}
               changeTarget={props.changeTarget}
               targets={props.targets} />
@@ -55,7 +58,7 @@ export default function BaseStep(props){
           <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
             <EventsMenu
               t={props.t}
-              style={{width: '100%'}}
+              style={props.style.EventsMenu}
               eventId={props.eventId}
               changeEvent={props.changeEvent}
               events={props.events} />

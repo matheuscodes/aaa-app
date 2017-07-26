@@ -5,7 +5,7 @@ import MUI from 'app/common/MaterialUI';
 export default function SeasonsMenu(props){
   return (
     <MUI.SelectField
-      style={{width: '100%'}}
+      style={props.style}
       id={'aaa-newAssessmentSeason'}
       value={props.seasonId}
       onChange={props.changeSeason}
