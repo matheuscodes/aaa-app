@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MUI from 'app/common/MaterialUI';
 
-function TextField(props) {
+function DatePicker(props) {
   return (
     <div>
       <MUI.DatePicker
@@ -19,7 +19,7 @@ function TextField(props) {
   );
 }
 
-TextField.propTypes = {
+DatePicker.propTypes = {
   onChange: MUI.DatePicker.propTypes.onChange,
   floatingLabelText: MUI.DatePicker.propTypes.floatingLabelText,
   autoOk: MUI.DatePicker.propTypes.autoOk,
@@ -29,4 +29,4 @@ TextField.propTypes = {
   }).isRequired,
 };
 
-export default TextField;
+export default DatePicker;

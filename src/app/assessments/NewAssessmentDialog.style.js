@@ -17,22 +17,6 @@ export default class NewAssessmentDialogStyle extends Style {
     }
   }
 
-  get stepLabel() {
-    return {
-      fontSize: this.baseFontsize,
-      height: this.styleProvider.select({
-        phone: 2 * this.baseLineHeight,
-        desktop: 3 * this.baseLineHeight,
-      }),
-      iconContainerStyle: {
-        transform: `scale(${this.baseLineHeight / 24 /*step button width*/})`,
-      },
-      p: {
-        paddingLeft: `${this.baseLineHeight / 2}px`,
-      }
-    }
-  }
-
   get BaseStep() {
     return {
       width: '100%',
@@ -51,10 +35,4 @@ export default class NewAssessmentDialogStyle extends Style {
     }
   }
 
-  get contentDivStyle() {
-    return {
-      margin: `${this.baseLineHeight / 2}px`,
-      width: `calc(100% - ${this.baseLineHeight / 2}px)`,
-    }
-  }
 }

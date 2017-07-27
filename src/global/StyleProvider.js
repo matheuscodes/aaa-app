@@ -1,6 +1,7 @@
 import MobileDetect from 'mobile-detect';
 import TextFieldStyle from 'components/TextField.style';
 import DatePickerStyle from 'components/DatePicker.style';
+import StepperStyle from 'components/Stepper.style';
 
 export class StyleProvider {
 
@@ -110,6 +111,10 @@ export class Style {
 
   get TextField() {
     return TextFieldStyle(this);
+  }
+
+  get Stepper() {
+    return StepperStyle(this);
   }
 
   get DatePicker() {
