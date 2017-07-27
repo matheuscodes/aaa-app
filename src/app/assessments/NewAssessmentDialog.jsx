@@ -223,70 +223,77 @@ class NewAssessmentDialog extends React.Component {
     return (
       <MUI.Dialog
         title={t('assessment:newAssessment.title')}
+        titleStyle={this.style.h3}
         modal={true}
         actions={this.renderStepActions(stepIndex)}
         open={this.state.open}
         onRequestClose={this.handleClose}
         contentStyle={this.style.contentStyle}
-        repositionOnUpdate={false}
+        repositionOnUpdate={true}
         autoDetectWindowHeight={true}
         autoScrollBodyContent={true} >
-        <MUI.Stepper activeStep={stepIndex} orientation="vertical">
-          <MUI.Step>
-            <MUI.StepLabel>Select campaign settings</MUI.StepLabel>
-            <MUI.StepContent>
-              <BaseStep
-                t={t}
-                style={this.style.BaseStep}
-                events={this.state.events}
-                targets={this.state.targets}
-                seasons={this.state.seasons}
-                distance={this.state.distance}
-                date={this.state.date}
-                eventId={this.state.eventId}
-                targetId={this.state.targetId}
-                seasonId={this.state.seasonId}
-                changeSeason={this.changeSeason}
-                changeTarget={this.changeTarget}
-                changeEvent={this.changeEvent}
-                changeDistance={this.changeDistance}
-                changeDate={this.changeDate} />
-            </MUI.StepContent>
-          </MUI.Step>
+        <div style={this.style.contentDivStyle}>
+          <MUI.Stepper activeStep={stepIndex} orientation="vertical">
+            <MUI.Step>
+              <MUI.StepLabel
+                iconContainerStyle={this.style.stepLabel.iconContainerStyle}
+                style={this.style.stepLabel} >
+                <p style={this.style.stepLabel.p}> Select campaign settings </p>
+              </MUI.StepLabel>
+              <MUI.StepContent>
+                <BaseStep
+                  t={t}
+                  style={this.style.BaseStep}
+                  events={this.state.events}
+                  targets={this.state.targets}
+                  seasons={this.state.seasons}
+                  distance={this.state.distance}
+                  date={this.state.date}
+                  eventId={this.state.eventId}
+                  targetId={this.state.targetId}
+                  seasonId={this.state.seasonId}
+                  changeSeason={this.changeSeason}
+                  changeTarget={this.changeTarget}
+                  changeEvent={this.changeEvent}
+                  changeDistance={this.changeDistance}
+                  changeDate={this.changeDate} />
+              </MUI.StepContent>
+            </MUI.Step>
 
-          <MUI.Step>
-            <MUI.StepLabel>Create an ad group</MUI.StepLabel>
-            <MUI.StepContent>
-              <p>An ad group contains one or more ads which target a shared set of keywords.</p>
-            </MUI.StepContent>
-          </MUI.Step>
+            <MUI.Step>
+              <MUI.StepLabel>Create an ad group</MUI.StepLabel>
+              <MUI.StepContent>
+                <p>An ad group contains one or more ads which target a shared set of keywords.</p>
+              </MUI.StepContent>
+            </MUI.Step>
 
-          <MUI.Step>
-            <MUI.StepLabel>Create an ad</MUI.StepLabel>
-            <MUI.StepContent>
-              <p>
-                Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.
+            <MUI.Step>
+              <MUI.StepLabel>Create an ad</MUI.StepLabel>
+              <MUI.StepContent>
+                <p>
+                  Try out different ad text to see what brings in the most customers,
+                  and learn how to enhance your ads using features like ad extensions.
+                  If you run into any problems with your ads, find out how to tell if
+                  they're running and how to resolve approval issues.
+                </p>
+              </MUI.StepContent>
+            </MUI.Step>
+          </MUI.Stepper>
+          {
+            finished && (
+              <p style={{margin: '20px 0', textAlign: 'center'}}>
+                <a
+                  href="#"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    this.setState({stepIndex: 0, finished: false});
+                  }} >
+                  Click here
+                </a> to reset the example.
               </p>
-            </MUI.StepContent>
-          </MUI.Step>
-        </MUI.Stepper>
-        {
-          finished && (
-            <p style={{margin: '20px 0', textAlign: 'center'}}>
-              <a
-                href="#"
-                onClick={(event) => {
-                  event.preventDefault();
-                  this.setState({stepIndex: 0, finished: false});
-                }} >
-                Click here
-              </a> to reset the example.
-            </p>
-          )
-        }
+            )
+          }
+        </div>
       </MUI.Dialog>
     );
   }

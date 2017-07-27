@@ -99,6 +99,15 @@ export class Style {
     return  1.5 * this.baseFontsize;
   }
 
+
+  get h3() {
+    return {
+      fontSize: this.baseFontsize * 1.1,
+      padding: `${this.baseFontsize * 1.1}px`,
+      lineHeight: `${this.baseLineHeight * 1.1}px`,
+    }
+  }
+
   get TextField() {
     return TextFieldStyle(this);
   }
