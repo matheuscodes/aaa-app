@@ -11,6 +11,7 @@ import Stepper from 'components/Stepper';
 
 import NewAssessmentDialogStyle from 'app/assessments/NewAssessmentDialog.style';
 import BaseStep from 'app/assessments/BaseStep/BaseStep';
+import WeatherStep from 'app/assessments/WeatherStep/WeatherStep';
 
 
 @autobind
@@ -219,18 +220,13 @@ class NewAssessmentDialog extends React.Component {
     );
   }
 
-  render() {
-    const { t } = this.props;
-    const { finished, stepIndex } = this.state;
-
-    const steps = [];
-
-    steps.push({
-      title: t('assessment:newAssessment.baseStep.title'),
+  get baseStep() {
+    return {
+      title: this.props.t('assessment:newAssessment.baseStep.title'),
       content: (
         <BaseStep
-          t={t}
-          style={this.style.BaseStep}
+          t={this.props.t}
+          style={this.style}
           events={this.state.events}
           targets={this.state.targets}
           seasons={this.state.seasons}
@@ -245,7 +241,38 @@ class NewAssessmentDialog extends React.Component {
           changeDistance={this.changeDistance}
           changeDate={this.changeDate} />
       ),
-    });
+    }
+  }
+
+  get weatherStep() {
+    return {
+      title: this.props.t('assessment:newAssessment.weatherStep.title'),
+      content: (
+        <WeatherStep
+          t={this.props.t}
+          style={this.style}
+          temperature={this.state.temperature}
+          changeTemperature={this.changeTemperature}
+          weather={this.state.weather}
+          changeWeather={this.changeWeather}
+          windSpeed={this.state.windSpeed}
+          changeWindSpeed={this.changeWindSpeed}
+          windDirection={this.state.windDirection}
+          changeWindDirection={this.changeWindDirection}
+          shootDirection={this.state.shootDirection}
+          changeShootDirection={this.changeShootDirection} />
+      ),
+    }
+  }
+
+  render() {
+    const { t } = this.props;
+    const { finished, stepIndex } = this.state;
+
+    const steps = [];
+
+    steps.push(this.baseStep);
+    steps.push(this.weatherStep);
 
     return (
       <MUI.Dialog

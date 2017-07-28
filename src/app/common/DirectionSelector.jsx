@@ -1,8 +1,11 @@
 const React = require('react');
 const MUI = require('app/common/MaterialUI');
 
+import DirectionSelectorStyle from 'app/common/DirectionSelector.style';
+import directions from 'constants/Directions';
+import SelectField from 'components/SelectField';
+
 const Compass = require('svg/icon/Compass');
-const compassStyle = {padding: '5pt'};
 
 const DirectionSelector = React.createClass({
   propTypes: {
@@ -12,66 +15,30 @@ const DirectionSelector = React.createClass({
     onChange: React.PropTypes.func,
     hintText: React.PropTypes.string
   },
+
+  getInitialState: function(){
+    this.style = new DirectionSelectorStyle(this.props.style.styleProvider);
+    return {};
+  },
+
   render: function() {
     return (
-      <MUI.SelectField
+      <SelectField
         style={this.props.style}
-        id={'aaa-directionSelector_' + this.props.type}
         value={this.props.value}
         onChange={this.props.onChange}
-        floatingLabelFixed={true}
-        floatingLabelText={" "}
-        hintText={this.props.hintText} >
-        {/* FIXME too. many. copy. paste */}
-        <MUI.MenuItem
-          value={'N'}
-          label={
-            <Compass direction={'N'} height={32} style={compassStyle} />
+        items={directions.map((direction) => {
+          return {
+            id: direction,
+            label: (<Compass
+                            direction={direction}
+                            height={this.style.labelHeight} />),
+            name: (<Compass
+                            direction={direction}
+                            height={this.style.listHeight} />),
           }
-          primaryText={<Compass direction={'N'} height={48} />} />
-        <MUI.MenuItem
-          value={'NE'}
-          label={
-            <Compass direction={'NE'} height={32} style={compassStyle} />
-          }
-          primaryText={<Compass direction={'NE'} height={48} />} />
-        <MUI.MenuItem
-          value={'E'}
-          label={
-            <Compass direction={'E'} height={32} style={compassStyle} />
-          }
-          primaryText={<Compass direction={'E'} height={48} />} />
-        <MUI.MenuItem
-          value={'SE'}
-          label={
-            <Compass direction={'SE'} height={32} style={compassStyle} />
-          }
-          primaryText={<Compass direction={'SE'} height={48} />} />
-        <MUI.MenuItem
-          value={'S'}
-          label={
-            <Compass direction={'S'} height={32} style={compassStyle} />
-          }
-          primaryText={<Compass direction={'S'} height={48} />} />
-        <MUI.MenuItem
-          value={'SW'}
-          label={
-            <Compass direction={'SW'} height={32} style={compassStyle} />
-          }
-          primaryText={<Compass direction={'SW'} height={48} />} />
-        <MUI.MenuItem
-          value={'W'}
-          label={
-            <Compass direction={'W'} height={32} style={compassStyle} />
-          }
-          primaryText={<Compass direction={'W'} height={48} />} />
-        <MUI.MenuItem
-          value={'NW'}
-          label={
-            <Compass direction={'NW'} height={32} style={compassStyle} />
-          }
-          primaryText={<Compass direction={'NW'} height={48} />} />
-      </MUI.SelectField>
+        }, this)}
+        hintText={this.props.hintText} />
     );
   }
 });

@@ -3,39 +3,40 @@
 var React = require('react');
 var MUI = require('app/common/MaterialUI');
 
+import SelectField from 'components/SelectField';
+
+import WeatherSelectorStyle from 'app/common/WeatherSelector.style';
 var WeatherConditions = require('constants/WeatherConditions');
 var WeatherIcons = require('svg/icon/Weather');
 
 module.exports = React.createClass({
   getInitialState: function() {
+    this.style = new WeatherSelectorStyle(this.props.style.styleProvider);
     return {weathers: []};
   },
   componentDidMount: function() {
     var current = this.state;
-    for (var weather in WeatherConditions) {
+    Object.keys(WeatherConditions).forEach(function(weather) {
       var CurrentIcon = WeatherIcons[WeatherConditions[weather]];
       current.weathers.push(
-        <MUI.MenuItem
-          key={'aaa-weatherChoice_' + weather}
-          value={weather}
-          label={<CurrentIcon height={32} style={{padding: '5pt'}} />}
-          primaryText={<CurrentIcon height={48} />} />
+        {
+          id: weather,
+          label: (<CurrentIcon height={this.style.labelHeight} />),
+          name: (<CurrentIcon height={this.style.listHeight} />),
+        }
       );
-    }
+    }, this);
     this.setState(current);
   },
   render: function() {
     return (
-      <MUI.SelectField
+      <SelectField
         style={this.props.style}
         id={'aaa-weatherSelector'}
         value={this.props.value}
         onChange={this.props.onChange}
-        floatingLabelFixed={true}
-        floatingLabelText={" "}
-        hintText={this.props.hintText} >
-        {this.state.weathers}
-      </MUI.SelectField>
+        items={this.state.weathers}
+        hintText={this.props.hintText} />
     );
   }
 });

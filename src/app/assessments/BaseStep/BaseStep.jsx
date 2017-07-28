@@ -6,17 +6,21 @@ import TextField from 'components/TextField';
 import DatePicker from 'components/DatePicker';
 import SelectField from 'components/SelectField';
 
+import BaseStepStyle from 'app/assessments/BaseStep/BaseStep.style';
+
 export default function BaseStep(props){
+  const style = new BaseStepStyle(props.style.styleProvider);
+
   return (
       <div>
         <MUI.GridList
           cols={4}
           padding={10}
-          cellHeight={props.style.cellHeight}
-          style={props.style}>
+          cellHeight={style.cellHeight}
+          style={style}>
           <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
             <SelectField
-              style={props.style}
+              style={style}
               id={'newAssessmentSeason'}
               value={props.seasonId}
               onChange={props.changeSeason}
@@ -27,7 +31,7 @@ export default function BaseStep(props){
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
             <DatePicker
-              style={props.style}
+              style={style}
               id={'newAssessmentDate'}
               floatingLabelText={
                 props.t('assessment:newAssessment.dateDatepicker.label')
@@ -38,7 +42,7 @@ export default function BaseStep(props){
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
             <TextField
-              style={props.style}
+              style={style}
               id={'newAssessmentDistance'}
               hintText={props.t('assessment:newAssessment.distanceTextField.hint')}
               floatingLabelText={
@@ -50,7 +54,7 @@ export default function BaseStep(props){
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
             <SelectField
-              style={props.style}
+              style={style}
               id={'newAssessmentTarget'}
               value={props.targetId}
               onChange={props.changeTarget}
@@ -61,7 +65,7 @@ export default function BaseStep(props){
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
             <SelectField
-              style={props.style}
+              style={style}
               id={'newAssessmentEvent'}
               value={props.eventId}
               onChange={props.changeEvent}

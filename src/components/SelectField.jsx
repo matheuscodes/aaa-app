@@ -31,6 +31,7 @@ function SelectField(props) {
                 <MUI.MenuItem
                   key={`aaa-selectFieldItem_${props.id}_${index}`}
                   value={item.id}
+                  label={item.label}
                   primaryText={item.name} />
               );
             })

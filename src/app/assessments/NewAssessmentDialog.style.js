@@ -17,23 +17,4 @@ export default class NewAssessmentDialogStyle extends Style {
     }
   }
 
-  get BaseStep() {
-    return {
-      width: '100%',
-      cellHeight: 'auto',
-      SeasonsMenu: {
-        width: '100%',
-      },
-      EventsMenu: {
-        width: '100%',
-      },
-      TargetsMenu: {
-        width: '100%',
-      },
-      TextField: this.TextField,
-      SelectField: this.SelectField,
-      DatePicker: this.DatePicker,
-    }
-  }
-
 }
