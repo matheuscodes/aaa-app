@@ -31,6 +31,7 @@ export default class NewAssessmentDialogStyle extends Style {
         width: '100%',
       },
       TextField: this.TextField,
+      SelectField: this.SelectField,
       DatePicker: this.DatePicker,
     }
   }

@@ -4,10 +4,7 @@ import MUI from 'app/common/MaterialUI';
 
 import TextField from 'components/TextField';
 import DatePicker from 'components/DatePicker';
-
-import EventsMenu from 'app/assessments/BaseStep/EventsMenu';
-import TargetsMenu from 'app/assessments/BaseStep/TargetsMenu';
-import SeasonsMenu from 'app/assessments/BaseStep/SeasonsMenu';
+import SelectField from 'components/SelectField';
 
 export default function BaseStep(props){
   return (
@@ -18,17 +15,20 @@ export default function BaseStep(props){
           cellHeight={props.style.cellHeight}
           style={props.style}>
           <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
-            <SeasonsMenu
-              t={props.t}
-              style={props.style.SeasonsMenu}
-              seasonId={props.seasonId}
-              changeSeason={props.changeSeason}
-              seasons={props.seasons} />
+            <SelectField
+              style={props.style}
+              id={'newAssessmentSeason'}
+              value={props.seasonId}
+              onChange={props.changeSeason}
+              items={props.seasons}
+              floatingLabelText={
+                props.t('assessment:newAssessment.seasonSelectField.label')
+              } />
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
             <DatePicker
               style={props.style}
-              id={'aaa-newAssessmentDate'}
+              id={'newAssessmentDate'}
               floatingLabelText={
                 props.t('assessment:newAssessment.dateDatepicker.label')
               }
@@ -39,29 +39,36 @@ export default function BaseStep(props){
           <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
             <TextField
               style={props.style}
-              id={'aaa-newAssessmentDistance'}
+              id={'newAssessmentDistance'}
               hintText={props.t('assessment:newAssessment.distanceTextField.hint')}
               floatingLabelText={
                 props.t('assessment:newAssessment.distanceTextField.label')
               }
+              type={'number'}
               defaultValue={props.distance}
               onChange={props.changeDistance} />
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
-            <TargetsMenu
-              t={props.t}
-              style={props.style.TargetsMenu}
-              targetId={props.targetId}
-              changeTarget={props.changeTarget}
-              targets={props.targets} />
+            <SelectField
+              style={props.style}
+              id={'newAssessmentTarget'}
+              value={props.targetId}
+              onChange={props.changeTarget}
+              items={props.targets}
+              floatingLabelText={
+                props.t('assessment:newAssessment.targetSelectField.label')
+              } />
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
-            <EventsMenu
-              t={props.t}
-              style={props.style.EventsMenu}
-              eventId={props.eventId}
-              changeEvent={props.changeEvent}
-              events={props.events} />
+            <SelectField
+              style={props.style}
+              id={'newAssessmentEvent'}
+              value={props.eventId}
+              onChange={props.changeEvent}
+              items={props.events}
+              floatingLabelText={
+                props.t('assessment:newAssessment.eventSelectField.label')
+              } />
           </MUI.GridTile>
         </MUI.GridList>
       </div>
@@ -70,6 +77,5 @@ export default function BaseStep(props){
 
 BaseStep.propTypes = {
   t: PropTypes.func.isRequired,
-  events: PropTypes.object.isRequired,
   style: PropTypes.object,
 }

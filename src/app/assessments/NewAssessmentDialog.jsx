@@ -226,7 +226,7 @@ class NewAssessmentDialog extends React.Component {
     const steps = [];
 
     steps.push({
-      title: 'Banananamaa',
+      title: t('assessment:newAssessment.baseStep.title'),
       content: (
         <BaseStep
           t={t}

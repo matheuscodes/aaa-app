@@ -13,11 +13,15 @@ function TextField(props) {
       underlineStyle={props.style.TextField.underlineStyle}
       floatingLabelShrinkStyle={props.style.TextField.floatingLabelShrinkStyle}
       onChange={props.onChange}
+      onFocus={() => setTimeout(() => window.dispatchEvent(new Event('TextFieldFocused')), 1000)}
+      onBlur={() => setTimeout(() => window.dispatchEvent(new Event('TextFieldBlurred')), 500)}
       hintText={props.hintText}
       floatingLabelText={props.floatingLabelText}
       defaultValue={props.defaultValue}
       type={props.type}
-      id={props.id} />
+      id={props.id} >
+      {props.children}
+    </MUI.TextField>
   );
 }
 
