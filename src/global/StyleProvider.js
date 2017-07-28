@@ -86,7 +86,11 @@ export class StyleProvider {
 export class Style {
 
   get defaultPadding() {
-    return this.styleProvider.percent(2);
+    return this.styleProvider.percent(1);
+  }
+
+  get defaultMargin() {
+    return this.styleProvider.percent(1);
   }
 
   get baseFontsize() {
@@ -124,6 +128,24 @@ export class Style {
 
   get DatePicker() {
     return DatePickerStyle(this);
+  }
+
+  get RaisedButton(){
+    return {
+      margin: `${this.defaultMargin}px`,
+      overlayStyle: {
+        height: `${this.baseLineHeight * 2}px`,
+      },
+      buttonStyle: {
+        height: `${this.baseLineHeight * 2}px`,
+        lineHeight: `${this.baseLineHeight * 2}px`,
+      },
+      labelStyle: {
+        padding: `${this.baseLineHeight}px`,
+        lineHeight: `${this.baseLineHeight * 2}px`,
+        fontSize: `${this.baseFontsize}px`,
+      }
+    }
   }
 
   constructor(styleProvider){

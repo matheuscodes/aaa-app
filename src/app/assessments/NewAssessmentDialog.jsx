@@ -194,27 +194,29 @@ class NewAssessmentDialog extends React.Component {
     API.assessments.save(this.state, callbacks);
   }
 
-  renderStepActions(step) {
+  get stepActions() {
     const {stepIndex} = this.state;
 
     return (
       <div style={{margin: '12px 0'}}>
         <MUI.RaisedButton
           label={stepIndex === 2 ? 'Finish' : 'Next'}
-          disableTouchRipple={true}
-          disableFocusRipple={true}
+          style={this.style.RaisedButton}
+          overlayStyle={this.style.RaisedButton.overlayStyle}
+          labelStyle={this.style.RaisedButton.labelStyle}
+          buttonStyle={this.style.RaisedButton.buttonStyle}
           primary={true}
-          onTouchTap={this.handleNext}
-          style={{marginRight: 12}}
-        />
-        {step > 0 && (
-          <MUI.FlatButton
-            label="Back"
+          onTouchTap={this.handleNext} />
+        {stepIndex > 0 && (
+          <MUI.RaisedButton
+            label={'Back'}
+            style={this.style.RaisedButton}
+            overlayStyle={this.style.RaisedButton.overlayStyle}
+            labelStyle={this.style.RaisedButton.labelStyle}
+            buttonStyle={this.style.RaisedButton.buttonStyle}
+            primary={false}
             disabled={stepIndex === 0}
-            disableTouchRipple={true}
-            disableFocusRipple={true}
-            onTouchTap={this.handlePrev}
-          />
+            onTouchTap={this.handlePrev} />
         )}
       </div>
     );
@@ -279,7 +281,7 @@ class NewAssessmentDialog extends React.Component {
         title={t('assessment:newAssessment.title')}
         titleStyle={this.style.h3}
         modal={true}
-        actions={this.renderStepActions(stepIndex)}
+        actions={this.stepActions}
         open={this.state.open}
         onRequestClose={this.handleClose}
         contentStyle={this.style.contentStyle}
