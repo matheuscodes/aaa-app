@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MUI from 'app/common/MaterialUI';
 
-import NewAssessmentEnd from 'app/assessments/NewAssessmentEnd';
-import NewAssessmentRound from 'app/assessments/NewAssessmentRound';
+import NewAssessmentEnd from 'app/assessments/RoundStep/NewAssessmentEnd';
+import NewAssessmentRound from 'app/assessments/RoundStep/NewAssessmentRound';
 import AssessmentArrowTable from 'app/assessments/AssessmentArrowTable';
 import RoundStepStyle from 'app/assessments/RoundStep/RoundStep.style';
 

@@ -11,8 +11,8 @@ const Windmills = require('svg/icon/Windmills');
 const ArcherAnchored = require('svg/icon/ArcherAnchored');
 
 const AssessmentArrowTable = require('app/assessments/AssessmentArrowTable');
-const NewAssessmentEnd = require('app/assessments/NewAssessmentEnd');
-const NewAssessmentRound = require('app/assessments/NewAssessmentRound');
+const NewAssessmentEnd = require('app/assessments/RoundStep/NewAssessmentEnd');
+const NewAssessmentRound = require('app/assessments/RoundStep/NewAssessmentRound');
 const DirectionSelector = require('app/common/DirectionSelector');
 const WeatherSelector = require('app/common/WeatherSelector');
 
