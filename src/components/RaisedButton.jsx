@@ -7,6 +7,8 @@ function RaisedButton(props) {
     <MUI.RaisedButton
       label={props.label}
       style={props.style.RaisedButton}
+      backgroundColor={props.backgroundColor}
+      labelColor={props.labelColor}
       overlayStyle={props.style.RaisedButton.overlayStyle}
       labelStyle={props.style.RaisedButton.labelStyle}
       buttonStyle={props.style.RaisedButton.buttonStyle}

@@ -8,6 +8,7 @@ import i18nextReact from 'global/i18nextReact';
 import valueConverter from 'global/ValueConverter';
 
 import FloatingActionButton from 'components/FloatingActionButton';
+import ArrowRingRow from 'app/assessments/ArrowRingRow';
 
 @autobind
 class AssessmentArrowTableRow extends React.Component {
@@ -19,22 +20,15 @@ class AssessmentArrowTableRow extends React.Component {
     const t = this.props.t;
 
     let total = 0;
-
+    this.props.end.forEach(arrow => total += valueConverter.integer[arrow]);
+    
     return (
       <tr>
-        <td style={this.props.style.rings} >
-          {
-            this.props.end.map((arrow, arrowIndex) => {
-              total += valueConverter.integer[arrow];
-              return (
-                <MUI.Avatar
-                  key={arrowIndex.toString()}
-                  color={valueConverter.color[arrow]}
-                  backgroundColor={valueConverter.backgroundColor[arrow]}
-                  size={this.props.style.arrow.width} > { arrow } </MUI.Avatar>
-              );
-            })
-          }
+        <td>
+          <ArrowRingRow
+            style={this.props.style.rings}
+            arrows={this.props.end}
+            arrowSize={this.props.style.arrow.width} />
         </td>
         <td>
           <div style={this.props.style.total} >{ total }</div>
