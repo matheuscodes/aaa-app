@@ -3,6 +3,8 @@ import TextFieldStyle from 'components/TextField.style';
 import SelectFieldStyle from 'components/SelectField.style';
 import DatePickerStyle from 'components/DatePicker.style';
 import StepperStyle from 'components/Stepper.style';
+import RaisedButtonStyle from 'components/RaisedButton.style';
+import FloatingActionButtonStyle from 'components/FloatingActionButton.style';
 
 export class StyleProvider {
 
@@ -131,25 +133,31 @@ export class Style {
   }
 
   get RaisedButton(){
-    return {
-      margin: `${this.defaultMargin}px`,
-      overlayStyle: {
-        height: `${this.baseLineHeight * 2}px`,
-      },
-      buttonStyle: {
-        height: `${this.baseLineHeight * 2}px`,
-        lineHeight: `${this.baseLineHeight * 2}px`,
-      },
-      labelStyle: {
-        padding: `${this.baseLineHeight}px`,
-        lineHeight: `${this.baseLineHeight * 2}px`,
-        fontSize: `${this.baseFontsize}px`,
-      }
-    }
+    return RaisedButtonStyle(this);
+  }
+
+  get FloatingActionButton(){
+    return FloatingActionButtonStyle(this);
   }
 
   constructor(styleProvider){
     this.styleProvider = styleProvider;
+  }
+
+  overwrite(object){
+    const clone = Object.create(Object.getPrototypeOf(this));
+
+    Object.getOwnPropertyNames(this).forEach((key) => {
+        const desc = Object.getOwnPropertyDescriptor(this, key);
+        Object.defineProperty(clone, key, desc);
+    });
+
+    Object.getOwnPropertyNames(object).forEach((key) => {
+        const desc = Object.getOwnPropertyDescriptor(object, key);
+        Object.defineProperty(clone, key, desc);
+    });
+
+    return clone;
   }
 
 }

@@ -12,6 +12,7 @@ import Stepper from 'components/Stepper';
 import NewAssessmentDialogStyle from 'app/assessments/NewAssessmentDialog.style';
 import BaseStep from 'app/assessments/BaseStep/BaseStep';
 import WeatherStep from 'app/assessments/WeatherStep/WeatherStep';
+import RoundStep from 'app/assessments/RoundStep/RoundStep';
 
 
 @autobind
@@ -34,7 +35,7 @@ class NewAssessmentDialog extends React.Component {
       targets: [],
       seasons: [],
       events: [],
-      rounds: [],
+      rounds: [{ends: []}],
       finished: false,
       stepIndex: 0,
     };
@@ -267,6 +268,26 @@ class NewAssessmentDialog extends React.Component {
     }
   }
 
+  get roundSteps() {
+    return this.state.rounds.map((round, index) => {
+      return {
+        title: this.props.t('assessment:newAssessment.roundStep.title',{
+          round: index + 1,
+        }),
+        content: (
+          <RoundStep
+            t={this.props.t}
+            style={this.style}
+            addRound={this.addRound}
+            addEnd={this.addEnd}
+            deleteEnd={this.deleteEnd}
+            index={index}
+            round={round} />
+        ),
+      }
+    });
+  }
+
   render() {
     const { t } = this.props;
     const { finished, stepIndex } = this.state;
@@ -275,6 +296,7 @@ class NewAssessmentDialog extends React.Component {
 
     steps.push(this.baseStep);
     steps.push(this.weatherStep);
+    this.roundSteps.forEach(round => steps.push(round));
 
     return (
       <MUI.Dialog

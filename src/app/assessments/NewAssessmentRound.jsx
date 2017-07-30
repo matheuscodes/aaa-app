@@ -5,6 +5,8 @@ const i18nextReact = require('global/i18nextReact');
 
 const valueConverter = require('global/ValueConverter');
 
+import RaisedButton from 'components/RaisedButton';
+
 function createRound(rings, arrows, ends){
   const endSize = Math.floor(arrows / ends);
   const endPoints = Math.floor(rings / ends);
@@ -74,7 +76,8 @@ const NewAssessmentRound = React.createClass({
     const t = this.props.t;
     return (
       <div style={this.props.style ? this.props.style : null}>
-        <MUI.RaisedButton
+        <RaisedButton
+          style={this.props.style.mainButton}
           label={t('assessment:addTotal')}
           onTouchTap={this.handleOpen} />
         <MUI.Dialog

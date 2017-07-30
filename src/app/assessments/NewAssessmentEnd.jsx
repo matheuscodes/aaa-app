@@ -5,6 +5,8 @@ const i18nextReact = require('global/i18nextReact');
 
 const valueConverter = require('global/ValueConverter');
 
+import RaisedButton from 'components/RaisedButton';
+
 const styles = {
   arrowSize: 40,
   arrowButtonSize: 60
@@ -136,8 +138,9 @@ const NewAssessmentEnd = React.createClass({
     }, this);
 
     return (
-      <div style={this.props.style ? this.props.style : null}>
-        <MUI.RaisedButton
+      <div style={this.props.style}>
+        <RaisedButton
+          style={this.props.style.mainButton}
           label={t('assessment:addEnd')}
           onTouchTap={this.handleOpen} />
         <MUI.Dialog
