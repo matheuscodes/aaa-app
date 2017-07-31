@@ -9,7 +9,7 @@ function FloatingActionButton(props) {
       secondary={props.secondary}
       style={props.style.FloatingActionButton}
       iconStyle={props.style.FloatingActionButton}
-      onTouchTap={props.onClose} >
+      onTouchTap={props.onTouchTap} >
       {props.children}
     </MUI.FloatingActionButton>
   );

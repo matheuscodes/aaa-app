@@ -144,6 +144,7 @@ class NewAssessmentEnd extends React.Component {
           contentStyle={this.props.style.Dialog.contentStyle}
           actionsContainerStyle={this.props.style.Dialog.actionsContainerStyle}
           title={t('assessment:newEndTitle')}
+          titleStyle={this.props.style.h3}
           actions={actions}
           modal={false}
           open={this.state.open}

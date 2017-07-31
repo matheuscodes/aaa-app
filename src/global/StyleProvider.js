@@ -110,7 +110,7 @@ export class Style {
 
   get h3() {
     return {
-      fontSize: this.baseFontsize * 1.1,
+      fontSize: `${this.baseFontsize * 1.1}px`,
       padding: `${this.baseFontsize * 1.1}px`,
       lineHeight: `${this.baseLineHeight * 1.1}px`,
     }

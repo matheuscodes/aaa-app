@@ -16,6 +16,7 @@ class AssessmentArrowTable extends React.Component {
     super(props);
     this.style = new AssessmentArrowTableStyle(props.style.styleProvider);
   }
+
   render() {
     const t = this.props.t;
 
@@ -38,8 +39,8 @@ class AssessmentArrowTable extends React.Component {
                         style={this.style}
                         end={end}
                         endIndex={endIndex}
-                        deleteEnd={this.props.deleteEnd}
-                        roundIndex={this.props.data.index} />);
+                        roundIndex={this.props.data.index}
+                        deleteEnd={this.props.deleteEnd} />);
             })
           }
           {this.props.data.totalScore ? <tr>

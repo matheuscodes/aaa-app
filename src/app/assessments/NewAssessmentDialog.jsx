@@ -35,7 +35,7 @@ class NewAssessmentDialog extends React.Component {
       targets: [],
       seasons: [],
       events: [],
-      rounds: [{ends: []}],
+      rounds: [{ends: [], index: 0}],
       finished: false,
       stepIndex: 0,
     };
@@ -154,10 +154,12 @@ class NewAssessmentDialog extends React.Component {
 
   addRound(roundIndex,round) {
     if(typeof roundIndex === 'undefined' || typeof round === 'undefined'){
-      this.state.rounds.push({ends: []});
+      this.state.rounds.push({ends: [], index: this.state.rounds.length});
     } else {
+      round.index = roundIndex;
       this.state.rounds[roundIndex] = round;
     }
+    console.log("faaak", this.state.rounds);
     this.setState(this.state);
   }
 
@@ -169,10 +171,10 @@ class NewAssessmentDialog extends React.Component {
   }
 
   deleteEnd(roundIndex, endIndex) {
-    var current = this.state;
     // TODO handle array out of bounds exceptions.
-    current.rounds[roundIndex].ends.splice(endIndex, 1);
-    this.setState(current);
+    console.log('whooo', roundIndex, endIndex)
+    this.state.rounds[roundIndex].ends.splice(endIndex, 1);
+    this.setState(this.state);
   }
 
   submitAssessment() {
@@ -271,9 +273,7 @@ class NewAssessmentDialog extends React.Component {
   get roundSteps() {
     return this.state.rounds.map((round, index) => {
       return {
-        title: this.props.t('assessment:newAssessment.roundStep.title',{
-          round: index + 1,
-        }),
+        title: this.props.t('assessment:newAssessment.roundStep.title',round),
         content: (
           <RoundStep
             t={this.props.t}

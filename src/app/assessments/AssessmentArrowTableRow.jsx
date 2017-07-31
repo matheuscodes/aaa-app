@@ -21,7 +21,7 @@ class AssessmentArrowTableRow extends React.Component {
 
     let total = 0;
     this.props.end.forEach(arrow => total += valueConverter.integer[arrow]);
-    
+
     return (
       <tr>
         <td>

@@ -6,6 +6,7 @@ const i18nextReact = require('global/i18nextReact');
 const valueConverter = require('global/ValueConverter');
 
 import RaisedButton from 'components/RaisedButton';
+import TextField from 'components/TextField';
 
 function createRound(rings, arrows, ends){
   const endSize = Math.floor(arrows / ends);
@@ -81,10 +82,13 @@ const NewAssessmentRound = React.createClass({
           label={t('assessment:addTotal')}
           onTouchTap={this.handleOpen} />
         <MUI.Dialog
-          contentStyle={{maxWidth: 300}}
+          contentStyle={this.props.style.Dialog.contentStyle}
+          actionsContainerStyle={this.props.style.Dialog.actionsContainerStyle}
           title={t('assessment:newRound.title')}
+          titleStyle={this.props.style.h3}
           actions={
-            <MUI.RaisedButton
+            <RaisedButton
+              style={this.props.style}
               label={t('assessment:newRound.submit')}
               primary={true}
               keyboardFocused={true}
@@ -92,21 +96,24 @@ const NewAssessmentRound = React.createClass({
           }
           modal={false}
           open={this.state.open}
-          onRequestClose={this.handleClose} >
-          <MUI.TextField
-            style={{width: '100%'}}
+          onRequestClose={this.handleClose}
+          repositionOnUpdate={true}
+          autoDetectWindowHeight={true}
+          autoScrollBodyContent={true} >
+          <TextField
+            style={this.props.style}
             id={'aaa-newRoundRings'}
             onChange={this.changeRings}
             hintText={t('assessment:newRound.ringsTextField.hint')}
             floatingLabelText={t('assessment:newRound.ringsTextField.label')} />
-          <MUI.TextField
-            style={{width: '100%'}}
+          <TextField
+            style={this.props.style}
             id={'aaa-newRoundArrows'}
             onChange={this.changeArrows}
             hintText={t('assessment:newRound.arrowsTextField.hint')}
             floatingLabelText={t('assessment:newRound.arrowsTextField.label')} />
-          <MUI.TextField
-            style={{width: '100%'}}
+          <TextField
+            style={this.props.style}
             id={'aaa-newRoundEnds'}
             onChange={this.changeEnds}
             hintText={t('assessment:newRound.endsTextField.hint')}

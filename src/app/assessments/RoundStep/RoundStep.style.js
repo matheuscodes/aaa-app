@@ -34,9 +34,9 @@ export default class RoundStepStyle extends Style {
     const mainRaisedButton = new RaisedButtonStyle(this.overwrite({
       get baseFontsize() {
         return this.styleProvider.select({
-          phone: oldBaseFontsize * 0.55,
-          tablet: oldBaseFontsize * 0.7,
-          desktop: oldBaseFontsize * 0.8,
+          phone: oldBaseFontsize * 0.59,
+          tablet: oldBaseFontsize * 0.75,
+          desktop: oldBaseFontsize * 0.9,
         });
       }
     }));
@@ -59,6 +59,7 @@ export default class RoundStepStyle extends Style {
     arrowButton.margin = `${buttonWidth * 0.05}px`;
 
     return {
+      h3: this.h3,
       RaisedButton: this.RaisedButton,
       mainButton: {
         RaisedButton: mainRaisedButton,
@@ -93,17 +94,37 @@ export default class RoundStepStyle extends Style {
     const mainRaisedButton = new RaisedButtonStyle(this.overwrite({
       get baseFontsize() {
         return this.styleProvider.select({
-          phone: oldBaseFontsize * 0.55,
-          tablet: oldBaseFontsize * 0.7,
-          desktop: oldBaseFontsize * 0.8,
+          phone: oldBaseFontsize * 0.58,
+          tablet: oldBaseFontsize * 0.75,
+          desktop: oldBaseFontsize * 0.9,
         });
       }
     }));
 
     return {
+      TextField: this.TextField,
+      RaisedButton: this.RaisedButton,
+      h3: this.h3,
+      Dialog: {
+        actionsContainerStyle: {
+          textAlign: 'center',
+        },
+        contentStyle: {
+          maxWidth: this.styleProvider.select({
+            phone: this.styleProvider.percent(80),
+            tablet: this.styleProvider.percent(40),
+            desktop: this.styleProvider.percent(30),
+          }),
+          width: this.styleProvider.select({
+            phone: this.styleProvider.percent(80),
+            tablet: this.styleProvider.percent(40),
+            desktop: this.styleProvider.percent(30),
+          }),
+        },
+      },
       mainButton: {
         RaisedButton: mainRaisedButton,
-      }
+      },
     }
   }
 }
