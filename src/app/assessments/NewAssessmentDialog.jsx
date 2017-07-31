@@ -8,6 +8,7 @@ import MUI from 'app/common/MaterialUI';
 import API from 'api';
 
 import Stepper from 'components/Stepper';
+import RaisedButton from 'components/RaisedButton';
 
 import NewAssessmentDialogStyle from 'app/assessments/NewAssessmentDialog.style';
 import BaseStep from 'app/assessments/BaseStep/BaseStep';
@@ -39,22 +40,6 @@ class NewAssessmentDialog extends React.Component {
       finished: false,
       stepIndex: 0,
     };
-  }
-
-
-  handleNext() {
-    const {stepIndex} = this.state;
-    this.state.stepIndex = stepIndex + 1;
-    this.state.finished = stepIndex >= 2;
-    this.setState(this.step);
-  }
-
-  handlePrev() {
-    const {stepIndex} = this.state;
-    if (stepIndex > 0) {
-      this.state.stepIndex = stepIndex - 1;
-      this.setState(this.step);
-    }
   }
 
   componentDidMount() {
@@ -159,7 +144,6 @@ class NewAssessmentDialog extends React.Component {
       round.index = roundIndex;
       this.state.rounds[roundIndex] = round;
     }
-    console.log("faaak", this.state.rounds);
     this.setState(this.state);
   }
 
@@ -172,7 +156,6 @@ class NewAssessmentDialog extends React.Component {
 
   deleteEnd(roundIndex, endIndex) {
     // TODO handle array out of bounds exceptions.
-    console.log('whooo', roundIndex, endIndex)
     this.state.rounds[roundIndex].ends.splice(endIndex, 1);
     this.setState(this.state);
   }
@@ -197,30 +180,87 @@ class NewAssessmentDialog extends React.Component {
     API.assessments.save(this.state, callbacks);
   }
 
+  validateBase() {
+    const missingSeason = typeof this.state.seasonId === 'undefined' ||
+                          this.state.seasonId === null;
+    const missingTarget = typeof this.state.targetId === 'undefined' ||
+                          this.state.targetId === null;
+    try{
+      const distance = parseInt(this.state.distance);
+      return !missingSeason && !missingTarget && distance > 0;
+    } catch(e){
+      return false; // Distance is wrong.
+    }
+  }
+
+  validateRound() {
+    const {stepIndex, rounds} = this.state;
+    if(rounds[stepIndex - 2]){
+      return rounds[stepIndex - 2].ends.length > 0;
+    }
+    return false;
+  }
+
   get stepActions() {
-    const {stepIndex} = this.state;
+    const {stepIndex, rounds} = this.state;
+    const actions = [];
+    if(stepIndex > 0){
+      actions.push(
+        <RaisedButton
+          label={this.props.t('assessment:newAssessment.back')}
+          style={this.style.actionButton}
+          primary={false}
+          onTouchTap={() => {
+            this.state.stepIndex = stepIndex - 1;
+            this.setState(this.state);
+          }} />
+      );
+    }
+    if(stepIndex < (1 + rounds.length)){
+      actions.push(
+        <RaisedButton
+          label={this.props.t('assessment:newAssessment.next')}
+          style={this.style.actionButton}
+          disabled={!this.validateBase()}
+          primary={true}
+          onTouchTap={() => {
+            this.state.stepIndex = stepIndex + 1;
+            this.setState(this.state);
+          }} />
+      );
+    } else {
+      if(stepIndex === (1 + rounds.length)){
+        actions.push(
+          <RaisedButton
+            label={this.props.t('assessment:newAssessment.new')}
+            style={this.style.actionButton}
+            primary={true}
+            disabled={!this.validateRound()}
+            onTouchTap={() => {
+              this.state.stepIndex = stepIndex + 1;
+              this.addRound();
+            }} />
+        );
+      }
+      //On the overview step there is no finish, only upload.
+      if(stepIndex < (1 + rounds.length + 1)){
+        actions.push(
+          <RaisedButton
+            label={this.props.t('assessment:newAssessment.finish')}
+            style={this.style.actionButton}
+            primary={true}
+            disabled={!this.validateRound()}
+            onTouchTap={() => {
+              this.state.stepIndex = stepIndex + 1;
+              this.setState(this.state);
+            }} />
+        );
+      }
+    }
 
     return (
-      <div style={{margin: '12px 0'}}>
-        <MUI.RaisedButton
-          label={stepIndex === 2 ? 'Finish' : 'Next'}
-          style={this.style.RaisedButton}
-          overlayStyle={this.style.RaisedButton.overlayStyle}
-          labelStyle={this.style.RaisedButton.labelStyle}
-          buttonStyle={this.style.RaisedButton.buttonStyle}
-          primary={true}
-          onTouchTap={this.handleNext} />
-        {stepIndex > 0 && (
-          <MUI.RaisedButton
-            label={'Back'}
-            style={this.style.RaisedButton}
-            overlayStyle={this.style.RaisedButton.overlayStyle}
-            labelStyle={this.style.RaisedButton.labelStyle}
-            buttonStyle={this.style.RaisedButton.buttonStyle}
-            primary={false}
-            disabled={stepIndex === 0}
-            onTouchTap={this.handlePrev} />
-        )}
+      <div>
+        {actions}
       </div>
     );
   }

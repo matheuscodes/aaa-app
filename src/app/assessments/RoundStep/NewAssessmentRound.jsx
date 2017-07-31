@@ -104,18 +104,21 @@ const NewAssessmentRound = React.createClass({
             style={this.props.style}
             id={'aaa-newRoundRings'}
             onChange={this.changeRings}
+            type={'number'}
             hintText={t('assessment:newRound.ringsTextField.hint')}
             floatingLabelText={t('assessment:newRound.ringsTextField.label')} />
           <TextField
             style={this.props.style}
             id={'aaa-newRoundArrows'}
             onChange={this.changeArrows}
+            type={'number'}
             hintText={t('assessment:newRound.arrowsTextField.hint')}
             floatingLabelText={t('assessment:newRound.arrowsTextField.label')} />
           <TextField
             style={this.props.style}
             id={'aaa-newRoundEnds'}
             onChange={this.changeEnds}
+            type={'number'}
             hintText={t('assessment:newRound.endsTextField.hint')}
             floatingLabelText={t('assessment:newRound.endsTextField.label')} />
         </MUI.Dialog>

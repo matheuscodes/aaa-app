@@ -13,6 +13,7 @@ function RaisedButton(props) {
       labelStyle={props.style.RaisedButton.labelStyle}
       buttonStyle={props.style.RaisedButton.buttonStyle}
       primary={props.primary}
+      disabled={props.disabled}
       onTouchTap={props.onTouchTap} />
   );
 }

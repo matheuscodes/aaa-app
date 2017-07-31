@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import keycode from 'keycode';
+import EventListener from 'react-event-listener';
 import {autobind} from 'core-decorators';
 
 import MUI from 'app/common/MaterialUI';
@@ -102,6 +104,30 @@ class NewAssessmentEnd extends React.Component {
     this.setState(this.state);
   }
 
+  handleWindowKeyDown(event) {
+    if (this.state.open) {
+      switch(keycode(event)){
+        case 'M':
+        case 'm': return this.pushArrowM();
+        case '1': return this.pushArrow1();
+        case '2': return this.pushArrow2();
+        case '3': return this.pushArrow3();
+        case '4': return this.pushArrow4();
+        case '5': return this.pushArrow5();
+        case '6': return this.pushArrow6();
+        case '7': return this.pushArrow7();
+        case '8': return this.pushArrow8();
+        case '9': return this.pushArrow9();
+        case '0': return this.pushArrow10();
+        case 'X':
+        case 'x': return this.pushArrowX();
+        case 'backspace': return this.undo();
+        case 'enter': return this.handleSubmit();
+        default: return;
+      }
+    }
+  }
+
   render() {
     const t = this.props.t;
     const actions = ['X', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M']
@@ -149,6 +175,9 @@ class NewAssessmentEnd extends React.Component {
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose} >
+          <EventListener
+            target="window"
+            onKeyDown={this.handleWindowKeyDown} />
           <ArrowRingRow
             rows={2}
             style={this.props.style.arrowRow}
