@@ -5,10 +5,8 @@ import MUI from 'app/common/MaterialUI';
 function StepperStep(props, stepData){
   return (
     <MUI.Step>
-      <MUI.StepLabel
-        iconContainerStyle={props.style.stepLabel.iconContainerStyle}
-        style={props.style.stepLabel} >
-        <p style={props.style.stepLabel.p}>{ stepData.title }</p>
+      <MUI.StepLabel >
+        { stepData.title }
       </MUI.StepLabel>
       <MUI.StepContent>
         {stepData.content}
@@ -19,13 +17,13 @@ function StepperStep(props, stepData){
 
 function Stepper(props) {
   return (
-    <div style={props.style.contentDivStyle}>
-      <MUI.Stepper activeStep={props.stepIndex} orientation="vertical">
+    <MUI.Stepper
+      style={props.style.Stepper}
+      activeStep={props.stepIndex} orientation="vertical">
 
-        { props.steps.map(step => StepperStep(props, step)) }
-        
-      </MUI.Stepper>
-    </div>
+      { props.steps.map(step => StepperStep(props, step)) }
+
+    </MUI.Stepper>
   );
 }
 

@@ -8,7 +8,6 @@ import MUI from 'app/common/MaterialUI';
 import API from 'api';
 
 import Stepper from 'components/Stepper';
-import RaisedButton from 'components/RaisedButton';
 
 import NewAssessmentDialogStyle from 'app/assessments/NewAssessmentDialog.style';
 import BaseStep from 'app/assessments/BaseStep/BaseStep';
@@ -206,7 +205,7 @@ class NewAssessmentDialog extends React.Component {
     const actions = [];
     if(stepIndex > 0){
       actions.push(
-        <RaisedButton
+        <MUI.RaisedButton
           label={this.props.t('assessment:newAssessment.back')}
           style={this.style.actionButton}
           primary={false}
@@ -218,7 +217,7 @@ class NewAssessmentDialog extends React.Component {
     }
     if(stepIndex < (1 + rounds.length)){
       actions.push(
-        <RaisedButton
+        <MUI.RaisedButton
           label={this.props.t('assessment:newAssessment.next')}
           style={this.style.actionButton}
           disabled={!this.validateBase()}
@@ -231,7 +230,7 @@ class NewAssessmentDialog extends React.Component {
     } else {
       if(stepIndex === (1 + rounds.length)){
         actions.push(
-          <RaisedButton
+          <MUI.RaisedButton
             label={this.props.t('assessment:newAssessment.new')}
             style={this.style.actionButton}
             primary={true}
@@ -245,7 +244,7 @@ class NewAssessmentDialog extends React.Component {
       //On the overview step there is no finish, only upload.
       if(stepIndex < (1 + rounds.length + 1)){
         actions.push(
-          <RaisedButton
+          <MUI.RaisedButton
             label={this.props.t('assessment:newAssessment.finish')}
             style={this.style.actionButton}
             primary={true}
@@ -341,17 +340,17 @@ class NewAssessmentDialog extends React.Component {
     return (
       <MUI.Dialog
         title={t('assessment:newAssessment.title')}
-        titleStyle={this.style.h3}
         modal={true}
         actions={this.stepActions}
         open={this.state.open}
         onRequestClose={this.handleClose}
         contentStyle={this.style.contentStyle}
+        bodyStyle={this.style.bodyStyle}
         repositionOnUpdate={true}
         autoDetectWindowHeight={true}
         autoScrollBodyContent={true} >
         <Stepper
-          style={this.style.Stepper}
+          style={this.style}
           finished={finished}
           stepIndex={stepIndex}
           steps={steps} />

@@ -1,15 +1,13 @@
 import { Style } from 'global/StyleProvider';
 import MUI from 'app/common/MaterialUI';
 
-import FloatingActionButtonStyle from 'components/FloatingActionButton.style';
-
 export default class AssessmentArrowTableStyle extends Style {
 
   get arrow() {
     return {
       width: this.styleProvider.select({
-        phone: this.styleProvider.percent(9),
-        tablet: this.styleProvider.percent(6),
+        phone: this.styleProvider.percent(8),
+        tablet: this.styleProvider.percent(5.5),
         desktop: this.styleProvider.percent(3),
       }),
     }
@@ -69,33 +67,25 @@ export default class AssessmentArrowTableStyle extends Style {
   }
 
   get deleteButton() {
-    const oldBaseFontsize = this.baseFontsize;
-    const overwrittenButton = JSON.parse(JSON.stringify(
-      new FloatingActionButtonStyle(this.overwrite({
-        get baseFontsize() {
-          return this.styleProvider.select({
-            phone: oldBaseFontsize * 0.8,
-            desktop: oldBaseFontsize * 0.9,
-          });
-        }
-      }))
-    ));
+    const baseFontsize = this.styleProvider.select({
+      phone: this.baseFontsize * 0.8,
+      desktop: this.baseFontsize * 0.9,
+    });
 
     return {
-      FloatingActionButton: overwrittenButton,
+      width: `${baseFontsize * 2}px`,
+      height: `${baseFontsize * 2}px`,
+      verticalAlign: `middle`,
+      minWidth: null,
+      iconStyle: {
+        width: `${baseFontsize * 2}px`,
+        height: `${baseFontsize * 2}px`,
+        minWidth: null,
+      },
       icon:{
-        width: this.styleProvider.select({
-          phone: `${this.baseFontsize * 0.8}px`,
-          desktop: `${this.baseFontsize * 0.9}px`,
-        }),
-        height: this.styleProvider.select({
-          phone: `${this.baseFontsize * 0.8}px`,
-          desktop: `${this.baseFontsize * 0.9}px`,
-        }),
-        padding: this.styleProvider.select({
-          phone: `${this.baseFontsize * 0.8 / 2}px`,
-          desktop: `${this.baseFontsize * 0.9 / 2}px`,
-        }),
+        width: `${baseFontsize}px`,
+        height: `${baseFontsize}px`,
+        padding: `${baseFontsize / 2}px`,
       }
     }
   }

@@ -5,7 +5,6 @@ const i18nextReact = require('global/i18nextReact');
 
 const valueConverter = require('global/ValueConverter');
 
-import RaisedButton from 'components/RaisedButton';
 import TextField from 'components/TextField';
 
 function createRound(rings, arrows, ends){
@@ -77,7 +76,7 @@ const NewAssessmentRound = React.createClass({
     const t = this.props.t;
     return (
       <div style={this.props.style ? this.props.style : null}>
-        <RaisedButton
+        <MUI.RaisedButton
           style={this.props.style.mainButton}
           label={t('assessment:addTotal')}
           onTouchTap={this.handleOpen} />
@@ -87,14 +86,14 @@ const NewAssessmentRound = React.createClass({
           title={t('assessment:newRound.title')}
           titleStyle={this.props.style.h3}
           actions={
-            <RaisedButton
+            <MUI.RaisedButton
               style={this.props.style}
               label={t('assessment:newRound.submit')}
               primary={true}
               keyboardFocused={true}
               onTouchTap={this.handleSubmit} />
           }
-          modal={false}
+          modal={true}
           open={this.state.open}
           onRequestClose={this.handleClose}
           repositionOnUpdate={true}

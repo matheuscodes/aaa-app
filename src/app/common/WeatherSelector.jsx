@@ -15,18 +15,17 @@ module.exports = React.createClass({
     return {weathers: []};
   },
   componentDidMount: function() {
-    var current = this.state;
-    Object.keys(WeatherConditions).forEach(function(weather) {
-      var CurrentIcon = WeatherIcons[WeatherConditions[weather]];
-      current.weathers.push(
+    Object.keys(WeatherConditions).forEach((weather) => {
+      const CurrentIcon = WeatherIcons[WeatherConditions[weather]];
+      this.state.weathers.push(
         {
           id: weather,
           label: (<CurrentIcon height={this.style.labelHeight} />),
           name: (<CurrentIcon height={this.style.listHeight} />),
         }
       );
-    }, this);
-    this.setState(current);
+    });
+    this.setState(this.state);
   },
   render: function() {
     return (
@@ -36,6 +35,8 @@ module.exports = React.createClass({
         value={this.props.value}
         onChange={this.props.onChange}
         items={this.state.weathers}
+        floatingLabelFixed={true}
+        floatingLabelText={" "}
         hintText={this.props.hintText} />
     );
   }

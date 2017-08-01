@@ -11,7 +11,6 @@ import valueConverter from 'global/ValueConverter';
 
 import ArrowRingRow from 'app/assessments/ArrowRingRow';
 
-import RaisedButton from 'components/RaisedButton';
 
 
 @autobind
@@ -133,7 +132,7 @@ class NewAssessmentEnd extends React.Component {
     const actions = ['X', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M']
       .map(function(value) {
         return (
-          <RaisedButton
+          <MUI.RaisedButton
             style={this.props.style.arrowButton}
             labelColor={valueConverter.color[value]}
             id={'aaa-newAssessmentEndArrow_' + value}
@@ -145,15 +144,15 @@ class NewAssessmentEnd extends React.Component {
     actions.push(<br/>);
     actions.push(<br/>);
     actions.push(
-      <RaisedButton
-        style={this.props.style}
+      <MUI.RaisedButton
+        style={this.props.style.actionButton}
         label={t('assessment:undoEnd')}
         primary={false}
         onTouchTap={this.undo} />
     );
     actions.push(
-      <RaisedButton
-        style={this.props.style}
+      <MUI.RaisedButton
+        style={this.props.style.actionButton}
         label={t('assessment:submitEnd')}
         primary={true}
         keyboardFocused={true}
@@ -162,7 +161,7 @@ class NewAssessmentEnd extends React.Component {
 
     return (
       <div style={this.props.style}>
-        <RaisedButton
+        <MUI.RaisedButton
           style={this.props.style.mainButton}
           label={t('assessment:addEnd')}
           onTouchTap={this.handleOpen} />

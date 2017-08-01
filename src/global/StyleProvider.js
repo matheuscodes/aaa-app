@@ -1,10 +1,7 @@
 import MobileDetect from 'mobile-detect';
 import TextFieldStyle from 'components/TextField.style';
 import SelectFieldStyle from 'components/SelectField.style';
-import DatePickerStyle from 'components/DatePicker.style';
 import StepperStyle from 'components/Stepper.style';
-import RaisedButtonStyle from 'components/RaisedButton.style';
-import FloatingActionButtonStyle from 'components/FloatingActionButton.style';
 
 export class StyleProvider {
 
@@ -126,18 +123,6 @@ export class Style {
 
   get Stepper() {
     return StepperStyle(this);
-  }
-
-  get DatePicker() {
-    return DatePickerStyle(this);
-  }
-
-  get RaisedButton(){
-    return RaisedButtonStyle(this);
-  }
-
-  get FloatingActionButton(){
-    return FloatingActionButtonStyle(this);
   }
 
   constructor(styleProvider){

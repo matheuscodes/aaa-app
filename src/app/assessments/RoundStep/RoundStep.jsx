@@ -14,9 +14,8 @@ export default function RoundStep(props){
       <div>
         <MUI.GridList
           cols={2}
-          padding={style.defaultPadding}
           cellHeight={'auto'}
-          style={props.style}>
+          style={style}>
           <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
             <NewAssessmentEnd
               style={style.NewAssessmentEnd}

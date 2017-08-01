@@ -27,6 +27,8 @@ const DirectionSelector = React.createClass({
         style={this.props.style}
         value={this.props.value}
         onChange={this.props.onChange}
+        floatingLabelFixed={true}
+        floatingLabelText={" "}
         items={directions.map((direction) => {
           return {
             id: direction,

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import MUI from 'app/common/MaterialUI';
 
 import TextField from 'components/TextField';
-import DatePicker from 'components/DatePicker';
 import SelectField from 'components/SelectField';
 
 import BaseStepStyle from 'app/assessments/BaseStep/BaseStep.style';
@@ -15,8 +14,7 @@ export default function BaseStep(props){
       <div>
         <MUI.GridList
           cols={4}
-          padding={10}
-          cellHeight={style.cellHeight}
+          cellHeight={'auto'}
           style={style}>
           <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
             <SelectField
@@ -30,8 +28,7 @@ export default function BaseStep(props){
               } />
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
-            <DatePicker
-              style={style}
+            <MUI.DatePicker
               id={'newAssessmentDate'}
               floatingLabelText={
                 props.t('assessment:newAssessment.dateDatepicker.label')

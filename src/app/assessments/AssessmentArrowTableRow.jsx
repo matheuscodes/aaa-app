@@ -7,7 +7,6 @@ import i18nextReact from 'global/i18nextReact';
 
 import valueConverter from 'global/ValueConverter';
 
-import FloatingActionButton from 'components/FloatingActionButton';
 import ArrowRingRow from 'app/assessments/ArrowRingRow';
 
 @autobind
@@ -33,13 +32,14 @@ class AssessmentArrowTableRow extends React.Component {
         <td>
           <div style={this.props.style.total} >{ total }</div>
           { this.props.deleteEnd ?
-            <FloatingActionButton
+            <MUI.FloatingActionButton
               onTouchTap={this.deleteEnd}
               secondary={true}
-              style={this.props.style.deleteButton} >
+              style={this.props.style.deleteButton}
+              iconStyle={this.props.style.deleteButton.iconStyle} >
               <MUI.icons.navigation.cancel
                 style={this.props.style.deleteButton.icon} />
-            </FloatingActionButton> : null }
+            </MUI.FloatingActionButton> : null }
         </td>
       </tr>
     );

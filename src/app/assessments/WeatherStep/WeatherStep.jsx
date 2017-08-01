@@ -10,7 +10,6 @@ import DirectionSelector from 'app/common/DirectionSelector';
 import WeatherSelector from 'app/common/WeatherSelector';
 
 import TextField from 'components/TextField';
-import DatePicker from 'components/DatePicker';
 import SelectField from 'components/SelectField';
 
 import WeatherStepStyle from 'app/assessments/WeatherStep/WeatherStep.style';
@@ -22,12 +21,11 @@ export default function WeatherStep(props){
       <div>
         <MUI.GridList
           cols={6}
-          padding={10}
           cellHeight={'auto'}
-          style={props.style}>
+          style={style}>
           <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
             <Thermometer
-              height={32}
+              width={style.Thermometer.width}
               style={style.Thermometer} />
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={3} >
@@ -53,7 +51,7 @@ export default function WeatherStep(props){
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
             <Windmills
-              height={32}
+              width={style.Windmills.width}
               style={style.Windmills} />
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={3} >
@@ -83,7 +81,7 @@ export default function WeatherStep(props){
 
           <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
             <ArcherAnchored
-              height={32}
+              width={style.ArcherAnchored.width}
               style={style.ArcherAnchored} />
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={3} >

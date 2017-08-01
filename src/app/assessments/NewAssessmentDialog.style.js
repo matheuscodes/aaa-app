@@ -1,7 +1,5 @@
 import { Style } from 'global/StyleProvider';
 
-import RaisedButtonStyle from 'components/RaisedButton.style';
-
 export default class NewAssessmentDialogStyle extends Style {
 
   get contentStyle() {
@@ -19,19 +17,15 @@ export default class NewAssessmentDialogStyle extends Style {
     }
   }
 
-  get actionButton() {
-    const oldBaseFontsize = this.baseFontsize;
+  get bodyStyle(){
+    return { padding: '0px' }
+  }
 
+  get actionButton() {
     return {
-      RaisedButton: new RaisedButtonStyle(this.overwrite({
-        get baseFontsize() {
-          return this.styleProvider.select({
-            phone: oldBaseFontsize * 0.58,
-            tablet: oldBaseFontsize * 0.75,
-            desktop: oldBaseFontsize * 0.85,
-          });
-        }
-      })),
+      margin: '1%',
+      maxWidth: '47%',
+      minWidth: '47%',
     }
   }
 

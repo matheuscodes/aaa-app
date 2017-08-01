@@ -13,8 +13,8 @@ function TextField(props) {
       underlineStyle={props.style.TextField.underlineStyle}
       floatingLabelShrinkStyle={props.style.TextField.floatingLabelShrinkStyle}
       onChange={props.onChange}
-      onFocus={() => setTimeout(() => window.dispatchEvent(new Event('TextFieldFocused')), 1000)}
-      onBlur={() => setTimeout(() => window.dispatchEvent(new Event('TextFieldBlurred')), 500)}
+      onFocus={() => setTimeout(() => window.dispatchEvent(new Event('TextFieldFocused')), 200)}
+      onBlur={() => setTimeout(() => window.dispatchEvent(new Event('TextFieldBlurred')), 100)}
       hintText={props.hintText}
       floatingLabelText={props.floatingLabelText}
       defaultValue={props.defaultValue}

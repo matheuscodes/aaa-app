@@ -1,8 +1,6 @@
 import { Style } from 'global/StyleProvider';
 import valueConverter from 'global/ValueConverter';
 
-import RaisedButtonStyle from 'components/RaisedButton.style';
-
 export default class RoundStepStyle extends Style {
 
   get Thermometer() {
@@ -31,15 +29,6 @@ export default class RoundStepStyle extends Style {
 
   get NewAssessmentEnd() {
     const oldBaseFontsize = this.baseFontsize;
-    const mainRaisedButton = new RaisedButtonStyle(this.overwrite({
-      get baseFontsize() {
-        return this.styleProvider.select({
-          phone: oldBaseFontsize * 0.59,
-          tablet: oldBaseFontsize * 0.75,
-          desktop: oldBaseFontsize * 0.9,
-        });
-      }
-    }));
 
     const arrowWidth = this.styleProvider.select({
       phone: this.styleProvider.percent(9),
@@ -52,20 +41,15 @@ export default class RoundStepStyle extends Style {
       desktop: this.styleProvider.percent(5),
     });
 
-    const arrowButton = new RaisedButtonStyle(this);
-
-    arrowButton.maxWidth = buttonWidth;
-    arrowButton.minWidth = buttonWidth;
-    arrowButton.margin = `${buttonWidth * 0.05}px`;
-
     return {
       h3: this.h3,
-      RaisedButton: this.RaisedButton,
-      mainButton: {
-        RaisedButton: mainRaisedButton,
-      },
       arrowButton: {
-        RaisedButton: arrowButton,
+        maxWidth: buttonWidth,
+        minWidth: buttonWidth,
+        margin: `${buttonWidth * 0.04}px`,
+      },
+      actionButton: {
+        margin: `${buttonWidth * 0.04}px`,
       },
       arrow: {
         width: arrowWidth,
@@ -91,19 +75,9 @@ export default class RoundStepStyle extends Style {
 
   get NewAssessmentRound() {
     const oldBaseFontsize = this.baseFontsize;
-    const mainRaisedButton = new RaisedButtonStyle(this.overwrite({
-      get baseFontsize() {
-        return this.styleProvider.select({
-          phone: oldBaseFontsize * 0.58,
-          tablet: oldBaseFontsize * 0.75,
-          desktop: oldBaseFontsize * 0.9,
-        });
-      }
-    }));
 
     return {
       TextField: this.TextField,
-      RaisedButton: this.RaisedButton,
       h3: this.h3,
       Dialog: {
         actionsContainerStyle: {
@@ -121,9 +95,6 @@ export default class RoundStepStyle extends Style {
             desktop: this.styleProvider.percent(30),
           }),
         },
-      },
-      mainButton: {
-        RaisedButton: mainRaisedButton,
       },
     }
   }
