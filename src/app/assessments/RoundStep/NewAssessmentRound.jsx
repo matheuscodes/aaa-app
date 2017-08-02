@@ -42,14 +42,9 @@ function createRound(rings, arrows, ends) {
 
 @autobind
 class NewAssessmentRound extends React.Component {
-  propTypes: {
-    roundIndex: React.PropTypes.number,
-    addRound: React.PropTypes.func,
-    t: React.PropTypes.func,
-  }
-
-  getInitialState() {
-    return {open: false, rings: 0, arrows: 0, ends: 0};
+  constructor(props) {
+    super(props);
+    this.state = {open: false, rings: 0, arrows: 0, ends: 0};
   }
 
   handleOpen() {
