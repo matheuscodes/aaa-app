@@ -4,44 +4,39 @@ import {autobind} from 'core-decorators';
 
 import MessageablePage from 'components/MessageablePage';
 
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
-const i18nextReact = require('global/i18nextReact');
+import MUI from 'app/common/MaterialUI';
+import API from 'api';
+import i18nextReact from 'global/i18nextReact';
 
-const Waiting = require('app/common/Waiting');
-const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
+import ReactPageSwitcherType from 'global/ReactPageSwitcherType';
 
-const BaseLayout = require('app/common/BaseLayout');
-const AssessmentTile = require('app/assessments/AssessmentTile');
-const NewAssessmentDialog = require('app/assessments/NewAssessmentDialog');
-
-const styles = {
-  gridList: {
-    width: '100%'
-  }
-};
+import BaseLayout from 'app/common/BaseLayout';
+import AssessmentsPageStyle from 'app/assessments/AssessmentsPage.style';
+import AssessmentsGrid from 'app/assessments/AssessmentsGrid';
+import NewAssessmentDialog from 'app/assessments/NewAssessmentDialog';
 
 @autobind
 class AssessmentsPage extends MessageablePage {
 
   constructor(props) {
     super(props)
+    this.style = new AssessmentsPageStyle(this.props.styleProvider);
     this.state = {editAssessment: false, currentPage: 0};
   }
 
   updateAssessmentList() {
     const t = this.props.t;
-    var callbacks = {
+    let callbacks = {
       context: this,
-      success: function(list) {
+      success(list) {
         console.log(list);
-        var current = this.state;
+        let current = this.state;
         current.editAssessment = false;
         delete current.assessmentId;
         current.assessments = list;
         this.setState(current);
       },
-      error: function(error) {
+      error(error) {
         this.showMessage(t('assessment:messages.listError'), "ERROR");
         if(API.isAuthError(error)){
           this.props.switcher.switchTo('loginPage');
@@ -55,12 +50,12 @@ class AssessmentsPage extends MessageablePage {
     const t = this.props.t;
     var callbacks = {
       context: this,
-      success: function(list) {
+      success(list) {
         var current = this.state;
         current.previous = list;
         this.setState(current);
       },
-      error: function(error) {
+      error(error) {
         this.showMessage(t('assessment:messages.listError'), "ERROR");
         if(API.isAuthError(error)){
           this.props.switcher.switchTo('loginPage');
@@ -80,7 +75,7 @@ class AssessmentsPage extends MessageablePage {
     const t = this.props.t;
     var callbacks = {
       context: this,
-      success: function(list) {
+      success(list) {
         var current = this.state;
         if(list.length > 0){
           current.next = list;
@@ -89,7 +84,7 @@ class AssessmentsPage extends MessageablePage {
         }
         this.setState(current);
       },
-      error: function(error) {
+      error(error) {
         this.showMessage(t('assessment:messages.listError'), "ERROR");
         if(API.isAuthError(error)){
           this.props.switcher.switchTo('loginPage');
@@ -165,14 +160,14 @@ class AssessmentsPage extends MessageablePage {
     const t = this.props.t;
     var callbacks = {
       context: this,
-      success: function() {
+      success() {
         this.showMessage(t('assessment:messages.deleted'), "MESSAGE");
         this.updateAssessmentList();
       },
-      warning: function() {
+      warning() {
         this.showMessage(t('assessment:messages.deleted'), "WARNING");
       },
-      error: function() {
+      error() {
         this.showMessage(t('assessment:messages.deletedError'), "ERROR");
       }
     };
@@ -182,56 +177,6 @@ class AssessmentsPage extends MessageablePage {
   render() {
     const t = this.props.t;
 
-    var assessments = '';
-    if (typeof this.state.assessments !== 'undefined') {
-      assessments = this.state.assessments.map(function(assessment, index) {
-        return (
-          <MUI.GridTile
-            key={['aaa-assessment_', assessment.id].join('')}
-            style={MUI.styles.GridTile}
-            cols={2} >
-            <AssessmentTile data={assessment} onDelete={this.deleteAssessment}/>
-          </MUI.GridTile>
-        );
-      }, this);
-    }
-
-    var newAssessmentButton = (
-      <MUI.RaisedButton
-        label={t('assessment:newAssessment.button')}
-        fullWidth={true}
-        primary={true}
-        onTouchTap={this.newAssessment} />
-    );
-
-    var previousButton = '';
-    if(typeof this.state.previous !== 'undefined'){
-      previousButton = (
-        <MUI.RaisedButton
-          label={t('assessment:previousButton')}
-          fullWidth={true}
-          backgroundColor={MUI.colors.blue600}
-          labelColor={MUI.palette.alternateTextColor}
-          disabled={(this.state.previous === null)}
-          onTouchTap={this.moveToPreviousPage}
-          icon={<MUI.icons.navigation.chevron_left />} />
-      );
-    }
-
-    var nextButton = '';
-    if(typeof this.state.next !== 'undefined'){
-      nextButton = (
-        <MUI.RaisedButton
-          label={t('assessment:nextButton')}
-          fullWidth={true}
-          backgroundColor={MUI.colors.blue600}
-          labelColor={MUI.palette.alternateTextColor}
-          labelPosition={'before'}
-          disabled={(this.state.next === null)}
-          onTouchTap={this.moveToNextPage}
-          icon={<MUI.icons.navigation.chevron_right />} />
-      );
-    }
     return (
       <BaseLayout
         switcher={this.props.switcher}
@@ -242,31 +187,62 @@ class AssessmentsPage extends MessageablePage {
         title={t('assessment:appBarTitle')} >
         <MUI.GridList
           cellHeight={'auto'}
-          cols={6}
-          padding={10}
-          style={styles.gridList} >
-          <MUI.GridTile style={MUI.styles.GridTile}
-            cols={6} >
-            {newAssessmentButton}
+          cols={this.style.cols}
+          padding={this.style.defaultPadding}
+          style={this.style.gridList} >
+          <MUI.GridTile
+            style={MUI.styles.GridTile}
+            cols={this.style.cols} >
+            <MUI.RaisedButton
+              label={t('assessment:newAssessment.button')}
+              fullWidth={true}
+              primary={true}
+              onTouchTap={this.newAssessment} />
           </MUI.GridTile>
-          <MUI.GridTile style={MUI.styles.GridTile} cols={6} >
+          <AssessmentsGrid
+            cols={this.style.cols}
+            style={this.style.AssessmentsGrid}
+            assessments={this.state.assessments}
+            deleteAssessment={this.deleteAssessment}/>
+          <MUI.GridTile style={MUI.styles.GridTile} cols={this.style.cols} >
             <MUI.GridList
-              cellHeight={'auto'}
-              cols={6}
-              padding={10}
-              style={styles.gridList} >
-            {(assessments || <MUI.GridTile cols={6} ><Waiting /></MUI.GridTile>)}
-            </MUI.GridList>
-          </MUI.GridTile>
-          <MUI.GridTile style={MUI.styles.GridTile} cols={6} >
-            <MUI.GridList cols={4} padding={10} style={styles.gridList} >
-              <MUI.GridTile style={MUI.styles.GridTile}>
-                {previousButton}
+              cols={this.style.cols}
+              style={this.style.gridList} >
+              <MUI.GridTile
+                cols={this.style.buttonCols}
+                style={MUI.styles.GridTile} >
+                {
+                  typeof this.state.previous !== 'undefined' ?
+                  <MUI.RaisedButton
+                    label={this.style.navigationButton.text ? t('assessment:previousButton') : ' '}
+                    fullWidth={true}
+                    backgroundColor={MUI.colors.blue600}
+                    labelColor={MUI.palette.alternateTextColor}
+                    labelStyle={this.style.navigationButton.labelStyle}
+                    disabled={(this.state.previous === null)}
+                    onTouchTap={this.moveToPreviousPage}
+                    icon={<MUI.icons.navigation.chevron_left />} /> : ''
+                }
               </MUI.GridTile>
-              <MUI.GridTile style={MUI.styles.GridTile} key={1}>{''}</MUI.GridTile>
-              <MUI.GridTile style={MUI.styles.GridTile} key={2}>{''}</MUI.GridTile>
-              <MUI.GridTile style={MUI.styles.GridTile}>
-                {nextButton}
+              <MUI.GridTile
+                cols={this.style.separatorCols}
+                style={MUI.styles.GridTile} >{''}</MUI.GridTile>
+              <MUI.GridTile
+                cols={this.style.buttonCols}
+                style={MUI.styles.GridTile} >
+                {
+                  typeof this.state.next !== 'undefined' ?
+                  <MUI.RaisedButton
+                    label={this.style.navigationButton.text ? t('assessment:nextButton') : ' '}
+                    fullWidth={true}
+                    backgroundColor={MUI.colors.blue600}
+                    labelColor={MUI.palette.alternateTextColor}
+                    labelPosition={'before'}
+                    labelStyle={this.style.navigationButton.labelStyle}
+                    disabled={(this.state.next === null)}
+                    onTouchTap={this.moveToNextPage}
+                    icon={<MUI.icons.navigation.chevron_right />} /> : ''
+                }
               </MUI.GridTile>
             </MUI.GridList>
           </MUI.GridTile>
@@ -274,7 +250,7 @@ class AssessmentsPage extends MessageablePage {
         <NewAssessmentDialog
           open={this.state.editAssessment}
           messenger={this}
-          style={{styleProvider:this.props.styleProvider}}
+          style={this.style}
           onRequestClose={this.closeEdit} />
       </BaseLayout>
     );

@@ -1,49 +1,61 @@
-const React = require('react');
+import React from 'react';
+import PropTypes from 'prop-types';
+import {autobind} from 'core-decorators';
 
-const MUI = require('app/common/MaterialUI');
-const i18nextReact = require('global/i18nextReact');
+import MUI from 'app/common/MaterialUI';
+import i18nextReact from 'global/i18nextReact';
 
-const AssessmentReport = require('app/assessments/AssessmentReport');
+import AssessmentReport from 'app/assessments/AssessmentReport';
 
-const Waiting = require('app/common/Waiting');
-const Notice = require('app/common/Notice');
-const MiniCalendar = require('svg/common/MiniCalendar');
+import Waiting from 'app/common/Waiting';
+import Notice from 'app/common/Notice';
+import MiniCalendar from 'svg/common/MiniCalendar';
 
-const AssessmentTile = React.createClass({
-  propTypes: {
-    // TODO declare a class to validate
-    data: React.PropTypes.object,
-    onClose: React.PropTypes.func,
-    onDelete: React.PropTypes.func,
-    t: React.PropTypes.func
-  },
-  getInitialState: function() {
-    return {open:false};
-  },
-  handleClose: function() {
+@autobind
+class AssessmentTile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {open:false};
+  }
+
+  handleClose() {
     this.setState({open:false});
-  },
-  handleOpen: function() {
-    this.setState({open:true});
-  },
-  render: function() {
-    const t = this.props.t;
+  }
 
-    var message = '';
-    if (typeof this.state.message !== 'undefined') {
-      message = (
-        <Notice message={this.state.message} onClose={this.hideMessage} />
+  handleOpen() {
+    this.setState({open:true});
+  }
+
+  getMore() {
+    if(this.props.allowMore) {
+      return (
+        <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
+          <MUI.RaisedButton
+            label={this.props.t('assessment:detailsButton')}
+            secondary={true}
+            style={{margin: '5pt'}}
+            onTouchTap={this.handleOpen} />
+        </MUI.GridTile>
       );
     }
+  }
 
-    var content = (
-      <AssessmentReport
-        assessmentId={this.props.data.id}
-        data={this.props.data}
-        handleClose={this.handleClose}
-        open={this.state.open}
-        onDelete={this.props.onDelete}/>
-    );
+  render() {
+    const t = this.props.t;
+
+    const content = [
+      <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
+        <p style={{margin: 0}}>
+          {t('assessment:report.totalPoints', this.props.data)} <br/>
+          {t('assessment:report.averagePoints', this.props.data)}
+        </p>
+      </MUI.GridTile>
+    ];
+
+    const more = this.getMore();
+    if(more) {
+      content.push(more);
+    }
 
     return (
       <MUI.Paper zDepth={1}>
@@ -60,29 +72,25 @@ const AssessmentTile = React.createClass({
                 month={this.props.data.date.getMonth()} />
             }/>
           <MUI.CardText>
-            <MUI.GridList cellHeight={'auto'} cols={2} padding={10} >
-              <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
-                <p style={{margin: 0}}>
-                  {t('assessment:report.totalPoints', this.props.data)} <br/>
-                  {t('assessment:report.averagePoints', this.props.data)}
-                </p>
-              </MUI.GridTile>
-              <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
-                <MUI.RaisedButton
-                  label={t('assessment:detailsButton')}
-                  secondary={true}
-                  style={{margin: '5pt'}}
-                  onTouchTap={this.handleOpen} />
-              </MUI.GridTile>
+            <MUI.GridList
+              cellHeight={this.props.style.AssessmentTile.cellHeight}
+              cols={this.props.allowMore ? 2 : 1}
+              padding={10} >
+              {content}
             </MUI.GridList>
-            {content}
+            <AssessmentReport
+              style={this.props.style}
+              assessmentId={this.props.data.id}
+              data={this.props.data}
+              handleClose={this.handleClose}
+              open={this.state.open}
+              onDelete={this.props.onDelete} />
           </MUI.CardText>
         </MUI.Card>
-        {message}
       </MUI.Paper>
     );
   }
-});
+}
 
 module.exports = i18nextReact.setupTranslation(['assessment'],
                                                AssessmentTile);

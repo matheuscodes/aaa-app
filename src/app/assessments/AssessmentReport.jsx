@@ -1,37 +1,36 @@
-const React = require('react');
+import React from 'react';
+import PropTypes from 'prop-types';
+import {autobind} from 'core-decorators';
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
+import i18nextReact from 'global/i18nextReact';
+import MUI from 'app/common/MaterialUI';
+import API from 'api';
 
-const WeatherConditions = require('constants/WeatherConditions');
-const Compass = require('svg/icon/Compass');
-const WeatherIcons = require('svg/icon/Weather');
-const EndDistributionGraph = require('svg/EndDistributionGraph');
-const DistributionComparisonGraph = require('svg/DistributionComparisonGraph');
+import WeatherConditions from 'constants/WeatherConditions';
+import Compass from 'svg/icon/Compass';
+import WeatherIcons from 'svg/icon/Weather';
+import EndDistributionGraph from 'svg/EndDistributionGraph';
+import DistributionComparisonGraph from 'svg/DistributionComparisonGraph';
 
-const AssessmentArrowTable = require('app/assessments/AssessmentArrowTable');
-const Waiting = require('app/common/Waiting');
+import AssessmentArrowTable from 'app/assessments/AssessmentArrowTable';
+import Waiting from 'app/common/Waiting';
 
-const AssessmentReport = React.createClass({
-  propTypes: {
-    // TODO declare a class to validate
-    data: React.PropTypes.object,
-    onDelete: React.PropTypes.func,
-    t: React.PropTypes.func,
-    assessmentId: React.PropTypes.number
-  },
-  getInitialState: function(){
-    return {called:false,assessment:{}};
-  },
-  onDelete: function() {
+@autobind
+class AssessmentReport extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {called:false,assessment:{}};
+  }
+
+  onDelete() {
     this.props.onDelete(this.props.assessmentId);
-  },
-  componentWillReceiveProps: function(nextProps) {
+  }
+
+  componentWillReceiveProps(nextProps) {
     if(nextProps.open === true && !this.state.called){
       var callbacks = {
         context: this,
-        success: function(assessment) {
+        success(assessment) {
           console.log({assessment:assessment,called:false})
           this.setState({assessment:assessment,called:false});
         }
@@ -40,8 +39,9 @@ const AssessmentReport = React.createClass({
       this.state.called = true;
       this.setState(this.state);
     }
-  },
-  render: function() {
+  }
+
+  render() {
     const t = this.props.t;
 
     let rounds = <Waiting />;
@@ -63,13 +63,16 @@ const AssessmentReport = React.createClass({
               maxCount: round.maxCount,
               endCount: round.endCount
             };
+            
             return (
               <MUI.GridTile
                 key={'aaa-assessmentRound_' + roundIndex}
                 style={MUI.styles.GridTile} cols={8} >
                 <MUI.GridList cellHeight={'auto'} cols={2} padding={10} >
                   <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
-                    <AssessmentArrowTable data={round} />
+                    <AssessmentArrowTable
+                      style={this.props.style}
+                      data={round} />
                   </MUI.GridTile>
                   <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
                     <EndDistributionGraph
@@ -190,7 +193,7 @@ const AssessmentReport = React.createClass({
       </MUI.Dialog>
     );
   }
-});
+}
 
 module.exports = i18nextReact.setupTranslation(['assessment'],
                                                AssessmentReport);

@@ -72,8 +72,8 @@ export class StyleProvider {
 
   select({phone, tablet, desktop}) {
     switch(this.device) {
-      case 'phone': return phone ? phone : desktop;
-      case 'tablet': return tablet ? tablet : desktop;
+      case 'phone': return typeof phone !== 'undefined' ? phone : desktop;
+      case 'tablet': return typeof tablet !== 'undefined' ? tablet : desktop;
       case 'desktop': return desktop;
       default: return desktop;
     }
