@@ -17,20 +17,18 @@ import RoundStep from 'app/assessments/RoundStep/RoundStep';
 
 @autobind
 class NewAssessmentDialog extends React.Component {
-  get propTypes() {
-    return {
-      onClose: PropTypes.func,
-      t: PropTypes.func,
-    }
-  }
 
   constructor(props) {
     super(props);
-    const today = new Date();
     this.style = new NewAssessmentDialogStyle(props.style.styleProvider);
+    this.state = this.getInitialState();
+  }
+
+  getInitialState() {
+    const today = new Date();
     today.setHours(18);
-    this.state = {
-      open: props.open,
+    return {
+      open: this.props.open,
       date: today,
       targets: [],
       seasons: [],
@@ -38,7 +36,7 @@ class NewAssessmentDialog extends React.Component {
       rounds: [{ends: [], index: 0}],
       finished: false,
       stepIndex: 0,
-    };
+    }
   }
 
   componentDidMount() {
@@ -160,13 +158,13 @@ class NewAssessmentDialog extends React.Component {
   }
 
   submitAssessment() {
-    const { t, messenger, onClose } = this.props;
+    const { t, messenger, onRequestClose } = this.props;
     var callbacks = {
       context: this,
       success: function() {
         messenger.showMessage(t('assessment:messages.newSaved'), "MESSAGE");
         messenger.setState(this.getInitialState());
-        onClose(true);
+        onRequestClose(true);
       },
       warning: function() {
         messenger.showMessage(t('assessment:messages.newSaved'), "WARNING");
@@ -206,6 +204,7 @@ class NewAssessmentDialog extends React.Component {
     if(stepIndex > 0){
       actions.push(
         <MUI.RaisedButton
+          key={'aaa-newAssessmentDialog-back'}
           label={this.props.t('assessment:newAssessment.back')}
           style={this.style.actionButton}
           primary={false}
@@ -218,6 +217,7 @@ class NewAssessmentDialog extends React.Component {
     if(stepIndex < (1 + rounds.length)){
       actions.push(
         <MUI.RaisedButton
+          key={'aaa-newAssessmentDialog-next'}
           label={this.props.t('assessment:newAssessment.next')}
           style={this.style.actionButton}
           disabled={!this.validateBase()}
@@ -231,6 +231,7 @@ class NewAssessmentDialog extends React.Component {
       if(stepIndex === (1 + rounds.length)){
         actions.push(
           <MUI.RaisedButton
+            key={'aaa-newAssessmentDialog-new'}
             label={this.props.t('assessment:newAssessment.new')}
             style={this.style.actionButton}
             primary={true}
@@ -245,6 +246,7 @@ class NewAssessmentDialog extends React.Component {
       if(stepIndex < (1 + rounds.length + 1)){
         actions.push(
           <MUI.RaisedButton
+            key={'aaa-newAssessmentDialog-finish'}
             label={this.props.t('assessment:newAssessment.finish')}
             style={this.style.actionButton}
             primary={true}
@@ -309,6 +311,28 @@ class NewAssessmentDialog extends React.Component {
     }
   }
 
+  get confirmStep() {
+    return {
+      title: this.props.t('assessment:newAssessment.confirmStep.title'),
+      content: (
+        <div>
+          <MUI.FloatingActionButton
+            mini={true}
+            secondary={true}
+            style={this.style.uploadButton}
+            onTouchTap={this.props.onClose}>
+            <MUI.icons.navigation.cancel />
+          </MUI.FloatingActionButton>
+          <MUI.FloatingActionButton
+            style={this.style.uploadButton}
+            onTouchTap={this.submitAssessment}>
+            <MUI.icons.action.backup />
+          </MUI.FloatingActionButton>
+        </div>
+      ),
+    }
+  }
+
   get roundSteps() {
     return this.state.rounds.map((round, index) => {
       return {
@@ -336,14 +360,15 @@ class NewAssessmentDialog extends React.Component {
     steps.push(this.baseStep);
     steps.push(this.weatherStep);
     this.roundSteps.forEach(round => steps.push(round));
+    steps.push(this.confirmStep);
 
     return (
       <MUI.Dialog
         title={t('assessment:newAssessment.title')}
         modal={true}
         actions={this.stepActions}
-        open={this.state.open}
-        onRequestClose={this.handleClose}
+        open={this.props.open}
+        onRequestClose={this.props.onRequestClose}
         contentStyle={this.style.contentStyle}
         bodyStyle={this.style.bodyStyle}
         repositionOnUpdate={true}

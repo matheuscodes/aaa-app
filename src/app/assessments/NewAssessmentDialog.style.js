@@ -29,4 +29,10 @@ export default class NewAssessmentDialogStyle extends Style {
     }
   }
 
+  get uploadButton() {
+    return {
+      margin: '1%',
+    }
+  }
+
 }

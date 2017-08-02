@@ -1,16 +1,18 @@
-const React = require('react');
+import React from 'react';
+import PropTypes from 'prop-types';
+import {autobind} from 'core-decorators';
+
+import MessageablePage from 'components/MessageablePage';
 
 const MUI = require('app/common/MaterialUI');
 const API = require('api');
 const i18nextReact = require('global/i18nextReact');
 
 const Waiting = require('app/common/Waiting');
-const Notice = require('app/common/Notice');
 const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
 
 const BaseLayout = require('app/common/BaseLayout');
 const AssessmentTile = require('app/assessments/AssessmentTile');
-const NewAssessmentCard = require('app/assessments/NewAssessmentCard');
 const NewAssessmentDialog = require('app/assessments/NewAssessmentDialog');
 
 const styles = {
@@ -19,16 +21,15 @@ const styles = {
   }
 };
 
-const AssessmentsPage = React.createClass({
-  propTypes: {
-    switcher: ReactPageSwitcherType.isRequired,
-    userAgent: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]).isRequired,
-    t: React.PropTypes.func.isRequired
-  },
-  getInitialState: function() {
-    return {editAssessment: false, currentPage: 0};
-  },
-  updateAssessmentList: function() {
+@autobind
+class AssessmentsPage extends MessageablePage {
+
+  constructor(props) {
+    super(props)
+    this.state = {editAssessment: false, currentPage: 0};
+  }
+
+  updateAssessmentList() {
     const t = this.props.t;
     var callbacks = {
       context: this,
@@ -48,8 +49,9 @@ const AssessmentsPage = React.createClass({
       }
     };
     API.assessments.getList(this.state.currentPage,callbacks);
-  },
-  updatePreviousList: function() {
+  }
+
+  updatePreviousList() {
     const t = this.props.t;
     var callbacks = {
       context: this,
@@ -72,8 +74,9 @@ const AssessmentsPage = React.createClass({
       delete current.previous;
       this.setState(current);
     }
-  },
-  updateNextList: function() {
+  }
+
+  updateNextList() {
     const t = this.props.t;
     var callbacks = {
       context: this,
@@ -94,18 +97,22 @@ const AssessmentsPage = React.createClass({
       }
     };
     API.assessments.getList(this.state.currentPage + 1,callbacks);
-  },
-  componentDidMount: function() {
+  }
+
+  componentDidMount() {
     this.updateAll();
-  },
-  updateAll: function() {
+  }
+
+  updateAll() {
     this.updateAssessmentList();
     this.updateRest();
-  },
-  updateRest: function() {
+  }
+
+  updateRest() {
     this.updateNextList();
     this.updatePreviousList();
-  },
+  }
+
   moveToNextPage(){
     var current = this.state;
     current.currentPage += 1;
@@ -114,7 +121,8 @@ const AssessmentsPage = React.createClass({
     current.previous = null;
     this.setState(current);
     this.updateRest();
-  },
+  }
+
   moveToPreviousPage(){
     var current = this.state;
     current.currentPage -= 1;
@@ -127,8 +135,9 @@ const AssessmentsPage = React.createClass({
     }
     this.setState(current);
     this.updateRest();
-  },
-  closeEdit: function(refresh) {
+  }
+
+  closeEdit(refresh) {
     if (refresh) {
       this.updateAll();
     } else {
@@ -137,33 +146,22 @@ const AssessmentsPage = React.createClass({
       delete current.assessmentId;
       this.setState(current);
     }
-  },
-  editAssessment: function(assessmentId) {
+  }
+
+  editAssessment(assessmentId) {
     var current = this.state;
     current.editAssessment = true;
     current.assessmentId = assessmentId;
     this.setState(current);
-  },
-  newAssessment: function() {
+  }
+
+  newAssessment() {
     var current = this.state;
     current.editAssessment = true;
     this.setState(current);
-  },
-  showMessage: function(message, type) {
-    var current = this.state;
-    current.message = {
-      text: message,
-      open: true,
-      type: type
-    };
-    this.setState(current);
-  },
-  hideMessage: function() {
-    var current = this.state;
-    current.message.open = false;
-    this.setState(current);
-  },
-  deleteAssessment: function(assessmentId) {
+  }
+
+  deleteAssessment(assessmentId) {
     const t = this.props.t;
     var callbacks = {
       context: this,
@@ -179,8 +177,9 @@ const AssessmentsPage = React.createClass({
       }
     };
     API.assessments.delete(assessmentId, callbacks);
-  },
-  render: function() {
+  }
+
+  render() {
     const t = this.props.t;
 
     var assessments = '';
@@ -190,18 +189,11 @@ const AssessmentsPage = React.createClass({
           <MUI.GridTile
             key={['aaa-assessment_', assessment.id].join('')}
             style={MUI.styles.GridTile}
-            cols={this.state.editAssessment ? 6 : 2} >
+            cols={2} >
             <AssessmentTile data={assessment} onDelete={this.deleteAssessment}/>
           </MUI.GridTile>
         );
       }, this);
-    }
-
-    var message = '';
-    if (typeof this.state.message !== 'undefined') {
-      message = (
-        <Notice message={this.state.message} onClose={this.hideMessage} />
-      );
     }
 
     var newAssessmentButton = (
@@ -211,13 +203,6 @@ const AssessmentsPage = React.createClass({
         primary={true}
         onTouchTap={this.newAssessment} />
     );
-
-    var editAssessment = '';
-    if (this.state.editAssessment) {
-      editAssessment = (
-        <NewAssessmentCard onClose={this.closeEdit} />
-      );
-    }
 
     var previousButton = '';
     if(typeof this.state.previous !== 'undefined'){
@@ -247,13 +232,13 @@ const AssessmentsPage = React.createClass({
           icon={<MUI.icons.navigation.chevron_right />} />
       );
     }
-
     return (
       <BaseLayout
         switcher={this.props.switcher}
         layoutName="assessmentsPage"
         userAgent={this.props.userAgent}
         styleProvider={this.props.styleProvider}
+        messageSubscriber={this}
         title={t('assessment:appBarTitle')} >
         <MUI.GridList
           cellHeight={'auto'}
@@ -261,10 +246,10 @@ const AssessmentsPage = React.createClass({
           padding={10}
           style={styles.gridList} >
           <MUI.GridTile style={MUI.styles.GridTile}
-            cols={this.state.editAssessment ? 3 : 6} >
-            {(editAssessment || newAssessmentButton)}
+            cols={6} >
+            {newAssessmentButton}
           </MUI.GridTile>
-          <MUI.GridTile style={MUI.styles.GridTile} cols={this.state.editAssessment ? 3 : 6} >
+          <MUI.GridTile style={MUI.styles.GridTile} cols={6} >
             <MUI.GridList
               cellHeight={'auto'}
               cols={6}
@@ -275,26 +260,25 @@ const AssessmentsPage = React.createClass({
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={6} >
             <MUI.GridList cols={4} padding={10} style={styles.gridList} >
-              {this.state.editAssessment ?
-                [<MUI.GridTile style={MUI.styles.GridTile} key={1}>{''}</MUI.GridTile>,
-                <MUI.GridTile style={MUI.styles.GridTile} key={2}>{''}</MUI.GridTile>] : []}
               <MUI.GridTile style={MUI.styles.GridTile}>
                 {previousButton}
               </MUI.GridTile>
-              {this.state.editAssessment === false ?
-                [<MUI.GridTile style={MUI.styles.GridTile} key={1}>{''}</MUI.GridTile>,
-                <MUI.GridTile style={MUI.styles.GridTile} key={2}>{''}</MUI.GridTile>] : []}
+              <MUI.GridTile style={MUI.styles.GridTile} key={1}>{''}</MUI.GridTile>
+              <MUI.GridTile style={MUI.styles.GridTile} key={2}>{''}</MUI.GridTile>
               <MUI.GridTile style={MUI.styles.GridTile}>
                 {nextButton}
               </MUI.GridTile>
             </MUI.GridList>
           </MUI.GridTile>
         </MUI.GridList>
-        {message}
-        <NewAssessmentDialog open={true} style={{styleProvider:this.props.styleProvider}}/>
+        <NewAssessmentDialog
+          open={this.state.editAssessment}
+          messenger={this}
+          style={{styleProvider:this.props.styleProvider}}
+          onRequestClose={this.closeEdit} />
       </BaseLayout>
     );
   }
-});
+}
 
 module.exports = i18nextReact.setupTranslation(['assessment'], AssessmentsPage);

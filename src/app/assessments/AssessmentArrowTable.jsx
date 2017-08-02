@@ -36,6 +36,7 @@ class AssessmentArrowTable extends React.Component {
           {
             this.props.data.ends.map((end, endIndex) => {
               return (<AssessmentArrowTableRow
+                        key={`aaa-AssessmentEnd_${endIndex}`}
                         style={this.style}
                         end={end}
                         endIndex={endIndex}
