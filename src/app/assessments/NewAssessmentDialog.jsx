@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {autobind} from 'core-decorators';
 
-import { setupTranslation } from 'global/i18nextReact';
+import {setupTranslation} from 'global/i18nextReact';
 
 import MUI from 'app/common/MaterialUI';
 import API from 'api';
@@ -17,7 +17,6 @@ import RoundStep from 'app/assessments/RoundStep/RoundStep';
 
 @autobind
 class NewAssessmentDialog extends React.Component {
-
   constructor(props) {
     super(props);
     this.style = new NewAssessmentDialogStyle(props.style.styleProvider);
@@ -36,7 +35,7 @@ class NewAssessmentDialog extends React.Component {
       rounds: [{ends: [], index: 0}],
       finished: false,
       stepIndex: 0,
-    }
+    };
   }
 
   componentDidMount() {
@@ -51,10 +50,10 @@ class NewAssessmentDialog extends React.Component {
           success: function(seasons) {
             current.seasons = seasons;
             this.setState(current);
-          }
+          },
         };
         API.seasons.getList(callbacks);
-      }
+      },
     };
     API.assessments.getTargets(callbacks);
   }
@@ -97,7 +96,7 @@ class NewAssessmentDialog extends React.Component {
         delete current.eventId;
         current.events = events;
         this.setState(current);
-      }
+      },
     };
     const season = this.state.seasons[index];
     API.events.getList(callbacks, season.start, season.end);
@@ -134,8 +133,8 @@ class NewAssessmentDialog extends React.Component {
     this.setState(current);
   }
 
-  addRound(roundIndex,round) {
-    if(typeof roundIndex === 'undefined' || typeof round === 'undefined'){
+  addRound(roundIndex, round) {
+    if (typeof roundIndex === 'undefined' || typeof round === 'undefined') {
       this.state.rounds.push({ends: [], index: this.state.rounds.length});
     } else {
       round.index = roundIndex;
@@ -145,7 +144,7 @@ class NewAssessmentDialog extends React.Component {
   }
 
   addEnd(roundIndex, end) {
-    var current = this.state;
+    let current = this.state;
     // TODO handle array out of bounds exceptions.
     current.rounds[roundIndex].ends.push(end);
     this.setState(current);
@@ -158,20 +157,20 @@ class NewAssessmentDialog extends React.Component {
   }
 
   submitAssessment() {
-    const { t, messenger, onRequestClose } = this.props;
-    var callbacks = {
+    const {t, messenger, onRequestClose} = this.props;
+    let callbacks = {
       context: this,
       success: function() {
-        messenger.showMessage(t('assessment:messages.newSaved'), "MESSAGE");
+        messenger.showMessage(t('assessment:messages.newSaved'), 'MESSAGE');
         messenger.setState(this.getInitialState());
         onRequestClose(true);
       },
       warning: function() {
-        messenger.showMessage(t('assessment:messages.newSaved'), "WARNING");
+        messenger.showMessage(t('assessment:messages.newSaved'), 'WARNING');
       },
       error: function() {
-        messenger.showMessage(t('assessment:messages.newError'), "ERROR");
-      }
+        messenger.showMessage(t('assessment:messages.newError'), 'ERROR');
+      },
     };
     // FIXME separate assessment from state.
     API.assessments.save(this.state, callbacks);
@@ -182,17 +181,17 @@ class NewAssessmentDialog extends React.Component {
                           this.state.seasonId === null;
     const missingTarget = typeof this.state.targetId === 'undefined' ||
                           this.state.targetId === null;
-    try{
+    try {
       const distance = parseInt(this.state.distance);
       return !missingSeason && !missingTarget && distance > 0;
-    } catch(e){
+    } catch (e) {
       return false; // Distance is wrong.
     }
   }
 
   validateRound() {
     const {stepIndex, rounds} = this.state;
-    if(rounds[stepIndex - 2]){
+    if (rounds[stepIndex - 2]) {
       return rounds[stepIndex - 2].ends.length > 0;
     }
     return false;
@@ -201,7 +200,7 @@ class NewAssessmentDialog extends React.Component {
   get stepActions() {
     const {stepIndex, rounds} = this.state;
     const actions = [];
-    if(stepIndex > 0){
+    if (stepIndex > 0) {
       actions.push(
         <MUI.RaisedButton
           key={'aaa-newAssessmentDialog-back'}
@@ -214,7 +213,7 @@ class NewAssessmentDialog extends React.Component {
           }} />
       );
     }
-    if(stepIndex < (1 + rounds.length)){
+    if (stepIndex < (1 + rounds.length)) {
       actions.push(
         <MUI.RaisedButton
           key={'aaa-newAssessmentDialog-next'}
@@ -228,7 +227,7 @@ class NewAssessmentDialog extends React.Component {
           }} />
       );
     } else {
-      if(stepIndex === (1 + rounds.length)){
+      if (stepIndex === (1 + rounds.length)) {
         actions.push(
           <MUI.RaisedButton
             key={'aaa-newAssessmentDialog-new'}
@@ -242,8 +241,8 @@ class NewAssessmentDialog extends React.Component {
             }} />
         );
       }
-      //On the overview step there is no finish, only upload.
-      if(stepIndex < (1 + rounds.length + 1)){
+      // On the overview step there is no finish, only upload.
+      if (stepIndex < (1 + rounds.length + 1)) {
         actions.push(
           <MUI.RaisedButton
             key={'aaa-newAssessmentDialog-finish'}
@@ -287,7 +286,7 @@ class NewAssessmentDialog extends React.Component {
           changeDistance={this.changeDistance}
           changeDate={this.changeDate} />
       ),
-    }
+    };
   }
 
   get weatherStep() {
@@ -308,7 +307,7 @@ class NewAssessmentDialog extends React.Component {
           shootDirection={this.state.shootDirection}
           changeShootDirection={this.changeShootDirection} />
       ),
-    }
+    };
   }
 
   get confirmStep() {
@@ -320,7 +319,7 @@ class NewAssessmentDialog extends React.Component {
             mini={true}
             secondary={true}
             style={this.style.uploadButton}
-            onTouchTap={this.props.onClose}>
+            onTouchTap={this.props.onRequestClose}>
             <MUI.icons.navigation.cancel />
           </MUI.FloatingActionButton>
           <MUI.FloatingActionButton
@@ -330,13 +329,13 @@ class NewAssessmentDialog extends React.Component {
           </MUI.FloatingActionButton>
         </div>
       ),
-    }
+    };
   }
 
   get roundSteps() {
     return this.state.rounds.map((round, index) => {
       return {
-        title: this.props.t('assessment:newAssessment.roundStep.title',round),
+        title: this.props.t('assessment:newAssessment.roundStep.title', round),
         content: (
           <RoundStep
             t={this.props.t}
@@ -347,19 +346,19 @@ class NewAssessmentDialog extends React.Component {
             index={index}
             round={round} />
         ),
-      }
+      };
     });
   }
 
   render() {
-    const { t } = this.props;
-    const { finished, stepIndex } = this.state;
+    const {t} = this.props;
+    const {finished, stepIndex} = this.state;
 
     const steps = [];
 
     steps.push(this.baseStep);
     steps.push(this.weatherStep);
-    this.roundSteps.forEach(round => steps.push(round));
+    this.roundSteps.forEach((round) => steps.push(round));
     steps.push(this.confirmStep);
 
     return (
@@ -383,5 +382,13 @@ class NewAssessmentDialog extends React.Component {
     );
   }
 }
+
+NewAssessmentDialog.propTypes = {
+  t: PropTypes.func.isRequired,
+  style: PropTypes.object,
+  open: PropTypes.boolean,
+  messenger: PropTypes.object,
+  onRequestClose: PropTypes.func,
+};
 
 module.exports = setupTranslation(['assessment'], NewAssessmentDialog);

@@ -7,27 +7,25 @@ import i18nextReact from 'global/i18nextReact';
 
 import AssessmentReport from 'app/assessments/AssessmentReport';
 
-import Waiting from 'app/common/Waiting';
-import Notice from 'app/common/Notice';
 import MiniCalendar from 'svg/common/MiniCalendar';
 
 @autobind
 class AssessmentTile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {open:false};
+    this.state = {open: false};
   }
 
   handleClose() {
-    this.setState({open:false});
+    this.setState({open: false});
   }
 
   handleOpen() {
-    this.setState({open:true});
+    this.setState({open: true});
   }
 
   getMore() {
-    if(this.props.allowMore) {
+    if (this.props.allowMore) {
       return (
         <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
           <MUI.RaisedButton
@@ -44,16 +42,16 @@ class AssessmentTile extends React.Component {
     const t = this.props.t;
 
     const content = [
-      <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
+      <MUI.GridTile style={MUI.styles.GridTile} cols={1} key={0}>
         <p style={{margin: 0}}>
           {t('assessment:report.totalPoints', this.props.data)} <br/>
           {t('assessment:report.averagePoints', this.props.data)}
         </p>
-      </MUI.GridTile>
+      </MUI.GridTile>,
     ];
 
     const more = this.getMore();
-    if(more) {
+    if (more) {
       content.push(more);
     }
 
@@ -91,6 +89,14 @@ class AssessmentTile extends React.Component {
     );
   }
 }
+
+AssessmentTile.propTypes = {
+  style: PropTypes.object,
+  data: PropTypes.object,
+  allowMore: PropTypes.boolean,
+  onDelete: PropTypes.func,
+  t: PropTypes.func,
+};
 
 module.exports = i18nextReact.setupTranslation(['assessment'],
                                                AssessmentTile);

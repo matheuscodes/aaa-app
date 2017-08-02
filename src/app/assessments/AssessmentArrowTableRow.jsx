@@ -16,10 +16,8 @@ class AssessmentArrowTableRow extends React.Component {
   }
 
   render() {
-    const t = this.props.t;
-
     let total = 0;
-    this.props.end.forEach(arrow => total += valueConverter.integer[arrow]);
+    this.props.end.forEach((arrow) => total += valueConverter.integer[arrow]);
 
     return (
       <tr>
@@ -44,6 +42,14 @@ class AssessmentArrowTableRow extends React.Component {
       </tr>
     );
   }
+};
+
+AssessmentArrowTableRow.propTypes = {
+  style: PropTypes.object,
+  end: PropTypes.object,
+  deleteEnd: PropTypes.func,
+  roundIndex: PropTypes.number,
+  endIndex: PropTypes.number,
 };
 
 module.exports = i18nextReact.setupTranslation(['assessment'],

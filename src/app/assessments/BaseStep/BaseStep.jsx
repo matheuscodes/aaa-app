@@ -7,7 +7,7 @@ import SelectField from 'components/SelectField';
 
 import BaseStepStyle from 'app/assessments/BaseStep/BaseStep.style';
 
-export default function BaseStep(props){
+export default function BaseStep(props) {
   const style = new BaseStepStyle(props.style.styleProvider);
 
   return (
@@ -41,7 +41,9 @@ export default function BaseStep(props){
             <TextField
               style={style}
               id={'newAssessmentDistance'}
-              hintText={props.t('assessment:newAssessment.distanceTextField.hint')}
+              hintText={
+                props.t('assessment:newAssessment.distanceTextField.hint')
+              }
               floatingLabelText={
                 props.t('assessment:newAssessment.distanceTextField.label')
               }
@@ -79,4 +81,17 @@ export default function BaseStep(props){
 BaseStep.propTypes = {
   t: PropTypes.func.isRequired,
   style: PropTypes.object,
-}
+  events: PropTypes.array,
+  targets: PropTypes.array,
+  seasons: PropTypes.array,
+  distance: PropTypes.number,
+  date: PropTypes.object,
+  eventId: PropTypes.number,
+  targetId: PropTypes.number,
+  seasonId: PropTypes.number,
+  changeSeason: PropTypes.func,
+  changeTarget: PropTypes.func,
+  changeEvent: PropTypes.func,
+  changeDistance: PropTypes.func,
+  changeDate: PropTypes.func,
+};

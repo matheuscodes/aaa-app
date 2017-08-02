@@ -9,7 +9,7 @@
     "build-production": "env-cmd production npm run build",
     "clean": "rm -rf node_modules && rm -rf build",
     "compile": "babel src -d build",
-    "eslint": "eslint --fix src --ext .jsx,.svg",
+    "eslint": "eslint --ext .jsx,.svg --fix ",
     "fetch-languages": "rm -rf node_modules/aaa-languages && cp -R ../aaa-languages node_modules/",
     "serve": "npm run bundle && babel-node src/server.js",
     "serve-development": "env-cmd development npm run serve",

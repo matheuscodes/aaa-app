@@ -12,7 +12,6 @@ import valueConverter from 'global/ValueConverter';
 import ArrowRingRow from 'app/assessments/ArrowRingRow';
 
 
-
 @autobind
 class NewAssessmentEnd extends React.Component {
   constructor(props) {
@@ -105,7 +104,7 @@ class NewAssessmentEnd extends React.Component {
 
   handleWindowKeyDown(event) {
     if (this.state.open) {
-      switch(keycode(event)){
+      switch (keycode(event)) {
         case 'M':
         case 'm': return this.pushArrowM();
         case '1': return this.pushArrow1();
@@ -129,18 +128,20 @@ class NewAssessmentEnd extends React.Component {
 
   render() {
     const t = this.props.t;
-    const actions = ['X', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M']
-      .map(function(value) {
-        return (
-          <MUI.RaisedButton
-            style={this.props.style.arrowButton}
-            labelColor={valueConverter.color[value]}
-            id={'aaa-newAssessmentEndArrow_' + value}
-            backgroundColor={valueConverter.backgroundColor[value]}
-            label={value}
-            onTouchTap={this[['pushArrow',value].join('')]} />
-        );
-      }, this);
+    const actions = [
+      'X', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M',
+    ].map(function(value) {
+      return (
+        <MUI.RaisedButton
+          key={value}
+          style={this.props.style.arrowButton}
+          labelColor={valueConverter.color[value]}
+          id={'aaa-newAssessmentEndArrow_' + value}
+          backgroundColor={valueConverter.backgroundColor[value]}
+          label={value}
+          onTouchTap={this[['pushArrow', value].join('')]} />
+      );
+    }, this);
     actions.push(<br/>);
     actions.push(<br/>);
     actions.push(
@@ -187,6 +188,14 @@ class NewAssessmentEnd extends React.Component {
     );
   }
 }
+
+NewAssessmentEnd.propTypes = {
+  t: PropTypes.func.isRequired,
+  style: PropTypes.object,
+  roundIndex: PropTypes.number,
+  addEnd: PropTypes.func,
+};
+
 
 module.exports = i18nextReact.setupTranslation(['assessment'],
                                                NewAssessmentEnd);

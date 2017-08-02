@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {autobind} from 'core-decorators';
 
 import MessageablePage from 'components/MessageablePage';
@@ -8,8 +7,6 @@ import MUI from 'app/common/MaterialUI';
 import API from 'api';
 import i18nextReact from 'global/i18nextReact';
 
-import ReactPageSwitcherType from 'global/ReactPageSwitcherType';
-
 import BaseLayout from 'app/common/BaseLayout';
 import AssessmentsPageStyle from 'app/assessments/AssessmentsPage.style';
 import AssessmentsGrid from 'app/assessments/AssessmentsGrid';
@@ -17,9 +14,8 @@ import NewAssessmentDialog from 'app/assessments/NewAssessmentDialog';
 
 @autobind
 class AssessmentsPage extends MessageablePage {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.style = new AssessmentsPageStyle(this.props.styleProvider);
     this.state = {editAssessment: false, currentPage: 0};
   }
@@ -37,35 +33,35 @@ class AssessmentsPage extends MessageablePage {
         this.setState(current);
       },
       error(error) {
-        this.showMessage(t('assessment:messages.listError'), "ERROR");
-        if(API.isAuthError(error)){
+        this.showMessage(t('assessment:messages.listError'), 'ERROR');
+        if (API.isAuthError(error)) {
           this.props.switcher.switchTo('loginPage');
         }
-      }
+      },
     };
-    API.assessments.getList(this.state.currentPage,callbacks);
+    API.assessments.getList(this.state.currentPage, callbacks);
   }
 
   updatePreviousList() {
     const t = this.props.t;
-    var callbacks = {
+    let callbacks = {
       context: this,
       success(list) {
-        var current = this.state;
+        let current = this.state;
         current.previous = list;
         this.setState(current);
       },
       error(error) {
-        this.showMessage(t('assessment:messages.listError'), "ERROR");
-        if(API.isAuthError(error)){
+        this.showMessage(t('assessment:messages.listError'), 'ERROR');
+        if (API.isAuthError(error)) {
           this.props.switcher.switchTo('loginPage');
         }
-      }
+      },
     };
-    if(this.state.currentPage > 0){
-      API.assessments.getList(this.state.currentPage - 1,callbacks);
+    if (this.state.currentPage > 0) {
+      API.assessments.getList(this.state.currentPage - 1, callbacks);
     } else {
-      var current = this.state;
+      let current = this.state;
       delete current.previous;
       this.setState(current);
     }
@@ -73,11 +69,11 @@ class AssessmentsPage extends MessageablePage {
 
   updateNextList() {
     const t = this.props.t;
-    var callbacks = {
+    let callbacks = {
       context: this,
       success(list) {
-        var current = this.state;
-        if(list.length > 0){
+        let current = this.state;
+        if (list.length > 0) {
           current.next = list;
         } else {
           delete current.next;
@@ -85,13 +81,13 @@ class AssessmentsPage extends MessageablePage {
         this.setState(current);
       },
       error(error) {
-        this.showMessage(t('assessment:messages.listError'), "ERROR");
-        if(API.isAuthError(error)){
+        this.showMessage(t('assessment:messages.listError'), 'ERROR');
+        if (API.isAuthError(error)) {
           this.props.switcher.switchTo('loginPage');
         }
-      }
+      },
     };
-    API.assessments.getList(this.state.currentPage + 1,callbacks);
+    API.assessments.getList(this.state.currentPage + 1, callbacks);
   }
 
   componentDidMount() {
@@ -108,8 +104,8 @@ class AssessmentsPage extends MessageablePage {
     this.updatePreviousList();
   }
 
-  moveToNextPage(){
-    var current = this.state;
+  moveToNextPage() {
+    let current = this.state;
     current.currentPage += 1;
     current.assessments = current.next;
     current.next = null;
@@ -118,13 +114,13 @@ class AssessmentsPage extends MessageablePage {
     this.updateRest();
   }
 
-  moveToPreviousPage(){
-    var current = this.state;
+  moveToPreviousPage() {
+    let current = this.state;
     current.currentPage -= 1;
     current.assessments = current.previous;
     current.next = null;
-    if(current.currentPage > 0){
-      current.previous = null
+    if (current.currentPage > 0) {
+      current.previous = null;
     } else {
       delete current.previous;
     }
@@ -136,7 +132,7 @@ class AssessmentsPage extends MessageablePage {
     if (refresh) {
       this.updateAll();
     } else {
-      var current = this.state;
+      let current = this.state;
       current.editAssessment = false;
       delete current.assessmentId;
       this.setState(current);
@@ -144,32 +140,32 @@ class AssessmentsPage extends MessageablePage {
   }
 
   editAssessment(assessmentId) {
-    var current = this.state;
+    let current = this.state;
     current.editAssessment = true;
     current.assessmentId = assessmentId;
     this.setState(current);
   }
 
   newAssessment() {
-    var current = this.state;
+    let current = this.state;
     current.editAssessment = true;
     this.setState(current);
   }
 
   deleteAssessment(assessmentId) {
     const t = this.props.t;
-    var callbacks = {
+    let callbacks = {
       context: this,
       success() {
-        this.showMessage(t('assessment:messages.deleted'), "MESSAGE");
+        this.showMessage(t('assessment:messages.deleted'), 'MESSAGE');
         this.updateAssessmentList();
       },
       warning() {
-        this.showMessage(t('assessment:messages.deleted'), "WARNING");
+        this.showMessage(t('assessment:messages.deleted'), 'WARNING');
       },
       error() {
-        this.showMessage(t('assessment:messages.deletedError'), "ERROR");
-      }
+        this.showMessage(t('assessment:messages.deletedError'), 'ERROR');
+      },
     };
     API.assessments.delete(assessmentId, callbacks);
   }
@@ -214,7 +210,10 @@ class AssessmentsPage extends MessageablePage {
                 {
                   typeof this.state.previous !== 'undefined' ?
                   <MUI.RaisedButton
-                    label={this.style.navigationButton.text ? t('assessment:previousButton') : ' '}
+                    label={
+                      this.style.navigationButton.text ?
+                        t('assessment:previousButton') : ' '
+                    }
                     fullWidth={true}
                     backgroundColor={MUI.colors.blue600}
                     labelColor={MUI.palette.alternateTextColor}
@@ -233,7 +232,10 @@ class AssessmentsPage extends MessageablePage {
                 {
                   typeof this.state.next !== 'undefined' ?
                   <MUI.RaisedButton
-                    label={this.style.navigationButton.text ? t('assessment:nextButton') : ' '}
+                    label={
+                      this.style.navigationButton.text ?
+                        t('assessment:nextButton') : ' '
+                    }
                     fullWidth={true}
                     backgroundColor={MUI.colors.blue600}
                     labelColor={MUI.palette.alternateTextColor}

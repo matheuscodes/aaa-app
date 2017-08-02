@@ -2,17 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {autobind} from 'core-decorators';
 
-import MUI from 'app/common/MaterialUI';
 import i18nextReact from 'global/i18nextReact';
-
-import valueConverter from 'global/ValueConverter';
 
 import AssessmentArrowTableStyle from 'app/assessments/AssessmentArrowTable.style';
 import AssessmentArrowTableRow from 'app/assessments/AssessmentArrowTableRow';
 
 @autobind
 class AssessmentArrowTable extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.style = new AssessmentArrowTableStyle(props.style.styleProvider);
   }
@@ -72,6 +69,13 @@ class AssessmentArrowTable extends React.Component {
       </table>
     );
   }
+};
+
+AssessmentArrowTable.propTypes = {
+  style: PropTypes.object,
+  data: PropTypes.object,
+  deleteEnd: PropTypes.func,
+  t: PropTypes.func,
 };
 
 module.exports = i18nextReact.setupTranslation(['assessment'],

@@ -20,7 +20,7 @@ function SelectField(props) {
       {
         props.items.map(function(item, index) {
           let primaryText = item.name;
-          if(typeof primaryText === 'string'){
+          if (typeof primaryText === 'string') {
             primaryText = (
               <p style={props.style.SelectField.p}>
                 {primaryText}
@@ -44,7 +44,19 @@ function SelectField(props) {
 }
 
 SelectField.propTypes = {
+  items: PropTypes.array,
+  style: PropTypes.object,
+  hintText: MUI.SelectField.propTypes.hintText,
+  floatingLabelFixed: MUI.SelectField.propTypes.floatingLabelFixed,
+  floatingLabelText: MUI.SelectField.propTypes.floatingLabelText,
+  disabled: MUI.SelectField.propTypes.disabled,
+  value: MUI.SelectField.propTypes.value,
   onChange: MUI.SelectField.propTypes.onChange,
+  multiple: MUI.SelectField.propTypes.multiple,
+  maxHeight: MUI.SelectField.propTypes.maxHeight,
+  selectionRenderer: MUI.SelectField.propTypes.selectionRenderer,
+  autoWidth: MUI.SelectField.propTypes.autoWidth,
+  id: MUI.SelectField.propTypes.id,
 };
 
 export default SelectField;

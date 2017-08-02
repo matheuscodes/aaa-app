@@ -21,3 +21,10 @@ export default function ArrowRingRow(props) {
     </div>
   );
 }
+
+ArrowRingRow.propTypes = {
+  style: PropTypes.object,
+  arrowSize: PropTypes.number,
+  rows: PropTypes.number,
+  arrows: PropTypes.array,
+};

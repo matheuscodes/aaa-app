@@ -19,7 +19,7 @@ import Waiting from 'app/common/Waiting';
 class AssessmentReport extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {called:false,assessment:{}};
+    this.state = {called: false, assessment: {}};
   }
 
   onDelete() {
@@ -27,17 +27,18 @@ class AssessmentReport extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.open === true && !this.state.called){
-      var callbacks = {
+    if (nextProps.open === true && !this.state.called) {
+      let callbacks = {
         context: this,
         success(assessment) {
-          console.log({assessment:assessment,called:false})
-          this.setState({assessment:assessment,called:false});
-        }
+          console.log({assessment: assessment, called: false});
+          this.setState({assessment: assessment, called: false});
+        },
       };
       API.assessments.reportById(this.props.assessmentId, callbacks);
-      this.state.called = true;
-      this.setState(this.state);
+      this.setState(Object.assign(this.state, {
+        called: true,
+      }));
     }
   }
 
@@ -46,24 +47,24 @@ class AssessmentReport extends React.Component {
 
     let rounds = <Waiting />;
     if (typeof this.state.assessment.rounds !== 'undefined') {
-      if(this.state.assessment.rounds.length > 0){
+      if (this.state.assessment.rounds.length > 0) {
         rounds = this.state.assessment.rounds.map(
           function(round, roundIndex) {
             round.index = roundIndex;
-            var summary = {
+            let summary = {
               values: {
-                averageScore: round.averageScores
+                averageScore: round.averageScores,
               },
               counts: {
                 xs: round.xCount,
-                tens: round.tenCount
+                tens: round.tenCount,
               },
               minAverage: round.minAverage,
               maxAverage: round.maxAverage,
               maxCount: round.maxCount,
-              endCount: round.endCount
+              endCount: round.endCount,
             };
-            
+
             return (
               <MUI.GridTile
                 key={'aaa-assessmentRound_' + roundIndex}
@@ -96,29 +97,33 @@ class AssessmentReport extends React.Component {
     }
 
     let comparison = <MUI.GridTile cols={8} ><Waiting /></MUI.GridTile>;
-    if(typeof this.state.assessment.ringComparison !== 'undefined'){
+    if (typeof this.state.assessment.ringComparison !== 'undefined') {
       comparison = (
         <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
-          <DistributionComparisonGraph data={this.state.assessment.ringComparison} />
+          <DistributionComparisonGraph
+            data={this.state.assessment.ringComparison} />
         </MUI.GridTile>
       );
     }
 
-    const CurrentWeather = WeatherIcons[WeatherConditions[this.state.assessment.weather]];
+    const CurrentWeather =
+          WeatherIcons[WeatherConditions[this.state.assessment.weather]];
 
     return (
       <MUI.Dialog
-          title={ this.state.assessment.event ? this.state.assessment.event.name :
-                  t('assessment:report.title', this.props.data)}
+          title={ this.state.assessment.event ?
+                    this.state.assessment.event.name :
+                    t('assessment:report.title', this.props.data)}
           modal={false}
           actions={[
             <MUI.FloatingActionButton
+              key={0}
               mini={true}
               secondary={true}
               style={{margin: '5pt'}}
               onTouchTap={this.onDelete}>
               <MUI.icons.action.delete />
-            </MUI.FloatingActionButton>
+            </MUI.FloatingActionButton>,
           ]}
           autoScrollBodyContent={true}
           open={this.props.open}
@@ -130,7 +135,10 @@ class AssessmentReport extends React.Component {
               {t('assessment:report.overviewTitle', this.props.data)}
             </h4>
             <p>
-              {this.state.assessment.targetName ? this.state.assessment.targetName : ''}
+              {
+                this.state.assessment.targetName ?
+                  this.state.assessment.targetName : ''
+              }
             </p>
             <p>
               {t('assessment:report.totalPoints', this.props.data)} <br/>
@@ -139,10 +147,10 @@ class AssessmentReport extends React.Component {
             {
               this.state.assessment.weather ?
               [
-                <h4>
+                <h4 key={0}>
                   {t('assessment:report.weatherTitle', this.props.data)}
                 </h4>,
-                <table style={{width: '100%'}}>
+                <table style={{width: '100%'}} key={1}>
                   <tbody>
                     <tr>
                       <td width={'1%'} rowSpan={2}>
@@ -150,35 +158,54 @@ class AssessmentReport extends React.Component {
                            height={'48pt'} style={{padding: '5pt'}} />
                       </td>
                       { this.state.assessment.windSpeed ?
-                        [<td width={'1%'} style={{textAlign: 'right',color:MUI.palette.accent3Color}}>
+                        [<td width={'1%'}
+                             key={0}
+                             style={{
+                               textAlign: 'right',
+                               color: MUI.palette.accent3Color,
+                             }}>
                           <p>
                             {t('assessment:report.windLabel')}
                           </p>
                         </td>,
-                        <td width={'1%'}>
-                          <Compass direction={this.state.assessment.windDirection} height={'24pt'} />
+                        <td width={'1%'}
+                            key={1}>
+                          <Compass
+                            direction={this.state.assessment.windDirection}
+                            height={'24pt'} />
                         </td>,
-                        <td width={'99%'} style={{color:MUI.palette.accent3Color}}>
+                        <td width={'99%'}
+                            key={2}
+                            style={{color: MUI.palette.accent3Color}}>
                           <p>
                             {this.state.assessment.windSpeed}
-                            {t('assessment:report.windSpeedInfo', this.state.assessment)}
+                            {t('assessment:report.windSpeedInfo',
+                               this.state.assessment)}
                           </p>
                         </td>] : [] }
                     </tr>
                     <tr>
                       { this.state.assessment.shootDirection ?
-                        [<td width={'1%'} style={{textAlign: 'right',color:MUI.palette.accent3Color}}>
+                        [<td width={'1%'}
+                             key={0}
+                             style={{
+                               textAlign: 'right',
+                               color: MUI.palette.accent3Color,
+                             }}>
                           <p>
                             {t('assessment:report.targetLabel')}
                           </p>
                         </td>,
-                        <td width={'1%'}>
-                          <Compass direction={this.state.assessment.shootDirection} height={'24pt'} />
+                        <td width={'1%'}
+                            key={1}>
+                          <Compass
+                            direction={this.state.assessment.shootDirection}
+                            height={'24pt'} />
                         </td>]
                          : [] }
                     </tr>
                   </tbody>
-                </table>
+                </table>,
               ] : []
             }
           </MUI.GridTile>
@@ -194,6 +221,17 @@ class AssessmentReport extends React.Component {
     );
   }
 }
+
+AssessmentReport.propTypes = {
+  style: PropTypes.object,
+  data: PropTypes.object,
+  open: PropTypes.boolean,
+  onDelete: PropTypes.func,
+  handleClose: PropTypes.func,
+  assessmentId: PropTypes.number,
+  endIndex: PropTypes.number,
+  t: PropTypes.func,
+};
 
 module.exports = i18nextReact.setupTranslation(['assessment'],
                                                AssessmentReport);

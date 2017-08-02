@@ -10,11 +10,10 @@ import DirectionSelector from 'app/common/DirectionSelector';
 import WeatherSelector from 'app/common/WeatherSelector';
 
 import TextField from 'components/TextField';
-import SelectField from 'components/SelectField';
 
 import WeatherStepStyle from 'app/assessments/WeatherStep/WeatherStep.style';
 
-export default function WeatherStep(props){
+export default function WeatherStep(props) {
   const style = new WeatherStepStyle(props.style.styleProvider);
 
   return (
@@ -47,7 +46,9 @@ export default function WeatherStep(props){
               style={style}
               value={props.weather}
               onChange={props.changeWeather}
-              hintText={props.t('assessment:newAssessment.weatherSelector.hint')} />
+              hintText={
+                props.t('assessment:newAssessment.weatherSelector.hint')
+              } />
           </MUI.GridTile>
           <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
             <Windmills
@@ -102,4 +103,14 @@ export default function WeatherStep(props){
 WeatherStep.propTypes = {
   t: PropTypes.func.isRequired,
   style: PropTypes.object,
-}
+  temperature: PropTypes.number,
+  changeTemperature: PropTypes.func,
+  weather: PropTypes.string,
+  changeWeather: PropTypes.func,
+  windSpeed: PropTypes.number,
+  changeWindSpeed: PropTypes.func,
+  windDirection: PropTypes.string,
+  changeWindDirection: PropTypes.func,
+  shootDirection: PropTypes.string,
+  changeShootDirection: PropTypes.func,
+};

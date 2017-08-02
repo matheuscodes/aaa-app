@@ -7,7 +7,7 @@ import NewAssessmentRound from 'app/assessments/RoundStep/NewAssessmentRound';
 import AssessmentArrowTable from 'app/assessments/AssessmentArrowTable';
 import RoundStepStyle from 'app/assessments/RoundStep/RoundStep.style';
 
-export default function RoundStep(props){
+export default function RoundStep(props) {
   const style = new RoundStepStyle(props.style.styleProvider);
 
   return (
@@ -42,4 +42,9 @@ export default function RoundStep(props){
 RoundStep.propTypes = {
   t: PropTypes.func.isRequired,
   style: PropTypes.object,
-}
+  index: PropTypes.number,
+  round: PropTypes.object,
+  addRound: PropTypes.func,
+  addEnd: PropTypes.func,
+  deleteEnd: PropTypes.func,
+};

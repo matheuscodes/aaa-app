@@ -34,3 +34,10 @@ export default function AssessmentsGrid(props) {
     </MUI.GridList>
   );
 }
+
+AssessmentsGrid.propTypes = {
+  style: PropTypes.object,
+  cols: PropTypes.number,
+  assessments: PropTypes.object,
+  deleteAssessment: PropTypes.func,
+};
