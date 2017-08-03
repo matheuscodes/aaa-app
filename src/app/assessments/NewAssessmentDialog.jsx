@@ -364,7 +364,7 @@ class NewAssessmentDialog extends React.Component {
     });
   }
 
-  closeDialog(refresh){
+  closeDialog(refresh) {
     this.state = this.getInitialState();
     this.state.open = false;
     this.props.onRequestClose(refresh);
