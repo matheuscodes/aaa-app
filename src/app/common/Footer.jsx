@@ -15,27 +15,35 @@ class FooterStyle extends Style {
   get languageIcon() {
     return {
       float:'right',
-      lineHeight: `${1.2 * this.baseLineHeight}px`,
-      width: `${1.2 * this.baseLineHeight}px`,
-      height: `${1.2 * this.baseLineHeight}px`,
+      width: `35px`,
+      height: `35px`,
       fill: '#FFF',
-      margin: `${0.8 * this.defaultPadding}px 0 0 0`
+      margin: `20px 0 0 0`
     }
   }
 
-  get copyrightString() {
+  get copyright() {
     return {
-      lineHeight: `${1.5 * this.baseLineHeight}px`,
-      color: MUI.palette.accent3Color,
-      fontSize: `${0.8 * this.baseFontsize}px`,
-      margin: `${0.5 * this.defaultPadding}px`,
+      div: {
+        width:'100%',
+        float:'left'
+      },
+      span: {
+        lineHeight: `${1.5 * this.baseLineHeight}px`,
+        color: MUI.palette.accent3Color,
+        fontSize: `${0.8 * this.baseFontsize}px`,
+        margin: `${0.5 * this.defaultPadding}px`,
+      },
     }
   }
 
   get footer() {
     return {
       width: '100%',
-      height: `${3 * this.baseLineHeight + 2 * 0.5 * this.defaultPadding}px`,
+      height: this.styleProvider.select({
+        phone: '200px',
+        desktop: '100px',
+      }),
       backgroundColor: MUI.palette.darkAccent3Color,
     }
   }
@@ -44,40 +52,53 @@ class FooterStyle extends Style {
     return {
       labelStyle:{
         color: MUI.palette.alternateTextColor,
-        fontSize: `${this.baseFontsize}px`,
-        lineHeight: `${this.baseLineHeight}px`,
-        height: `${this.baseLineHeight}px`,
       },
-      style: {
-        float: 'right',
-        margin: `${0.8 * this.defaultPadding}px 0 0 0`,
-        fontSize: `${this.baseFontsize}px`,
-        lineHeight: `${this.baseLineHeight}px`,
-        height: `${this.baseLineHeight}px`,
-      },
-      menuItemStyle: {
-        fontSize: `${this.baseFontsize}px`,
-        lineHeight: `${this.baseLineHeight}px`,
-        height: `${this.baseLineHeight}px`,
-      },
-      iconStyle: {
-        fontSize: `${this.baseFontsize}px`,
-        lineHeight: `${this.baseLineHeight}px`,
-        height: `${this.baseLineHeight}px`,
-        width: `${this.baseLineHeight}px`,
-        right: `${this.baseLineHeight}px`,
-        top: 0,
-        padding: 0,
-      },
+      float: 'right',
     }
   }
 
   get FlatButton(){
     return {
-      margin: `${0.25  * this.defaultPadding}px`,
-      height: `${1.1 * this.baseLineHeight}px`,
-      lineHeight: `${1.1 * this.baseLineHeight}px`,
-      fontSize: `${0.75 * this.baseFontsize}px`,
+      margin: `10px`,
+      maxWidth: this.styleProvider.select({
+        phone: '100%',
+        desktop: 'calc(50% - 20px)',
+      }),
+      minWidth: this.styleProvider.select({
+        phone: '100%',
+      }),
+      labelStyle: {
+        fontSize: '12px',
+        padding: '6px',
+      },
+    }
+  }
+
+  get divLanguages(){
+    return {
+      float: 'left',
+      maxWidth: this.styleProvider.select({
+        phone: '50%',
+        desktop: '30%',
+      }),
+      minWidth: this.styleProvider.select({
+        phone: '50%',
+        desktop: '30%',
+      }),
+    }
+  }
+
+  get divButtons(){
+    return {
+      float: 'left',
+      maxWidth: this.styleProvider.select({
+        phone: '50%',
+        desktop: '70%',
+      }),
+      minWidth: this.styleProvider.select({
+        phone: '50%',
+        desktop: '70%',
+      }),
     }
   }
 }
@@ -120,33 +141,33 @@ var Footer = React.createClass({
     var t = this.props.t;
     return (
       <footer style={this.style.footer}>
-        <div>
+        <div style={this.style.divButtons}>
           <MUI.FlatButton
             style={this.style.FlatButton}
-            labelStyle={this.style.FlatButton}
+            labelStyle={this.style.FlatButton.labelStyle}
             label={t('common:footlinks.about')}
             primary={true}
             onTouchTap={this.openAbout} />
           <MUI.FlatButton
             style={this.style.FlatButton}
-            labelStyle={this.style.FlatButton}
+            labelStyle={this.style.FlatButton.labelStyle}
             label={t('common:footlinks.impressum')}
             primary={true}
             onTouchTap={this.openTerms} />
+        </div>
+        <div style={this.style.divLanguages}>
           <MUI.DropDownMenu
-            style={this.style.DropDownMenu.style}
+            style={this.style.DropDownMenu}
             labelStyle={this.style.DropDownMenu.labelStyle}
-            menuItemStyle={this.style.DropDownMenu.menuItemStyle}
-            iconStyle={this.style.DropDownMenu.iconStyle}
             onChange={this.changeLanguage}
             value={this.state.language} >
             {languageNodes}
           </MUI.DropDownMenu>
           <LanguageIcon style={this.style.languageIcon} />
         </div>
-        <div>
-          <span style={this.style.copyrightString}>
-            Matheus Borges Teixeira &copy; 2016
+        <div style={this.style.copyright.div}>
+          <span style={this.style.copyright.span}>
+            Matheus Borges Teixeira &copy; 2016 - Version 1.5.0
           </span>
         </div>
       </footer>

@@ -80,14 +80,12 @@ class LoginCard extends React.Component {
   render() {
     const t = this.props.t;
 
-    let subtitle = '';
-    if (typeof this.state.imageData !== 'undefined') {
-      subtitle = t('login:photoSubtitle', this.state.imageData);
-    }
+    const subtitle = this.state.imageData ?
+                     t('login:photoSubtitle', this.state.imageData) : '';
 
     let title = '';
     if (typeof this.state.imageData !== 'undefined' &&
-       typeof this.state.imageData.title !== 'undefined') {
+        typeof this.state.imageData.title !== 'undefined') {
       title = (<a
         style={{color: 'inherit', textDecoration: 'none'}}
         href={this.state.imageData.source}>
@@ -95,12 +93,9 @@ class LoginCard extends React.Component {
       </a>);
     }
 
-    let background = '';
-    if (typeof this.state.image !== 'undefined') {
-      background = ['url("img/',
-                    this.state.image,
-                    '.jpg") center / cover'].join('');
-    }
+    const background = this.state.image ?
+                        `url("img/${this.state.image}.jpg") center / cover` :
+                        '';
 
     return (
       <MUI.Card>
@@ -116,10 +111,10 @@ class LoginCard extends React.Component {
         </MUI.CardMedia>
         <MUI.CardText>
           <MUI.GridList
-            cellHeight={this.style.TextField.height}
+            cellHeight={'auto'}
             cols={1}
             padding={this.style.defaultPadding} >
-            <MUI.GridTile cols={1} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
               <TextField
                 style={this.style}
                 id={'aaa-loginEmail'}
@@ -127,7 +122,7 @@ class LoginCard extends React.Component {
                 hintText={t('login:emailTextField.hint')}
                 floatingLabelText={t('login:emailTextField.label')} />
             </MUI.GridTile>
-            <MUI.GridTile cols={1} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
               <TextField
                 style={this.style}
                 id={'aaa-loginPassword'}
