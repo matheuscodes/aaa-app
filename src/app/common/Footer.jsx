@@ -167,7 +167,7 @@ var Footer = React.createClass({
         </div>
         <div style={this.style.copyright.div}>
           <span style={this.style.copyright.span}>
-            Matheus Borges Teixeira &copy; 2016 - Version 1.5.0
+            Matheus Borges Teixeira &copy; 2016 - Version 1.3.0
           </span>
         </div>
       </footer>
