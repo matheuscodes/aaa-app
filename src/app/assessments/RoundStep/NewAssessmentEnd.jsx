@@ -147,7 +147,7 @@ class NewAssessmentEnd extends React.Component {
     actions.push(
       <MUI.RaisedButton
         style={this.props.style.actionButton}
-        label={t('assessment:undoEnd')}
+        label={t('assessment:newAssessment.roundStep.undoEnd')}
         primary={false}
         onTouchTap={this.undo} />
     );

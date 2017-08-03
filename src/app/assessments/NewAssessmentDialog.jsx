@@ -4,6 +4,8 @@ import {autobind} from 'core-decorators';
 
 import {setupTranslation} from 'global/i18nextReact';
 
+import Round from 'model/Round';
+
 import MUI from 'app/common/MaterialUI';
 import API from 'api';
 
@@ -32,7 +34,7 @@ class NewAssessmentDialog extends React.Component {
       targets: [],
       seasons: [],
       events: [],
-      rounds: [{ends: [], index: 0}],
+      rounds: [new Round({ends: [], index: 0})],
       finished: false,
       stepIndex: 0,
     };
@@ -135,7 +137,9 @@ class NewAssessmentDialog extends React.Component {
 
   addRound(roundIndex, round) {
     if (typeof roundIndex === 'undefined' || typeof round === 'undefined') {
-      this.state.rounds.push({ends: [], index: this.state.rounds.length});
+      this.state.rounds.push(new Round(
+        {ends: [], index: this.state.rounds.length}
+      ));
     } else {
       round.index = roundIndex;
       this.state.rounds[roundIndex] = round;

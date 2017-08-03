@@ -7,7 +7,6 @@ import AssessmentTile from 'app/assessments/AssessmentTile';
 
 export default function AssessmentsGrid(props) {
   const style = (props.style || {});
-  console.log(style);
   return (
     <MUI.GridList
       cellHeight={style.cellHeight}

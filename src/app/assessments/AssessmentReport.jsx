@@ -31,7 +31,6 @@ class AssessmentReport extends React.Component {
       let callbacks = {
         context: this,
         success(assessment) {
-          console.log({assessment: assessment, called: false});
           this.setState({assessment: assessment, called: false});
         },
       };
