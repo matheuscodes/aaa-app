@@ -78,6 +78,7 @@ module.exports = {
 
     function errorCall(request){
       let error = new Error(request.responseText.toString());
+      console.log(error);
       callbacks.error.call(callbacks.context, error);
     }
 

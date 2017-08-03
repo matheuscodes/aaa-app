@@ -1,91 +1,91 @@
-const React = require('react');
+import React from 'react';
+import PropTypes from 'prop-types';
+import {autobind} from 'core-decorators';
 
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
-const i18nextReact = require('global/i18nextReact');
+import MUI from 'app/common/MaterialUI';
 
-const downloadFile = require('api/helpers/DownloadFile');
+import API from 'api';
+import downloadFile from 'api/helpers/DownloadFile';
+import getLocalArcher from 'api/helpers/getLocalArcher';
 
-const Notice = require('app/common/Notice');
-const PageSwitcher = require('app/common/PageSwitcher');
-const getLocalArcher = require('api/helpers/getLocalArcher');
+import {setupTranslation} from 'global/i18nextReact';
+import pageSwitcherType from 'global/ReactPageSwitcherType';
+import LoginCardStyle from 'app/login/LoginCard.style';
+import TextField from 'components/TextField';
 
-const LoginCard = React.createClass({
-  propTypes: {
-    switcher: React.PropTypes.instanceOf(PageSwitcher),
-    t: React.PropTypes.func
-  },
-  getInitialState: function() {
-    return {login: {}};
-  },
-  componentDidMount: function() {
+@autobind
+class LoginCard extends React.Component {
+  static get propTypes() {
+    return {
+      switcher: pageSwitcherType,
+      styleProvider: PropTypes.object,
+      messenger: PropTypes.object,
+      t: PropTypes.func,
+    };
+  }
+
+  constructor(props) {
+    super(props);
+    this.style = new LoginCardStyle(this.props.styleProvider);
+    this.state = {login: {}};
+  }
+
+  componentDidMount() {
     const selected = Math.floor(Math.random() * 17);
-    var callbacks = {
+    let callbacks = {
       context: this,
       200: function(request) {
-        var current = this.state;
+        let current = this.state;
         current.image = selected;
         current.imageData = JSON.parse(request.responseText);
         this.setState(current);
       },
       failure: function(request) {
         // TODO handle me
-        console.log("ERROR DOWNLOADING IMAGE INFO", request);
-      }
+        console.log('ERROR DOWNLOADING IMAGE INFO', request);
+      },
     };
-    if(typeof getLocalArcher() === 'undefined'){
+    if (typeof getLocalArcher() === 'undefined') {
       downloadFile('img/' + selected + '.json', callbacks);
     } else {
       this.props.switcher.switchTo('homePage');
     }
-  },
-  doLogin: function() {
-    const t = this.props.t;
-    var callbacks = {
+  }
+
+  doLogin() {
+    const {t, messenger, switcher} = this.props;
+    let callbacks = {
       context: this,
       success: function(request) {
-        this.showMessage(t('login:messages.login'), 'MESSAGE');
-        this.props.switcher.switchTo('homePage');
+        messenger.showMessage(t('login:messages.login'), 'MESSAGE');
+        switcher.switchTo('homePage');
       },
       error: function(request) {
-        this.showMessage(t('login:messages.loginError'), 'ERROR');
-      }
+        messenger.showMessage(t('login:messages.loginError'), 'ERROR');
+      },
     };
     API.login(this.state.login, callbacks);
-  },
-  showMessage: function(message, type) {
-    var current = this.state;
-    current.message = {
-      text: message,
-      open: true,
-      type: type
-    };
-    this.setState(current);
-  },
-  hideMessage: function() {
-    var current = this.state;
-    current.message.open = false;
-    this.setState(current);
-  },
-  changeEmail: function(event) {
-    var current = this.state;
+  }
+
+  changeEmail(event) {
+    let current = this.state;
     current.login.email = event.target.value;
-  },
-  changePassword: function(event) {
-    var current = this.state;
+  }
+
+  changePassword(event) {
+    let current = this.state;
     current.login.password = event.target.value;
-  },
-  render: function() {
+  }
+
+  render() {
     const t = this.props.t;
 
-    var subtitle = '';
-    if (typeof this.state.imageData !== 'undefined') {
-      subtitle = t('login:photoSubtitle', this.state.imageData);
-    }
+    const subtitle = this.state.imageData ?
+                     t('login:photoSubtitle', this.state.imageData) : '';
 
-    var title = '';
+    let title = '';
     if (typeof this.state.imageData !== 'undefined' &&
-       typeof this.state.imageData.title !== 'undefined') {
+        typeof this.state.imageData.title !== 'undefined') {
       title = (<a
         style={{color: 'inherit', textDecoration: 'none'}}
         href={this.state.imageData.source}>
@@ -93,69 +93,64 @@ const LoginCard = React.createClass({
       </a>);
     }
 
-    var background = '';
-    if (typeof this.state.image !== 'undefined') {
-      background = ['url("img/',
-                    this.state.image,
-                    '.jpg") center / cover'].join('');
-    }
-
-    var message = '';
-    if (typeof this.state.message !== 'undefined') {
-      message = (
-        <Notice message={this.state.message} onClose={this.hideMessage} />
-      );
-    }
+    const background = this.state.image ?
+                        `url("img/${this.state.image}.jpg") center / cover` :
+                        '';
 
     return (
       <MUI.Card>
         <MUI.CardMedia
           overlay={
             <MUI.CardTitle
-              style={{height:36}}
-              titleStyle={{fontSize:'12pt'}}
-              subtitleStyle={{fontSize:'8pt'}}
+              style={this.style.CardTitle}
+              titleStyle={this.style.CardTitle.titleStyle}
+              subtitleStyle={this.style.CardTitle.subtitleStyle}
               title={title}
               subtitle={subtitle} /> } >
-          <div style={{height: 192, width: '100%', background}} />
+          <div style={this.style.archeryImage(background)} />
         </MUI.CardMedia>
         <MUI.CardText>
-          <MUI.GridList cellHeight={72} cols={1} padding={5} >
-            <MUI.GridTile cols={1} >
-              <MUI.TextField
-                style={{width: '100%'}}
+          <MUI.GridList
+            cellHeight={'auto'}
+            cols={1}
+            padding={this.style.defaultPadding} >
+            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
+              <TextField
+                style={this.style}
                 id={'aaa-loginEmail'}
                 onChange={this.changeEmail}
                 hintText={t('login:emailTextField.hint')}
                 floatingLabelText={t('login:emailTextField.label')} />
             </MUI.GridTile>
-            <MUI.GridTile cols={1} >
-              <MUI.TextField
-                style={{width: '100%'}}
+            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
+              <TextField
+                style={this.style}
                 id={'aaa-loginPassword'}
                 onChange={this.changePassword}
-                type='password'
+                type={'password'}
                 hintText={t('login:passwordTextField.hint')}
                 floatingLabelText={t('login:passwordTextField.label')} />
             </MUI.GridTile>
           </MUI.GridList>
         </MUI.CardText>
         <MUI.CardActions>
-          <div style={{padding:'10 0'}}>
+          <div style={this.style.loginButtonContainer}>
             <MUI.RaisedButton
-              style={{width: '100%'}}
+              style={this.style.loginButton}
+              buttonStyle={this.style.loginButton}
+              labelStyle={this.style.loginButton}
               label={t('login:loginButton.label')}
               labelPosition="before"
               primary={true}
               type={'submit'}
               onTouchTap={this.doLogin}
-              icon={<MUI.icons.navigation.chevron_right />} />
+              icon={<MUI.icons.navigation.chevron_right
+                      style={this.style.loginIcon } />} />
           </div>
         </MUI.CardActions>
-        {message}
       </MUI.Card>
     );
   }
-});
+}
 
-module.exports = i18nextReact.setupTranslation(['login'], LoginCard);
+module.exports = setupTranslation(['login'], LoginCard);

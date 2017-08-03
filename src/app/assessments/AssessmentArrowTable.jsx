@@ -1,62 +1,66 @@
-const React = require('react');
+import React from 'react';
+import PropTypes from 'prop-types';
+import {autobind} from 'core-decorators';
 
-const MUI = require('app/common/MaterialUI');
-const i18nextReact = require('global/i18nextReact');
+import i18nextReact from 'global/i18nextReact';
 
-const valueConverter = require('global/ValueConverter');
+import AssessmentArrowTableStyle from 'app/assessments/AssessmentArrowTable.style';
+import AssessmentArrowTableRow from 'app/assessments/AssessmentArrowTableRow';
 
-const AssessmentArrowTableRow = require('app/assessments/AssessmentArrowTableRow');
+@autobind
+class AssessmentArrowTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.style = new AssessmentArrowTableStyle(props.style.styleProvider);
+  }
 
-const styles = {
-  arrowSize: 30
-};
-
-const AssessmentArrowTable = React.createClass({
-  propTypes: {
-    // TODO declare a class to validate
-    data: React.PropTypes.object,
-    deleteEnd: React.PropTypes.func,
-    t: React.PropTypes.func
-  },
-  render: function() {
+  render() {
     const t = this.props.t;
 
-    var rows = this.props.data.ends.map(function(end, endIndex) {
-      return (<AssessmentArrowTableRow
-                end={end}
-                endIndex={endIndex}
-                deleteEnd={this.props.deleteEnd}
-                roundIndex={this.props.data.index} />);
-    }, this);
-
     return (
-      <table style={{width: '100%'}}>
+      <table style={this.style.table}>
         <thead>
           <tr>
-            <th style={{color:MUI.palette.accent3Color}}>
+            <th style={this.style.ringsHeader}>
               {t('assessment:rings')}
             </th>
-            <th style={{color:MUI.palette.accent3Color}}>
+            <th style={this.style.totalHeader}>
               {t('assessment:total')}
             </th>
           </tr>
         </thead>
         <tbody>
-          {rows}
+          {
+            this.props.data.ends.map((end, endIndex) => {
+              return (<AssessmentArrowTableRow
+                        key={`aaa-AssessmentEnd_${endIndex}`}
+                        style={this.style}
+                        end={end}
+                        endIndex={endIndex}
+                        roundIndex={this.props.data.index}
+                        deleteEnd={this.props.deleteEnd} />);
+            })
+          }
           {this.props.data.totalScore ? <tr>
-            <th style={{textAlign: 'right',color:MUI.palette.accent3Color}}>
+            <th style={this.style.bottomSummary}>
               {t('assessment:totalPoints')}
             </th>
             <th>{this.props.data.totalScore}</th>
           </tr> : null}
-          {this.props.data.totalScore ? <tr>
-            <th style={{textAlign: 'right',color:MUI.palette.accent3Color}}>
+          {this.props.data.nines ? <tr>
+            <th style={this.style.bottomSummary}>
+              {t('assessment:totalNines')}
+            </th>
+            <th>{this.props.data.nines}</th>
+          </tr> : null}
+          {this.props.data.tens ? <tr>
+            <th style={this.style.bottomSummary}>
               {t('assessment:totalTens')}
             </th>
             <th>{this.props.data.tens}</th>
           </tr> : null}
-          {this.props.data.totalScore ? <tr>
-            <th style={{textAlign: 'right',color:MUI.palette.accent3Color}}>
+          {this.props.data.xs ? <tr>
+            <th style={this.style.bottomSummary}>
               {t('assessment:totalXs')}
             </th>
             <th>{this.props.data.xs}</th>
@@ -65,7 +69,14 @@ const AssessmentArrowTable = React.createClass({
       </table>
     );
   }
-});
+};
+
+AssessmentArrowTable.propTypes = {
+  style: PropTypes.object,
+  data: PropTypes.object,
+  deleteEnd: PropTypes.func,
+  t: PropTypes.func,
+};
 
 module.exports = i18nextReact.setupTranslation(['assessment'],
                                                AssessmentArrowTable);

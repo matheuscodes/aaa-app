@@ -9,30 +9,100 @@ const languages = require('constants/Languages');
 
 const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
 
-/* Styles used in the footer*/
-var footerStyle = {
-  width: '100%',
-  backgroundColor: MUI.palette.darkAccent3Color
-};
+import { Style } from 'global/StyleProvider';
 
-var copyrightStyle = {
-  lineHeight: '48pt',
-  color: MUI.palette.accent3Color,
-  fontSize: '80%',
-  padding: '4pt'
-};
+class FooterStyle extends Style {
+  get languageIcon() {
+    return {
+      float:'right',
+      width: `35px`,
+      height: `35px`,
+      fill: '#FFF',
+      margin: `20px 0 0 0`
+    }
+  }
 
-var linkListStyle = {
-};
+  get copyright() {
+    return {
+      div: {
+        width:'100%',
+        float:'left'
+      },
+      span: {
+        lineHeight: `${1.5 * this.baseLineHeight}px`,
+        color: MUI.palette.accent3Color,
+        fontSize: `${0.8 * this.baseFontsize}px`,
+        margin: `${0.5 * this.defaultPadding}px`,
+      },
+    }
+  }
 
-var iconStyle = {
-  float:'right',
-  lineHeight: 48,
-  width: 24,
-  height: 24,
-  fill: '#FFF',
-  margin: '20 0 0 0'
-};
+  get footer() {
+    return {
+      width: '100%',
+      height: this.styleProvider.select({
+        phone: '200px',
+        desktop: '100px',
+      }),
+      backgroundColor: MUI.palette.darkAccent3Color,
+    }
+  }
+
+  get DropDownMenu() {
+    return {
+      labelStyle:{
+        color: MUI.palette.alternateTextColor,
+      },
+      float: 'right',
+    }
+  }
+
+  get FlatButton(){
+    return {
+      margin: `10px`,
+      maxWidth: this.styleProvider.select({
+        phone: '100%',
+        desktop: 'calc(50% - 20px)',
+      }),
+      minWidth: this.styleProvider.select({
+        phone: '100%',
+      }),
+      labelStyle: {
+        fontSize: '12px',
+        padding: '6px',
+      },
+    }
+  }
+
+  get divLanguages(){
+    return {
+      float: 'left',
+      maxWidth: this.styleProvider.select({
+        phone: '50%',
+        desktop: '30%',
+      }),
+      minWidth: this.styleProvider.select({
+        phone: '50%',
+        desktop: '30%',
+      }),
+    }
+  }
+
+  get divButtons(){
+    return {
+      float: 'left',
+      maxWidth: this.styleProvider.select({
+        phone: '50%',
+        desktop: '70%',
+      }),
+      minWidth: this.styleProvider.select({
+        phone: '50%',
+        desktop: '70%',
+      }),
+    }
+  }
+}
+
 
 /**
  * Footer with language selection.
@@ -54,6 +124,7 @@ var Footer = React.createClass({
     t: React.PropTypes.func
   },
   getInitialState: function(){
+    this.style = new FooterStyle(this.props.styleProvider);
     return {language:this.props.i18n.language}
   },
   changeLanguage: function(event, index, value){
@@ -69,26 +140,36 @@ var Footer = React.createClass({
   render: function() {
     var t = this.props.t;
     return (
-      <footer style={footerStyle}>
-          <span style={copyrightStyle}>
-            Matheus Borges Teixeira &copy; 2016
-          </span>
+      <footer style={this.style.footer}>
+        <div style={this.style.divButtons}>
           <MUI.FlatButton
+            style={this.style.FlatButton}
+            labelStyle={this.style.FlatButton.labelStyle}
             label={t('common:footlinks.about')}
             primary={true}
             onTouchTap={this.openAbout} />
           <MUI.FlatButton
+            style={this.style.FlatButton}
+            labelStyle={this.style.FlatButton.labelStyle}
             label={t('common:footlinks.impressum')}
             primary={true}
             onTouchTap={this.openTerms} />
-        <MUI.DropDownMenu
-          labelStyle={{color: MUI.palette.alternateTextColor}}
-          style={{float: 'right'}}
-          onChange={this.changeLanguage}
-          value={this.state.language} >
-          {languageNodes}
-        </MUI.DropDownMenu>
-        <LanguageIcon style={iconStyle} />
+        </div>
+        <div style={this.style.divLanguages}>
+          <MUI.DropDownMenu
+            style={this.style.DropDownMenu}
+            labelStyle={this.style.DropDownMenu.labelStyle}
+            onChange={this.changeLanguage}
+            value={this.state.language} >
+            {languageNodes}
+          </MUI.DropDownMenu>
+          <LanguageIcon style={this.style.languageIcon} />
+        </div>
+        <div style={this.style.copyright.div}>
+          <span style={this.style.copyright.span}>
+            Matheus Borges Teixeira &copy; 2016 - Version 1.3.0
+          </span>
+        </div>
       </footer>
     );
   }

@@ -225,6 +225,7 @@ const TrainingsPage = React.createClass({
       <BaseLayout
         switcher={this.props.switcher}
         userAgent={this.props.userAgent}
+        styleProvider={this.props.styleProvider}
         messageSubscriber={this}
         layoutName="trainingsPage"
         title={t('training:appBarTitle')} >

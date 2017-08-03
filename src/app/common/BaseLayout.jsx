@@ -45,6 +45,12 @@ module.exports = React.createClass({
       nextProps.messageSubscriber.subscribe(this);
     }
   },
+  componentDidMount(){
+    if(!this.props.styleProvider.loaded){
+      this.props.styleProvider.loadScreenSizes();
+      this.setState(this.state);
+    }
+  },
   render: function() {
     var muiTheme = MUI.getTheme({
       userAgent: this.props.userAgent
@@ -52,11 +58,16 @@ module.exports = React.createClass({
     return (
       <MUI.ThemeProvider muiTheme={muiTheme}>
         <div id="aaa-baseLayout" className={this.props.layoutName}>
-          <Header switcher={this.props.switcher} title={this.props.title} />
+          <Header
+            switcher={this.props.switcher}
+            styleProvider={this.props.styleProvider}
+            title={this.props.title} />
             <div style={{width: '100%'}}>
               {this.props.children}
             </div>
-          <Footer switcher={this.props.switcher} />
+          <Footer
+            switcher={this.props.switcher}
+            styleProvider={this.props.styleProvider} />
           <Notice message={this.state.message} onClose={this.eraseMessage} />
         </div>
       </MUI.ThemeProvider>

@@ -11,6 +11,46 @@ const deleteLocalArcher = require('api/helpers/deleteLocalArcher');
 
 const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
 
+import { Style } from 'global/StyleProvider';
+
+class HeaderStyle extends Style {
+  get AppBar() {
+    return {
+      title: {
+        fontSize: `20px`,
+      },
+      backgroundColor: MUI.colors.blue600,
+    }
+  }
+
+  get Drawer() {
+    return {
+      width: this.styleProvider.select({
+        phone: this.styleProvider.percent(90),
+        tablet: this.styleProvider.percent(50),
+        desktop: this.styleProvider.percent(30),
+      }),
+    }
+  }
+
+  get Subheader(){
+    return {
+      padding: this.defaultPadding,
+    }
+  }
+
+  get logo() {
+    return{
+      height: this.styleProvider.select({
+        phone: this.styleProvider.percent(15),
+        tablet: this.styleProvider.percent(11.25),
+        desktop: this.styleProvider.percent(6),
+      }),
+      width: '100%',
+    }
+  }
+}
+
 /**
  * Header with an undocked drawer and a logout button.
  * @author Matheus
@@ -23,6 +63,7 @@ const Header = React.createClass({
     t: React.PropTypes.func.isRequired
   },
   getInitialState: function() {
+    this.style = new HeaderStyle(this.props.styleProvider);
     return {open: false};
   },
   componentDidMount: function() {
@@ -115,18 +156,21 @@ const Header = React.createClass({
     return (
       <div>
         <MUI.AppBar
-            style={{backgroundColor:MUI.colors.blue600}}
+            style={this.style.AppBar}
             title={this.props.title}
+            titleStyle={this.style.AppBar.title}
             showMenuIconButton={ this.state.archer ? true : false }
             iconElementLeft={ this.state.archer ? leftIcon : null } />
         <MUI.Drawer
             docked={false}
-            width={400}
+            width={this.style.Drawer.width}
             open={this.state.open}
             onRequestChange={this.handleClose} >
             <MUI.List>
-              <MUI.Subheader style={{padding:12}} inset={true}>
-                <LogoName width={'100%'} height={64} />
+              <MUI.Subheader style={this.style.Subheader} inset={true}>
+                <LogoName
+                  width={this.style.logo.width}
+                  height={this.style.logo.height} />
               </MUI.Subheader>
               <MUI.ListItem
                 primaryText={ this.state.archer ? this.state.archer.name : null }

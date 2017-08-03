@@ -27,6 +27,7 @@ const TermsPage = React.createClass({
         switcher={this.props.switcher}
         layoutName="termsPage"
         userAgent={this.props.userAgent}
+        styleProvider={this.props.styleProvider}
         title={t('terms:appBarTitle')} >
         <MUI.Card style={{margin:40,marginBottom:120}}>
           <MUI.CardHeader

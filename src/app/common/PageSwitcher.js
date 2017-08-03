@@ -14,6 +14,8 @@ var aboutPage = require('app/static/AboutPage');
 
 var trainerReportsPage = require('app/trainer/reports/TrainerReportsPage');
 
+import { StyleProvider } from 'global/StyleProvider';
+
 /**
  * Controller for switching between pages.
  * @param {Object} i18next controller to translations
@@ -109,14 +111,16 @@ function getPageUrlPath(pageTitle) {
 
 PageSwitcher.prototype.getPageUrlPath = getPageUrlPath;
 
+
 PageSwitcher.prototype.renderPage = function(pageTitle, callback) {
   // var renderParent = document.getElementById('aaa-baseLayout').parentNode;
   var renderParent = document.getElementsByTagName('html')[0].parentNode;
   // TODO move this to constants to share between server/app
   const props = {
     switcher: this,
-    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
-    i18n: this.i18n
+    userAgent: navigator.userAgent,
+    styleProvider: new StyleProvider(navigator.userAgent),
+    i18n: this.i18n,
   };
 
   props.container = getPageReactClass(pageTitle);
@@ -124,6 +128,25 @@ PageSwitcher.prototype.renderPage = function(pageTitle, callback) {
     if (!err) {
       props.title = props.i18n.t(['common:pageTitle.', pageTitle].join(''));
       ReactDOM.render(React.createElement(baseHtml, props), renderParent);
+      props.styleProvider.loadScreenSizes();
+
+      const sizes = {}
+      window.addEventListener('TextFieldBlurred', (event) => {
+        const width = parseInt(window.innerWidth);
+        const height = parseInt(window.innerHeight);
+        if(sizes.height < height * 0.95 ||
+           sizes.height > height * 1.05 ||
+           sizes.width < width * 0.95 ||
+           sizes.width > width * 1.05){
+          ReactDOM.render(React.createElement(baseHtml, props), renderParent);
+          sizes.width = width;
+          sizes.height = height;
+        }
+      });
+      window.addEventListener('TextFieldFocused', (event) => {
+        sizes.width = parseInt(window.innerWidth);
+        sizes.height = parseInt(window.innerHeight);
+      });
       callback();
       return;
     }
@@ -154,7 +177,8 @@ PageSwitcher.prototype.serverString = function serverString(pageTitle,
   // TODO move this to constants to share between server/app
   const props = {
     switcher: this,
-    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+    userAgent: request.headers['user-agent'],
+    styleProvider: new StyleProvider(request.headers['user-agent']),
     i18n: request.i18n,
     title: request.i18n.t(['common:pageTitle.', pageTitle].join(''))
   };

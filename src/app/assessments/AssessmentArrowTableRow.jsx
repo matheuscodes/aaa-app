@@ -1,55 +1,56 @@
-const React = require('react');
+import React from 'react';
+import PropTypes from 'prop-types';
+import {autobind} from 'core-decorators';
 
-const MUI = require('app/common/MaterialUI');
-const i18nextReact = require('global/i18nextReact');
+import MUI from 'app/common/MaterialUI';
+import i18nextReact from 'global/i18nextReact';
 
-const valueConverter = require('global/ValueConverter');
+import valueConverter from 'global/ValueConverter';
 
-const styles = {
-  arrowSize: 30
-};
+import ArrowRingRow from 'app/assessments/ArrowRingRow';
 
-const AssessmentArrowTableRow = React.createClass({
-  propTypes: {
-    deleteEnd: React.PropTypes.func,
-    t: React.PropTypes.func
-  },
-  deleteEnd: function() {
+@autobind
+class AssessmentArrowTableRow extends React.Component {
+  deleteEnd() {
     this.props.deleteEnd(this.props.roundIndex, this.props.endIndex);
-  },
-  render: function() {
-    const t = this.props.t;
+  }
 
-    var total = 0;
-    var arrows = this.props.end.map(function(arrow, arrowIndex) {
-      total += valueConverter.integer[arrow];
-      return (
-        <MUI.Avatar
-          key={arrowIndex.toString()}
-          color={valueConverter.color[arrow]}
-          backgroundColor={valueConverter.backgroundColor[arrow]}
-          size={styles.arrowSize} >{arrow}</MUI.Avatar>
-      );
-    }, this);
+  render() {
+    let total = 0;
+    this.props.end.forEach((arrow) => total += valueConverter.integer[arrow]);
 
     return (
       <tr>
-        <td style={{display: 'block', maxWidth: (styles.arrowSize * 6)}} >
-          {arrows}
+        <td>
+          <ArrowRingRow
+            style={this.props.style.rings}
+            arrows={this.props.end}
+            arrowSize={this.props.style.arrow.width} />
         </td>
         <td>
-          {total}
-          {this.props.deleteEnd ?
-            <MUI.FlatButton
+          <div style={this.props.style.total} >{ total }</div>
+          { this.props.deleteEnd ?
+            <MUI.FloatingActionButton
               onTouchTap={this.deleteEnd}
               secondary={true}
-              icon={<MUI.icons.navigation.cancel />}
-              style={{margin: 2, minWidth: null}} /> : null}
+              style={this.props.style.deleteButton}
+              iconStyle={this.props.style.deleteButton.iconStyle} >
+              <MUI.icons.navigation.cancel
+                style={this.props.style.deleteButton.icon} />
+            </MUI.FloatingActionButton> : null }
         </td>
       </tr>
     );
   }
-});
+};
+
+AssessmentArrowTableRow.propTypes = {
+  style: PropTypes.object,
+  end: PropTypes.array,
+  deleteEnd: PropTypes.func,
+  roundIndex: PropTypes.number,
+  endIndex: PropTypes.number,
+};
 
 module.exports = i18nextReact.setupTranslation(['assessment'],
                                                AssessmentArrowTableRow);

@@ -6,3 +6,10 @@ plugins:
 env:
   browser: true
   node: true
+parser: babel-eslint
+rules:
+  react/no-direct-mutation-state: 0
+  require-jsdoc: 0
+  max-len:
+    - error
+    - ignorePattern: import.*;
