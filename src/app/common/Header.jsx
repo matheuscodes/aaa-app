@@ -17,11 +17,19 @@ class HeaderStyle extends Style {
   get AppBar() {
     return {
       title: {
-        fontSize: `${1.2 * this.baseFontsize}px`,
-        lineHeight: `${2 * this.baseLineHeight}px`,
-        height: `${2 * this.baseLineHeight}px`,
+        fontSize: `20px`,
       },
       backgroundColor: MUI.colors.blue600,
+    }
+  }
+
+  get Drawer() {
+    return {
+      width: this.styleProvider.select({
+        phone: this.styleProvider.percent(90),
+        tablet: this.styleProvider.percent(50),
+        desktop: this.styleProvider.percent(30),
+      }),
     }
   }
 
@@ -155,7 +163,7 @@ const Header = React.createClass({
             iconElementLeft={ this.state.archer ? leftIcon : null } />
         <MUI.Drawer
             docked={false}
-            width={400}
+            width={this.style.Drawer.width}
             open={this.state.open}
             onRequestChange={this.handleClose} >
             <MUI.List>

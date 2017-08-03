@@ -1,5 +1,7 @@
 import MobileDetect from 'mobile-detect';
 import TextFieldStyle from 'components/TextField.style';
+import SelectFieldStyle from 'components/SelectField.style';
+import StepperStyle from 'components/Stepper.style';
 
 export class StyleProvider {
 
@@ -70,8 +72,8 @@ export class StyleProvider {
 
   select({phone, tablet, desktop}) {
     switch(this.device) {
-      case 'phone': return phone ? phone : desktop;
-      case 'tablet': return tablet ? tablet : desktop;
+      case 'phone': return typeof phone !== 'undefined' ? phone : desktop;
+      case 'tablet': return typeof tablet !== 'undefined' ? tablet : desktop;
       case 'desktop': return desktop;
       default: return desktop;
     }
@@ -83,7 +85,11 @@ export class StyleProvider {
 export class Style {
 
   get defaultPadding() {
-    return this.styleProvider.percent(2);
+    return this.styleProvider.percent(1);
+  }
+
+  get defaultMargin() {
+    return this.styleProvider.percent(1);
   }
 
   get baseFontsize() {
@@ -98,12 +104,45 @@ export class Style {
     return  1.5 * this.baseFontsize;
   }
 
+
+  get h3() {
+    return {
+      fontSize: `${this.baseFontsize * 1.1}px`,
+      padding: `${this.baseFontsize * 1.1}px`,
+      lineHeight: `${this.baseLineHeight * 1.1}px`,
+    }
+  }
+
   get TextField() {
     return TextFieldStyle(this);
   }
 
+  get SelectField() {
+    return SelectFieldStyle(this);
+  }
+
+  get Stepper() {
+    return StepperStyle(this);
+  }
+
   constructor(styleProvider){
     this.styleProvider = styleProvider;
+  }
+
+  overwrite(object){
+    const clone = Object.create(Object.getPrototypeOf(this));
+
+    Object.getOwnPropertyNames(this).forEach((key) => {
+        const desc = Object.getOwnPropertyDescriptor(this, key);
+        Object.defineProperty(clone, key, desc);
+    });
+
+    Object.getOwnPropertyNames(object).forEach((key) => {
+        const desc = Object.getOwnPropertyDescriptor(object, key);
+        Object.defineProperty(clone, key, desc);
+    });
+
+    return clone;
   }
 
 }
