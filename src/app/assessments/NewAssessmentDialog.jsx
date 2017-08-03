@@ -157,13 +157,13 @@ class NewAssessmentDialog extends React.Component {
   }
 
   submitAssessment() {
-    const {t, messenger, onRequestClose} = this.props;
+    const {t, messenger} = this.props;
     let callbacks = {
       context: this,
       success: function() {
         messenger.showMessage(t('assessment:messages.newSaved'), 'MESSAGE');
         messenger.setState(this.getInitialState());
-        onRequestClose(true);
+        this.closeDialog(true);
       },
       warning: function() {
         messenger.showMessage(t('assessment:messages.newSaved'), 'WARNING');
@@ -211,6 +211,16 @@ class NewAssessmentDialog extends React.Component {
             this.state.stepIndex = stepIndex - 1;
             this.setState(this.state);
           }} />
+      );
+    } else if (stepIndex === 0) {
+      actions.push(
+        <MUI.RaisedButton
+          key={'aaa-newAssessmentDialog-exit'}
+          label={' '}
+          icon={<MUI.icons.navigation.cancel />}
+          style={this.style.actionButton}
+          secondary={true}
+          onTouchTap={this.closeDialog} />
       );
     }
     if (stepIndex < (1 + rounds.length)) {
@@ -319,7 +329,7 @@ class NewAssessmentDialog extends React.Component {
             mini={true}
             secondary={true}
             style={this.style.uploadButton}
-            onTouchTap={this.props.onRequestClose}>
+            onTouchTap={this.closeDialog}>
             <MUI.icons.navigation.cancel />
           </MUI.FloatingActionButton>
           <MUI.FloatingActionButton
@@ -350,6 +360,12 @@ class NewAssessmentDialog extends React.Component {
     });
   }
 
+  closeDialog(refresh){
+    this.state = this.getInitialState();
+    this.state.open = false;
+    this.props.onRequestClose(refresh);
+  }
+
   render() {
     const {t} = this.props;
     const {finished, stepIndex} = this.state;
@@ -367,7 +383,7 @@ class NewAssessmentDialog extends React.Component {
         modal={true}
         actions={this.stepActions}
         open={this.props.open}
-        onRequestClose={this.props.onRequestClose}
+        onRequestClose={this.closeDialog}
         contentStyle={this.style.contentStyle}
         bodyStyle={this.style.bodyStyle}
         repositionOnUpdate={true}
@@ -386,7 +402,7 @@ class NewAssessmentDialog extends React.Component {
 NewAssessmentDialog.propTypes = {
   t: PropTypes.func.isRequired,
   style: PropTypes.object,
-  open: PropTypes.boolean,
+  open: MUI.Dialog.propTypes.open,
   messenger: PropTypes.object,
   onRequestClose: PropTypes.func,
 };

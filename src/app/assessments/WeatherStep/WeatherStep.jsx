@@ -103,11 +103,11 @@ export default function WeatherStep(props) {
 WeatherStep.propTypes = {
   t: PropTypes.func.isRequired,
   style: PropTypes.object,
-  temperature: PropTypes.number,
+  temperature: PropTypes.string,
   changeTemperature: PropTypes.func,
   weather: PropTypes.string,
   changeWeather: PropTypes.func,
-  windSpeed: PropTypes.number,
+  windSpeed: PropTypes.string,
   changeWindSpeed: PropTypes.func,
   windDirection: PropTypes.string,
   changeWindDirection: PropTypes.func,

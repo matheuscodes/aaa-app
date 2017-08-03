@@ -225,7 +225,7 @@ class AssessmentReport extends React.Component {
 AssessmentReport.propTypes = {
   style: PropTypes.object,
   data: PropTypes.object,
-  open: PropTypes.boolean,
+  open: MUI.Dialog.propTypes.open,
   onDelete: PropTypes.func,
   handleClose: PropTypes.func,
   assessmentId: PropTypes.number,

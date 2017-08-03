@@ -46,7 +46,7 @@ class AssessmentArrowTableRow extends React.Component {
 
 AssessmentArrowTableRow.propTypes = {
   style: PropTypes.object,
-  end: PropTypes.object,
+  end: PropTypes.array,
   deleteEnd: PropTypes.func,
   roundIndex: PropTypes.number,
   endIndex: PropTypes.number,

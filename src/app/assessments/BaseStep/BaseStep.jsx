@@ -84,7 +84,7 @@ BaseStep.propTypes = {
   events: PropTypes.array,
   targets: PropTypes.array,
   seasons: PropTypes.array,
-  distance: PropTypes.number,
+  distance: PropTypes.string,
   date: PropTypes.object,
   eventId: PropTypes.number,
   targetId: PropTypes.number,

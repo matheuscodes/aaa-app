@@ -25,7 +25,6 @@ class AssessmentsPage extends MessageablePage {
     let callbacks = {
       context: this,
       success(list) {
-        console.log(list);
         let current = this.state;
         current.editAssessment = false;
         delete current.assessmentId;
@@ -146,10 +145,10 @@ class AssessmentsPage extends MessageablePage {
     this.setState(current);
   }
 
-  newAssessment() {
-    let current = this.state;
-    current.editAssessment = true;
-    this.setState(current);
+  newAssessment(assessmentId) {
+    this.state.editAssessment = true;
+    this.state.assessmentId = assessmentId;
+    this.setState(this.state);
   }
 
   deleteAssessment(assessmentId) {

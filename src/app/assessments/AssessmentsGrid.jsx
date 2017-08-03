@@ -38,6 +38,6 @@ export default function AssessmentsGrid(props) {
 AssessmentsGrid.propTypes = {
   style: PropTypes.object,
   cols: PropTypes.number,
-  assessments: PropTypes.object,
+  assessments: PropTypes.array,
   deleteAssessment: PropTypes.func,
 };

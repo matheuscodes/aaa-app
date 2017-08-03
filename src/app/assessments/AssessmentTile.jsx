@@ -27,7 +27,10 @@ class AssessmentTile extends React.Component {
   getMore() {
     if (this.props.allowMore) {
       return (
-        <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
+        <MUI.GridTile
+          style={MUI.styles.GridTile}
+          cols={1}
+          key={'aaa-moreButton'} >
           <MUI.RaisedButton
             label={this.props.t('assessment:detailsButton')}
             secondary={true}
@@ -93,7 +96,7 @@ class AssessmentTile extends React.Component {
 AssessmentTile.propTypes = {
   style: PropTypes.object,
   data: PropTypes.object,
-  allowMore: PropTypes.boolean,
+  allowMore: PropTypes.bool,
   onDelete: PropTypes.func,
   t: PropTypes.func,
 };
