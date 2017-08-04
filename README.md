@@ -2,7 +2,7 @@
 
 Application code for Advanced Archery https://matheus.online/archery/
 
-Application developed from archers, to archers, with :heart: from Berlin :bear:.
+Application developed by archers, to archers, with :heart: from Berlin :bear:
 
 [<img src="http://bogensportschmid.de/wp-content/uploads/2016/01/cropped-keyvisual.jpg" width="100%">](http://bogensportschmid.de/)
 
@@ -10,7 +10,7 @@ Application developed from archers, to archers, with :heart: from Berlin :bear:.
 
 [<img src="https://www.browserstack.com/images/mail/browserstack-logo-footer.png" width="120">](https://www.browserstack.com/)
 
-A big thank you goes to [BrowserStack](https://www.browserstack.com/) for providing the infrastructure that allows us to test `Advanced Archery` in real browsers, devices and operating systems.
+A big thank you goes to [BrowserStack](https://www.browserstack.com/) for providing the infrastructure that allows us to test `Advanced Archery` in real devices and operating systems using different browsers.
 
 ### Dependencies
 
