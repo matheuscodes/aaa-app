@@ -1,3 +1,4 @@
+import React from 'react';
 import MobileDetect from 'mobile-detect';
 import TextFieldStyle from 'components/TextField.style';
 import SelectFieldStyle from 'components/SelectField.style';
@@ -40,6 +41,17 @@ export class StyleProvider {
       }
     } else {
       this.device = 'desktop';
+    }
+
+    this.getPolyfills();
+  }
+
+  getPolyfills(){
+    //Intl
+    if(this.detected.is('Safari') ||
+       (this.detected.ua && this.detected.ua.match('Mac OS'))){
+       require('intl');
+       require('intl/locale-data/jsonp/en.js');
     }
   }
 

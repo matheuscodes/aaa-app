@@ -148,7 +148,7 @@ if (typeof window === 'undefined') { // If on Node.js
       }
     });
   // FIXME hack because language detection is not working.
-  if(document.cookie.includes('i18next=')){
+  if(document.cookie.match('i18next=')){
     module.exports.i18next.changeLanguage(document.cookie.split('i18next=')[1]);
   }
 }

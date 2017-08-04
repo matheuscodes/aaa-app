@@ -118,7 +118,7 @@ PageSwitcher.prototype.renderPage = function(pageTitle, callback) {
   // TODO move this to constants to share between server/app
   const props = {
     switcher: this,
-    userAgent: navigator.userAgent,
+    userAgent: 'Mozilla/5.0 (Fixed) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 Safari/537.36',
     styleProvider: new StyleProvider(navigator.userAgent),
     i18n: this.i18n,
   };
@@ -127,7 +127,10 @@ PageSwitcher.prototype.renderPage = function(pageTitle, callback) {
   this.i18n.loadNamespaces(getPageNamespaces(pageTitle), function(err, t) {
     if (!err) {
       props.title = props.i18n.t(['common:pageTitle.', pageTitle].join(''));
-      ReactDOM.render(React.createElement(baseHtml, props), renderParent);
+
+      const created = React.createElement(baseHtml, props);
+      ReactDOM.render(created, renderParent);
+
       props.styleProvider.loadScreenSizes();
 
       const sizes = {}
@@ -138,7 +141,7 @@ PageSwitcher.prototype.renderPage = function(pageTitle, callback) {
            sizes.height > height * 1.05 ||
            sizes.width < width * 0.95 ||
            sizes.width > width * 1.05){
-          ReactDOM.render(React.createElement(baseHtml, props), renderParent);
+          ReactDOM.render(React.cloneElement(created,{}), renderParent);
           sizes.width = width;
           sizes.height = height;
         }
@@ -177,7 +180,7 @@ PageSwitcher.prototype.serverString = function serverString(pageTitle,
   // TODO move this to constants to share between server/app
   const props = {
     switcher: this,
-    userAgent: request.headers['user-agent'],
+    userAgent: 'Mozilla/5.0 (Fixed) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 Safari/537.36',
     styleProvider: new StyleProvider(request.headers['user-agent']),
     i18n: request.i18n,
     title: request.i18n.t(['common:pageTitle.', pageTitle].join(''))
