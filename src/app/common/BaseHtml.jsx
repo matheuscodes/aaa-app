@@ -41,7 +41,7 @@ const BaseHtml = React.createClass({
               type="image/png"
               href="favicon.png" />
             <meta name="viewport"
-              content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1; user-scalable=0;" />
+              content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, user-scalable=0" />
             <title>{this.props.title}</title>
           </head>
           <body style={bodyStyle}>
