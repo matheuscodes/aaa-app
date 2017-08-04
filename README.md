@@ -12,7 +12,7 @@ Application developed from archers, to archers, with :heart: from Berlin :bear:.
 
 [<img src="https://www.browserstack.com/images/mail/browserstack-logo-footer.png" width="120">](https://www.browserstack.com/)
 
-A big thank you goes to [BrowserStack](https://www.browserstack.com/) for providing the infrastructure that allows us to test `Advanced Archery` in real browsers.
+A big thank you goes to [BrowserStack](https://www.browserstack.com/) for providing the infrastructure that allows us to test `Advanced Archery` in real browsers, devices and operating systems.
 
 ### Dependencies
 
