@@ -4,9 +4,7 @@ Application code for Advanced Archery https://matheus.online/archery/
 
 Application developed from archers, to archers, with :heart: from Berlin :bear:.
 
-
-
-[<img src="http://bogensportschmid.de/wp-content/uploads/2016/01/cropped-keyvisual.jpg" width="100%">](https://www.browserstack.com/)
+[<img src="http://bogensportschmid.de/wp-content/uploads/2016/01/cropped-keyvisual.jpg" width="100%">](http://bogensportschmid.de/)
 
 ## Special Thanks
 
