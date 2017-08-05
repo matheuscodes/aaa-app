@@ -134,7 +134,7 @@ PageSwitcher.prototype.renderPage = function(pageTitle, callback) {
       props.styleProvider.loadScreenSizes();
 
       const sizes = {}
-      window.addEventListener('TextFieldBlurred', (event) => {
+      window.addEventListener('TextFieldBlurred_null', (event) => {
         const width = parseInt(window.innerWidth);
         const height = parseInt(window.innerHeight);
         if(sizes.height < height * 0.95 ||
@@ -146,7 +146,7 @@ PageSwitcher.prototype.renderPage = function(pageTitle, callback) {
           sizes.height = height;
         }
       });
-      window.addEventListener('TextFieldFocused', (event) => {
+      window.addEventListener('TextFieldFocused_null', (event) => {
         sizes.width = parseInt(window.innerWidth);
         sizes.height = parseInt(window.innerHeight);
       });

@@ -33,7 +33,7 @@ export class StyleProvider {
       if(mobile){
         if(mobile.match('Tablet|iPad')){
           this.device = 'tablet';
-        } else if(mobile.match('Phone|Mobile')) {
+        } else {
           this.device = 'phone';
         }
       } else {
