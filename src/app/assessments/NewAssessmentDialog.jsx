@@ -369,6 +369,7 @@ class NewAssessmentDialog extends React.Component {
     newState.open = false;
     newState.targets = this.state.targets;
     newState.seasons = this.state.seasons;
+    this.state = newState;
     this.props.onRequestClose(refresh);
   }
 
