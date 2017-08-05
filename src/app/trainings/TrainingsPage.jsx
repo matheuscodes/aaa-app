@@ -8,8 +8,11 @@ const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
 const BaseLayout = require('app/common/BaseLayout');
 const Waiting = require('app/common/Waiting');
 
+import TrainingsPageStyle from 'app/trainings/TrainingsPage.style';
+
 const TrainingTile = require('app/trainings/TrainingTile');
 const NewTrainingCard = require('app/trainings/NewTrainingCard');
+const NewTrainingDialog = require('app/trainings/NewTrainingDialog');
 
 const styles = {
   gridList: {
@@ -92,6 +95,7 @@ const TrainingsPage = React.createClass({
     API.trainings.getList(this.state.currentPage + 1,callbacks);
   },
   getInitialState: function() {
+    this.style = new TrainingsPageStyle(this.props.styleProvider)
     return {editTraining: false, currentPage:0};
   },
   componentDidMount: function() {
@@ -260,6 +264,11 @@ const TrainingsPage = React.createClass({
         <NewTrainingCard
           messenger={this.messenger}
           open={this.state.editTraining}
+          onRequestClose={this.closeEdit} />
+        <NewTrainingDialog
+          open={true}
+          messenger={this}
+          style={this.style}
           onRequestClose={this.closeEdit} />
       </BaseLayout>
     );
