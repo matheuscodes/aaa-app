@@ -65,4 +65,12 @@ export default class TrainingsPageStyle extends Style {
       },
     }
   }
+
+  get columns() {
+    return this.styleProvider.select({
+      phone: 6,
+      tablet: 3,
+      desktop: 2,
+    })
+  }
 }

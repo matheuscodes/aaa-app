@@ -26,9 +26,11 @@ class FooterStyle extends Style {
     return {
       div: {
         width:'100%',
-        float:'left'
+        float:'left',
+        textAlign: 'center',
       },
       span: {
+        textAlign: 'center',
         lineHeight: `${1.5 * this.baseLineHeight}px`,
         color: MUI.palette.accent3Color,
         fontSize: this.styleProvider.select({
