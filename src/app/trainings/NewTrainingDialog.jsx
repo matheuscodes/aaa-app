@@ -38,6 +38,7 @@ class NewAssessmentDialog extends React.Component {
       arrowTrainingTypes: {WARMUP:true, WARMOUT:true},
       arrowDistances: {
         5: false,
+        10: false,
         18: false,
         25: false,
         40: false,
@@ -237,6 +238,7 @@ class NewAssessmentDialog extends React.Component {
           <DistancesStep
             t={this.props.t}
             style={this.style}
+            messenger={this.props.messenger}
             arrowDistances={this.state.arrowDistances}
             setArrowDistances={this.setArrowDistances} />
         ),

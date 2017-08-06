@@ -8,4 +8,17 @@ export default class DistancesStepStyle extends Style {
       desktop: 1,
     })
   }
+
+  get distanceTextField() {
+    return {
+      width: '100%'
+    }
+  }
+
+  get distanceAddButton() {
+    return {
+      height: 36,
+      width: 36,
+    }
+  }
 }
