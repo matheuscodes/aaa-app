@@ -48,8 +48,14 @@ export class StyleProvider {
 
   getPolyfills(){
     //Intl
-    if(this.detected.is('Safari') ||
-       (this.detected.ua && this.detected.ua.match('Mac OS'))){
+    if(
+      this.detected.is('Safari') ||
+      (this.detected.ua &&
+       this.detected.ua.match('Mac OS')) ||
+      (this.device === 'phone' &&
+       this.detected.ua &&
+       this.detected.ua.match('Firefox'))
+    ){
        require('intl');
        require('intl/locale-data/jsonp/en.js');
     }
