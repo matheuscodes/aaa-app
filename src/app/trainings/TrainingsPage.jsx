@@ -261,12 +261,8 @@ const TrainingsPage = React.createClass({
             </MUI.GridList>
           </MUI.GridTile>
         </MUI.GridList>
-        <NewTrainingCard
-          messenger={this.messenger}
-          open={this.state.editTraining}
-          onRequestClose={this.closeEdit} />
         <NewTrainingDialog
-          open={true}
+          open={this.state.editTraining}
           messenger={this}
           style={this.style}
           onRequestClose={this.closeEdit} />

@@ -66,8 +66,9 @@ export default class DistancesStep extends React.Component {
           cols={4}
           cellHeight={'auto'} >
           {
-            Object.keys(this.props.arrowDistances).map(distance => (
+            Object.keys(this.props.arrowDistances).map((distance, index) => (
               <MUI.GridTile
+                key={index}
                 style={MUI.styles.GridTile}
                 cols={this.style.columns} >
                 <MUI.Checkbox

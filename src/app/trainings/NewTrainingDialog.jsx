@@ -15,6 +15,7 @@ import NewAssessmentDialogStyle from 'app/assessments/NewAssessmentDialog.style'
 import BaseStep from 'app/trainings/BaseStep/BaseStep';
 import TypesStep from 'app/trainings/ArrowSteps/TypesStep';
 import DistancesStep from 'app/trainings/ArrowSteps/DistancesStep';
+import InputStep from 'app/trainings/ArrowSteps/InputStep';
 import NeurobicsStep from 'app/trainings/NeurobicsSteps/NeurobicsStep';
 import WorkoutStep from 'app/trainings/WorkoutSteps/WorkoutStep';
 
@@ -60,7 +61,7 @@ class NewAssessmentDialog extends React.Component {
   }
 
   componentDidMount() {
-    const t = this.props.t;
+    const {t, messenger} = this.props;
     var callbacks = {
       context: this,
       success: function(seasons) {
@@ -69,7 +70,7 @@ class NewAssessmentDialog extends React.Component {
         this.setState(current);
       },
       error: function(){
-        this.showMessage(t('training:messages.seasonError'), "ERROR");
+        messenger.showMessage(t('training:messages.seasonError'), "ERROR");
       }
     };
     this.setState(this.getInitialState());
@@ -89,25 +90,25 @@ class NewAssessmentDialog extends React.Component {
   }
 
   submitTraining() {
-    const t = this.props.t;
+    const {t, messenger} = this.props;
 
     var callbacks = {
       context: this,
       success: function() {
-        this.showMessage(t('training:messages.newSaved'), "MESSAGE");
+        messenger.showMessage(t('training:messages.newSaved'), "MESSAGE");
         this.handleClose(true);
       },
       warning: function() {
-        this.showMessage(t('training:messages.newSaved'), "WARNING");
+        messenger.showMessage(t('training:messages.newSaved'), "WARNING");
       },
       error: function() {
-        this.showMessage(t('training:messages.newError'), "ERROR");
+        messenger.showMessage(t('training:messages.newError'), "ERROR");
       }
     };
     if(typeof this.state.training.seasonId !== 'undefined'){
       API.trainings.save(this.state.training, callbacks);
     } else {
-      this.showMessage(t('training:messages.newErrorMissingSeason'), "ERROR");
+      messenger.showMessage(t('training:messages.newErrorMissingSeason'), "ERROR");
     }
   }
 
@@ -124,10 +125,18 @@ class NewAssessmentDialog extends React.Component {
   }
 
   setArrowCount(distance, type, value) {
-    if(typeof this.state.training.arrows[distance] === 'undefined'){
-      this.state.training.arrows[distance] = {};
+    const count = parseFloat(value);
+    if(!value.match('^[0-9]*$') || isNaN(count) || !(count > 0)) {
+      if(this.state.training.arrows[distance] &&
+         this.state.training.arrows[distance][type]) {
+        delete this.state.training.arrows[distance][type];
+      }
+    } else {
+      if(typeof this.state.training.arrows[distance] === 'undefined'){
+        this.state.training.arrows[distance] = {};
+      }
+      this.state.training.arrows[distance][type] = count;
     }
-    this.state.training.arrows[distance][type] = value;
   }
 
   setTrainingClasses(classes){
@@ -222,16 +231,17 @@ class NewAssessmentDialog extends React.Component {
   }
 
   addArrowSteps(steps) {
-    if(this.state.classes.arrows){steps.push({
-      title: this.props.t('training:newTraining.ArrowsSteps.TypesStep.title'),
-      content: (
-        <TypesStep
-          t={this.props.t}
-          style={this.style}
-          arrowTrainingTypes={this.state.arrowTrainingTypes}
-          setArrowTrainingTypes={this.setArrowTrainingTypes} />
-      ),
-    });
+    if(this.state.classes.arrows){
+      steps.push({
+        title: this.props.t('training:newTraining.ArrowsSteps.TypesStep.title'),
+        content: (
+          <TypesStep
+            t={this.props.t}
+            style={this.style}
+            arrowTrainingTypes={this.state.arrowTrainingTypes}
+            setArrowTrainingTypes={this.setArrowTrainingTypes} />
+        ),
+      });
       steps.push({
         title: this.props.t('training:newTraining.ArrowsSteps.DistancesStep.title'),
         content: (
@@ -241,6 +251,18 @@ class NewAssessmentDialog extends React.Component {
             messenger={this.props.messenger}
             arrowDistances={this.state.arrowDistances}
             setArrowDistances={this.setArrowDistances} />
+        ),
+      });
+      steps.push({
+        title: this.props.t('training:newTraining.ArrowsSteps.InputStep.title'),
+        content: (
+          <InputStep
+            t={this.props.t}
+            style={this.style}
+            messenger={this.props.messenger}
+            arrowDistances={this.state.arrowDistances}
+            arrowTrainingTypes={this.state.arrowTrainingTypes}
+            setArrowCount={this.setArrowCount} />
         ),
       });
     }
