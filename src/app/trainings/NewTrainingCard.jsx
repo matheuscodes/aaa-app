@@ -1,6 +1,6 @@
 const React = require('react');
 
-const TrainingTypes = require('constants/TrainingTypes');
+const TrainingTypes = require('constants/ArrowTrainingTypes');
 
 const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');

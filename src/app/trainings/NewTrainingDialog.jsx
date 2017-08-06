@@ -13,6 +13,8 @@ import Stepper from 'components/Stepper';
 
 import NewAssessmentDialogStyle from 'app/assessments/NewAssessmentDialog.style';
 import BaseStep from 'app/trainings/BaseStep/BaseStep';
+import TypesStep from 'app/trainings/ArrowSteps/TypesStep';
+import DistancesStep from 'app/trainings/ArrowSteps/DistancesStep';
 import NeurobicsStep from 'app/trainings/NeurobicsSteps/NeurobicsStep';
 import WorkoutStep from 'app/trainings/WorkoutSteps/WorkoutStep';
 
@@ -33,6 +35,16 @@ class NewAssessmentDialog extends React.Component {
       open: this.props.open,
       stepIndex: 0,
       classes: {},
+      arrowTrainingTypes: {WARMUP:true, WARMOUT:true},
+      arrowDistances: {
+        5: false,
+        18: false,
+        25: false,
+        40: false,
+        50: false,
+        60: false,
+        70: false
+      },
       training: {
         date: today,
         arrows: {
@@ -122,6 +134,16 @@ class NewAssessmentDialog extends React.Component {
     this.setState(this.state);
   }
 
+  setArrowTrainingTypes(types){
+    Object.assign(this.state.arrowTrainingTypes, types);
+    this.setState(this.state);
+  }
+
+  setArrowDistances(distances){
+    Object.assign(this.state.arrowDistances, distances);
+    this.setState(this.state);
+  }
+
   handleClose(refresh) {
     const initial = this.getInitialState();
     initial.seasons = this.state.seasons;
@@ -199,17 +221,24 @@ class NewAssessmentDialog extends React.Component {
   }
 
   addArrowSteps(steps) {
-    if(this.state.classes.arrows){
+    if(this.state.classes.arrows){steps.push({
+      title: this.props.t('training:newTraining.ArrowsSteps.TypesStep.title'),
+      content: (
+        <TypesStep
+          t={this.props.t}
+          style={this.style}
+          arrowTrainingTypes={this.state.arrowTrainingTypes}
+          setArrowTrainingTypes={this.setArrowTrainingTypes} />
+      ),
+    });
       steps.push({
-        title: this.props.t('training:newTraining.ArrowsSteps.ArrowsStep.title'),
+        title: this.props.t('training:newTraining.ArrowsSteps.DistancesStep.title'),
         content: (
-          <BaseStep
+          <DistancesStep
             t={this.props.t}
             style={this.style}
-            seasons={this.state.seasons}
-            date={this.state.date}
-            changeSeason={this.changeSeason}
-            changeDate={this.changeDate} />
+            arrowDistances={this.state.arrowDistances}
+            setArrowDistances={this.setArrowDistances} />
         ),
       });
     }
@@ -287,7 +316,7 @@ class NewAssessmentDialog extends React.Component {
 
     return (
       <MUI.Dialog
-        title={t('assessment:newAssessment.title')}
+        title={t('training:newTraining.title')}
         modal={true}
         actions={this.stepActions}
         open={this.props.open}

@@ -4,7 +4,7 @@ const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 
 const MiniCalendar = require('svg/common/MiniCalendar');
-const TrainingTypes = require('constants/TrainingTypes');
+const TrainingTypes = require('constants/ArrowTrainingTypes');
 
 const TrainingTile = React.createClass({
   propTypes: {
