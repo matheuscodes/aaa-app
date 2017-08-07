@@ -4,7 +4,7 @@ const i18nextReact = require('global/i18nextReact');
 const MUI = require('app/common/MaterialUI');
 
 const MiniCalendar = require('svg/common/MiniCalendar');
-const TrainingTypes = require('constants/TrainingTypes');
+const TrainingTypes = require('constants/ArrowTrainingTypes');
 
 const TrainingTile = React.createClass({
   propTypes: {
@@ -19,19 +19,20 @@ const TrainingTile = React.createClass({
   render: function() {
     const t = this.props.t;
 
-    var headers = TrainingTypes.map(function(type) {
+    const headers = Object.keys(this.props.data.arrows).map(function(distance) {
       return (
         <MUI.TableHeaderColumn
           style={{textAlign:'center', whiteSpace:'normal', padding:'0 5 0 5'}}
-          key={['trainingHeader_', type].join('')}>
-          {t(['training:trainingTypes.', type].join(''))}
+          key={`trainingHeader_${distance}`} >
+          {`${distance}m`}
         </MUI.TableHeaderColumn>
       );
     });
 
-    var row = {};
-    Object.keys(this.props.data.arrows).forEach(function(distance) {
-      row[distance] = TrainingTypes.map(function(type, index) {
+    const row = {};
+    TrainingTypes.forEach(function(type) {
+      row[type] = Object.keys(this.props.data.arrows)
+                        .map(function(distance, index) {
         return (
           <MUI.TableRowColumn
             style={{textAlign:'center', whiteSpace:'normal', padding:'0 5 0 5'}}
@@ -44,12 +45,14 @@ const TrainingTile = React.createClass({
     }, this);
 
     var rows = [];
-    Object.keys(row).forEach(function(distance) {
+    Object.keys(row).forEach(function(type) {
       rows.push(
-        <MUI.TableRow key={['aaa-trainingRow_', distance].join('')}>
+        <MUI.TableRow key={`aaa-trainingRow_${type}`}>
           <MUI.TableRowColumn
-            style={{textAlign:'center', whiteSpace:'normal', padding:'0 5 0 5'}}>{distance} m</MUI.TableRowColumn>
-          {row[distance]}
+            style={{textAlign:'center', whiteSpace:'normal', padding:'0 5 0 5'}}>
+            {t(`training:arrowTrainingTypes.${type}`)}
+          </MUI.TableRowColumn>
+          {row[type]}
         </MUI.TableRow>
       );
     });

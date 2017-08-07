@@ -11,6 +11,7 @@
     "compile": "babel src -d build",
     "eslint": "eslint --ext .jsx,.svg --fix ",
     "fetch-languages": "rm -rf node_modules/aaa-languages && cp -R ../aaa-languages node_modules/",
+    "revert-languages": "rm -rf node_modules/aaa-languages && npm run install aaa-languages",
     "serve": "npm run bundle && babel-node src/server.js",
     "serve-development": "env-cmd development npm run serve",
     "serve-production": "env-cmd production node build/server.js",
