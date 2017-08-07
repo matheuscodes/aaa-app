@@ -26,12 +26,17 @@ class FooterStyle extends Style {
     return {
       div: {
         width:'100%',
-        float:'left'
+        float:'left',
+        textAlign: 'center',
       },
       span: {
+        textAlign: 'center',
         lineHeight: `${1.5 * this.baseLineHeight}px`,
         color: MUI.palette.accent3Color,
-        fontSize: `${0.8 * this.baseFontsize}px`,
+        fontSize: this.styleProvider.select({
+          phone: `${0.7 * this.baseFontsize}px`,
+          desktop: `${0.9 * this.baseFontsize}px`,
+        }),
         margin: `${0.5 * this.defaultPadding}px`,
       },
     }
@@ -167,7 +172,7 @@ var Footer = React.createClass({
         </div>
         <div style={this.style.copyright.div}>
           <span style={this.style.copyright.span}>
-            Matheus Borges Teixeira &copy; 2016 - Version 1.3.0
+            Matheus Borges Teixeira &copy; 2017 - Version 1.3.2
           </span>
         </div>
       </footer>

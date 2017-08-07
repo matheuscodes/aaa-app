@@ -1,15 +1,20 @@
-const React = require('react');
+import React from 'react';
+import {autobind} from 'core-decorators';
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
+import i18nextReact from 'global/i18nextReact';
+import MUI from 'app/common/MaterialUI';
+import API from 'api';
 
-const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
-const BaseLayout = require('app/common/BaseLayout');
-const Waiting = require('app/common/Waiting');
+import MessageablePage from 'components/MessageablePage';
 
-const TrainingTile = require('app/trainings/TrainingTile');
-const NewTrainingCard = require('app/trainings/NewTrainingCard');
+import ReactPageSwitcherType from 'global/ReactPageSwitcherType';
+import BaseLayout from 'app/common/BaseLayout';
+import Waiting from 'app/common/Waiting';
+
+import TrainingsPageStyle from 'app/trainings/TrainingsPage.style';
+
+import TrainingTile from 'app/trainings/TrainingTile';
+import NewTrainingDialog from 'app/trainings/NewTrainingDialog';
 
 const styles = {
   gridList: {
@@ -17,13 +22,15 @@ const styles = {
   }
 };
 
-const TrainingsPage = React.createClass({
-  propTypes: {
-    switcher: ReactPageSwitcherType.isRequired,
-    userAgent: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]).isRequired,
-    t: React.PropTypes.func.isRequired
-  },
-  updateTrainingList: function() {
+@autobind
+class TrainingsPage extends MessageablePage {
+  constructor(props) {
+    super(props);
+    this.style = new TrainingsPageStyle(this.props.styleProvider);
+    this.state = {editTraining: false, currentPage:0};
+  }
+
+  updateTrainingList() {
     const t = this.props.t;
     var callbacks = {
       context: this,
@@ -42,8 +49,9 @@ const TrainingsPage = React.createClass({
       }
     };
     API.trainings.getList(this.state.currentPage,callbacks);
-  },
-  updatePreviousList: function() {
+  }
+
+  updatePreviousList() {
     const t = this.props.t;
     var callbacks = {
       context: this,
@@ -67,8 +75,9 @@ const TrainingsPage = React.createClass({
       delete current.previous;
       this.setState(current);
     }
-  },
-  updateNextList: function() {
+  }
+
+  updateNextList() {
     const t = this.props.t;
     var callbacks = {
       context: this,
@@ -90,21 +99,22 @@ const TrainingsPage = React.createClass({
       }
     };
     API.trainings.getList(this.state.currentPage + 1,callbacks);
-  },
-  getInitialState: function() {
-    return {editTraining: false, currentPage:0};
-  },
-  componentDidMount: function() {
+  }
+
+  componentDidMount() {
     this.updateAll();
-  },
-  updateAll: function() {
+  }
+
+  updateAll() {
     this.updateTrainingList();
     this.updateRest();
-  },
-  updateRest: function() {
+  }
+
+  updateRest() {
     this.updateNextList();
     this.updatePreviousList();
-  },
+  }
+
   moveToNextPage(){
     var current = this.state;
     current.currentPage += 1;
@@ -113,7 +123,8 @@ const TrainingsPage = React.createClass({
     current.previous = null;
     this.setState(current);
     this.updateRest();
-  },
+  }
+
   moveToPreviousPage(){
     var current = this.state;
     current.currentPage -= 1;
@@ -126,8 +137,9 @@ const TrainingsPage = React.createClass({
     }
     this.setState(current);
     this.updateRest();
-  },
-  deleteTraining: function(trainingId) {
+  }
+
+  deleteTraining(trainingId) {
     const t = this.props.t;
     var callbacks = {
       context: this,
@@ -143,21 +155,24 @@ const TrainingsPage = React.createClass({
       }
     };
     API.trainings.delete(trainingId, callbacks);
-  },
-  closeEdit: function(refresh) {
+  }
+
+  closeEdit(refresh) {
     var current = this.state;
     current.editTraining = false;
     this.setState(current);
     if (refresh) {
       this.updateAll();
     }
-  },
-  newTraining: function() {
+  }
+
+  newTraining() {
     var current = this.state;
     current.editTraining = true;
     this.setState(current);
-  },
-  showMessage: function(message, type) {
+  }
+
+  showMessage(message, type) {
     if(typeof this.messenger !== 'undefined'){
       this.messenger.sendMessage({
         text: message,
@@ -165,60 +180,26 @@ const TrainingsPage = React.createClass({
         type: type
       });
     }
-  },
-  subscribe: function(sender) {
+  }
+
+  subscribe(sender) {
     this.messenger = sender;
-  },
-  render: function() {
+  }
+
+  render() {
     const t = this.props.t;
-    var trainings;
+
+    let trainings;
     if (typeof this.state.trainings !== 'undefined') {
       trainings = this.state.trainings.map(function(training, index) {
         return (
           <MUI.GridTile
             key={['aaa-training_', index].join('')}
-            style={MUI.styles.GridTile} cols={2} >
+            style={MUI.styles.GridTile} cols={this.style.columns} >
             <TrainingTile data={training} onDelete={this.deleteTraining} />
           </MUI.GridTile>
         );
       }, this);
-    }
-
-    var newTrainingButton = (
-      <MUI.RaisedButton
-        label={t('training:newTraining.button')}
-        fullWidth={true}
-        primary={true}
-        onTouchTap={this.newTraining} />
-    );
-
-    var previousButton = '';
-    if(typeof this.state.previous !== 'undefined'){
-      previousButton = (
-        <MUI.RaisedButton
-          label={t('training:previousButton')}
-          fullWidth={true}
-          backgroundColor={MUI.colors.blue600}
-          labelColor={MUI.palette.alternateTextColor}
-          disabled={(this.state.previous === null)}
-          onTouchTap={this.moveToPreviousPage}
-          icon={<MUI.icons.navigation.chevron_left />} />
-      );
-    }
-
-    var nextButton = '';
-    if(typeof this.state.next !== 'undefined'){
-      nextButton = (
-        <MUI.RaisedButton
-          label={t('training:nextButton')}
-          fullWidth={true}
-          backgroundColor={MUI.colors.blue600}
-          labelColor={MUI.palette.alternateTextColor}
-          labelPosition={'before'}
-          disabled={(this.state.next === null)}
-          onTouchTap={this.moveToNextPage}
-          icon={<MUI.icons.navigation.chevron_right />} />
-      );
     }
 
     return (
@@ -232,38 +213,79 @@ const TrainingsPage = React.createClass({
         <MUI.GridList cellHeight={'auto'} cols={4} padding={10} style={styles.gridList} >
           <MUI.GridTile style={MUI.styles.GridTile}
             cols={4} >
-            {newTrainingButton}
+            <MUI.RaisedButton
+              label={t('training:newTraining.button')}
+              fullWidth={true}
+              primary={true}
+              onTouchTap={this.newTraining} />
           </MUI.GridTile>
 
           <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
             <MUI.GridList
               cellHeight={'auto'}
-              cols={4}
+              cols={6}
               padding={10}
               style={styles.gridList} >
-            {(trainings || <MUI.GridTile cols={4} ><Waiting /></MUI.GridTile>)}
+            {(trainings || <MUI.GridTile cols={6} ><Waiting /></MUI.GridTile>)}
             </MUI.GridList>
           </MUI.GridTile>
-          <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
-            <MUI.GridList cols={4} padding={10} style={styles.gridList} >
-              <MUI.GridTile style={MUI.styles.GridTile}>
-                {previousButton}
+          <MUI.GridTile style={MUI.styles.GridTile} cols={this.style.cols} >
+            <MUI.GridList
+              cols={this.style.cols}
+              style={this.style.gridList} >
+              <MUI.GridTile
+                cols={this.style.buttonCols}
+                style={MUI.styles.GridTile} >
+                {
+                  typeof this.state.previous !== 'undefined' ?
+                  <MUI.RaisedButton
+                    label={
+                      this.style.navigationButton.text ?
+                        t('training:previousButton') : ' '
+                    }
+                    fullWidth={true}
+                    backgroundColor={MUI.colors.blue600}
+                    labelColor={MUI.palette.alternateTextColor}
+                    labelStyle={this.style.navigationButton.labelStyle}
+                    disabled={(this.state.previous === null)}
+                    onTouchTap={this.moveToPreviousPage}
+                    icon={<MUI.icons.navigation.chevron_left />} /> : ''
+                }
               </MUI.GridTile>
-              <MUI.GridTile>{''}</MUI.GridTile>
-              <MUI.GridTile>{''}</MUI.GridTile>
-              <MUI.GridTile style={MUI.styles.GridTile}>
-                {nextButton}
+              <MUI.GridTile
+                cols={this.style.separatorCols}
+                style={MUI.styles.GridTile} >{''}</MUI.GridTile>
+              <MUI.GridTile
+                cols={this.style.buttonCols}
+                style={MUI.styles.GridTile} >
+                {
+                  typeof this.state.next !== 'undefined' ?
+                  <MUI.RaisedButton
+                    label={
+                      this.style.navigationButton.text ?
+                        t('training:nextButton') : ' '
+                    }
+                    fullWidth={true}
+                    backgroundColor={MUI.colors.blue600}
+                    labelColor={MUI.palette.alternateTextColor}
+                    labelPosition={'before'}
+                    labelStyle={this.style.navigationButton.labelStyle}
+                    disabled={(this.state.next === null)}
+                    onTouchTap={this.moveToNextPage}
+                    icon={<MUI.icons.navigation.chevron_right />} /> : ''
+                }
               </MUI.GridTile>
             </MUI.GridList>
           </MUI.GridTile>
         </MUI.GridList>
-        <NewTrainingCard
-          messenger={this.messenger}
+        <NewTrainingDialog
           open={this.state.editTraining}
+          messenger={this}
+          style={this.style}
           onRequestClose={this.closeEdit} />
       </BaseLayout>
     );
   }
-});
+}
 
 module.exports = i18nextReact.setupTranslation(['training'], TrainingsPage);
