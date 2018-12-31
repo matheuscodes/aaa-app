@@ -33,7 +33,7 @@ module.exports = {
 
     function errorCall(request){
       let error = new Error(request.responseText.toString());
-      callbacks.error.call(callbacks.context, error);
+      (callbacks.error || console.log).call(callbacks.context, error);
     }
 
     var newCallbacks = {
@@ -55,7 +55,7 @@ module.exports = {
 
     function errorCall(request){
       let error = new Error(request.responseText.toString());
-      callbacks.error.call(callbacks.context, error);
+      (callbacks.error || console.log).call(callbacks.context, error);
     }
 
     var newCallbacks = {
@@ -77,7 +77,7 @@ module.exports = {
 
     function errorCall(request){
       let error = new Error(request.responseText.toString());
-      callbacks.error.call(callbacks.context, error);
+      (callbacks.error || console.log).call(callbacks.context, error);
     }
 
     var newCallbacks = {
@@ -99,7 +99,7 @@ module.exports = {
 
     function errorCall(request){
       let error = new Error(request.responseText.toString());
-      callbacks.error.call(callbacks.context, error);
+      (callbacks.error || console.log).call(callbacks.context, error);
     }
 
     var newCallbacks = {
@@ -122,7 +122,7 @@ module.exports = {
       context: callbacks.context,
       200: callbacks.success,
       201: callbacks.success,
-      failure: callbacks.error
+      failure: (callbacks.error || console.log)
     };
 
     var request = requestBuilder('/seasons/', 'POST', newCallbacks);
@@ -150,7 +150,8 @@ module.exports = {
     var newCallbacks = {
       context: callbacks.context,
       204: callbacks.success,
-      failure: callbacks.error
+      200: callbacks.success,
+      failure: (callbacks.error || console.log)
     };
 
     var request;
@@ -161,7 +162,7 @@ module.exports = {
     var newCallbacks = {
       context: callbacks.context,
       204: callbacks.success,
-      failure: callbacks.error
+      failure: (callbacks.error || console.log)
     };
 
     const path = [
@@ -177,7 +178,7 @@ module.exports = {
     var newCallbacks = {
       context: callbacks.context,
       204: callbacks.success,
-      failure: callbacks.error
+      failure: (callbacks.error || console.log)
     };
 
     const path = [

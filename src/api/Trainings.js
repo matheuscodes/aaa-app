@@ -51,7 +51,7 @@ module.exports = {
 
     function errorCall(request){
       let error = new Error(request.responseText.toString());
-      callbacks.error.call(callbacks.context, error);
+      (callbacks.error || console.log).call(callbacks.context, error);
     }
 
     var newCallbacks = {
@@ -69,7 +69,7 @@ module.exports = {
   save: function(training, callbacks) {
     function errorCall(request){
       let error = new Error(request.responseText.toString());
-      callbacks.error.call(callbacks.context, error);
+      (callbacks.error || console.log).call(callbacks.context, error);
     }
 
     const newCallbacks = {
@@ -91,19 +91,20 @@ module.exports = {
       request.send(processRequest(training));
     }
   },
-  delete: function(trainingId, callbacks) {
+  delete: function(seasonId, trainingId, callbacks) {
     function errorCall(request){
       let error = new Error(request.responseText.toString());
-      callbacks.error.call(callbacks.context, error);
+      (callbacks.error || console.log).call(callbacks.context, error);
     }
 
     var newCallbacks = {
       context: callbacks.context,
       204: callbacks.success,
+      200: callbacks.success,
       failure: errorCall
     };
 
-    var request = requestBuilder(['/trainings/', trainingId, '/'].join(''),
+    var request = requestBuilder(['/seasons/',seasonId ,'/trainings/', trainingId, '/'].join(''),
                                  'DELETE', newCallbacks);
     if(request !== null){
       request.send();

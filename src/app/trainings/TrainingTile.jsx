@@ -14,7 +14,7 @@ const TrainingTile = React.createClass({
     t: React.PropTypes.func
   },
   delete: function() {
-    this.props.onDelete(this.props.data.id);
+    this.props.onDelete(this.props.data.seasonId, this.props.data.id);
   },
   render: function() {
     const t = this.props.t;
