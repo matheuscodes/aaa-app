@@ -98,6 +98,6 @@ app.get('/test', function(req,res){
   res.send(response.join('<br/>'));
 });
 
-var server = http.createServer(app);
-server.listen(9090);
-console.log("Listening to 9090");
+const serverlessExpress = require('aws-serverless-express');
+const server = serverlessExpress.createServer(app);
+exports.main = (event, context) => serverlessExpress.proxy(server, event, context)
