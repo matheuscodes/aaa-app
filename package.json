@@ -19,6 +19,7 @@
     "deploy-domain": "serverless create_domain",
     "delete-domain": "serverless delete_domain",
     "delete-stack": "serverless remove",
+    "just-deploy": "serverless deploy",
     "deploy-stack": "npm run build-production && serverless deploy"
   },
   "repository": {
