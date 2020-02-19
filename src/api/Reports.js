@@ -17,7 +17,7 @@ module.exports = {
 
     function errorCall(request){
       let error = new Error(request.responseText.toString());
-      callbacks.error.call(callbacks.context, error);
+      (callbacks.error || console.log).call(callbacks.context, error);
     }
 
     var newCallbacks = {
@@ -55,7 +55,7 @@ module.exports = {
 
     function errorCall(request){
       let error = new Error(request.responseText.toString());
-      callbacks.error.call(callbacks.context, error);
+      (callbacks.error || console.log).call(callbacks.context, error);
     }
 
     var newCallbacks = {
@@ -97,7 +97,7 @@ module.exports = {
 
     function errorCall(request){
       let error = new Error(request.responseText.toString());
-      callbacks.error.call(callbacks.context, error);
+      (callbacks.error || console.log).call(callbacks.context, error);
     }
 
 
@@ -120,7 +120,7 @@ module.exports = {
 
     function errorCall(request){
       let error = new Error(request.responseText.toString());
-      callbacks.error.call(callbacks.context, error);
+      (callbacks.error || console.log).call(callbacks.context, error);
     }
 
     var newCallbacks = {

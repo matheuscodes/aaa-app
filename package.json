@@ -15,7 +15,11 @@
     "serve": "npm run bundle && babel-node src/server.js",
     "serve-development": "env-cmd development npm run serve",
     "serve-production": "env-cmd production node build/server.js",
-    "uglify": "npm run bundle && uglifyjs build/app.js -o build/app.js"
+    "uglify": "npm run bundle && uglifyjs build/app.js -o build/app.js",
+    "deploy-domain": "serverless create_domain",
+    "delete-domain": "serverless delete_domain",
+    "delete-stack": "serverless remove",
+    "deploy-stack": "npm run build-production && serverless deploy"
   },
   "repository": {
     "type": "git",
@@ -33,6 +37,7 @@
   "homepage": "https://github.com/matheuscodes/aaa-app#readme",
   "dependencies": {
     "aaa-languages": "git+https://github.com/matheuscodes/aaa-languages.git",
+    "aws-serverless-express": "^3.3.5",
     "core-decorators": "0.19.0",
     "express": "4.15.3",
     "i18next": "8.4.3",
@@ -48,7 +53,8 @@
     "react-dom": "15.6.1",
     "react-event-listener": "^0.4.5",
     "react-i18next": "4.6.2",
-    "react-tap-event-plugin": "2.0.1"
+    "react-tap-event-plugin": "2.0.1",
+    "serverless-domain-manager": "^2.6.10"
   },
   "devDependencies": {
     "babel-cli": "6.24.1",
@@ -66,6 +72,7 @@
     "eslint-plugin-react": "7.1.0",
     "intl": "1.2.5",
     "prop-types": "15.5.10",
+    "serverless": "^1.35.1",
     "uglify-js": "3.0.24"
   }
 }

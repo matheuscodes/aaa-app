@@ -20,14 +20,14 @@ function updateRegistration(eventId, callbacks, unregister) {
 
   function errorCall(request){
     let error = new Error(request.responseText.toString());
-    callbacks.error.call(callbacks.context, error);
+    (callbacks.error || console.log).call(callbacks.context, error);
   }
 
   var newCallbacks = {
     context: callbacks.context,
     201: callbacks.success,
     204: callbacks.success,
-    failure: errorCall
+    failure: callbacks.success,
   };
 
   var request = requestBuilder(['/events/', eventId, '/'].join(''),
@@ -47,7 +47,7 @@ module.exports = {
     var newCallbacks = {
       context: callbacks.context,
       200: successCall,
-      failure: callbacks.error
+      failure: (callbacks.error || console.log)
     };
 
     var url = '/events/';
@@ -68,7 +68,7 @@ module.exports = {
     const newCallbacks = {
       context: callbacks.context,
       200: successCall,
-      failure: callbacks.error
+      failure: (callbacks.error || console.log)
     };
 
     let url = '/events/';
