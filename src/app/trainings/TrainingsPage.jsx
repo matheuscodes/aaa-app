@@ -139,7 +139,7 @@ class TrainingsPage extends MessageablePage {
     this.updateRest();
   }
 
-  deleteTraining(trainingId) {
+  deleteTraining(seasonId, trainingId) {
     const t = this.props.t;
     var callbacks = {
       context: this,
@@ -154,7 +154,7 @@ class TrainingsPage extends MessageablePage {
         this.showMessage(t('training:messages.deletedError'), "ERROR");
       }
     };
-    API.trainings.delete(trainingId, callbacks);
+    API.trainings.delete(seasonId, trainingId, callbacks);
   }
 
   closeEdit(refresh) {

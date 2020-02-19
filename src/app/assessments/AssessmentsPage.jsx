@@ -24,14 +24,14 @@ class AssessmentsPage extends MessageablePage {
     const t = this.props.t;
     let callbacks = {
       context: this,
-      success(list) {
+      success: function(list) {
         let current = this.state;
         current.editAssessment = false;
         delete current.assessmentId;
         current.assessments = list;
         this.setState(current);
       },
-      error(error) {
+      error: function(error) {
         this.showMessage(t('assessment:messages.listError'), 'ERROR');
         if (API.isAuthError(error)) {
           this.props.switcher.switchTo('loginPage');
@@ -151,7 +151,7 @@ class AssessmentsPage extends MessageablePage {
     this.setState(this.state);
   }
 
-  deleteAssessment(assessmentId) {
+  deleteAssessment(seasonId, assessmentId) {
     const t = this.props.t;
     let callbacks = {
       context: this,
@@ -166,7 +166,7 @@ class AssessmentsPage extends MessageablePage {
         this.showMessage(t('assessment:messages.deletedError'), 'ERROR');
       },
     };
-    API.assessments.delete(assessmentId, callbacks);
+    API.assessments.delete(seasonId, assessmentId, callbacks);
   }
 
   render() {

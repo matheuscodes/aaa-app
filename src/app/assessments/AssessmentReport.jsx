@@ -23,7 +23,7 @@ class AssessmentReport extends React.Component {
   }
 
   onDelete() {
-    this.props.onDelete(this.props.assessmentId);
+    this.props.onDelete(this.props.seasonId, this.props.assessmentId);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -34,7 +34,7 @@ class AssessmentReport extends React.Component {
           this.setState({assessment: assessment, called: false});
         },
       };
-      API.assessments.reportById(this.props.assessmentId, callbacks);
+      API.assessments.reportById(this.props.assessmentId, this.props.seasonId, callbacks);
       this.setState(Object.assign(this.state, {
         called: true,
       }));

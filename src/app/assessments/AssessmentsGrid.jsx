@@ -18,7 +18,7 @@ export default function AssessmentsGrid(props) {
           props.assessments.map((assessment, index) => {
             return (
               <MUI.GridTile
-                key={`aaa-assessment_${assessment.id}`}
+                key={`aaa-assessment_${assessment.date}`}
                 style={MUI.styles.GridTile}
                 cols={Math.floor(props.cols / style.columns)} >
                 <AssessmentTile

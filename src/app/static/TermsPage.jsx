@@ -48,19 +48,19 @@ const TermsPage = React.createClass({
             <h2>{t('terms:rights.title')}</h2>
               <p>
                 <a href={'https://github.com/matheuscodes/aaa-app'}>Advanced Archery Application Code</a><br/>
-                Copyright © 2015-2017 Matheus Borges Teixeira<br/>
+                Copyright © 2015-2019 Matheus Borges Teixeira<br/>
                 GNU Affero General Public License v3.0
               </p>
 
               <p>
                 <a href={'https://github.com/matheuscodes/aaa-languages'}>Advanced Archery Application Translations</a><br/>
-                Copyright © 2017 Several Collaborators<br/>
+                Copyright © 2019 Several Collaborators<br/>
                 MIT License
               </p>
 
               <p>
                 <a href={''}>Advanced Archery Application Server Code</a><br/>
-                Copyright © 2015-2017 Matheus Borges Teixeira<br/>
+                Copyright © 2015-2019 Matheus Borges Teixeira<br/>
                 Closed Source*, all rights reserved
               </p>
 

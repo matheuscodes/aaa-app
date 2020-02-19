@@ -82,6 +82,7 @@ class AssessmentTile extends React.Component {
             <AssessmentReport
               style={this.props.style}
               assessmentId={this.props.data.id}
+              seasonId={this.props.data.seasonId}
               data={this.props.data}
               handleClose={this.handleClose}
               open={this.state.open}
