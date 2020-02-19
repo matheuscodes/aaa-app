@@ -6,12 +6,13 @@ plugins:
 provider:
   timeout: 30 #seconds
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs12.x
   region: eu-central-1
 
 custom:
   customDomain:
     domainName: archery.app
+    region: eu-central-1
     certificateArn: arn:aws:acm:eu-central-1:723566221425:certificate/1970d681-38b8-4443-bb46-6ba831009736
     basePath: ''
     endpointType: 'regional'
