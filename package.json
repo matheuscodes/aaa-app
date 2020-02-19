@@ -52,10 +52,10 @@
     "moment": "2.24.0",
     "react": "15.6.1",
     "react-dom": "15.6.1",
-    "react-event-listener": "^0.4.5",
+    "react-event-listener": "0.4.5",
     "react-i18next": "4.6.2",
     "react-tap-event-plugin": "2.0.1",
-    "serverless-domain-manager": "^2.6.10"
+    "serverless-domain-manager": "2.6.10"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
