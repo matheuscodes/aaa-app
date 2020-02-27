@@ -1,13 +1,13 @@
-const React = require('react');
+import React from 'react'
 
-const MUI = require('app/common/MaterialUI');
-const i18nextReact = require('global/i18nextReact');
+import MUI from 'app/common/MaterialUI'
+import i18nextReact from 'global/i18nextReact'
 
-const LanguageIcon = require('svg/icon/Languages');
+import LanguageIcon from 'svg/icon/Languages'
 
-const languages = require('constants/Languages');
+import languages from 'constants/Languages'
 
-const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
+import ReactPageSwitcherType from 'global/ReactPageSwitcherType'
 
 import { Style } from 'global/StyleProvider';
 
@@ -172,7 +172,7 @@ var Footer = React.createClass({
         </div>
         <div style={this.style.copyright.div}>
           <span style={this.style.copyright.span}>
-            Matheus Borges Teixeira &copy; 2020 - Version 2.0.1
+            Matheus Borges Teixeira &copy; 2020 - Version 2.1.0
           </span>
         </div>
       </footer>
@@ -180,4 +180,4 @@ var Footer = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common'], Footer);
+export default i18nextReact.setupTranslation(['common'], Footer);

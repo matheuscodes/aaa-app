@@ -1,11 +1,11 @@
-const React = require('react');
+import React from 'react'
 
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
-const i18nextReact = require('global/i18nextReact');
+import MUI from 'app/common/MaterialUI'
+import API from 'api'
+import i18nextReact from 'global/i18nextReact'
 
-const Waiting = require('app/common/Waiting');
-const Notice = require('app/common/Notice');
+import Waiting from 'app/common/Waiting'
+import Notice from 'app/common/Notice'
 
 const EventsCard = React.createClass({
   getInitialState: function() {
@@ -68,4 +68,4 @@ const EventsCard = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['home'], EventsCard);
+export default i18nextReact.setupTranslation(['home'], EventsCard);

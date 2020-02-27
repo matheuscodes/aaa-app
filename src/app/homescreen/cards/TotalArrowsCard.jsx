@@ -1,9 +1,9 @@
-const React = require('react');
-const moment = require('moment');
+import React from 'react'
+import moment from 'moment'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
+import i18nextReact from 'global/i18nextReact'
+import MUI from 'app/common/MaterialUI'
+import API from 'api'
 
 const TotalArrowsCard = React.createClass({
   getInitialState: function() {
@@ -65,5 +65,5 @@ const TotalArrowsCard = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common', 'home'],
+export default i18nextReact.setupTranslation(['common', 'home'],
                                                TotalArrowsCard);

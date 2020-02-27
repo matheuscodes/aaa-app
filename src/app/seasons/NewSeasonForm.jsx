@@ -1,15 +1,15 @@
-const React = require('react');
-const moment = require('moment');
+import React from 'react'
+import moment from 'moment'
 
-const getLocalArcher = require('api/helpers/getLocalArcher');
+import getLocalArcher from 'api/helpers/getLocalArcher'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
+import i18nextReact from 'global/i18nextReact'
+import MUI from 'app/common/MaterialUI'
+import API from 'api'
 
-const NewSeasonGoal = require('app/seasons/NewSeasonGoal');
-const SeasonGraph = require('svg/SeasonGraph');
-const Waiting = require('app/common/Waiting');
+import NewSeasonGoal from 'app/seasons/NewSeasonGoal'
+import SeasonGraph from 'svg/SeasonGraph'
+import Waiting from 'app/common/Waiting'
 
 const NewSeasonCardForm = React.createClass({
   propTypes: {
@@ -288,4 +288,4 @@ const NewSeasonCardForm = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['season'], NewSeasonCardForm);
+export default i18nextReact.setupTranslation(['season'], NewSeasonCardForm);

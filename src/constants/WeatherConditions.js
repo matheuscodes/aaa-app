@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   "FAIR":"Fair",
   "BARELYCLOUDY":"BarelyCloudy",
   "PARTLYCLOUDY":"PartlyCloudy",

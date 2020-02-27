@@ -1,6 +1,6 @@
-var MUI = require('app/common/MaterialUI');
+import MUI from 'app/common/MaterialUI'
 
-module.exports = {
+export default {
   color: {
     M: MUI.colors.grey900,
     1: MUI.colors.grey900,

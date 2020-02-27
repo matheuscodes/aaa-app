@@ -1,4 +1,4 @@
-module.exports = function isAuthError(error) {
+export default function isAuthError(error) {
   if(error instanceof Error){
     switch(error.message){
       case 'Missing Token.':

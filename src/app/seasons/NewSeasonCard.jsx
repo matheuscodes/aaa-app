@@ -1,11 +1,11 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
+import i18nextReact from 'global/i18nextReact'
+import MUI from 'app/common/MaterialUI'
+import API from 'api'
 
-const NewSeasonForm = require('app/seasons/NewSeasonForm');
-const Waiting = require('app/common/Waiting');
+import NewSeasonForm from 'app/seasons/NewSeasonForm'
+import Waiting from 'app/common/Waiting'
 
 import Season from 'model/Season';
 
@@ -135,4 +135,4 @@ const NewSeasonCard = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['season'], NewSeasonCard);
+export default i18nextReact.setupTranslation(['season'], NewSeasonCard);

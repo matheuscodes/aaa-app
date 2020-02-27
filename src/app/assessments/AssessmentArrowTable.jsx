@@ -78,5 +78,5 @@ AssessmentArrowTable.propTypes = {
   t: PropTypes.func,
 };
 
-module.exports = i18nextReact.setupTranslation(['assessment'],
+export default i18nextReact.setupTranslation(['assessment'],
                                                AssessmentArrowTable);

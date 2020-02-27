@@ -1,6 +1,6 @@
-const React = require('react');
+import React from 'react'
 
-const MUI = require('app/common/MaterialUI');
+import MUI from 'app/common/MaterialUI'
 
 const color = {
   ERROR: {color: MUI.colors.red500},
@@ -8,7 +8,7 @@ const color = {
   MESSAGE: {color: MUI.colors.grey100}
 };
 
-module.exports = React.createClass({
+export default React.createClass({
   render: function() {
     return (
       <MUI.Snackbar

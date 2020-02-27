@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react'
 
 const PlanBar = React.createClass({
   propTypes: {
@@ -16,4 +16,4 @@ const PlanBar = React.createClass({
   }
 });
 
-module.exports = PlanBar;
+export default PlanBar;

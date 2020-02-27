@@ -1,12 +1,12 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
+import i18nextReact from 'global/i18nextReact'
+import MUI from 'app/common/MaterialUI'
 
-const Waiting = require('app/common/Waiting');
-const SeasonGraph = require('svg/SeasonGraph');
+import Waiting from 'app/common/Waiting'
+import SeasonGraph from 'svg/SeasonGraph'
 
-const API = require('api');
+import API from 'api'
 
 const SeasonTile = React.createClass({
   propTypes: {
@@ -72,4 +72,4 @@ const SeasonTile = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['season'], SeasonTile);
+export default i18nextReact.setupTranslation(['season'], SeasonTile);

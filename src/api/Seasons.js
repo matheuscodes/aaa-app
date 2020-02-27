@@ -1,5 +1,5 @@
-var requestBuilder = require('api/helpers/RequestBuilder');
-var moment = require('moment');
+import requestBuilder from 'api/helpers/RequestBuilder'
+import moment from 'moment'
 import Season from 'model/Season';
 
 var processSeason = function(response) {
@@ -24,7 +24,7 @@ var processResponseList = function(response) {
   return data;
 };
 
-module.exports = {
+export default {
   getList: function(callbacks) {
     var successCall = function(request) {
       var response = processResponseList(request.responseText);

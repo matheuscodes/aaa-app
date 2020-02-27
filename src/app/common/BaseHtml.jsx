@@ -1,9 +1,9 @@
-const React = require('react');
-const i18next = require('i18next');
+import React from 'react'
+import i18next from 'i18next'
 
-const I18nextProvider = require('react-i18next').I18nextProvider;
+import { I18nextProvider } from 'react-i18next';
 
-const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
+import ReactPageSwitcherType from 'global/ReactPageSwitcherType'
 
 const htmlStyle = {
   fontFamily: 'Roboto, sans-serif',
@@ -60,4 +60,4 @@ const BaseHtml = React.createClass({
   }
 });
 
-module.exports = BaseHtml;
+export default BaseHtml;

@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react'
 
 const ActualBar = React.createClass({
   propTypes: {
@@ -27,4 +27,4 @@ const ActualBar = React.createClass({
   }
 });
 
-module.exports = ActualBar;
+export default ActualBar;

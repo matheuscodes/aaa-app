@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {autobind} from 'core-decorators';
 
-import {setupTranslation} from 'global/i18nextReact';
+import i18nextReact from 'global/i18nextReact';
 
 import Round from 'model/Round';
 
@@ -368,4 +368,4 @@ NewAssessmentDialog.propTypes = {
   onRequestClose: PropTypes.func,
 };
 
-module.exports = setupTranslation(['assessment'], NewAssessmentDialog);
+export default i18nextReact.setupTranslation(['assessment'], NewAssessmentDialog);

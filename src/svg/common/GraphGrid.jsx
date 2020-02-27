@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react'
 
 const GraphGrid = React.createClass({
   propTypes: {
@@ -43,4 +43,4 @@ const GraphGrid = React.createClass({
   }
 });
 
-module.exports = GraphGrid;
+export default GraphGrid;

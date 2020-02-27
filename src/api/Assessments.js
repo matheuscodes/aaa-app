@@ -1,5 +1,5 @@
-var requestBuilder = require('api/helpers/RequestBuilder');
-var valueConverter = require('global/ValueConverter');
+import requestBuilder from 'api/helpers/RequestBuilder'
+import valueConverter from 'global/ValueConverter'
 
 var processResponse = function(response) {
   var data = JSON.parse(response.toString());
@@ -46,7 +46,7 @@ var processRequest = function(assessment) {
   return JSON.stringify(data);
 };
 
-module.exports = {
+export default {
   getList: function(page,callbacks) {
     var successCall = function(request) {
       var response = processResponseList(request.responseText);

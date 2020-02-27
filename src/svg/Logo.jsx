@@ -1,6 +1,6 @@
-const React = require('react');
+import React from 'react'
 
-module.exports = React.createClass({
+export default React.createClass({
   render: function() {
     return (
       <svg width={this.props.width} height={this.props.height} viewBox="-252.5 -252.5 365 505" enableBackground="new -252.5 -252.5 315 505" >

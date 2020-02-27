@@ -1,15 +1,15 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
-const UserTypes = require('constants/UserTypes');
-const MUI = require('app/common/MaterialUI');
+import i18nextReact from 'global/i18nextReact'
+import UserTypes from 'constants/UserTypes'
+import MUI from 'app/common/MaterialUI'
 
-const LogoName = require('svg/LogoName');
+import LogoName from 'svg/LogoName'
 
-const getLocalArcher = require('api/helpers/getLocalArcher');
-const deleteLocalArcher = require('api/helpers/deleteLocalArcher');
+import getLocalArcher from 'api/helpers/getLocalArcher'
+import deleteLocalArcher from 'api/helpers/deleteLocalArcher'
 
-const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
+import ReactPageSwitcherType from 'global/ReactPageSwitcherType'
 
 import { Style } from 'global/StyleProvider';
 
@@ -193,4 +193,4 @@ const Header = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common'], Header);
+export default i18nextReact.setupTranslation(['common'], Header);

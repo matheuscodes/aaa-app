@@ -1,11 +1,11 @@
-const React = require('react');
-const MUI = require('app/common/MaterialUI');
+import React from 'react'
+import MUI from 'app/common/MaterialUI'
 
 import DirectionSelectorStyle from 'app/common/DirectionSelector.style';
 import directions from 'constants/Directions';
 import SelectField from 'components/SelectField';
 
-const Compass = require('svg/icon/Compass');
+import Compass from 'svg/icon/Compass'
 
 const DirectionSelector = React.createClass({
   propTypes: {
@@ -45,4 +45,4 @@ const DirectionSelector = React.createClass({
   }
 });
 
-module.exports = DirectionSelector;
+export default DirectionSelector;

@@ -56,6 +56,7 @@ export class StyleProvider {
        this.detected.ua &&
        this.detected.ua.match('Firefox'))
     ){
+       console.log('getPolyfills');
        require('intl');
        require('intl/locale-data/jsonp/en.js');
     }

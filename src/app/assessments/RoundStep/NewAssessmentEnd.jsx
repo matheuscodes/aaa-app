@@ -197,5 +197,5 @@ NewAssessmentEnd.propTypes = {
 };
 
 
-module.exports = i18nextReact.setupTranslation(['assessment'],
+export default i18nextReact.setupTranslation(['assessment'],
                                                NewAssessmentEnd);

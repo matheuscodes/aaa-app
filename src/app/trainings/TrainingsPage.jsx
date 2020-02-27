@@ -288,4 +288,4 @@ class TrainingsPage extends MessageablePage {
   }
 }
 
-module.exports = i18nextReact.setupTranslation(['training'], TrainingsPage);
+export default i18nextReact.setupTranslation(['training'], TrainingsPage);

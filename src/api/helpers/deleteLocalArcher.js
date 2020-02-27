@@ -1,4 +1,4 @@
-module.exports = function getLocalArcher() {
+export default function getLocalArcher() {
   if (localStorage && localStorage.loggedToken) {
     localStorage.removeItem("loggedToken");
   }

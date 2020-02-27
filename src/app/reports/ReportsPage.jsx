@@ -1,10 +1,10 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
+import i18nextReact from 'global/i18nextReact'
+import MUI from 'app/common/MaterialUI'
 
-const BaseLayout = require('app/common/BaseLayout');
-const ReportCard = require('app/reports/ReportCard');
+import BaseLayout from 'app/common/BaseLayout'
+import ReportCard from 'app/reports/ReportCard'
 
 const styles = {
   gridList: {
@@ -33,4 +33,4 @@ const ReportsPage = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['report'], ReportsPage);
+export default i18nextReact.setupTranslation(['report'], ReportsPage);

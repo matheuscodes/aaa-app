@@ -114,4 +114,4 @@ MUI.styles = {
    }
 }
 
-module.exports = MUI;
+export default MUI;

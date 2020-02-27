@@ -1,5 +1,5 @@
-var React = require('react');
-const i18nextReact = require('global/i18nextReact');
+import React from 'react'
+import i18nextReact from 'global/i18nextReact'
 
 const SeasonLabels = React.createClass({
   propTypes: {
@@ -55,4 +55,4 @@ const SeasonLabels = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['season'], SeasonLabels);
+export default i18nextReact.setupTranslation(['season'], SeasonLabels);

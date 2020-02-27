@@ -4,6 +4,7 @@ plugins:
   - serverless-domain-manager
 
 provider:
+  stage: snotra
   timeout: 30 #seconds
   name: aws
   runtime: nodejs12.x
@@ -11,9 +12,8 @@ provider:
 
 custom:
   customDomain:
-    domainName: archery.app
-    region: eu-central-1
-    certificateArn: arn:aws:acm:eu-central-1:723566221425:certificate/1970d681-38b8-4443-bb46-6ba831009736
+    domainName: snotra.dev.archery.app
+    certificateArn: arn:aws:acm:eu-central-1:723566221425:certificate/d7efaf79-a346-4cda-a91f-17305ed635af
     basePath: ''
     endpointType: 'regional'
     stage: ${self:provider.stage}
@@ -24,17 +24,17 @@ package:
     - ./**
   include:
     - build/**
-    - node_modules/**
+    - node_modules/aaa-languages/**
 
 functions:
   application:
-    handler: build/server.main
+    handler: build/aaa-server.default
     events:
       - http:
           path: /{proxy+}
           method: GET
   main:
-    handler: build/server.main
+    handler: build/aaa-server.default
     events:
       - http:
           path: ''

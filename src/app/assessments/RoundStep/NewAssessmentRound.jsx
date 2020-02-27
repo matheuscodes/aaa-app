@@ -141,5 +141,5 @@ NewAssessmentRound.propTypes = {
   roundIndex: PropTypes.number,
 };
 
-module.exports = i18nextReact.setupTranslation(['assessment'],
+export default i18nextReact.setupTranslation(['assessment'],
                                                NewAssessmentRound);

@@ -1,21 +1,16 @@
 {
   "name": "aaa-app",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "AAA - Advanced Archery Application",
   "main": "src/server.js",
   "scripts": {
-    "bundle": "browserify src/app.js -t babelify --outfile build/app.js --extension=.jsx --extension=.svg",
-    "build": "rm -rf build && mkdir build && npm run compile && npm run uglify",
+    "build": "webpack --progress",
     "build-production": "env-cmd production npm run build",
     "clean": "rm -rf node_modules && rm -rf build",
-    "compile": "babel src -d build",
     "eslint": "eslint --ext .jsx,.svg --fix ",
     "fetch-languages": "rm -rf node_modules/aaa-languages && cp -R ../aaa-languages node_modules/",
     "revert-languages": "rm -rf node_modules/aaa-languages && npm run install aaa-languages",
-    "serve": "npm run bundle && babel-node src/server.js",
-    "serve-development": "env-cmd development npm run serve",
-    "serve-production": "env-cmd production node build/server.js",
-    "uglify": "npm run bundle && terser build/app.js -o build/app.js",
+    "serve": "npm run build && SERVER=local node build/aaa-server.js",
     "deploy-domain": "serverless create_domain",
     "delete-domain": "serverless delete_domain",
     "delete-stack": "serverless remove",
@@ -58,15 +53,11 @@
     "serverless-domain-manager": "2.6.10"
   },
   "devDependencies": {
-    "babel-cli": "6.26.0",
-    "babel-eslint": "8.2.6",
-    "babel-plugin-module-resolver": "2.7.1",
-    "babel-plugin-transform-decorators-legacy": "1.3.4",
-    "babel-plugin-transform-inline-environment-variables": "0.1.1",
-    "babel-preset-latest": "6.24.1",
-    "babel-preset-react": "6.24.1",
-    "babelify": "7.3.0",
-    "browserify": "14.4.0",
+    "@babel/core": "7.2.2",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/preset-env": "7.2.3",
+    "@babel/preset-react": "^7.8.3",
+    "babel-loader": "8.0.4",
     "env-cmd": "5.1.0",
     "eslint": "4.19.1",
     "eslint-config-google": "0.9.1",
@@ -74,6 +65,8 @@
     "intl": "1.2.5",
     "prop-types": "15.5.10",
     "serverless": "1.64.0",
-    "terser": "4.6.3"
+    "terser": "4.6.3",
+    "webpack": "4.28.2",
+    "webpack-cli": "3.1.2"
   }
 }

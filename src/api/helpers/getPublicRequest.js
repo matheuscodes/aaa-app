@@ -1,7 +1,7 @@
-const requestURL = (process.env.clientRequestURL || 'none');
+const requestURL = (process.env.clientRequestURL || "https://snotra.api.archery.app");
 console.log("Using Request URL: ",requestURL)
 
-module.exports = function(path, method, callbacks) {
+export default function(path, method, callbacks) {
   var xmlhttp = new XMLHttpRequest();
   var url = requestURL;
 

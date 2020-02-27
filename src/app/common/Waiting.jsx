@@ -1,9 +1,9 @@
 'use strict';
-var React = require('react');
+import React from 'react'
 
-var MUI = require('app/common/MaterialUI');
+import MUI from 'app/common/MaterialUI'
 
-module.exports = React.createClass({
+export default React.createClass({
   render: function() {
     return (<div style={{textAlign: 'center'}}><MUI.CircularProgress /></div>);
   }

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   "ARCHER":"archer",
   "TRAINER":"trainer"
 }

@@ -1,11 +1,11 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
+import i18nextReact from 'global/i18nextReact'
+import MUI from 'app/common/MaterialUI'
+import API from 'api'
 
-const SeasonTile = require('app/seasons/SeasonTile');
-const Waiting = require('app/common/Waiting');
+import SeasonTile from 'app/seasons/SeasonTile'
+import Waiting from 'app/common/Waiting'
 
 const SeasonsCard = React.createClass({
   getInitialState: function() {
@@ -62,4 +62,4 @@ const SeasonsCard = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['home', 'season'], SeasonsCard);
+export default i18nextReact.setupTranslation(['home', 'season'], SeasonsCard);

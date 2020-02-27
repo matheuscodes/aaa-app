@@ -1,5 +1,5 @@
-const React = require('react');
-const valueConverter = require('global/ValueConverter');
+import React from 'react'
+import valueConverter from 'global/ValueConverter'
 
 // TODO FUCKING REFACTOR THIS SHIT.
 const GraphStyle = React.createClass({
@@ -51,4 +51,4 @@ const GraphStyle = React.createClass({
   }
 });
 
-module.exports = GraphStyle;
+export default GraphStyle;

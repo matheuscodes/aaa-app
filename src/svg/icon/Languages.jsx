@@ -1,6 +1,6 @@
-var React = require('react');
+import React from 'react'
 
-module.exports = React.createClass({
+export default React.createClass({
   render: function() {
     return (
       <svg style={this.props.style} version="1.1" x="0px" y="0px" viewBox="0 0 100 75.446" enableBackground="new 0 0 100 75.446">

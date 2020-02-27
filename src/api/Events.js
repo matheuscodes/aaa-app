@@ -1,5 +1,5 @@
-const requestBuilder = require('api/helpers/RequestBuilder');
-const publicRequest = require('api/helpers/getPublicRequest');
+import requestBuilder from 'api/helpers/RequestBuilder'
+import publicRequest from 'api/helpers/getPublicRequest'
 import Event from 'model/Event'
 
 var processResponseList = function(response) {
@@ -37,7 +37,7 @@ function updateRegistration(eventId, callbacks, unregister) {
   }
 }
 
-module.exports = {
+export default {
   getList: function(callbacks, from, to) {
     var successCall = function(request) {
       var response = processResponseList(request.responseText);

@@ -1,16 +1,16 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
+import i18nextReact from 'global/i18nextReact'
+import MUI from 'app/common/MaterialUI'
+import API from 'api'
 
-const PageSwitcher = require('app/common/PageSwitcher');
-const Waiting = require('app/common/Waiting');
-const Notice = require('app/common/Notice');
+import PageSwitcher from 'app/common/PageSwitcher'
+import Waiting from 'app/common/Waiting'
+import Notice from 'app/common/Notice'
 
-const BaseLayout = require('app/common/BaseLayout');
-const NewSeasonCard = require('app/seasons/NewSeasonCard');
-const SeasonTile = require('app/seasons/SeasonTile');
+import BaseLayout from 'app/common/BaseLayout'
+import NewSeasonCard from 'app/seasons/NewSeasonCard'
+import SeasonTile from 'app/seasons/SeasonTile'
 
 const SeasonsPage = React.createClass({
   propTypes: {
@@ -155,4 +155,4 @@ const SeasonsPage = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['season'], SeasonsPage);
+export default i18nextReact.setupTranslation(['season'], SeasonsPage);

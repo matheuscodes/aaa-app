@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {autobind} from 'core-decorators';
 
 import MessageablePage from 'components/MessageablePage';
-import {setupTranslation} from 'global/i18nextReact';
+import i18nextReact from 'global/i18nextReact';
 import pageSwitcherType from 'global/ReactPageSwitcherType';
 import BaseLayout from 'app/common/BaseLayout';
 import LoginCard from 'app/login/LoginCard';
@@ -52,4 +52,4 @@ class LoginPage extends MessageablePage {
   }
 }
 
-module.exports = setupTranslation(['login'], LoginPage);
+export default i18nextReact.setupTranslation(['login'], LoginPage);

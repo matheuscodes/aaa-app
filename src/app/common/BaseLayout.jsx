@@ -1,11 +1,11 @@
-const React = require('react');
+import React from 'react'
 
-const MUI = require('app/common/MaterialUI');
+import MUI from 'app/common/MaterialUI'
 
-const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
-const Header = require('app/common/Header');
-const Footer = require('app/common/Footer');
-const Notice = require('app/common/Notice');
+import ReactPageSwitcherType from 'global/ReactPageSwitcherType'
+import Header from 'app/common/Header'
+import Footer from 'app/common/Footer'
+import Notice from 'app/common/Notice'
 
 /**
  * Base layout for page rendering.
@@ -17,7 +17,7 @@ const Notice = require('app/common/Notice');
  * @author Matheus
  * @since 1.0.0
  */
-module.exports = React.createClass({
+export default React.createClass({
   propTypes: {
     switcher: ReactPageSwitcherType.isRequired,
     userAgent: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]),

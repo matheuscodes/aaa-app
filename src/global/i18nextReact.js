@@ -1,9 +1,9 @@
-const moment = require('moment');
-const i18next = require('i18next');
-const fsBackend = require('i18next-node-fs-backend');
-const i18nextMiddleware = require('i18next-express-middleware');
-const xhrBackend = require('i18next-xhr-backend');
-const browserLanguageDetector = require('i18next-browser-languagedetector');
+import moment from 'moment'
+import i18next from 'i18next'
+import fsBackend from 'i18next-node-fs-backend'
+import i18nextMiddleware from 'i18next-express-middleware'
+import xhrBackend from 'i18next-xhr-backend'
+import browserLanguageDetector from 'i18next-browser-languagedetector'
 
 const fsBackendOptions = {
   loadPath: 'node_modules/aaa-languages/src/{{lng}}/{{ns}}.json',
@@ -72,19 +72,14 @@ const detectionClientOptions = {
   // htmlTag: document.documentElement
 };
 
-module.exports = {
-  i18next,
-  i18nextMiddleware
-};
-
-const translate = require('react-i18next').translate;
+import { translate } from 'react-i18next';
 
 const translateConfig = {withRef: true, wait: false};
 
 i18next.on('languageChanged', function(lng) {
   moment.locale(lng);
   // TODO add this to date pickers to get localized dialogs.
-  module.exports.DateTimeFormat = new Intl.DateTimeFormat(lng);
+  //module.exports.DateTimeFormat = new Intl.DateTimeFormat(lng);
 });
 
 function formatter(value, format, lng) {
@@ -101,12 +96,12 @@ function formatter(value, format, lng) {
       return value;
   }
 }
-const serverDebug = JSON.parse(process.env.i18nServerDebug);
-const browserDebug = JSON.parse(process.env.i18nBrowserDebug);
+const serverDebug = false;//JSON.parse(process.env.i18nServerDebug);
+const browserDebug = true;//JSON.parse(process.env.i18nBrowserDebug);
 
 if (typeof window === 'undefined') { // If on Node.js
-  module.exports.i18next
-    .use(i18nextMiddleware.LanguageDetector)
+  i18next
+    //.use(i18nextMiddleware.LanguageDetector)
     .use(fsBackend)
     .init({
       debug: serverDebug,
@@ -130,7 +125,7 @@ if (typeof window === 'undefined') { // If on Node.js
       }
     });
 } else { // If on Browser
-  module.exports.i18next
+  i18next
     .use(browserLanguageDetector)
     .use(xhrBackend)
     .init({
@@ -149,11 +144,20 @@ if (typeof window === 'undefined') { // If on Node.js
     });
   // FIXME hack because language detection is not working.
   if(document.cookie.match('i18next=')){
-    module.exports.i18next.changeLanguage(document.cookie.split('i18next=')[1]);
+    i18next.changeLanguage(document.cookie.split('i18next=')[1]);
   }
 }
 
-module.exports.setupTranslation = function setupTranslation(namespaces,
-                                                            component) {
+
+export { i18next }
+export { i18nextMiddleware }
+
+function setupTranslation(namespaces, component) {
   return translate(namespaces, translateConfig)(component);
 };
+
+export default {
+  i18next,
+  i18nextMiddleware,
+  setupTranslation,
+}
