@@ -11,7 +11,6 @@ import PageSwitcher from 'app/common/PageSwitcher'
 import { i18next } from 'global/i18nextReact'
 import { i18nextMiddleware } from 'global/i18nextReact'
 
-//console.dir(i18next, {depth:null})
 const app = express();
 const pageSwitcher = new PageSwitcher(i18next);
 
@@ -99,9 +98,14 @@ app.get('/test', function(req,res){
   res.send(response.join('<br/>'));
 });
 
-//import serverlessExpress from 'aws-serverless-express'
-//const server = serverlessExpress.createServer(app);
-//exports.main = (event, context) => serverlessExpress.proxy(server, event, context)
-var server = http.createServer(app);
-server.listen(9090);
-console.log("Listening to 9090");
+import serverlessExpress from 'aws-serverless-express'
+let server;
+if(process.env.SERVER === 'local') {
+  server = http.createServer(app);
+  server.listen(9090);
+  console.log("Listening to 9090");
+} else {
+  server = serverlessExpress.createServer(app);
+}
+
+export default (event, context) => serverlessExpress.proxy(server, event, context)

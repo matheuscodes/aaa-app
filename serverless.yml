@@ -24,17 +24,17 @@ package:
     - ./**
   include:
     - build/**
-    - node_modules/**
+    - node_modules/aaa-languages/**
 
 functions:
   application:
-    handler: build/server.main
+    handler: build/aaa-server.default
     events:
       - http:
           path: /{proxy+}
           method: GET
   main:
-    handler: build/server.main
+    handler: build/aaa-server.default
     events:
       - http:
           path: ''
