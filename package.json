@@ -1,6 +1,6 @@
 {
   "name": "aaa-app",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "AAA - Advanced Archery Application",
   "main": "src/server.js",
   "scripts": {
