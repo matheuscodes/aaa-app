@@ -258,4 +258,4 @@ class AssessmentsPage extends MessageablePage {
   }
 }
 
-module.exports = i18nextReact.setupTranslation(['assessment'], AssessmentsPage);
+export default i18nextReact.setupTranslation(['assessment'], AssessmentsPage);

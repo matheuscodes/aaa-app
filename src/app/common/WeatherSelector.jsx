@@ -1,15 +1,15 @@
 'use strict';
 
-var React = require('react');
-var MUI = require('app/common/MaterialUI');
+import React from 'react'
+import MUI from 'app/common/MaterialUI'
 
 import SelectField from 'components/SelectField';
 
 import WeatherSelectorStyle from 'app/common/WeatherSelector.style';
-var WeatherConditions = require('constants/WeatherConditions');
-var WeatherIcons = require('svg/icon/Weather');
+import WeatherConditions from 'constants/WeatherConditions'
+import WeatherIcons from 'svg/icon/Weather'
 
-module.exports = React.createClass({
+export default React.createClass({
   getInitialState: function() {
     this.style = new WeatherSelectorStyle(this.props.style.styleProvider);
     return {weathers: []};

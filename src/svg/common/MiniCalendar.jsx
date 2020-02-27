@@ -1,5 +1,5 @@
-const React = require('react');
-const i18nextReact = require('global/i18nextReact');
+import React from 'react'
+import i18nextReact from 'global/i18nextReact'
 
 const MiniCalendar = React.createClass({
   propTypes: {
@@ -123,4 +123,4 @@ const MiniCalendar = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common'], MiniCalendar);
+export default i18nextReact.setupTranslation(['common'], MiniCalendar);

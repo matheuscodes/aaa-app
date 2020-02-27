@@ -1,16 +1,17 @@
-const express = require('express');
-const http = require('http');
+import express from 'express'
+import http from 'http'
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
-const injectTapEventPlugin = require('react-tap-event-plugin');
+import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin();
 
-const PageSwitcher = require('app/common/PageSwitcher');
+import PageSwitcher from 'app/common/PageSwitcher'
 
-const i18next = require('global/i18nextReact').i18next;
-const i18nextMiddleware = require('global/i18nextReact').i18nextMiddleware;
+import { i18next } from 'global/i18nextReact'
+import { i18nextMiddleware } from 'global/i18nextReact'
 
+//console.dir(i18next, {depth:null})
 const app = express();
 const pageSwitcher = new PageSwitcher(i18next);
 
@@ -20,7 +21,7 @@ app.post('/languages/missing/:lng/:ns.json',
 app.get('/languages/resources.json',
         i18nextMiddleware.getResourcesHandler(i18next));
 
-app.use('/app.js',express.static('build/app.js'));
+app.use('/app.js',express.static('build/aaa-app.js'));
 app.use(express.static('content'));
 
 app.get("/*", function(req, res, next) {
@@ -86,7 +87,7 @@ app.get('/printable', function(req, res) {
   res.send('<html style="font-family: Roboto, sans-serif;"><head><link href="https://fonts.googleapis.com/css?family=Roboto:400,300,500" rel="stylesheet" type="text/css" data-reactid="3" /></head><body></body></html>');
 });
 
-const MobileDetect = require('mobile-detect');
+import MobileDetect from 'mobile-detect'
 
 app.get('/test', function(req,res){
   const detect = new MobileDetect(req.headers['user-agent']);
@@ -98,6 +99,9 @@ app.get('/test', function(req,res){
   res.send(response.join('<br/>'));
 });
 
-const serverlessExpress = require('aws-serverless-express');
-const server = serverlessExpress.createServer(app);
-exports.main = (event, context) => serverlessExpress.proxy(server, event, context)
+//import serverlessExpress from 'aws-serverless-express'
+//const server = serverlessExpress.createServer(app);
+//exports.main = (event, context) => serverlessExpress.proxy(server, event, context)
+var server = http.createServer(app);
+server.listen(9090);
+console.log("Listening to 9090");

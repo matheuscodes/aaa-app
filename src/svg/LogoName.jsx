@@ -1,8 +1,8 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
+import i18nextReact from 'global/i18nextReact'
 
-const Logo = require('svg/Logo');
+import Logo from 'svg/Logo'
 
 const LogoName = React.createClass({
   render: function() {
@@ -24,4 +24,4 @@ const LogoName = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common'], LogoName);
+export default i18nextReact.setupTranslation(['common'], LogoName);

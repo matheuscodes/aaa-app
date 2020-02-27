@@ -1,12 +1,12 @@
-const React = require('react');
-const moment = require('moment');
+import React from 'react'
+import moment from 'moment'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
+import i18nextReact from 'global/i18nextReact'
+import MUI from 'app/common/MaterialUI'
+import API from 'api'
 
-const Waiting = require('app/common/Waiting');
-const Notice = require('app/common/Notice');
+import Waiting from 'app/common/Waiting'
+import Notice from 'app/common/Notice'
 
 const NewSeasonCardGoal = React.createClass({
   propTypes: {
@@ -58,4 +58,4 @@ const NewSeasonCardGoal = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['season'], NewSeasonCardGoal);
+export default i18nextReact.setupTranslation(['season'], NewSeasonCardGoal);

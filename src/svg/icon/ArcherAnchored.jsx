@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react'
 // TODO attribute creative commons the author: "Created by Gabriele Fumero from the Noun Project"
 const ArcherAnchored = React.createClass({
   propTypes: {
@@ -48,4 +48,4 @@ const ArcherAnchored = React.createClass({
   }
 });
 
-module.exports = ArcherAnchored;
+export default ArcherAnchored;

@@ -1,19 +1,19 @@
-const React = require('react');
-const moment = require('moment');
+import React from 'react'
+import moment from 'moment'
 
-const i18nextReact = require('global/i18nextReact');
+import i18nextReact from 'global/i18nextReact'
 
-const GraphStyle = require('svg/common/GraphStyle');
-const GraphBottomLabels = require('svg/common/GraphBottomLabels');
-const GraphAxisLabels = require('svg/common/GraphAxisLabels');
-const GraphEstimations = require('svg/common/GraphEstimations');
-const GraphGrid = require('svg/common/GraphGrid');
+import GraphStyle from 'svg/common/GraphStyle'
+import GraphBottomLabels from 'svg/common/GraphBottomLabels'
+import GraphAxisLabels from 'svg/common/GraphAxisLabels'
+import GraphEstimations from 'svg/common/GraphEstimations'
+import GraphGrid from 'svg/common/GraphGrid'
 
-const ActualBar = require('svg/season/ActualBar');
-const PlanBar = require('svg/season/PlanBar');
-const EventBar = require('svg/season/EventBar');
-const SeasonLabels = require('svg/season/SeasonLabels');
-const ShareBar = require('svg/season/ShareBar');
+import ActualBar from 'svg/season/ActualBar'
+import PlanBar from 'svg/season/PlanBar'
+import EventBar from 'svg/season/EventBar'
+import SeasonLabels from 'svg/season/SeasonLabels'
+import ShareBar from 'svg/season/ShareBar'
 
 const sideLabelsSize = 397;
 const columnWidth = 100;
@@ -139,4 +139,4 @@ const SeasonGraph = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common'], SeasonGraph);
+export default i18nextReact.setupTranslation(['common'], SeasonGraph);

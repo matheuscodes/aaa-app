@@ -1,12 +1,12 @@
-'use strict';
+//'use strict';
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
-var injectTapEventPlugin = require('react-tap-event-plugin');
+import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin();
 
-var i18next = require('global/i18nextReact').i18next;
+import { i18next } from 'global/i18nextReact'
 
-var PageSwitcher = require('app/common/PageSwitcher');
+import PageSwitcher from 'app/common/PageSwitcher'
 
 //process.env.NODE_ENV = 'production';
 

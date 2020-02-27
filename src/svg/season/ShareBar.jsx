@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react'
 
 const ShareBar = React.createClass({
   propTypes: {
@@ -17,4 +17,4 @@ const ShareBar = React.createClass({
   }
 });
 
-module.exports = ShareBar;
+export default ShareBar;

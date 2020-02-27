@@ -1,10 +1,10 @@
 import TrainerArchersEndpoint from 'api/trainers/TrainerArchers';
 import TrainerSeasonsEndpoint from 'api/trainers/TrainerSeasons';
 
-exports.TrainerArchersEndpoint = TrainerArchersEndpoint;
-exports.TrainerSeasonsEndpoint = TrainerArchersEndpoint;
+export { TrainerArchersEndpoint };
+export { TrainerSeasonsEndpoint };
 
-exports.default = {
+export default {
   archers: new TrainerArchersEndpoint(),
   seasons: new TrainerSeasonsEndpoint()
 };

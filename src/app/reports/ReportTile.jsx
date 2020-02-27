@@ -1,14 +1,14 @@
-const React = require('react');
+import React from 'react'
 
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
-const i18nextReact = require('global/i18nextReact');
+import MUI from 'app/common/MaterialUI'
+import API from 'api'
+import i18nextReact from 'global/i18nextReact'
 
-const Waiting = require('app/common/Waiting');
+import Waiting from 'app/common/Waiting'
 
-const MonthReportTable = require('svg/MonthReportTable');
-const MonthGraph = require('svg/MonthGraph');
-const SeasonGraph = require('svg/SeasonGraph');
+import MonthReportTable from 'svg/MonthReportTable'
+import MonthGraph from 'svg/MonthGraph'
+import SeasonGraph from 'svg/SeasonGraph'
 
 const oneDay = 24 * 60 * 60 * 1000;
 
@@ -89,4 +89,4 @@ const ReportTile = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['report'], ReportTile);
+export default i18nextReact.setupTranslation(['report'], ReportTile);

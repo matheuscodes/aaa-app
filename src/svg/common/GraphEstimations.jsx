@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react'
 
 const GraphEstimations = React.createClass({
   propTypes: {
@@ -91,4 +91,4 @@ const GraphEstimations = React.createClass({
   }
 });
 
-module.exports = GraphEstimations;
+export default GraphEstimations;

@@ -1,12 +1,12 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
+import i18nextReact from 'global/i18nextReact'
 
-const GraphStyle = require('svg/common/GraphStyle');
-const GraphBar = require('svg/common/GraphBar');
-const GraphBottomLabels = require('svg/common/GraphBottomLabels');
-const GraphAxisLabels = require('svg/common/GraphAxisLabels');
-const GraphGrid = require('svg/common/GraphGrid');
+import GraphStyle from 'svg/common/GraphStyle'
+import GraphBar from 'svg/common/GraphBar'
+import GraphBottomLabels from 'svg/common/GraphBottomLabels'
+import GraphAxisLabels from 'svg/common/GraphAxisLabels'
+import GraphGrid from 'svg/common/GraphGrid'
 
 const ValueDistributionGraph = React.createClass({
   propTypes: {
@@ -82,5 +82,5 @@ const ValueDistributionGraph = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common', 'home'],
+export default i18nextReact.setupTranslation(['common', 'home'],
                                                ValueDistributionGraph);

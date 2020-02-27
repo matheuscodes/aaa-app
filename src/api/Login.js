@@ -1,6 +1,6 @@
-var requestBuilder = require('api/helpers/RequestBuilder');
+import requestBuilder from 'api/helpers/RequestBuilder'
 
-module.exports = function login(credentials, callbacks) {
+export default function login(credentials, callbacks) {
   var successCall = function(request) {
     if (typeof localStorage !== 'undefined') {
       localStorage.loggedToken = request.responseText;

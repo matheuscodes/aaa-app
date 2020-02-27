@@ -1,10 +1,10 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
+import i18nextReact from 'global/i18nextReact'
+import MUI from 'app/common/MaterialUI'
 
-const MiniCalendar = require('svg/common/MiniCalendar');
-const TrainingTypes = require('constants/ArrowTrainingTypes');
+import MiniCalendar from 'svg/common/MiniCalendar'
+import TrainingTypes from 'constants/ArrowTrainingTypes'
 
 const TrainingTile = React.createClass({
   propTypes: {
@@ -103,4 +103,4 @@ const TrainingTile = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['training'], TrainingTile);
+export default i18nextReact.setupTranslation(['training'], TrainingTile);

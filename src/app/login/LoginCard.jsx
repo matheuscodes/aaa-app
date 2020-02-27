@@ -8,7 +8,7 @@ import API from 'api';
 import downloadFile from 'api/helpers/DownloadFile';
 import getLocalArcher from 'api/helpers/getLocalArcher';
 
-import {setupTranslation} from 'global/i18nextReact';
+import i18nextReact from 'global/i18nextReact';
 import pageSwitcherType from 'global/ReactPageSwitcherType';
 import LoginCardStyle from 'app/login/LoginCard.style';
 import TextField from 'components/TextField';
@@ -153,4 +153,4 @@ class LoginCard extends React.Component {
   }
 }
 
-module.exports = setupTranslation(['login'], LoginCard);
+export default i18nextReact.setupTranslation(['login'], LoginCard);

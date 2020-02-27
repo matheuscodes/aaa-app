@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react'
 
 const GraphBar = React.createClass({
   propTypes: {
@@ -21,4 +21,4 @@ const GraphBar = React.createClass({
   }
 });
 
-module.exports = GraphBar;
+export default GraphBar;

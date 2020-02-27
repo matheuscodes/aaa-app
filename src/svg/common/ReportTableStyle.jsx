@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react'
 
 // TODO FUCKING REFACTOR THIS SHIT.
 const ReportTableStyle = React.createClass({
@@ -27,4 +27,4 @@ const ReportTableStyle = React.createClass({
   }
 });
 
-module.exports = ReportTableStyle;
+export default ReportTableStyle;

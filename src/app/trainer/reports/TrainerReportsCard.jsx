@@ -1,12 +1,12 @@
-const React = require('react');
+import React from 'react'
 
-const getLocalArcher = require('api/helpers/getLocalArcher');
+import getLocalArcher from 'api/helpers/getLocalArcher'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
+import i18nextReact from 'global/i18nextReact'
+import MUI from 'app/common/MaterialUI'
+import API from 'api'
 
-const ReportTile = require('app/reports/ReportTile');
+import ReportTile from 'app/reports/ReportTile'
 
 const ReportCard = React.createClass({
   getInitialState: function() {
@@ -205,4 +205,4 @@ const ReportCard = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common', 'report', 'trainer'], ReportCard);
+export default i18nextReact.setupTranslation(['common', 'report', 'trainer'], ReportCard);

@@ -1,15 +1,15 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
+import i18nextReact from 'global/i18nextReact'
 
-const GraphStyle = require('svg/common/GraphStyle');
-const GraphBottomLabels = require('svg/common/GraphBottomLabels');
-const GraphAxisLabels = require('svg/common/GraphAxisLabels');
-const GraphEstimations = require('svg/common/GraphEstimations');
-const GraphGrid = require('svg/common/GraphGrid');
+import GraphStyle from 'svg/common/GraphStyle'
+import GraphBottomLabels from 'svg/common/GraphBottomLabels'
+import GraphAxisLabels from 'svg/common/GraphAxisLabels'
+import GraphEstimations from 'svg/common/GraphEstimations'
+import GraphGrid from 'svg/common/GraphGrid'
 
-const ActualBar = require('svg/season/ActualBar');
-const SeasonLabels = require('svg/season/SeasonLabels');
+import ActualBar from 'svg/season/ActualBar'
+import SeasonLabels from 'svg/season/SeasonLabels'
 
 const sideLabelsSize = 397;
 const columnWidth = 100;
@@ -86,4 +86,4 @@ const MonthGraph = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common'], MonthGraph);
+export default i18nextReact.setupTranslation(['common'], MonthGraph);

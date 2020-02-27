@@ -1,18 +1,18 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var ReactDOMServer = require('react-dom/server');
+import React from 'react'
+import ReactDOM from 'react-dom'
+import ReactDOMServer from 'react-dom/server'
 
-var baseHtml = require('app/common/BaseHtml');
-var homePage = require('app/homescreen/HomePage');
-var loginPage = require('app/login/LoginPage');
-var trainingsPage = require('app/trainings/TrainingsPage');
-var assessmentsPage = require('app/assessments/AssessmentsPage');
-var reportsPage = require('app/reports/ReportsPage');
-var seasonsPage = require('app/seasons/SeasonsPage');
-var termsPage = require('app/static/TermsPage');
-var aboutPage = require('app/static/AboutPage');
+import baseHtml from 'app/common/BaseHtml'
+import homePage from 'app/homescreen/HomePage'
+import loginPage from 'app/login/LoginPage'
+import trainingsPage from 'app/trainings/TrainingsPage'
+import assessmentsPage from 'app/assessments/AssessmentsPage'
+import reportsPage from 'app/reports/ReportsPage'
+import seasonsPage from 'app/seasons/SeasonsPage'
+import termsPage from 'app/static/TermsPage'
+import aboutPage from 'app/static/AboutPage'
 
-var trainerReportsPage = require('app/trainer/reports/TrainerReportsPage');
+import trainerReportsPage from 'app/trainer/reports/TrainerReportsPage'
 
 import { StyleProvider } from 'global/StyleProvider';
 
@@ -189,4 +189,4 @@ PageSwitcher.prototype.serverString = function serverString(pageTitle,
   return ReactDOMServer.renderToString(React.createElement(baseHtml, props));
 };
 
-module.exports = PageSwitcher;
+export default PageSwitcher;

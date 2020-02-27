@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react'
 
 const GraphBottomLabels = React.createClass({
   propTypes: {
@@ -41,4 +41,4 @@ const GraphBottomLabels = React.createClass({
   }
 });
 
-module.exports = GraphBottomLabels;
+export default GraphBottomLabels;

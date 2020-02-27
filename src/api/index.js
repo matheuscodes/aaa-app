@@ -1,17 +1,23 @@
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
 const API = {};
 
-exports.reports = API.reports = require('api/Reports');
-exports.seasons = API.seasons = require('api/Seasons');
-exports.assessments = API.assessments = require('api/Assessments');
-exports.trainings = API.trainings = require('api/Trainings');
-exports.events = API.events = require('api/Events');
-exports.equipment = API.equipment = require('api/Equipment');
-exports.login = API.login = require('api/Login');
-exports.isAuthError = API.isAuthError = require('api/helpers/isAuthError');
-exports.trainers = API.trainers = require('api/trainers').default;
+import reports from 'api/Reports'
+import seasons from 'api/Seasons'
+import assessments from 'api/Assessments'
+import trainings from 'api/Trainings'
+import events from 'api/Events'
+import equipment from 'api/Equipment'
+import login from 'api/Login'
+import isAuthError from 'api/helpers/isAuthError'
+import trainers from 'api/trainers';
 
-exports.default = API;
+export default {
+  reports,
+  seasons,
+  assessments,
+  trainings,
+  events,
+  equipment,
+  login,
+  isAuthError,
+  trainers
+}

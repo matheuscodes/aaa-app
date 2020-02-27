@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react'
 
 const EventBar = React.createClass({
   propTypes: {
@@ -25,4 +25,4 @@ const EventBar = React.createClass({
   }
 });
 
-module.exports = EventBar;
+export default EventBar;

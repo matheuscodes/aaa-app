@@ -1,18 +1,18 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
+import i18nextReact from 'global/i18nextReact'
+import MUI from 'app/common/MaterialUI'
+import API from 'api'
 
-const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
-const LogoName = require('svg/LogoName');
-const BaseLayout = require('app/common/BaseLayout');
+import ReactPageSwitcherType from 'global/ReactPageSwitcherType'
+import LogoName from 'svg/LogoName'
+import BaseLayout from 'app/common/BaseLayout'
 
-const AboutHome = require('app/static/about/AboutHome');
-const AboutSeasons = require('app/static/about/AboutSeasons');
-const AboutTrainings = require('app/static/about/AboutTrainings');
-const AboutAssessments = require('app/static/about/AboutAssessments');
-const AboutReports = require('app/static/about/AboutReports');
+import AboutHome from 'app/static/about/AboutHome'
+import AboutSeasons from 'app/static/about/AboutSeasons'
+import AboutTrainings from 'app/static/about/AboutTrainings'
+import AboutAssessments from 'app/static/about/AboutAssessments'
+import AboutReports from 'app/static/about/AboutReports'
 
 const AboutPage = React.createClass({
   propTypes: {
@@ -87,4 +87,4 @@ const AboutPage = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common','about'], AboutPage);
+export default i18nextReact.setupTranslation(['common','about'], AboutPage);

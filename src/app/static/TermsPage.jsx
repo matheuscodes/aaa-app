@@ -1,12 +1,12 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
-const LogoName = require('svg/LogoName');
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
+import i18nextReact from 'global/i18nextReact'
+import LogoName from 'svg/LogoName'
+import MUI from 'app/common/MaterialUI'
+import API from 'api'
 
-const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
-const BaseLayout = require('app/common/BaseLayout');
+import ReactPageSwitcherType from 'global/ReactPageSwitcherType'
+import BaseLayout from 'app/common/BaseLayout'
 
 const styles = {
   gridList: {
@@ -105,4 +105,4 @@ const TermsPage = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['terms'], TermsPage);
+export default i18nextReact.setupTranslation(['terms'], TermsPage);

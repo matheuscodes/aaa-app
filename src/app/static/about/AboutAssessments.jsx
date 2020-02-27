@@ -1,7 +1,7 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
+import i18nextReact from 'global/i18nextReact'
+import MUI from 'app/common/MaterialUI'
 
 const styles = {
   gridList: {
@@ -30,4 +30,4 @@ const AboutAssessments = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common','about'], AboutAssessments);
+export default i18nextReact.setupTranslation(['common','about'], AboutAssessments);

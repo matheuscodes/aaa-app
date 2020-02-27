@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react'
 
 const Windmills = React.createClass({
   propTypes: {
@@ -59,4 +59,4 @@ const Windmills = React.createClass({
   }
 });
 
-module.exports = Windmills;
+export default Windmills;

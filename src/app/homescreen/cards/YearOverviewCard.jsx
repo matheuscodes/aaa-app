@@ -1,8 +1,8 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
+import i18nextReact from 'global/i18nextReact'
+import MUI from 'app/common/MaterialUI'
+import API from 'api'
 
 const YearOverviewCard = React.createClass({
   getInitialState: function() {
@@ -71,5 +71,5 @@ const YearOverviewCard = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['common', 'home'],
+export default i18nextReact.setupTranslation(['common', 'home'],
                                                YearOverviewCard);

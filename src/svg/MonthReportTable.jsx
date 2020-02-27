@@ -1,9 +1,9 @@
-const React = require('react');
-const moment = require('moment');
+import React from 'react'
+import moment from 'moment'
 
-const i18nextReact = require('global/i18nextReact');
+import i18nextReact from 'global/i18nextReact'
 
-const ReportTableStyle = require('svg/common/ReportTableStyle');
+import ReportTableStyle from 'svg/common/ReportTableStyle'
 
 const styles = {
   reportDay: {
@@ -464,4 +464,4 @@ const MonthReportTable = React.createClass({
   }
 });
 
-module.exports = i18nextReact.setupTranslation(['report'], MonthReportTable);
+export default i18nextReact.setupTranslation(['report'], MonthReportTable);
