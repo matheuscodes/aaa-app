@@ -2,8 +2,16 @@
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Link from '@material-ui/core/Link';
+import LinkMaterial from '@material-ui/core/Link';
 import ProTip from './ProTip';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
+import A3Footer from "app/common/Footer"
 
 import React, { Component, Suspense } from 'react';
 import { useTranslation, withTranslation, Trans } from 'react-i18next';
@@ -53,7 +61,7 @@ function Page() {
 // loading component for suspense fallback
 const Loader = () => (
   <div className="App">
-    <div>loading...</div>
+    <div>Loading...</div>
   </div>
 );
 
@@ -70,19 +78,44 @@ function Copyright() {
   );
 }
 
-export default function App() {
-  return (
-    <Container maxWidth="sm">
-    <Suspense fallback={<Loader />}>
-    <Page />
-  </Suspense>
-      <Box my={4}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Create React App v4-beta example
-        </Typography>
-        <ProTip />
-        <Copyright />
-      </Box>
-    </Container>
-  );
+class Application extends React.Component {
+  render() {
+    return (
+      <Router>
+        <Suspense fallback={<Loader />}>
+          <div style={{'backgroundColor':'white'}}>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/about">About</Link>
+              </li>
+              <li>
+                <Link to="/dashboard">Dashboard</Link>
+              </li>
+            </ul>
+
+            <Page/>
+
+            <hr />
+            <Switch>
+              <Route exact path="/">
+                <p>Home</p>
+              </Route>
+              <Route path="/about">
+                <p>About</p>
+              </Route>
+              <Route path="/dashboard">
+                <p>Dashboard</p>
+              </Route>
+            </Switch>
+          </div>
+          <A3Footer />
+        </Suspense>
+      </Router>
+    );
+  }
 }
+
+export default Application;
