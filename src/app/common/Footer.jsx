@@ -60,7 +60,7 @@ class Footer extends React.Component {
   render() {
     const { t, classes } = this.props;
     return (
-      <footer>
+      <footer style={{padding:'10pt'}}>
         <Grid container>
           <Grid item xs={12} sm={6}>
             <ButtonGroup color="primary" variant="text">
@@ -94,18 +94,6 @@ class Footer extends React.Component {
               Matheus Borges Teixeira &copy; 2020 - Version 2.1.0
           </Grid>
         </Grid>
-
-        <div style={{float:"right"}}>
-
-
-        </div>
-        <div style={{
-          width:'100%',
-          float:'left',
-          textAlign: 'center',
-        }}>
-
-        </div>
       </footer>
     );
   }
