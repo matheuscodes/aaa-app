@@ -61,7 +61,7 @@ class Footer extends React.Component {
     const { t, classes } = this.props;
     return (
       <footer>
-        <Grid container spacing={3}>
+        <Grid container>
           <Grid item xs={12} sm={6}>
             <ButtonGroup color="primary" variant="text">
               <Button onClick={this.openAbout.bind(this)}>{t('common:footlinks.about')}</Button>
