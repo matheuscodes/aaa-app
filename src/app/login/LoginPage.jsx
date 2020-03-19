@@ -1,24 +1,42 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {autobind} from 'core-decorators';
+import { withRouter } from 'react-router'
+import { withTranslation } from 'react-i18next'
+
+import { withStyles } from '@material-ui/core/styles';
 
 import MessageablePage from 'components/MessageablePage';
-import i18nextReact from 'global/i18nextReact';
-import pageSwitcherType from 'global/ReactPageSwitcherType';
-import BaseLayout from 'app/common/BaseLayout';
 import LoginCard from 'app/login/LoginCard';
-import LoginPageStyle from 'app/login/LoginPage.style';
 import LogoName from 'svg/LogoName';
+import Grid from '@material-ui/core/Grid';
 
-@autobind
-class LoginPage extends MessageablePage {
-  static get propTypes() {
+const styles = {}
+
+class LoginPageStyle {
+  get card() {
     return {
-      switcher: pageSwitcherType,
-      userAgent: PropTypes.string,
-      t: PropTypes.func,
-    };
+      padding: this.styleProvider.select({
+        phone: `${this.defaultPadding}`,
+        tablet: `${this.defaultPadding} ${this.styleProvider.percent(15)}`,
+        desktop: `${this.defaultPadding} ${this.styleProvider.percent(30)}`,
+      }),
+    }
   }
+
+  get logo() {
+    return {
+      height: this.styleProvider.select({
+        phone: this.styleProvider.percent(20),
+        tablet: this.styleProvider.percent(14),
+        desktop: this.styleProvider.percent(8),
+      }),
+      width: '100%',
+      padding: '12px',
+    }
+  }
+}
+
+
+class LoginPage extends MessageablePage {
 
   constructor(props) {
     super(props);
@@ -27,29 +45,22 @@ class LoginPage extends MessageablePage {
   }
 
   render() {
-    const t = this.props.t;
+    const { messenger } = this.props;
     return (
-      <BaseLayout
-        switcher={this.props.switcher}
-        userAgent={this.props.userAgent}
-        styleProvider={this.props.styleProvider}
-        messageSubscriber={this}
-        layoutName="loginPage"
-        title={t('login:appBarTitle')} >
-        <div style={{padding: this.style.logo.padding}}>
-          <LogoName
-            width={this.style.logo.width}
-            height={this.style.logo.height} />
-        </div>
-        <div style={this.style.card}>
-          <LoginCard
-            switcher={this.props.switcher}
-            messenger={this}
-            styleProvider={this.props.styleProvider} />
-        </div>
-      </BaseLayout>
+      <div>
+        <Grid justify="center" container>
+          <Grid item xs={12} sm={6} lg={3}>
+            <LogoName />
+          </Grid>
+          <Grid justify="center" container>
+            <Grid item xs={12} sm={6} lg={3}>
+              <LoginCard messenger={messenger} />
+            </Grid>
+          </Grid>
+        </Grid>
+      </div>
     );
   }
 }
 
-export default i18nextReact.setupTranslation(['login'], LoginPage);
+export default withTranslation('login')(withRouter(withStyles(styles)(LoginPage)));

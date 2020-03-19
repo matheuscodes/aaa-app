@@ -2,5 +2,6 @@
 /node_modules
 /content
 /public/locales
+/public/img
 .serverless
 *.log

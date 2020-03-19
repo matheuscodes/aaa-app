@@ -1,28 +1,29 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {autobind} from 'core-decorators';
+import { withRouter } from 'react-router'
+import { withTranslation } from 'react-i18next'
+import RoutePaths from 'global/RoutePaths'
 
-import MUI from 'app/common/MaterialUI';
+import { withStyles } from '@material-ui/core/styles';
 
 import API from 'api';
 import downloadFile from 'api/helpers/DownloadFile';
 import getLocalArcher from 'api/helpers/getLocalArcher';
 
-import i18nextReact from 'global/i18nextReact';
-import pageSwitcherType from 'global/ReactPageSwitcherType';
 import LoginCardStyle from 'app/login/LoginCard.style';
-import TextField from 'components/TextField';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Grid from '@material-ui/core/Grid';
 
-@autobind
+const styles = {}
+
 class LoginCard extends React.Component {
-  static get propTypes() {
-    return {
-      switcher: pageSwitcherType,
-      styleProvider: PropTypes.object,
-      messenger: PropTypes.object,
-      t: PropTypes.func,
-    };
-  }
 
   constructor(props) {
     super(props);
@@ -37,8 +38,13 @@ class LoginCard extends React.Component {
       200: function(request) {
         let current = this.state;
         current.image = selected;
-        current.imageData = JSON.parse(request.responseText);
-        this.setState(current);
+        try{
+          current.imageData = JSON.parse(request.responseText);
+          this.setState(current);
+        } catch(e) {
+          console.log(e)
+        }
+
       },
       failure: function(request) {
         // TODO handle me
@@ -48,17 +54,17 @@ class LoginCard extends React.Component {
     if (typeof getLocalArcher() === 'undefined') {
       downloadFile('img/' + selected + '.json', callbacks);
     } else {
-      this.props.switcher.switchTo('homePage');
+      this.props.history.push(RoutePaths.home);
     }
   }
 
   doLogin() {
-    const {t, messenger, switcher} = this.props;
+    const {t, messenger} = this.props;
     let callbacks = {
       context: this,
       success: function(request) {
-        messenger.showMessage(t('login:messages.login'), 'MESSAGE');
-        switcher.switchTo('homePage');
+        messenger.showMessage(t('login:messages.login'), 'SUCCESS');
+        this.props.history.push(RoutePaths.home);
       },
       error: function(request) {
         messenger.showMessage(t('login:messages.loginError'), 'ERROR');
@@ -86,71 +92,65 @@ class LoginCard extends React.Component {
     let title = '';
     if (typeof this.state.imageData !== 'undefined' &&
         typeof this.state.imageData.title !== 'undefined') {
-      title = (<a
-        style={{color: 'inherit', textDecoration: 'none'}}
-        href={this.state.imageData.source}>
-        {this.state.imageData.title}
-      </a>);
+      title = (
+        <a href={this.state.imageData.source}>
+          {this.state.imageData.title}
+        </a>
+      );
     }
 
-    const background = this.state.image ?
-                        `url("img/${this.state.image}.jpg") center / cover` :
-                        '';
-
     return (
-      <MUI.Card>
-        <MUI.CardMedia
-          overlay={
-            <MUI.CardTitle
-              style={this.style.CardTitle}
-              titleStyle={this.style.CardTitle.titleStyle}
-              subtitleStyle={this.style.CardTitle.subtitleStyle}
-              title={title}
-              subtitle={subtitle} /> } >
-          <div style={this.style.archeryImage(background)} />
-        </MUI.CardMedia>
-        <MUI.CardText>
-          <MUI.GridList
-            cellHeight={'auto'}
-            cols={1}
-            padding={this.style.defaultPadding} >
-            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
+      <Card>
+        <CardActionArea>
+          <CardMedia
+            component="img"
+            alt="Contemplative Reptile"
+            height="140"
+            image={`/img/${this.state.image}.jpg`}
+            title="Contemplative Reptile"
+          />
+          <CardContent>
+            <Typography style={{fontSize:'10pt'}}>
+              {title}
+            </Typography>
+            <Typography style={{fontSize:'7pt'}}>
+              {subtitle}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+
+        <CardContent>
+          <Grid container>
+            <Grid item xs={12} >
               <TextField
-                style={this.style}
+                style={{width:'100%'}}
                 id={'aaa-loginEmail'}
-                onChange={this.changeEmail}
-                hintText={t('login:emailTextField.hint')}
-                floatingLabelText={t('login:emailTextField.label')} />
-            </MUI.GridTile>
-            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
+                onChange={this.changeEmail.bind(this)}
+                label={t('login:emailTextField.label')} />
+            </Grid>
+            <Grid item xs={12} >
               <TextField
-                style={this.style}
+                style={{width:'100%'}}
                 id={'aaa-loginPassword'}
-                onChange={this.changePassword}
+                onChange={this.changePassword.bind(this)}
                 type={'password'}
-                hintText={t('login:passwordTextField.hint')}
-                floatingLabelText={t('login:passwordTextField.label')} />
-            </MUI.GridTile>
-          </MUI.GridList>
-        </MUI.CardText>
-        <MUI.CardActions>
-          <div style={this.style.loginButtonContainer}>
-            <MUI.RaisedButton
-              style={this.style.loginButton}
-              buttonStyle={this.style.loginButton}
-              labelStyle={this.style.loginButton}
-              label={t('login:loginButton.label')}
-              labelPosition="before"
-              primary={true}
-              type={'submit'}
-              onTouchTap={this.doLogin}
-              icon={<MUI.icons.navigation.chevron_right
-                      style={this.style.loginIcon } />} />
-          </div>
-        </MUI.CardActions>
-      </MUI.Card>
+                label={t('login:passwordTextField.label')} />
+            </Grid>
+          </Grid>
+        </CardContent>
+        <CardActions>
+          <Button
+            style={{width:'100%'}}
+            color="primary"
+            variant="contained"
+            onClick={this.doLogin.bind(this)}
+            endIcon={<ChevronRightIcon />}>
+            {t('login:loginButton.label')}
+            </Button>
+        </CardActions>
+      </Card>
     );
   }
 }
 
-export default i18nextReact.setupTranslation(['login'], LoginCard);
+export default withTranslation('login')(withRouter(withStyles(styles)(LoginCard)));

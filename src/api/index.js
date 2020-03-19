@@ -1,5 +1,3 @@
-const API = {};
-
 import reports from 'api/Reports'
 import seasons from 'api/Seasons'
 import assessments from 'api/Assessments'

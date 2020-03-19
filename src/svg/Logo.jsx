@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default React.createClass({
-  render: function() {
+export default class Logo extends React.Component {
+  render() {
     return (
       <svg width={this.props.width} height={this.props.height} viewBox="-252.5 -252.5 365 505" enableBackground="new -252.5 -252.5 315 505" >
         <g transform="translate(1340.837,-3250.363)">
@@ -26,4 +26,4 @@ export default React.createClass({
       </svg>
     );
   }
-});
+};

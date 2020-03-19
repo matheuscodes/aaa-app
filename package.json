@@ -37,6 +37,8 @@
   "homepage": "https://github.com/matheuscodes/aaa-app#readme",
   "dependencies": {
     "@material-ui/core": "4.9.5",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.46",
     "aaa-languages": "git+https://github.com/matheuscodes/aaa-languages.git",
     "clsx": "1.1.0",
     "i18next": "18.0.0",

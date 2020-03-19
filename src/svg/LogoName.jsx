@@ -1,17 +1,20 @@
 import React from 'react'
+import { withTranslation } from 'react-i18next'
 
-import i18nextReact from 'global/i18nextReact'
+import { withStyles } from '@material-ui/core/styles';
 
 import Logo from 'svg/Logo'
 
-const LogoName = React.createClass({
-  render: function() {
-    const t = this.props.t;
+const styles = {}
+
+class LogoName extends React.Component {
+  render() {
+    const { t } = this.props;
     return (
-      <svg width={this.props.width} height={this.props.height} viewBox="0 0 100 100" >
-        <g transform={'translate(-140,0)'}><Logo /></g>
-    		<text y={83} x={49} style={{
-            fontSize: 24,
+      <svg style={{width:'100%'}} width={this.props.width} height={this.props.height} viewBox="0 0 470 150" >
+        <g transform={'translate(-180,0)'}><Logo /></g>
+    		<text y={120} x={265} style={{
+            fontSize: 36,
             textAnchor: 'middle',
             fontFamily: 'Arial',
             fontWeight: 'bold',
@@ -22,6 +25,6 @@ const LogoName = React.createClass({
       </svg>
     );
   }
-});
+}
 
-export default i18nextReact.setupTranslation(['common'], LogoName);
+export default withTranslation('common')(withStyles(styles)(LogoName));
