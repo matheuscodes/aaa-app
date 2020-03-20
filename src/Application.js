@@ -1,21 +1,24 @@
+import React from 'react';
 import Alert from '@material-ui/lab/Alert';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
 } from "react-router-dom";
 
-import A3Footer from "app/common/Footer"
-import A3LoginPage from "app/login/LoginPage"
+import { withTranslation } from 'react-i18next'
 
-import React, { Suspense } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 
-// loading component for suspense fallback
-const Loader = () => (
-  <div className="App">
-    <div>Loading...</div>
-  </div>
-);
+import Footer from "app/common/Footer"
+import Header from "app/common/Header"
+import LoginPage from "app/login/LoginPage"
+
+import RoutePaths from 'global/RoutePaths'
+import getLocalArcher from 'api/helpers/getLocalArcher'
+
+const styles = {}
 
 class Application extends React.Component {
 
@@ -44,31 +47,37 @@ class Application extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
+    const archer = getLocalArcher();
     return (
       <Router>
-        <Suspense fallback={<Loader />}>
-          <div style={{'backgroundColor':'white', padding:'10pt'}}>
-            <Switch>
-              <Route exact path="/">
-                <A3LoginPage messenger={this}/>
-              </Route>
-              <Route path="/about">
-                <p>About</p>
-              </Route>
-              <Route path="/login">
-                <A3LoginPage messenger={this} />
-              </Route>
-            </Switch>
-            {Object.keys(this.state.alarms).map((alarm) =>
-              <Alert style={{margin:'10pt'}} severity={this.state.alarms[alarm].type.toLowerCase()}>
-                {this.state.alarms[alarm].text}
-              </Alert>)}
-          </div>
-          <A3Footer />
-        </Suspense>
+        <Switch>
+          <Route exact path="/">
+            <Header title={t('login:appBarTitle')} archer={archer} />
+            <LoginPage messenger={this}/>
+          </Route>
+          <Route path={RoutePaths.home}>
+            <Header title={t('home:appBarTitle')} archer={archer} />
+            <div style={{'backgroundColor':'white', padding:'10pt'}}>
+              <p>Homepage</p>
+            </div>
+          </Route>
+          <Route path={RoutePaths.login}>
+            <Header title={t('login:appBarTitle')} archer={archer} />
+            <LoginPage messenger={this} />
+          </Route>
+          <Redirect from='*' to='/' />
+        </Switch>
+        <div style={{'backgroundColor':'white', padding:'10pt'}}>
+          {Object.keys(this.state.alarms).map((alarm) =>
+            <Alert style={{margin:'10pt'}} severity={this.state.alarms[alarm].type.toLowerCase()}>
+              {this.state.alarms[alarm].text}
+            </Alert>)}
+        </div>
+        <Footer />
       </Router>
     );
   }
 }
 
-export default Application;
+export default withTranslation()(withStyles(styles)(Application));

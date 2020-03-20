@@ -3,7 +3,7 @@ import requestBuilder from 'api/helpers/RequestBuilder'
 export default function login(credentials, callbacks) {
   var successCall = function(request) {
     if (typeof localStorage !== 'undefined') {
-      //localStorage.loggedToken = request.responseText;
+      localStorage.loggedToken = request.responseText;
     }
     callbacks.success.call(callbacks.context);
   };
