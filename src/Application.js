@@ -14,6 +14,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Footer from "app/common/Footer"
 import Header from "app/common/Header"
 import LoginPage from "app/login/LoginPage"
+import SeasonsPage from "app/seasons/SeasonsPage"
 
 import RoutePaths from 'global/RoutePaths'
 import getLocalArcher from 'api/helpers/getLocalArcher'
@@ -65,6 +66,10 @@ class Application extends React.Component {
           <Route path={RoutePaths.login}>
             <Header title={t('login:appBarTitle')} archer={archer} />
             <LoginPage messenger={this} />
+          </Route>
+          <Route path={RoutePaths.seasons}>
+            <Header title={t('season:appBarTitle')} archer={archer} />
+            <SeasonsPage messenger={this} />
           </Route>
           <Redirect from='*' to='/' />
         </Switch>

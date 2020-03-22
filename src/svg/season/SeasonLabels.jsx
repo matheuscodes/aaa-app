@@ -1,12 +1,8 @@
 import React from 'react'
-import i18nextReact from 'global/i18nextReact'
+import { withTranslation } from 'react-i18next'
 
-const SeasonLabels = React.createClass({
-  propTypes: {
-    max: React.PropTypes.number,
-    t: React.PropTypes.func
-  },
-  render: function() {
+class SeasonLabels extends React.Component {
+  render() {
     const t = this.props.t;
 
     return (
@@ -53,6 +49,6 @@ const SeasonLabels = React.createClass({
       </g>
     );
   }
-});
+}
 
-export default i18nextReact.setupTranslation(['season'], SeasonLabels);
+export default withTranslation('season')(SeasonLabels);

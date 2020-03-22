@@ -1,11 +1,7 @@
 import React from 'react'
 
-const EventBar = React.createClass({
-  propTypes: {
-    value: React.PropTypes.number,
-    column: React.PropTypes.number
-  },
-  render: function() {
+class EventBar extends React.Component {
+  render() {
     return (
       <g transform={'translate(0,-1000)'}>
         <text y={1150} x={(this.props.column * 100 + 50)} style={{
@@ -23,6 +19,6 @@ const EventBar = React.createClass({
       </g>
     );
   }
-});
+}
 
 export default EventBar;

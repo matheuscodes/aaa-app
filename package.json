@@ -36,11 +36,14 @@
   },
   "homepage": "https://github.com/matheuscodes/aaa-app#readme",
   "dependencies": {
+    "@date-io/date-fns": "1.3.13",
     "@material-ui/core": "4.9.5",
-    "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.46",
+    "@material-ui/icons": "4.9.1",
+    "@material-ui/lab": "4.0.0-alpha.46",
+    "@material-ui/pickers": "3.2.10",
     "aaa-languages": "git+https://github.com/matheuscodes/aaa-languages.git",
     "clsx": "1.1.0",
+    "date-fns": "2.11.0",
     "i18next": "18.0.0",
     "i18next-browser-languagedetector": "4.0.0",
     "i18next-xhr-backend": "3.2.0",
@@ -65,7 +68,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-decorators": "^7.8.3",
     "intl": "^1.2.5",
     "mobile-detect": "^1.4.4"
   }

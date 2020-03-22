@@ -1,13 +1,7 @@
 import React from 'react'
 
-const GraphGrid = React.createClass({
-  propTypes: {
-    height: React.PropTypes.string,
-    width: React.PropTypes.string,
-    rows: React.PropTypes.number,
-    columns: React.PropTypes.number
-  },
-  render: function() {
+class GraphGrid extends React.Component {
+  render() {
     const iteratorV = [];
     for (var i = 0; i <= (this.props.columns || 10); i++) {
       iteratorV.push(i);
@@ -41,6 +35,6 @@ const GraphGrid = React.createClass({
       </g>
     );
   }
-});
+}
 
 export default GraphGrid;
