@@ -1,5 +1,4 @@
 import React from 'react';
-import Alert from '@material-ui/lab/Alert';
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,6 +9,8 @@ import {
 import { withTranslation } from 'react-i18next'
 
 import { withStyles } from '@material-ui/core/styles';
+import Alert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import Footer from "app/common/Footer"
 import Header from "app/common/Header"
@@ -39,10 +40,10 @@ class Application extends React.Component {
       type: type,
     };
     this.setState(this.state)
-    setTimeout(this.closeAlarm.bind(this),2000,alarm)
+    //setTimeout(this.closeAlarm.bind(this),2000,alarm)
   }
 
-  closeAlarm(alarm) {
+  handleAlarmClose(alarm) {
     delete this.state.alarms[alarm];
     this.setState(this.state);
   }
@@ -75,9 +76,11 @@ class Application extends React.Component {
         </Switch>
         <div style={{'backgroundColor':'white', padding:'10pt'}}>
           {Object.keys(this.state.alarms).map((alarm) =>
-            <Alert style={{margin:'10pt'}} severity={this.state.alarms[alarm].type.toLowerCase()}>
-              {this.state.alarms[alarm].text}
-            </Alert>)}
+            <Snackbar open={alarm} autoHideDuration={6000} onClose={this.handleAlarmClose.bind(this,alarm)}>
+              <Alert elevation={6} variant="filled" style={{margin:'10pt'}} severity={this.state.alarms[alarm].type.toLowerCase()}>
+                {this.state.alarms[alarm].text}
+              </Alert>
+            </Snackbar>)}
         </div>
         <Footer />
       </Router>
