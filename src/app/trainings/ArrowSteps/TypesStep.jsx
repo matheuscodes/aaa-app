@@ -1,11 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import MUI from 'app/common/MaterialUI';
 
 import ArrowTrainingTypes from 'constants/ArrowTrainingTypes';
-
-import TextField from 'components/TextField';
-import SelectField from 'components/SelectField';
 
 import TypesStepStyle from 'app/trainings/ArrowSteps/TypesStep.style';
 

@@ -1,9 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import MUI from 'app/common/MaterialUI';
-
-import TextField from 'components/TextField';
-import SelectField from 'components/SelectField';
 
 import NeurobicsStepStyle from 'app/trainings/NeurobicsSteps/NeurobicsStep.style';
 

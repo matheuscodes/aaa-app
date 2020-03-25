@@ -16,6 +16,7 @@ import Footer from "app/common/Footer"
 import Header from "app/common/Header"
 import LoginPage from "app/login/LoginPage"
 import SeasonsPage from "app/seasons/SeasonsPage"
+import TrainingsPage from "app/trainings/TrainingsPage"
 
 import RoutePaths from 'global/RoutePaths'
 import getLocalArcher from 'api/helpers/getLocalArcher'
@@ -40,7 +41,6 @@ class Application extends React.Component {
       type: type,
     };
     this.setState(this.state)
-    //setTimeout(this.closeAlarm.bind(this),2000,alarm)
   }
 
   handleAlarmClose(alarm) {
@@ -71,6 +71,10 @@ class Application extends React.Component {
           <Route path={RoutePaths.seasons}>
             <Header title={t('season:appBarTitle')} archer={archer} />
             <SeasonsPage messenger={this} />
+          </Route>
+          <Route path={RoutePaths.trainings}>
+            <Header title={t('training:appBarTitle')} archer={archer} />
+            <TrainingsPage messenger={this} />
           </Route>
           <Redirect from='*' to='/' />
         </Switch>

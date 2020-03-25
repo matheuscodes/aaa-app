@@ -1,13 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {autobind} from 'core-decorators';
-
-import MUI from 'app/common/MaterialUI';
 
 import ArrowTrainingTypes from 'constants/ArrowTrainingTypes';
-
-import TextField from 'components/TextField';
-import SelectField from 'components/SelectField';
 
 import DistancesStepStyle from 'app/trainings/ArrowSteps/DistancesStep.style';
 

@@ -1,12 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {autobind} from 'core-decorators';
-
-import i18nextReact from 'global/i18nextReact';
 
 import Round from 'model/Round';
 
-import MUI from 'app/common/MaterialUI';
 import API from 'api';
 
 import Stepper from 'components/Stepper';

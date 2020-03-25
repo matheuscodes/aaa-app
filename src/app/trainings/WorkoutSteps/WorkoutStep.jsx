@@ -1,9 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import MUI from 'app/common/MaterialUI';
-
-import TextField from 'components/TextField';
-import SelectField from 'components/SelectField';
 
 import WorkoutStepStyle from 'app/trainings/WorkoutSteps/WorkoutStep.style';
 
