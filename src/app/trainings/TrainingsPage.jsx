@@ -14,7 +14,7 @@ import Waiting from 'app/common/Waiting';
 import TrainingsPageStyle from 'app/trainings/TrainingsPage.style';
 
 import TrainingTile from 'app/trainings/TrainingTile';
-//import NewTrainingDialog from 'app/trainings/NewTrainingDialog';
+import NewTrainingDialog from 'app/trainings/NewTrainingDialog';
 
 const styles = { };
 
@@ -139,7 +139,7 @@ class TrainingsPage extends React.Component {
     var callbacks = {
       context: this,
       success: function() {
-        this.showMessage(t('training:messages.deleted'), "MESSAGE");
+        this.showMessage(t('training:messages.deleted'), "SUCCESS");
         this.updateAll();
       },
       warning: function() {
@@ -169,7 +169,7 @@ class TrainingsPage extends React.Component {
 
   showMessage(message, type) {
     if(typeof this.props.messenger !== 'undefined'){
-      this.props.messenger.sendMessage(message, type);
+      this.props.messenger.showMessage(message, type);
     }
   }
 
@@ -221,7 +221,7 @@ class TrainingsPage extends React.Component {
               </Button> : ''
             }
           </Grid>
-          <Grid item xs={0} sm={4} lg={6} />
+          <Grid item xs={false} sm={4} lg={6} />
           <Grid item xs={6} sm={4} lg={3} style={{padding:'5pt'}}>
             {
               typeof this.state.next !== 'undefined' ?
@@ -238,53 +238,11 @@ class TrainingsPage extends React.Component {
             }
           </Grid>
         </Grid>
-        {/*<NewSeasonCard
+
+        <NewTrainingDialog
+          open={this.state.editTraining}
           messenger={this.props.messenger}
-          seasonId={this.state.seasonId}
-          open={this.state.editSeason}
-          onRequestClose={this.closeEdit.bind(this)} />*/}
-          {/*
-
-            <MUI.GridList cellHeight={'auto'} cols={4} padding={10} style={styles.gridList} >
-
-
-              <MUI.GridTile style={MUI.styles.GridTile} cols={this.style.cols} >
-                <MUI.GridList
-                  cols={this.style.cols}
-                  style={this.style.gridList} >
-
-                  <MUI.GridTile
-                    cols={this.style.separatorCols}
-                    style={MUI.styles.GridTile} >{''}</MUI.GridTile>
-                  <MUI.GridTile
-                    cols={this.style.buttonCols}
-                    style={MUI.styles.GridTile} >
-                    {
-                      typeof this.state.next !== 'undefined' ?
-                      <MUI.RaisedButton
-                        label={
-                          this.style.navigationButton.text ?
-                            t('training:nextButton') : ' '
-                        }
-                        fullWidth={true}
-                        backgroundColor={MUI.colors.blue600}
-                        labelColor={MUI.palette.alternateTextColor}
-                        labelPosition={'before'}
-                        labelStyle={this.style.navigationButton.labelStyle}
-                        disabled={(this.state.next === null)}
-                        onTouchTap={this.moveToNextPage}
-                        icon={<MUI.icons.navigation.chevron_right />} /> : ''
-                    }
-                  </MUI.GridTile>
-                </MUI.GridList>
-              </MUI.GridTile>
-            </MUI.GridList>
-            <NewTrainingDialog
-              open={this.state.editTraining}
-              messenger={this}
-              style={this.style}
-              onRequestClose={this.closeEdit} />
-          */}
+          onRequestClose={this.closeEdit.bind(this)} />
       </div>
     );
   }

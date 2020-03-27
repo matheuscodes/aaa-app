@@ -69,7 +69,7 @@ class TrainingTile extends React.Component{
 
     return (
       <Card>
-        <CardHeader
+        {this.props.onDelete ? <CardHeader
             avatar={
               <MiniCalendar
                 width={48}
@@ -78,7 +78,7 @@ class TrainingTile extends React.Component{
                 month={this.props.data.date.getMonth()} />
             }
             title={t('training:tile.title', this.props.data)}
-            subheader={this.props.data.seasonName} />
+            subheader={this.props.data.seasonName} /> : ''}
         <CardContent>
           <TableContainer component={Paper}>
             <Table size="small">
@@ -96,11 +96,11 @@ class TrainingTile extends React.Component{
             </Table>
           </TableContainer>
         </CardContent>
-        <CardActions disableSpacing>
+        {this.props.onDelete ? <CardActions disableSpacing>
           <IconButton onClick={this.delete.bind(this)} color="secondary" variant="contained" >
             <Icon>delete</Icon>
           </IconButton>
-        </CardActions>
+        </CardActions> : ''}
       </Card>
     );
   }

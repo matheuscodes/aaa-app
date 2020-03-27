@@ -1,10 +1,24 @@
 import React from 'react';
+import { withTranslation } from 'react-i18next'
+
+import { withStyles } from '@material-ui/core/styles';
+import FloatingActionButton from '@material-ui/core/Fab';
+import Stepper from '@material-ui/core/Stepper';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Icon from '@material-ui/core/Icon';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import StepContent from '@material-ui/core/StepContent';
 
 import Round from 'model/Round';
 
 import API from 'api';
-
-import Stepper from 'components/Stepper';
 
 import NewAssessmentDialogStyle from 'app/assessments/NewAssessmentDialog.style';
 import BaseStep from 'app/trainings/BaseStep/BaseStep';
@@ -13,13 +27,14 @@ import DistancesStep from 'app/trainings/ArrowSteps/DistancesStep';
 import InputStep from 'app/trainings/ArrowSteps/InputStep';
 import NeurobicsStep from 'app/trainings/NeurobicsSteps/NeurobicsStep';
 import WorkoutStep from 'app/trainings/WorkoutSteps/WorkoutStep';
+import TrainingTile from 'app/trainings/TrainingTile';
 
+const styles = {}
 
-@autobind
-class NewAssessmentDialog extends React.Component {
+class NewTrainingDialog extends React.Component {
   constructor(props) {
     super(props);
-    this.style = new NewAssessmentDialogStyle(props.style.styleProvider);
+
     this.state = this.getInitialState();
   }
 
@@ -30,10 +45,10 @@ class NewAssessmentDialog extends React.Component {
       seasons: [],
       open: this.props.open,
       stepIndex: 0,
-      classes: {},
+      categories: {arrows:true},
       arrowTrainingTypes: {WARMUP:true, WARMOUT:true},
       arrowDistances: {
-        5: false,
+        5: true,
         10: false,
         18: false,
         25: false,
@@ -45,11 +60,6 @@ class NewAssessmentDialog extends React.Component {
       training: {
         date: today,
         arrows: {
-          5: {},
-          18: {},
-          25: {},
-          40: {},
-          70: {}
         }
       }
     };
@@ -72,8 +82,8 @@ class NewAssessmentDialog extends React.Component {
     API.seasons.getList(callbacks);
   }
 
-  changeSeason(event, index, value) {
-    this.state.training.seasonId = value;
+  changeSeason(event) {
+    this.state.training.seasonId =  event.target.value;
     this.setState(this.state);
   }
 
@@ -90,7 +100,7 @@ class NewAssessmentDialog extends React.Component {
     var callbacks = {
       context: this,
       success: function() {
-        messenger.showMessage(t('training:messages.newSaved'), "MESSAGE");
+        messenger.showMessage(t('training:messages.newSaved'), "SUCCESS");
         this.handleClose(true);
       },
       warning: function() {
@@ -107,13 +117,7 @@ class NewAssessmentDialog extends React.Component {
     }
   }
 
-  changeSeason(event, index, value) {
-    var current = this.state;
-    current.training.seasonId = value;
-    this.setState(current);
-  }
-
-  changeDate(event, date) {
+  changeDate(date) {
     this.state.training.date = date;
     this.state.training.date.setHours(18);
     this.setState(this.state);
@@ -134,8 +138,8 @@ class NewAssessmentDialog extends React.Component {
     }
   }
 
-  setTrainingClasses(classes){
-    Object.assign(this.state.classes, classes);
+  setTrainingCategories(categories){
+    Object.assign(this.state.categories, categories);
     this.setState(this.state);
   }
 
@@ -161,156 +165,120 @@ class NewAssessmentDialog extends React.Component {
     const actions = [];
     if (stepIndex > 0) {
       actions.push(
-        <MUI.RaisedButton
-          key={'aaa-newAssessmentDialog-back'}
-          label={this.props.t('assessment:newAssessment.back')}
-          style={this.style.actionButton}
-          primary={false}
-          onTouchTap={() => {
-            this.state.stepIndex = stepIndex - 1;
-            this.setState(this.state);
-          }} />
+        <Grid item xs={6} key={'aaa-newAssessmentDialog-back'}>
+          <Button fullWidth
+            color="secondary"
+            variant="contained"
+            startIcon={<Icon>cancel</Icon>}
+            disabled={(this.state.next === null)}
+            onClick={() => {
+              this.state.stepIndex = stepIndex - 1;
+              this.setState(this.state);
+            }} >
+            {this.props.t('assessment:newAssessment.back')}
+          </Button>
+        </Grid>
       );
     } else if (stepIndex === 0) {
       actions.push(
-        <MUI.RaisedButton
-          key={'aaa-newAssessmentDialog-exit'}
-          label={' '}
-          icon={<MUI.icons.navigation.cancel />}
-          style={this.style.actionButton}
-          secondary={true}
-          onTouchTap={this.closeDialog} />
+        <Grid item xs={6} key={'aaa-newAssessmentDialog-exit'}>
+          <Button fullWidth
+            color="secondary"
+            variant="contained"
+            startIcon={<Icon>cancel</Icon>}
+            disabled={(this.state.next === null)}
+            onClick={this.handleClose.bind(this)} > </Button>
+        </Grid>
       );
     }
-    actions.push(
-      <MUI.RaisedButton
-        key={'aaa-newAssessmentDialog-next'}
-        label={this.props.t('assessment:newAssessment.next')}
-        style={this.style.actionButton}
-        disabled={!(
-          ( this.state.classes.arrows ||
-            this.state.classes.workouts ||
-            this.state.classes.neurobics ) &&
-          this.state.training.date && this.state.training.seasonId
-        )}
-        primary={true}
-        onTouchTap={() => {
-          this.state.stepIndex = stepIndex + 1;
-          this.setState(this.state);
-        }} />
-    );
 
-    return (
-      <div>
-        {actions}
-      </div>
-    );
+    let stepCount = 1;
+    stepCount += this.state.categories.arrows ? 3 : 0;
+    stepCount += this.state.categories.workouts ? 1 : 0;
+    stepCount += this.state.categories.neurobics ? 1 : 0;
+
+    if (stepIndex === stepCount) {
+      actions.push(
+        <Grid item xs={6} key={'aaa-newAssessmentDialog-submit'}>
+          <Button fullWidth
+            color="primary"
+            variant="contained"
+            startIcon={<Icon>backup</Icon>}
+            onClick={this.submitTraining.bind(this)} > </Button>
+        </Grid>
+      );
+    } else {
+      actions.push(
+        <Grid item xs={6} key={'aaa-newAssessmentDialog-next'}>
+          <Button fullWidth
+            color="primary"
+            variant="contained"
+            disabled={!(
+              ( this.state.categories.arrows ||
+                this.state.categories.workouts ||
+                this.state.categories.neurobics ) &&
+              this.state.training.date && this.state.training.seasonId
+            )}
+            onClick={() => {
+              this.state.stepIndex = stepIndex + 1;
+              this.setState(this.state);
+            }} >
+            {this.props.t('assessment:newAssessment.next')}
+          </Button>
+        </Grid>
+      );
+   }
+
+    return actions;
   }
 
   get baseStep() {
-    return {
-      title: this.props.t('training:newTraining.baseStep.title'),
-      content: (
-        <BaseStep
-          t={this.props.t}
-          style={this.style}
-          classes={this.state.classes}
-          seasons={this.state.seasons}
-          seasonId={this.state.training.seasonId}
-          date={this.state.training.date}
-          changeSeason={this.changeSeason}
-          changeDate={this.changeDate}
-          setTrainingClasses={this.setTrainingClasses} />
-      ),
-    };
+    return (
+      <BaseStep
+        key="baseStep"
+        categories={this.state.categories}
+        seasons={this.state.seasons}
+        seasonId={this.state.training.seasonId}
+        date={this.state.training.date}
+        changeSeason={this.changeSeason.bind(this)}
+        changeDate={this.changeDate.bind(this)}
+        setTrainingCategories={this.setTrainingCategories.bind(this)} />
+    );
   }
 
   addArrowSteps(steps) {
-    if(this.state.classes.arrows){
-      steps.push({
-        title: this.props.t('training:newTraining.ArrowsSteps.TypesStep.title'),
-        content: (
-          <TypesStep
-            t={this.props.t}
-            style={this.style}
-            arrowTrainingTypes={this.state.arrowTrainingTypes}
-            setArrowTrainingTypes={this.setArrowTrainingTypes} />
-        ),
-      });
-      steps.push({
-        title: this.props.t('training:newTraining.ArrowsSteps.DistancesStep.title'),
-        content: (
-          <DistancesStep
-            t={this.props.t}
-            style={this.style}
-            messenger={this.props.messenger}
-            arrowDistances={this.state.arrowDistances}
-            setArrowDistances={this.setArrowDistances} />
-        ),
-      });
-      steps.push({
-        title: this.props.t('training:newTraining.ArrowsSteps.InputStep.title'),
-        content: (
-          <InputStep
-            t={this.props.t}
-            style={this.style}
-            messenger={this.props.messenger}
-            arrowDistances={this.state.arrowDistances}
-            arrowTrainingTypes={this.state.arrowTrainingTypes}
-            setArrowCount={this.setArrowCount} />
-        ),
-      });
+    if(this.state.categories.arrows){
+      steps.push(
+        <TypesStep
+          arrowTrainingTypes={this.state.arrowTrainingTypes}
+          setArrowTrainingTypes={this.setArrowTrainingTypes.bind(this)} />
+      );
+      steps.push(
+        <DistancesStep
+          messenger={this.props.messenger}
+          arrowDistances={this.state.arrowDistances}
+          setArrowDistances={this.setArrowDistances.bind(this)} />
+      );
+      steps.push(
+        <InputStep
+          messenger={this.props.messenger}
+          arrowDistances={this.state.arrowDistances}
+          arrowTrainingTypes={this.state.arrowTrainingTypes}
+          setArrowCount={this.setArrowCount.bind(this)} />
+      );
     }
   }
 
   addWorkoutSteps(steps) {
-    if(this.state.classes.workouts){
-      steps.push({
-        title: this.props.t('training:newTraining.WorkoutSteps.WorkoutStep.title'),
-        content: (
-          <WorkoutStep
-            t={this.props.t}
-            style={this.style} />
-        ),
-      });
+    if(this.state.categories.workouts){
+      steps.push(<WorkoutStep />);
     }
   }
 
   addNeurobicsSteps(steps) {
-    if(this.state.classes.neurobics){
-      steps.push({
-        title: this.props.t('training:newTraining.NeurobicsSteps.NeurobicsStep.title'),
-        content: (
-          <NeurobicsStep
-            t={this.props.t}
-            style={this.style} />
-        ),
-      });
+    if(this.state.categories.neurobics){
+      steps.push(<NeurobicsStep />);
     }
-  }
-
-
-
-  get confirmStep() {
-    return {
-      title: this.props.t('training:newTraining.confirmStep.title'),
-      content: (
-        <div>
-          <MUI.FloatingActionButton
-            mini={true}
-            secondary={true}
-            style={this.style.uploadButton}
-            onTouchTap={this.closeDialog}>
-            <MUI.icons.navigation.cancel />
-          </MUI.FloatingActionButton>
-          <MUI.FloatingActionButton
-            style={this.style.uploadButton}
-            onTouchTap={this.submitTraining}>
-            <MUI.icons.action.backup />
-          </MUI.FloatingActionButton>
-        </div>
-      ),
-    };
   }
 
   closeDialog(refresh) {
@@ -328,39 +296,38 @@ class NewAssessmentDialog extends React.Component {
     const steps = [];
 
     steps.push(this.baseStep);
-    this.addArrowSteps(steps);
     this.addWorkoutSteps(steps);
     this.addNeurobicsSteps(steps);
-    steps.push(this.confirmStep);
+    this.addArrowSteps(steps);
 
     return (
-      <MUI.Dialog
-        title={t('training:newTraining.title')}
-        modal={true}
-        actions={this.stepActions}
-        open={this.props.open}
-        onRequestClose={this.closeDialog}
-        contentStyle={this.style.contentStyle}
-        bodyStyle={this.style.bodyStyle}
-        repositionOnUpdate={true}
-        autoDetectWindowHeight={true}
-        autoScrollBodyContent={true} >
-        <Stepper
-          style={this.style}
-          finished={finished}
-          stepIndex={stepIndex}
-          steps={steps} />
-      </MUI.Dialog>
+      <Dialog open={this.props.open} onClose={this.closeDialog.bind(this)} fullScreen>
+        <DialogTitle id="form-dialog-title">
+          {t('training:newTraining.title')}
+        </DialogTitle>
+        <DialogContent>
+          <Stepper activeStep={stepIndex} orientation="vertical">
+            {steps}
+            <Step>
+              <StepLabel>{t('training:newTraining.confirmStep.title')}</StepLabel>
+              <StepContent>
+                <Grid container justify="center" >
+                  <Grid item xs={6} >
+                    <TrainingTile data={this.state.training} />
+                  </Grid>
+                </Grid>
+              </StepContent>
+            </Step>
+          </Stepper>
+        </DialogContent>
+        <DialogActions>
+          <Grid container spacing={2}>
+            {this.stepActions}
+          </Grid>
+        </DialogActions>
+      </Dialog>
     );
   }
 }
 
-NewAssessmentDialog.propTypes = {
-  t: PropTypes.func.isRequired,
-  style: PropTypes.object,
-  open: MUI.Dialog.propTypes.open,
-  messenger: PropTypes.object,
-  onRequestClose: PropTypes.func,
-};
-
-export default i18nextReact.setupTranslation(['assessment'], NewAssessmentDialog);
+export default withTranslation('training')(withStyles(styles)(NewTrainingDialog));

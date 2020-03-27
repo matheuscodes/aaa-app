@@ -67,6 +67,7 @@ export default {
     }
   },
   save: function(training, callbacks) {
+    // TODO: Validate against empty data
     function errorCall(request){
       let error = new Error(request.responseText.toString());
       (callbacks.error || console.log).call(callbacks.context, error);
