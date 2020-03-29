@@ -6,8 +6,6 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
 
-import NeurobicsStepStyle from 'app/trainings/NeurobicsSteps/NeurobicsStep.style';
-
 const styles = {}
 
 function NeurobicsStep(props) {
@@ -20,7 +18,7 @@ function NeurobicsStep(props) {
           <div>
             {props.t('training:newTraining.NeurobicsSteps.comingSoon')}
           </div>
-          <img src={'img/neurobics.png'} />
+          <img src={'img/neurobics.png'} alt=""/>
         </div>
       </StepContent>
     </Step>

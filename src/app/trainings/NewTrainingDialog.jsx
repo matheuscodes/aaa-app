@@ -2,25 +2,20 @@ import React from 'react';
 import { withTranslation } from 'react-i18next'
 
 import { withStyles } from '@material-ui/core/styles';
-import FloatingActionButton from '@material-ui/core/Fab';
 import Stepper from '@material-ui/core/Stepper';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Icon from '@material-ui/core/Icon';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
 
-import Round from 'model/Round';
-
 import API from 'api';
 
-import NewAssessmentDialogStyle from 'app/assessments/NewAssessmentDialog.style';
 import BaseStep from 'app/trainings/BaseStep/BaseStep';
 import TypesStep from 'app/trainings/ArrowSteps/TypesStep';
 import DistancesStep from 'app/trainings/ArrowSteps/DistancesStep';
@@ -161,7 +156,7 @@ class NewTrainingDialog extends React.Component {
   }
 
   get stepActions() {
-    const {stepIndex, rounds} = this.state;
+    const {stepIndex} = this.state;
     const actions = [];
     if (stepIndex > 0) {
       actions.push(
@@ -291,7 +286,7 @@ class NewTrainingDialog extends React.Component {
 
   render() {
     const {t} = this.props;
-    const {finished, stepIndex} = this.state;
+    const {stepIndex} = this.state;
 
     const steps = [];
 

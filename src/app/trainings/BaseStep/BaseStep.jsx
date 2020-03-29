@@ -17,8 +17,6 @@ import StepContent from '@material-ui/core/StepContent';
 
 import {KeyboardDatePicker} from '@material-ui/pickers';
 
-import BaseStepStyle from 'app/trainings/BaseStep/BaseStep.style';
-
 const styles = {}
 
 function BaseStep(props) {
@@ -34,7 +32,7 @@ function BaseStep(props) {
   function setNeurobics(event){
     props.setTrainingCategories({neurobics:event.target.checked})
   }
-  const { t, key, seasons, changeSeason, seasonId } = props;
+  const { t, seasons, changeSeason, seasonId } = props;
   return (
     <Step {...props}>
       <StepLabel>{t('training:newTraining.baseStep.title')}</StepLabel>

@@ -18,7 +18,7 @@ function WorkoutStep(props) {
           <div>
             {props.t('training:newTraining.WorkoutSteps.comingSoon')}
           </div>
-          <img src={'img/workout.png'} />
+          <img src={'img/workout.png'} alt=""/>
         </div>
       </StepContent>
     </Step>
