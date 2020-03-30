@@ -1,19 +1,21 @@
 import React from 'react';
-import {autobind} from 'core-decorators';
 
-import MessageablePage from 'components/MessageablePage';
+import { withTranslation } from 'react-i18next'
 
-import MUI from 'app/common/MaterialUI';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Icon from '@material-ui/core/Icon';
+
 import API from 'api';
-import i18nextReact from 'global/i18nextReact';
 
-import BaseLayout from 'app/common/BaseLayout';
 import AssessmentsPageStyle from 'app/assessments/AssessmentsPage.style';
 import AssessmentsGrid from 'app/assessments/AssessmentsGrid';
 import NewAssessmentDialog from 'app/assessments/NewAssessmentDialog';
 
-@autobind
-class AssessmentsPage extends MessageablePage {
+const styles = {}
+
+class AssessmentsPage extends React.Component {
   constructor(props) {
     super(props);
     this.style = new AssessmentsPageStyle(this.props.styleProvider);
@@ -173,89 +175,57 @@ class AssessmentsPage extends MessageablePage {
     const t = this.props.t;
 
     return (
-      <BaseLayout
-        switcher={this.props.switcher}
-        layoutName="assessmentsPage"
-        userAgent={this.props.userAgent}
-        styleProvider={this.props.styleProvider}
-        messageSubscriber={this}
-        title={t('assessment:appBarTitle')} >
-        <MUI.GridList
-          cellHeight={'auto'}
-          cols={this.style.cols}
-          padding={this.style.defaultPadding}
-          style={this.style.gridList} >
-          <MUI.GridTile
-            style={MUI.styles.GridTile}
-            cols={this.style.cols} >
-            <MUI.RaisedButton
-              label={t('assessment:newAssessment.button')}
-              fullWidth={true}
-              primary={true}
-              onTouchTap={this.newAssessment} />
-          </MUI.GridTile>
+      <div style={{'backgroundColor':'white', padding:'10pt'}}>
+        <Grid container spacing={2} >
+          <Grid item xs={12}>
+            <Button fullWidth
+              color="primary"
+              onClick={this.newAssessment.bind(this)}>{t('assessment:newAssessment.button')}</Button>
+          </Grid>
           <AssessmentsGrid
-            cols={this.style.cols}
-            style={this.style.AssessmentsGrid}
-            assessments={this.state.assessments}
-            deleteAssessment={this.deleteAssessment}/>
-          <MUI.GridTile style={MUI.styles.GridTile} cols={this.style.cols} >
-            <MUI.GridList
-              cols={this.style.cols}
-              style={this.style.gridList} >
-              <MUI.GridTile
-                cols={this.style.buttonCols}
-                style={MUI.styles.GridTile} >
-                {
-                  typeof this.state.previous !== 'undefined' ?
-                  <MUI.RaisedButton
-                    label={
-                      this.style.navigationButton.text ?
-                        t('assessment:previousButton') : ' '
-                    }
-                    fullWidth={true}
-                    backgroundColor={MUI.colors.blue600}
-                    labelColor={MUI.palette.alternateTextColor}
-                    labelStyle={this.style.navigationButton.labelStyle}
-                    disabled={(this.state.previous === null)}
-                    onTouchTap={this.moveToPreviousPage}
-                    icon={<MUI.icons.navigation.chevron_left />} /> : ''
-                }
-              </MUI.GridTile>
-              <MUI.GridTile
-                cols={this.style.separatorCols}
-                style={MUI.styles.GridTile} >{''}</MUI.GridTile>
-              <MUI.GridTile
-                cols={this.style.buttonCols}
-                style={MUI.styles.GridTile} >
-                {
-                  typeof this.state.next !== 'undefined' ?
-                  <MUI.RaisedButton
-                    label={
-                      this.style.navigationButton.text ?
-                        t('assessment:nextButton') : ' '
-                    }
-                    fullWidth={true}
-                    backgroundColor={MUI.colors.blue600}
-                    labelColor={MUI.palette.alternateTextColor}
-                    labelPosition={'before'}
-                    labelStyle={this.style.navigationButton.labelStyle}
-                    disabled={(this.state.next === null)}
-                    onTouchTap={this.moveToNextPage}
-                    icon={<MUI.icons.navigation.chevron_right />} /> : ''
-                }
-              </MUI.GridTile>
-            </MUI.GridList>
-          </MUI.GridTile>
-        </MUI.GridList>
+            assessments={this.state.assessments.bind(this)}
+            deleteAssessment={this.deleteAssessment.bind(this)}/>
+          <Grid container >
+            <Grid item xs={6} sm={4} lg={3} style={{padding:'5pt'}}>
+              {
+                typeof this.state.previous !== 'undefined' ?
+                <Button
+                  style={{marginBottom:'10pt'}}
+                  fullWidth={true}
+                  color="secondary"
+                  variant="contained"
+                  startIcon={<Icon>chevron_left</Icon>}
+                  disabled={(this.state.previous === null)}
+                  onClick={this.moveToPreviousPage.bind(this)} >
+                  { t('assessment:previousButton') }
+                </Button> : ''
+              }
+            </Grid>
+            <Grid item xs={false} sm={4} lg={6} />
+            <Grid item xs={6} sm={4} lg={3} style={{padding:'5pt'}}>
+              {
+                typeof this.state.next !== 'undefined' ?
+                <Button
+                  style={{marginBottom:'10pt'}}
+                  fullWidth={true}
+                  color="secondary"
+                  variant="contained"
+                  endIcon={<Icon>chevron_right</Icon>}
+                  disabled={(this.state.next === null)}
+                  onClick={this.moveToNextPage.bind(this)} >
+                  { t('assessment:nextButton') }
+                </Button> : ''
+              }
+            </Grid>
+          </Grid>
+        </Grid>
         <NewAssessmentDialog
           open={this.state.editAssessment}
           messenger={this}
-          style={this.style}
-          onRequestClose={this.closeEdit} />
-      </BaseLayout>
+          onRequestClose={this.closeEdit.bind(this)} />
+      </div>
     );
   }
 }
 
-export default i18nextReact.setupTranslation(['assessment'], AssessmentsPage);
+export default withTranslation('assessment')(withStyles(styles)(AssessmentsPage));

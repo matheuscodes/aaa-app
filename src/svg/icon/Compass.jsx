@@ -1,8 +1,8 @@
 'use strict';
 import React from 'react'
 
-export default React.createClass({
-  render: function() {
+export default class extends React.Component {
+  render() {
     // TODO FIX THIS HACK AND CALCULATE CORRECTLY
     var transforms = [];
     switch (this.props.direction) {
@@ -59,4 +59,4 @@ export default React.createClass({
       </svg>
     );
   }
-});
+}

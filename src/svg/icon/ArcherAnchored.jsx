@@ -1,13 +1,7 @@
 import React from 'react'
 // TODO attribute creative commons the author: "Created by Gabriele Fumero from the Noun Project"
-const ArcherAnchored = React.createClass({
-  propTypes: {
-    // TODO Styles as objects to validate?
-    style: React.PropTypes.object,
-    height: React.PropTypes.number,
-    width: React.PropTypes.number
-  },
-  render: function() {
+class ArcherAnchored extends React.Component {
+  render() {
     return (
       <svg
         style={this.props.style}
@@ -46,6 +40,6 @@ const ArcherAnchored = React.createClass({
       </svg>
     );
   }
-});
+}
 
 export default ArcherAnchored;

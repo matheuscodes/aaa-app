@@ -1,6 +1,8 @@
 import React from 'react'
 
-import i18nextReact from 'global/i18nextReact'
+import { withTranslation } from 'react-i18next'
+
+import { withStyles } from '@material-ui/core/styles';
 
 import GraphStyle from 'svg/common/GraphStyle'
 import GraphBar from 'svg/common/GraphBar'
@@ -8,14 +10,10 @@ import GraphBottomLabels from 'svg/common/GraphBottomLabels'
 import GraphAxisLabels from 'svg/common/GraphAxisLabels'
 import GraphGrid from 'svg/common/GraphGrid'
 
-const ValueDistributionGraph = React.createClass({
-  propTypes: {
-    // TODO declare a class to validate
-    data: React.PropTypes.object,
-    max: React.PropTypes.number,
-    t: React.PropTypes.func
-  },
-  render: function() {
+const styles = {}
+
+class ValueDistributionGraph extends React.Component {
+  render() {
     const t = this.props.t;
     const unit = 1000 / (Math.ceil((this.props.data.maxPercentage * 110) / 10) * 0.1);
 
@@ -74,7 +72,6 @@ const ValueDistributionGraph = React.createClass({
       </svg>
     );
   }
-});
+}
 
-export default i18nextReact.setupTranslation(['common', 'home'],
-                                               ValueDistributionGraph);
+export default withTranslation('common', 'home')(withStyles(styles)(ValueDistributionGraph));

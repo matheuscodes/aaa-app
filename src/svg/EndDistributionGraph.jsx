@@ -1,6 +1,8 @@
 import React from 'react'
 
-import i18nextReact from 'global/i18nextReact'
+import { withTranslation } from 'react-i18next'
+
+import { withStyles } from '@material-ui/core/styles';
 
 import GraphStyle from 'svg/common/GraphStyle'
 import GraphBar from 'svg/common/GraphBar'
@@ -9,8 +11,10 @@ import GraphAxisLabels from 'svg/common/GraphAxisLabels'
 import GraphEstimations from 'svg/common/GraphEstimations'
 import GraphGrid from 'svg/common/GraphGrid'
 
-const EndDistributionGraph = React.createClass({
-  render: function() {
+const styles = {}
+
+class EndDistributionGraph extends React.Component {
+  render() {
     const t = this.props.t;
     var size = this.props.data.endCount;
 
@@ -128,7 +132,6 @@ const EndDistributionGraph = React.createClass({
       </svg>
     );
   }
-});
+}
 
-export default i18nextReact.setupTranslation(['assessment'],
-                                               EndDistributionGraph);
+export default withTranslation('assessment')(withStyles(styles)(EndDistributionGraph));

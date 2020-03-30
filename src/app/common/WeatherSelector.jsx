@@ -1,20 +1,18 @@
-'use strict';
-
 import React from 'react'
-import MUI from 'app/common/MaterialUI'
 
-import SelectField from 'components/SelectField';
+import Select from '@material-ui/core/Select';
 
 import WeatherSelectorStyle from 'app/common/WeatherSelector.style';
 import WeatherConditions from 'constants/WeatherConditions'
 import WeatherIcons from 'svg/icon/Weather'
 
-export default React.createClass({
-  getInitialState: function() {
-    this.style = new WeatherSelectorStyle(this.props.style.styleProvider);
-    return {weathers: []};
-  },
-  componentDidMount: function() {
+export default class extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {weathers: []}
+  }
+
+  componentDidMount() {
     Object.keys(WeatherConditions).forEach((weather) => {
       const CurrentIcon = WeatherIcons[WeatherConditions[weather]];
       this.state.weathers.push(
@@ -26,10 +24,11 @@ export default React.createClass({
       );
     });
     this.setState(this.state);
-  },
-  render: function() {
+  }
+
+  render() {
     return (
-      <SelectField
+      <Select
         style={this.props.style}
         id={'aaa-weatherSelector'}
         value={this.props.value}
@@ -40,4 +39,4 @@ export default React.createClass({
         hintText={this.props.hintText} />
     );
   }
-});
+}

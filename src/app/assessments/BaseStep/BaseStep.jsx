@@ -1,24 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import MUI from 'app/common/MaterialUI';
 
-import TextField from 'components/TextField';
-import SelectField from 'components/SelectField';
+import { withTranslation } from 'react-i18next'
 
-import BaseStepStyle from 'app/assessments/BaseStep/BaseStep.style';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
 
-export default function BaseStep(props) {
-  const style = new BaseStepStyle(props.style.styleProvider);
+const styles = {}
+
+function BaseStep(props) {
 
   return (
       <div>
-        <MUI.GridList
-          cols={4}
-          cellHeight={'auto'}
-          style={style}>
-          <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
-            <SelectField
-              style={style}
+        <Grid container>
+          <Grid item xs={12}>
+            <Select
               id={'newAssessmentSeason'}
               value={props.seasonId}
               onChange={props.changeSeason}
@@ -26,20 +23,19 @@ export default function BaseStep(props) {
               floatingLabelText={
                 props.t('assessment:newAssessment.seasonSelectField.label')
               } />
-          </MUI.GridTile>
-          <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
-            <MUI.DatePicker
+          </Grid>
+          <Grid item xs={6}>
+            {/*<MUI.DatePicker
               id={'newAssessmentDate'}
               floatingLabelText={
                 props.t('assessment:newAssessment.dateDatepicker.label')
               }
               autoOk={true}
               value={props.date}
-              onChange={props.changeDate} />
-          </MUI.GridTile>
-          <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
+              onChange={props.changeDate} />*/}
+          </Grid>
+          <Grid item xs={3}>
             <TextField
-              style={style}
               id={'newAssessmentDistance'}
               hintText={
                 props.t('assessment:newAssessment.distanceTextField.hint')
@@ -50,10 +46,9 @@ export default function BaseStep(props) {
               type={'number'}
               defaultValue={props.distance}
               onChange={props.changeDistance} />
-          </MUI.GridTile>
-          <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
-            <SelectField
-              style={style}
+          </Grid>
+          <Grid item xs={6}>
+            <Select
               id={'newAssessmentTarget'}
               value={props.targetId}
               onChange={props.changeTarget}
@@ -61,10 +56,9 @@ export default function BaseStep(props) {
               floatingLabelText={
                 props.t('assessment:newAssessment.targetSelectField.label')
               } />
-          </MUI.GridTile>
-          <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
-            <SelectField
-              style={style}
+          </Grid>
+          <Grid item xs={6}>
+            <Select
               id={'newAssessmentEvent'}
               value={props.eventId}
               onChange={props.changeEvent}
@@ -72,26 +66,10 @@ export default function BaseStep(props) {
               floatingLabelText={
                 props.t('assessment:newAssessment.eventSelectField.label')
               } />
-          </MUI.GridTile>
-        </MUI.GridList>
+          </Grid>
+        </Grid>
       </div>
   );
 }
 
-BaseStep.propTypes = {
-  t: PropTypes.func.isRequired,
-  style: PropTypes.object,
-  events: PropTypes.array,
-  targets: PropTypes.array,
-  seasons: PropTypes.array,
-  distance: PropTypes.string,
-  date: PropTypes.object,
-  eventId: PropTypes.number,
-  targetId: PropTypes.number,
-  seasonId: PropTypes.number,
-  changeSeason: PropTypes.func,
-  changeTarget: PropTypes.func,
-  changeEvent: PropTypes.func,
-  changeDistance: PropTypes.func,
-  changeDate: PropTypes.func,
-};
+export default withTranslation('assessment')(withStyles(styles)(BaseStep));

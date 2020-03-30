@@ -1,29 +1,20 @@
 import React from 'react'
-import MUI from 'app/common/MaterialUI'
 
-import DirectionSelectorStyle from 'app/common/DirectionSelector.style';
+import Select from '@material-ui/core/Select';
+
 import directions from 'constants/Directions';
-import SelectField from 'components/SelectField';
 
 import Compass from 'svg/icon/Compass'
 
-const DirectionSelector = React.createClass({
-  propTypes: {
-    style: React.PropTypes.object,
-    type: React.PropTypes.string,
-    value: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    hintText: React.PropTypes.string
-  },
+class DirectionSelector extends React.Component{
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
 
-  getInitialState: function(){
-    this.style = new DirectionSelectorStyle(this.props.style.styleProvider);
-    return {};
-  },
-
-  render: function() {
+  render() {
     return (
-      <SelectField
+      <Select
         style={this.props.style}
         value={this.props.value}
         onChange={this.props.onChange}
@@ -43,6 +34,6 @@ const DirectionSelector = React.createClass({
         hintText={this.props.hintText} />
     );
   }
-});
+}
 
 export default DirectionSelector;

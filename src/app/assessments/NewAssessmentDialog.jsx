@@ -1,27 +1,34 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {autobind} from 'core-decorators';
 
-import i18nextReact from 'global/i18nextReact';
+import { withTranslation } from 'react-i18next'
+
+import { withStyles } from '@material-ui/core/styles';
+import Stepper from '@material-ui/core/Stepper';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Icon from '@material-ui/core/Icon';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import StepContent from '@material-ui/core/StepContent';
 
 import Round from 'model/Round';
 
-import MUI from 'app/common/MaterialUI';
 import API from 'api';
 
-import Stepper from 'components/Stepper';
-
-import NewAssessmentDialogStyle from 'app/assessments/NewAssessmentDialog.style';
 import BaseStep from 'app/assessments/BaseStep/BaseStep';
 import WeatherStep from 'app/assessments/WeatherStep/WeatherStep';
 import RoundStep from 'app/assessments/RoundStep/RoundStep';
+import AssessmentTile from 'app/assessments/AssessmentTile';
 
+const styles = {}
 
-@autobind
 class NewAssessmentDialog extends React.Component {
   constructor(props) {
     super(props);
-    this.style = new NewAssessmentDialogStyle(props.style.styleProvider);
     this.state = this.getInitialState();
   }
 
@@ -206,68 +213,58 @@ class NewAssessmentDialog extends React.Component {
     const actions = [];
     if (stepIndex > 0) {
       actions.push(
-        <MUI.RaisedButton
+        <Button
           key={'aaa-newAssessmentDialog-back'}
-          label={this.props.t('assessment:newAssessment.back')}
-          style={this.style.actionButton}
-          primary={false}
-          onTouchTap={() => {
+          color="secondary"
+          onClick={() => {
             this.state.stepIndex = stepIndex - 1;
             this.setState(this.state);
-          }} />
+          }}>{this.props.t('assessment:newAssessment.back')}</Button>
       );
     } else if (stepIndex === 0) {
       actions.push(
-        <MUI.RaisedButton
+        <Button
           key={'aaa-newAssessmentDialog-exit'}
-          label={' '}
-          icon={<MUI.icons.navigation.cancel />}
-          style={this.style.actionButton}
-          secondary={true}
-          onTouchTap={this.closeDialog} />
+          icon={<Icon>cancel</Icon>}
+          color="secondary"
+          onClick={this.closeDialog.bind(this)} />
       );
     }
     if (stepIndex < (1 + rounds.length)) {
       actions.push(
-        <MUI.RaisedButton
+        <Button
           key={'aaa-newAssessmentDialog-next'}
-          label={this.props.t('assessment:newAssessment.next')}
-          style={this.style.actionButton}
           disabled={!this.validateBase()}
-          primary={true}
-          onTouchTap={() => {
+          color="primary"
+          onClick={() => {
             this.state.stepIndex = stepIndex + 1;
             this.setState(this.state);
-          }} />
+          }}> {this.props.t('assessment:newAssessment.next')}</Button>
       );
     } else {
       if (stepIndex === (1 + rounds.length)) {
         actions.push(
-          <MUI.RaisedButton
+          <Button
             key={'aaa-newAssessmentDialog-new'}
-            label={this.props.t('assessment:newAssessment.new')}
-            style={this.style.actionButton}
-            primary={true}
+            color="primary"
             disabled={!this.validateRound()}
-            onTouchTap={() => {
+            onClick={() => {
               this.state.stepIndex = stepIndex + 1;
               this.addRound();
-            }} />
+            }}>{this.props.t('assessment:newAssessment.new')}</Button>
         );
       }
       // On the overview step there is no finish, only upload.
       if (stepIndex < (1 + rounds.length + 1)) {
         actions.push(
-          <MUI.RaisedButton
+          <Button
             key={'aaa-newAssessmentDialog-finish'}
-            label={this.props.t('assessment:newAssessment.finish')}
-            style={this.style.actionButton}
-            primary={true}
+            color="primary"
             disabled={!this.validateRound()}
-            onTouchTap={() => {
+            onClick={() => {
               this.state.stepIndex = stepIndex + 1;
               this.setState(this.state);
-            }} />
+            }}>{this.props.t('assessment:newAssessment.finish')}</Button>
         );
       }
     }
@@ -324,28 +321,6 @@ class NewAssessmentDialog extends React.Component {
     };
   }
 
-  get confirmStep() {
-    return {
-      title: this.props.t('assessment:newAssessment.confirmStep.title'),
-      content: (
-        <div>
-          <MUI.FloatingActionButton
-            mini={true}
-            secondary={true}
-            style={this.style.uploadButton}
-            onTouchTap={this.closeDialog}>
-            <MUI.icons.navigation.cancel />
-          </MUI.FloatingActionButton>
-          <MUI.FloatingActionButton
-            style={this.style.uploadButton}
-            onTouchTap={this.submitAssessment}>
-            <MUI.icons.action.backup />
-          </MUI.FloatingActionButton>
-        </div>
-      ),
-    };
-  }
-
   get roundSteps() {
     return this.state.rounds.map((round, index) => {
       return {
@@ -382,36 +357,35 @@ class NewAssessmentDialog extends React.Component {
     steps.push(this.baseStep);
     steps.push(this.weatherStep);
     this.roundSteps.forEach((round) => steps.push(round));
-    steps.push(this.confirmStep);
 
     return (
-      <MUI.Dialog
-        title={t('assessment:newAssessment.title')}
-        modal={true}
-        actions={this.stepActions}
-        open={this.props.open}
-        onRequestClose={this.closeDialog}
-        contentStyle={this.style.contentStyle}
-        bodyStyle={this.style.bodyStyle}
-        repositionOnUpdate={true}
-        autoDetectWindowHeight={true}
-        autoScrollBodyContent={true} >
-        <Stepper
-          style={this.style}
-          finished={finished}
-          stepIndex={stepIndex}
-          steps={steps} />
-      </MUI.Dialog>
+      <Dialog open={this.props.open} onClose={this.closeDialog.bind(this)} fullScreen>
+        <DialogTitle>
+          {t('assessment:newAssessment.title')}
+        </DialogTitle>
+        <DialogContent>
+          <Stepper activeStep={stepIndex} orientation="vertical">
+            {steps}
+            <Step>
+              <StepLabel>{t('assessment:newAssessment.confirmStep.title')}</StepLabel>
+              <StepContent>
+                <Grid container justify="center" >
+                  <Grid item xs={6} >
+                    <AssessmentTile data={this.state} />
+                  </Grid>
+                </Grid>
+              </StepContent>
+            </Step>
+          </Stepper>
+        </DialogContent>
+        <DialogActions>
+          <Grid container spacing={2}>
+            {this.stepActions}
+          </Grid>
+        </DialogActions>
+      </Dialog>
     );
   }
 }
 
-NewAssessmentDialog.propTypes = {
-  t: PropTypes.func.isRequired,
-  style: PropTypes.object,
-  open: MUI.Dialog.propTypes.open,
-  messenger: PropTypes.object,
-  onRequestClose: PropTypes.func,
-};
-
-export default i18nextReact.setupTranslation(['assessment'], NewAssessmentDialog);
+export default withTranslation('assessment')(withStyles(styles)(NewAssessmentDialog));

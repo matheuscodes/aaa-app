@@ -17,6 +17,7 @@ import Header from "app/common/Header"
 import LoginPage from "app/login/LoginPage"
 import SeasonsPage from "app/seasons/SeasonsPage"
 import TrainingsPage from "app/trainings/TrainingsPage"
+import AssessmentsPage from "app/assessments/AssessmentsPage"
 
 import RoutePaths from 'global/RoutePaths'
 import getLocalArcher from 'api/helpers/getLocalArcher'
@@ -75,6 +76,10 @@ class Application extends React.Component {
           <Route path={RoutePaths.trainings}>
             <Header title={t('training:appBarTitle')} archer={archer} />
             <TrainingsPage messenger={this} />
+          </Route>
+          <Route path={RoutePaths.assessments}>
+            <Header title={t('assessment:appBarTitle')} archer={archer} />
+            <AssessmentsPage messenger={this} />
           </Route>
           <Redirect from='*' to='/' />
         </Switch>

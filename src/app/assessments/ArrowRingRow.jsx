@@ -1,6 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import MUI from 'app/common/MaterialUI';
+
+import { withTranslation } from 'react-i18next'
+
+import { withStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
+
 import valueConverter from 'global/ValueConverter';
 
 export default function ArrowRingRow(props) {
@@ -11,20 +15,13 @@ export default function ArrowRingRow(props) {
     <div style={style}>
       {
         props.arrows.map((arrow, arrowIndex) => (
-          <MUI.Avatar
+          <Avatar
             key={`aaa-newAssessmentEndNewArrow_${arrowIndex}`}
             color={valueConverter.color[arrow]}
             backgroundColor={valueConverter.backgroundColor[arrow]}
-            size={props.arrowSize} >{ arrow }</MUI.Avatar>
+            size={props.arrowSize} >{ arrow }</Avatar>
         ))
       }
     </div>
   );
 }
-
-ArrowRingRow.propTypes = {
-  style: PropTypes.object,
-  arrowSize: PropTypes.number,
-  rows: PropTypes.number,
-  arrows: PropTypes.array,
-};

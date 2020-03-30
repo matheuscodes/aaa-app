@@ -1,15 +1,30 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {autobind} from 'core-decorators';
 
-import MUI from 'app/common/MaterialUI';
-import i18nextReact from 'global/i18nextReact';
+import { withTranslation } from 'react-i18next'
+
+import { withStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardActions from '@material-ui/core/CardActions';
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 
 import AssessmentReport from 'app/assessments/AssessmentReport';
 
 import MiniCalendar from 'svg/common/MiniCalendar';
 
-@autobind
+const styles = {}
+
 class AssessmentTile extends React.Component {
   constructor(props) {
     super(props);
@@ -27,16 +42,13 @@ class AssessmentTile extends React.Component {
   getMore() {
     if (this.props.allowMore) {
       return (
-        <MUI.GridTile
-          style={MUI.styles.GridTile}
-          cols={1}
+        <Grid item
+          cols={12}
           key={'aaa-moreButton'} >
-          <MUI.RaisedButton
-            label={this.props.t('assessment:detailsButton')}
-            secondary={true}
-            style={{margin: '5pt'}}
-            onTouchTap={this.handleOpen} />
-        </MUI.GridTile>
+          <Button fullWidth
+            color="secondary"
+            onClick={this.handleOpen.bind(this)}>{this.props.t('assessment:detailsButton')}</Button>
+        </Grid>
       );
     }
   }
@@ -45,12 +57,12 @@ class AssessmentTile extends React.Component {
     const t = this.props.t;
 
     const content = [
-      <MUI.GridTile style={MUI.styles.GridTile} cols={1} key={0}>
+      <Grid item xs={6}>
         <p style={{margin: 0}}>
           {t('assessment:report.totalPoints', this.props.data)} <br/>
           {t('assessment:report.averagePoints', this.props.data)}
         </p>
-      </MUI.GridTile>,
+      </Grid>,
     ];
 
     const more = this.getMore();
@@ -59,48 +71,34 @@ class AssessmentTile extends React.Component {
     }
 
     return (
-      <MUI.Paper zDepth={1}>
-        <MUI.Card>
-          <MUI.CardHeader
-            title={ this.props.data.eventName ? this.props.data.eventName :
-                    t('assessment:tile.title', this.props.data)}
-            subtitle={this.props.data.seasonName}
+      <Card>
+        {this.props.onDelete ? <CardHeader
             avatar={
               <MiniCalendar
                 width={48}
                 height={48}
                 day={this.props.data.date.getDate()}
                 month={this.props.data.date.getMonth()} />
-            }/>
-          <MUI.CardText>
-            <MUI.GridList
-              cellHeight={this.props.style.AssessmentTile.cellHeight}
-              cols={this.props.allowMore ? 2 : 1}
-              padding={10} >
-              {content}
-            </MUI.GridList>
-            <AssessmentReport
-              style={this.props.style}
-              assessmentId={this.props.data.id}
-              seasonId={this.props.data.seasonId}
-              data={this.props.data}
-              handleClose={this.handleClose}
-              open={this.state.open}
-              onDelete={this.props.onDelete} />
-          </MUI.CardText>
-        </MUI.Card>
-      </MUI.Paper>
+            }
+            title={ this.props.data.eventName ? this.props.data.eventName :
+                    t('assessment:tile.title', this.props.data)}
+            subheader={this.props.data.seasonName} /> : ''}
+        <CardContent>
+          <Grid container >
+            {content}
+          </Grid>
+          <AssessmentReport
+            style={this.props.style}
+            assessmentId={this.props.data.id}
+            seasonId={this.props.data.seasonId}
+            data={this.props.data}
+            handleClose={this.handleClose}
+            open={this.state.open}
+            onDelete={this.props.onDelete} />
+        </CardContent>
+      </Card>
     );
   }
 }
 
-AssessmentTile.propTypes = {
-  style: PropTypes.object,
-  data: PropTypes.object,
-  allowMore: PropTypes.bool,
-  onDelete: PropTypes.func,
-  t: PropTypes.func,
-};
-
-export default i18nextReact.setupTranslation(['assessment'],
-                                               AssessmentTile);
+export default withTranslation('assessment')(withStyles(styles)(AssessmentTile));

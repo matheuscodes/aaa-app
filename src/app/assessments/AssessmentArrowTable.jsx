@@ -1,17 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {autobind} from 'core-decorators';
 
-import i18nextReact from 'global/i18nextReact';
+import { withTranslation } from 'react-i18next'
 
-import AssessmentArrowTableStyle from 'app/assessments/AssessmentArrowTable.style';
+import { withStyles } from '@material-ui/core/styles';
+
 import AssessmentArrowTableRow from 'app/assessments/AssessmentArrowTableRow';
 
-@autobind
+const styles = {}
+
 class AssessmentArrowTable extends React.Component {
   constructor(props) {
     super(props);
-    this.style = new AssessmentArrowTableStyle(props.style.styleProvider);
   }
 
   render() {
@@ -69,14 +68,6 @@ class AssessmentArrowTable extends React.Component {
       </table>
     );
   }
-};
+}
 
-AssessmentArrowTable.propTypes = {
-  style: PropTypes.object,
-  data: PropTypes.object,
-  deleteEnd: PropTypes.func,
-  t: PropTypes.func,
-};
-
-export default i18nextReact.setupTranslation(['assessment'],
-                                               AssessmentArrowTable);
+export default withTranslation('assessment')(withStyles(styles)(AssessmentArrowTable));

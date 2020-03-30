@@ -1,8 +1,7 @@
-'use strict';
 import React from 'react'
 
-export default React.createClass({
-  render: function() {
+export default class extends React.Component {
+  render() {
     const proportion = 1218 / 4118;
     return (
       <svg
@@ -17,4 +16,4 @@ export default React.createClass({
       </svg>
     );
   }
-});
+}
