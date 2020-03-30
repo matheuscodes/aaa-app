@@ -12,7 +12,7 @@ const styles = {}
 
 function AssessmentsGrid(props) {
   return (
-    <Grid container>
+    <Grid container spacing={2}>
       {
         props.assessments ?
           props.assessments.map((assessment, index) => {

@@ -39,39 +39,11 @@ class AssessmentTile extends React.Component {
     this.setState({open: true});
   }
 
-  getMore() {
-    if (this.props.allowMore) {
-      return (
-        <Grid item
-          cols={12}
-          key={'aaa-moreButton'} >
-          <Button fullWidth
-            color="secondary"
-            onClick={this.handleOpen.bind(this)}>{this.props.t('assessment:detailsButton')}</Button>
-        </Grid>
-      );
-    }
-  }
-
   render() {
-    const t = this.props.t;
-
-    const content = [
-      <Grid item xs={6}>
-        <p style={{margin: 0}}>
-          {t('assessment:report.totalPoints', this.props.data)} <br/>
-          {t('assessment:report.averagePoints', this.props.data)}
-        </p>
-      </Grid>,
-    ];
-
-    const more = this.getMore();
-    if (more) {
-      content.push(more);
-    }
+    const { t } = this.props;
 
     return (
-      <Card>
+      <Card key={this.props.key}>
         {this.props.onDelete ? <CardHeader
             avatar={
               <MiniCalendar
@@ -85,14 +57,26 @@ class AssessmentTile extends React.Component {
             subheader={this.props.data.seasonName} /> : ''}
         <CardContent>
           <Grid container >
-            {content}
+            <Grid item xs={6}>
+              <p style={{margin: 0}}>
+                {t('assessment:report.totalPoints', this.props.data)} <br/>
+                {t('assessment:report.averagePoints', this.props.data)}
+              </p>
+            </Grid>
+            <Grid item
+              xs={6}
+              key={'aaa-moreButton'} >
+              <Button fullWidth
+                color="secondary"
+                onClick={this.handleOpen.bind(this)}>{this.props.t('assessment:detailsButton')}</Button>
+            </Grid>
           </Grid>
           <AssessmentReport
             style={this.props.style}
             assessmentId={this.props.data.id}
             seasonId={this.props.data.seasonId}
             data={this.props.data}
-            handleClose={this.handleClose}
+            handleClose={this.handleClose.bind(this)}
             open={this.state.open}
             onDelete={this.props.onDelete} />
         </CardContent>

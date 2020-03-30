@@ -93,7 +93,11 @@ class NewAssessmentRound extends React.Component {
     const t = this.props.t;
     return (
       <div>
-        <Button onClick={this.handleOpen.bind(this)}>
+        <Button fullWidth
+                variant="contained"
+                size="small"
+                color="secondary"
+                onClick={this.handleOpen.bind(this)} >
           {t('assessment:addTotal')}
         </Button>
         <Dialog open={this.state.open} onClose={this.handleClose.bind(this)}>
@@ -101,23 +105,29 @@ class NewAssessmentRound extends React.Component {
             {t('assessment:newRound.title')}
           </DialogTitle>
           <DialogContent>
-            <TextField
-              id={'aaa-newRoundRings'}
-              onChange={this.changeRings.bind(this)}
-              hintText={t('assessment:newRound.ringsTextField.hint')}
-              floatingLabelText={t('assessment:newRound.ringsTextField.label')} />
-            <TextField
-              id={'aaa-newRoundArrows'}
-              onChange={this.changeArrows.bind(this)}
-              hintText={t('assessment:newRound.arrowsTextField.hint')}
-              floatingLabelText={
-                t('assessment:newRound.arrowsTextField.label')
-              } />
-            <TextField
-              id={'aaa-newRoundEnds'}
-              onChange={this.changeEnds.bind(this)}
-              hintText={t('assessment:newRound.endsTextField.hint')}
-              floatingLabelText={t('assessment:newRound.endsTextField.label')} />
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField fullWidth
+                  id={'aaa-newRoundRings'}
+                  onChange={this.changeRings.bind(this)}
+                  hintText={t('assessment:newRound.ringsTextField.hint')}
+                  label={t('assessment:newRound.ringsTextField.label')} />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField fullWidth
+                  id={'aaa-newRoundArrows'}
+                  onChange={this.changeArrows.bind(this)}
+                  hintText={t('assessment:newRound.arrowsTextField.hint')}
+                  label={t('assessment:newRound.arrowsTextField.label')} />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField fullWidth
+                  id={'aaa-newRoundEnds'}
+                  onChange={this.changeEnds.bind(this)}
+                  hintText={t('assessment:newRound.endsTextField.hint')}
+                  label={t('assessment:newRound.endsTextField.label')} />
+              </Grid>
+            </Grid>
           </DialogContent>
           <DialogActions>
             <Button color="primary"

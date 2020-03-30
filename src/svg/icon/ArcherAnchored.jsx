@@ -7,7 +7,7 @@ class ArcherAnchored extends React.Component {
         style={this.props.style}
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 100 100"
-        height={(this.props.height || 100)}
+        height={(this.props.height || (this.props.width || 100))}
         width={(this.props.width || (this.props.height || 100))}>
         <path
           d={['M35.68,59.581c-1.597-1.298-3.942-1.055-5.238,0.544L19.298,',

@@ -24,18 +24,14 @@ class AssessmentArrowTableRow extends React.Component {
       <tr>
         <td>
           <ArrowRingRow
-            style={this.props.style.rings}
-            arrows={this.props.end}
-            arrowSize={this.props.style.arrow.width} />
+            arrows={this.props.end} />
         </td>
         <td>
-          <div style={this.props.style.total} >{ total }</div>
+          <div style={{textAlign:'center'}}>{ total }</div>
+        </td>
+        <td>
           { this.props.deleteEnd ?
-            <FloatingActionButton
-              onTouchTap={this.deleteEnd}
-              secondary={true}
-              style={this.props.style.deleteButton}
-              iconStyle={this.props.style.deleteButton.iconStyle} >
+            <FloatingActionButton size="small" onClick={this.deleteEnd.bind(this)} color="secondary" >
               <Icon>cancel</Icon>
             </FloatingActionButton> : null }
         </td>

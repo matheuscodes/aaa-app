@@ -15,21 +15,22 @@ import AssessmentArrowTable from 'app/assessments/AssessmentArrowTable';
 const styles = {}
 
 function RoundStep(props) {
+  const { t } = props;
   return (
       <Step {...props}>
         <StepLabel>
-          {props.t('assessment:newAssessment.baseStep.title')}
+          {`${t('assessment:newAssessment.roundStep.title')} ${props.roundIndex + 1}`}
         </StepLabel>
         <StepContent>
-          <Grid container>
+          <Grid container spacing={2}>
             <Grid item xs={6} >
               <NewAssessmentEnd
-                roundIndex={props.index}
+                roundIndex={props.roundIndex}
                 addEnd={props.addEnd} />
             </Grid>
             <Grid item xs={6} >
               <NewAssessmentRound
-                roundIndex={props.index}
+                roundIndex={props.roundIndex}
                 addRound={props.addRound} />
             </Grid>
             <Grid item xs={12}>

@@ -15,6 +15,11 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
 import FloatingActionButton from '@material-ui/core/fab';
+import Toolbar from '@material-ui/core/Toolbar';
+import AppBar from '@material-ui/core/AppBar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import Slide from '@material-ui/core/Slide';
 
 import API from 'api';
 
@@ -28,6 +33,10 @@ import AssessmentArrowTable from 'app/assessments/AssessmentArrowTable';
 import Waiting from 'app/common/Waiting';
 
 const styles = {}
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 class AssessmentReport extends React.Component {
   constructor(props) {
@@ -78,14 +87,14 @@ class AssessmentReport extends React.Component {
             };
 
             return (
-              <Grid item xs={12} key={'aaa-assessmentRound_' + roundIndex} >
+              <Grid item xs={6} key={'aaa-assessmentRound_' + roundIndex} >
                 <Grid container>
-                  <Grid xs={6} >
+                  <Grid item xs={6} >
                     <AssessmentArrowTable
                       style={this.props.style}
                       data={round} />
                   </Grid>
-                  <Grid xs={6} >
+                  <Grid item xs={6} >
                     <EndDistributionGraph
                       id={'aaa-assessmentGraph_' + roundIndex}
                       height={'230pt'}
@@ -98,17 +107,17 @@ class AssessmentReport extends React.Component {
         this);
       } else {
         rounds = (
-          <Grid xs={12} >
+          <Grid xs={6} >
             {t('assessment:report.noRounds')}
           </Grid>
         );
       }
     }
 
-    let comparison = <Grid xs={12} ><Waiting /></Grid>;
+    let comparison = <Grid item xs={12} ><Waiting /></Grid>;
     if (typeof this.state.assessment.ringComparison !== 'undefined') {
       comparison = (
-        <Grid xs={6}>
+        <Grid item xs={6}>
           <DistributionComparisonGraph
             data={this.state.assessment.ringComparison} />
         </Grid>
@@ -119,15 +128,28 @@ class AssessmentReport extends React.Component {
           WeatherIcons[WeatherConditions[this.state.assessment.weather]];
 
     return (
-      <Dialog open={this.props.open} onClose={this.handleClose.bind(this)} fullScreen>
-        <DialogTitle>
-          { this.state.assessment.event ?
-                    this.state.assessment.event.name :
-                    t('assessment:report.title', this.props.data)}
-        </DialogTitle>
+      <Dialog open={this.props.open} onClose={this.props.handleClose} fullScreen>
+        <AppBar style={{position: 'relative'}}>
+          <Toolbar>
+            <IconButton edge="start" color="inherit" onClick={this.props.handleClose}>
+              <Icon>close</Icon>
+            </IconButton>
+            <Typography variant="h6" style={{ marginLeft: '2pt', flex: 1 }}>
+              { this.state.assessment.event ?
+                        this.state.assessment.event.name :
+                        t('assessment:report.title', this.props.data)}
+            </Typography>
+            <FloatingActionButton
+              style={{float:'right'}}
+              color="secondary"
+              onClick={this.onDelete.bind(this)}>
+              <Icon>delete</Icon>
+            </FloatingActionButton>
+          </Toolbar>
+        </AppBar>
         <DialogContent>
-          <Grid container spacing={2} >
-            <Grid item xs={6}>
+          <Grid container spacing={2} justify="center">
+            <Grid item xs={3}>
               <h4>
                 {t('assessment:report.overviewTitle', this.props.data)}
               </h4>
@@ -212,13 +234,6 @@ class AssessmentReport extends React.Component {
             {rounds}
           </Grid>
         </DialogContent>
-        <DialogActions>
-          <FloatingActionButton
-            color="secondary"
-            onClick={this.onDelete.bind(this)}>
-            <Icon>delete</Icon>
-          </FloatingActionButton>
-        </DialogActions>
       </Dialog>
     );
   }

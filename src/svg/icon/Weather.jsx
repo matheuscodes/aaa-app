@@ -4,11 +4,11 @@ const baseSVG = function(icon) {
   return function(props) {
     return (
       <svg
-        style={this.props.style}
+        style={props.style}
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 100 100"
-        height={(this.props.height || 100)}
-        width={(this.props.width || (this.props.height || 100))}>
+        height={(props.height || (props.width || 100))}
+        width={(props.width || (props.height || 100))}>
         {icon}
       </svg>
     );

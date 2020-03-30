@@ -14,6 +14,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
+import Toolbar from '@material-ui/core/Toolbar';
+import AppBar from '@material-ui/core/AppBar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import Slide from '@material-ui/core/Slide';
 
 import Round from 'model/Round';
 
@@ -23,8 +28,16 @@ import BaseStep from 'app/assessments/BaseStep/BaseStep';
 import WeatherStep from 'app/assessments/WeatherStep/WeatherStep';
 import RoundStep from 'app/assessments/RoundStep/RoundStep';
 import AssessmentTile from 'app/assessments/AssessmentTile';
+import AssessmentArrowTable from 'app/assessments/AssessmentArrowTable';
+import WeatherConditions from 'constants/WeatherConditions';
+import Compass from 'svg/icon/Compass';
+import WeatherIcons from 'svg/icon/Weather';
 
 const styles = {}
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 class NewAssessmentDialog extends React.Component {
   constructor(props) {
@@ -67,7 +80,7 @@ class NewAssessmentDialog extends React.Component {
     API.assessments.getTargets(callbacks);
   }
 
-  changeDate(event, date) {
+  changeDate(date) {
     const current = this.state;
     current.date = date;
     current.date.setHours(18);
@@ -94,9 +107,9 @@ class NewAssessmentDialog extends React.Component {
     current.gustSpeed = event.target.value;
   }
 
-  changeSeason(event, index, value) {
+  changeSeason(event,component) {
     const current = this.state;
-    current.seasonId = value;
+    current.seasonId = event.target.value;
     this.setState(current);
     const callbacks = {
       context: this,
@@ -107,38 +120,38 @@ class NewAssessmentDialog extends React.Component {
         this.setState(current);
       },
     };
-    const season = this.state.seasons[index];
+    const season = this.state.seasons[component.key];
     API.events.getList(callbacks, season.start, season.end);
   }
 
-  changeTarget(event, index, value) {
+  changeTarget(event, component) {
     const current = this.state;
-    current.targetId = value;
-    current.target = current.targets[index];
+    current.targetId = event.target.value;
+    current.target = current.targets[component.key];
     this.setState(current);
   }
 
-  changeEvent(event, index, value) {
+  changeEvent(event) {
     const current = this.state;
-    current.eventId = value;
+    current.eventId = event.target.value;
     this.setState(current);
   }
 
-  changeWeather(event, index, value) {
+  changeWeather(event) {
     const current = this.state;
-    current.weather = value;
+    current.weather = event.target.value;
     this.setState(current);
   }
 
-  changeWindDirection(event, index, value) {
+  changeWindDirection(event) {
     const current = this.state;
-    current.windDirection = value;
+    current.windDirection = event.target.value;
     this.setState(current);
   }
 
-  changeShootDirection(event, index, value) {
+  changeShootDirection(event) {
     const current = this.state;
-    current.shootDirection = value;
+    current.shootDirection = event.target.value;
     this.setState(current);
   }
 
@@ -172,7 +185,7 @@ class NewAssessmentDialog extends React.Component {
     let callbacks = {
       context: this,
       success: function() {
-        messenger.showMessage(t('assessment:messages.newSaved'), 'MESSAGE');
+        messenger.showMessage(t('assessment:messages.newSaved'), 'SUCCESS');
         messenger.setState(this.getInitialState());
         this.closeDialog(true);
       },
@@ -213,129 +226,99 @@ class NewAssessmentDialog extends React.Component {
     const actions = [];
     if (stepIndex > 0) {
       actions.push(
-        <Button
-          key={'aaa-newAssessmentDialog-back'}
-          color="secondary"
-          onClick={() => {
-            this.state.stepIndex = stepIndex - 1;
-            this.setState(this.state);
-          }}>{this.props.t('assessment:newAssessment.back')}</Button>
+        <Grid item xs={6} key={'aaa-newAssessmentDialog-back'}>
+          <Button fullWidth
+            color="secondary"
+            variant="contained"
+            startIcon={<Icon>cancel</Icon>}
+            disabled={(this.state.next === null)}
+            onClick={() => {
+              this.state.stepIndex = stepIndex - 1;
+              this.setState(this.state);
+            }} >
+            {this.props.t('assessment:newAssessment.back')}
+          </Button>
+        </Grid>
       );
     } else if (stepIndex === 0) {
       actions.push(
-        <Button
-          key={'aaa-newAssessmentDialog-exit'}
-          icon={<Icon>cancel</Icon>}
-          color="secondary"
-          onClick={this.closeDialog.bind(this)} />
+        <Grid item xs={6} key={'aaa-newAssessmentDialog-exit'}>
+          <Button fullWidth
+            color="secondary"
+            variant="contained"
+            startIcon={<Icon>cancel</Icon>}
+            disabled={(this.state.next === null)}
+            onClick={this.closeDialog.bind(this)} > </Button>
+        </Grid>
       );
     }
+
     if (stepIndex < (1 + rounds.length)) {
       actions.push(
-        <Button
-          key={'aaa-newAssessmentDialog-next'}
-          disabled={!this.validateBase()}
-          color="primary"
-          onClick={() => {
-            this.state.stepIndex = stepIndex + 1;
-            this.setState(this.state);
-          }}> {this.props.t('assessment:newAssessment.next')}</Button>
-      );
-    } else {
-      if (stepIndex === (1 + rounds.length)) {
-        actions.push(
-          <Button
-            key={'aaa-newAssessmentDialog-new'}
+        <Grid item xs={6} key={'aaa-newAssessmentDialog-next'}>
+          <Button fullWidth
             color="primary"
+            variant="contained"
+            disabled={!this.validateBase()}
+            onClick={() => {
+              this.state.stepIndex = stepIndex + 1;
+              this.setState(this.state);
+            }} >
+            {this.props.t('assessment:newAssessment.next')}
+          </Button>
+        </Grid>
+      );
+    } else if(stepIndex < (1 + rounds.length + 1)) {
+      actions.push(
+        <Grid item xs={6} key={'aaa-newAssessmentDialog-new'}>
+          <Button fullWidth
+            color="primary"
+            variant="contained"
             disabled={!this.validateRound()}
             onClick={() => {
               this.state.stepIndex = stepIndex + 1;
               this.addRound();
-            }}>{this.props.t('assessment:newAssessment.new')}</Button>
-        );
-      }
-      // On the overview step there is no finish, only upload.
-      if (stepIndex < (1 + rounds.length + 1)) {
-        actions.push(
-          <Button
-            key={'aaa-newAssessmentDialog-finish'}
+            }} >
+            {this.props.t('assessment:newAssessment.new')}
+          </Button>
+          {(stepIndex === (1 + rounds.length)) ? <Button fullWidth
             color="primary"
+            variant="contained"
             disabled={!this.validateRound()}
             onClick={() => {
               this.state.stepIndex = stepIndex + 1;
               this.setState(this.state);
-            }}>{this.props.t('assessment:newAssessment.finish')}</Button>
-        );
-      }
+            }}>
+            {this.props.t('assessment:newAssessment.finish')}
+          </Button> : ''}
+        </Grid>
+      );
+    } else {
+      actions.push(
+        <Grid item xs={6} key={'aaa-newAssessmentDialog-submit'}>
+          <Button fullWidth
+            color="primary"
+            variant="contained"
+            startIcon={<Icon>backup</Icon>}
+            onClick={this.submitAssessment.bind(this)} > </Button>
+        </Grid>
+      );
     }
 
-    return (
-      <div>
-        {actions}
-      </div>
-    );
-  }
-
-  get baseStep() {
-    return {
-      title: this.props.t('assessment:newAssessment.baseStep.title'),
-      content: (
-        <BaseStep
-          t={this.props.t}
-          style={this.style}
-          events={this.state.events}
-          targets={this.state.targets}
-          seasons={this.state.seasons}
-          distance={this.state.distance}
-          date={this.state.date}
-          eventId={this.state.eventId}
-          targetId={this.state.targetId}
-          seasonId={this.state.seasonId}
-          changeSeason={this.changeSeason}
-          changeTarget={this.changeTarget}
-          changeEvent={this.changeEvent}
-          changeDistance={this.changeDistance}
-          changeDate={this.changeDate} />
-      ),
-    };
-  }
-
-  get weatherStep() {
-    return {
-      title: this.props.t('assessment:newAssessment.weatherStep.title'),
-      content: (
-        <WeatherStep
-          t={this.props.t}
-          style={this.style}
-          temperature={this.state.temperature}
-          changeTemperature={this.changeTemperature}
-          weather={this.state.weather}
-          changeWeather={this.changeWeather}
-          windSpeed={this.state.windSpeed}
-          changeWindSpeed={this.changeWindSpeed}
-          windDirection={this.state.windDirection}
-          changeWindDirection={this.changeWindDirection}
-          shootDirection={this.state.shootDirection}
-          changeShootDirection={this.changeShootDirection} />
-      ),
-    };
+    return actions;
   }
 
   get roundSteps() {
     return this.state.rounds.map((round, index) => {
-      return {
-        title: this.props.t('assessment:newAssessment.roundStep.title', round),
-        content: (
-          <RoundStep
-            t={this.props.t}
-            style={this.style}
-            addRound={this.addRound}
-            addEnd={this.addEnd}
-            deleteEnd={this.deleteEnd}
-            index={index}
-            round={round} />
-        ),
-      };
+      return (
+        <RoundStep
+          key={`roundStep_${index}`}
+          addRound={this.addRound.bind(this)}
+          addEnd={this.addEnd.bind(this)}
+          deleteEnd={this.deleteEnd.bind(this)}
+          roundIndex={index}
+          round={round} />
+      )
     });
   }
 
@@ -344,35 +327,154 @@ class NewAssessmentDialog extends React.Component {
     newState.open = false;
     newState.targets = this.state.targets;
     newState.seasons = this.state.seasons;
-    this.state = newState;
+    this.setState(newState);
+
     this.props.onRequestClose(refresh);
   }
 
   render() {
-    const {t} = this.props;
-    const {finished, stepIndex} = this.state;
+    const { t } = this.props;
+    const { finished, stepIndex } = this.state;
 
-    const steps = [];
+    const CurrentWeather =
+          WeatherIcons[WeatherConditions[this.state.weather]];
 
-    steps.push(this.baseStep);
-    steps.push(this.weatherStep);
-    this.roundSteps.forEach((round) => steps.push(round));
 
     return (
-      <Dialog open={this.props.open} onClose={this.closeDialog.bind(this)} fullScreen>
-        <DialogTitle>
-          {t('assessment:newAssessment.title')}
-        </DialogTitle>
+      <Dialog open={this.props.open} onClose={this.closeDialog.bind(this)} TransitionComponent={Transition} fullScreen>
+        <AppBar style={{position: 'relative'}}>
+          <Toolbar>
+            <IconButton edge="start" color="inherit" onClick={this.closeDialog.bind(this,false)}>
+              <Icon>close</Icon>
+            </IconButton>
+            <Typography variant="h6" style={{ marginLeft: '2pt', flex: 1 }}>
+              {t('assessment:newAssessment.title')}
+            </Typography>
+          </Toolbar>
+        </AppBar>
         <DialogContent>
           <Stepper activeStep={stepIndex} orientation="vertical">
-            {steps}
+            <BaseStep
+              events={this.state.events}
+              targets={this.state.targets}
+              seasons={this.state.seasons}
+              distance={this.state.distance}
+              date={this.state.date}
+              eventId={this.state.eventId}
+              targetId={this.state.targetId}
+              seasonId={this.state.seasonId}
+              changeSeason={this.changeSeason.bind(this)}
+              changeTarget={this.changeTarget.bind(this)}
+              changeEvent={this.changeEvent.bind(this)}
+              changeDistance={this.changeDistance.bind(this)}
+              changeDate={this.changeDate.bind(this)} />
+            <WeatherStep
+              temperature={this.state.temperature}
+              changeTemperature={this.changeTemperature.bind(this)}
+              weather={this.state.weather}
+              changeWeather={this.changeWeather.bind(this)}
+              windSpeed={this.state.windSpeed}
+              changeWindSpeed={this.changeWindSpeed.bind(this)}
+              windDirection={this.state.windDirection}
+              changeWindDirection={this.changeWindDirection.bind(this)}
+              shootDirection={this.state.shootDirection}
+              changeShootDirection={this.changeShootDirection.bind(this)} />
+            {this.roundSteps}
             <Step>
               <StepLabel>{t('assessment:newAssessment.confirmStep.title')}</StepLabel>
               <StepContent>
                 <Grid container justify="center" >
-                  <Grid item xs={6} >
-                    <AssessmentTile data={this.state} />
+                  <Grid item xs={4}>
+                    <h4>
+                      {t('assessment:report.overviewTitle')}
+                    </h4>
+                    <p>
+                      {
+                        this.state.date ?
+                          `${this.state.date.toJSON().substr(0,10)}` : ''
+                      }
+                    </p>
+                    <p>
+                      {
+                        this.state.distance ?
+                          `${this.state.distance}m` : ''
+                      }
+                    </p>
+                    <p>
+                      {
+                        this.state.eventId ?
+                          `Event: ${this.state.eventId}` : ''
+                      }
+                    </p>
+                    <p>
+                      {
+                        this.state.target ?
+                          `${this.state.target.name}` : ''
+                      }
+                    </p>
+                    <h4 key={0}>
+                      {t('assessment:report.weatherTitle')}
+                    </h4>
+                    <table style={{width: '100%'}} key={1}>
+                      <tbody>
+                        <tr>
+                          <td width={'1%'} rowSpan={2}>
+                            {CurrentWeather ? <CurrentWeather
+                               height={'48pt'} style={{padding: '5pt'}} /> : ''}
+                          </td>
+                          { this.state.windSpeed ?
+                            [<td width={'1%'}
+                                 key={0}
+                                 style={{
+                                   textAlign: 'right',
+                                 }}>
+                              <p>
+                                {t('assessment:report.windLabel')}
+                              </p>
+                            </td>,
+                            <td width={'1%'}
+                                key={1}>
+                              <Compass
+                                direction={this.state.windDirection}
+                                height={'24pt'} />
+                            </td>,
+                            <td width={'99%'}
+                                key={2}>
+                              <p>
+                                {this.state.windSpeed}
+                                {t('assessment:report.windSpeedInfo',
+                                   this.state)}
+                              </p>
+                            </td>] : [] }
+                        </tr>
+                        <tr>
+                          { this.state.shootDirection ?
+                            [<td width={'1%'}
+                                 key={0}
+                                 style={{
+                                   textAlign: 'right',
+                                 }}>
+                              <p>
+                                {t('assessment:report.targetLabel', this.state)}
+                              </p>
+                            </td>,
+                            <td width={'1%'}
+                                key={1}>
+                              <Compass
+                                direction={this.state.shootDirection}
+                                height={'24pt'} />
+                            </td>]
+                             : [] }
+                        </tr>
+                      </tbody>
+                    </table>
                   </Grid>
+                  {this.state.rounds.map(round => (
+                    <Grid item xs={4} >
+                      <AssessmentArrowTable
+                        data={round} />
+                    </Grid>
+                  ))}
                 </Grid>
               </StepContent>
             </Step>

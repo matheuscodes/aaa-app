@@ -7,7 +7,7 @@ class Windmills extends React.Component{
         style={this.props.style}
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 100 100"
-        height={(this.props.height || 100)}
+        height={(this.props.height || (this.props.width || 100))}
         width={(this.props.width || (this.props.height || 100))}>
         <path
           xmlns="http://www.w3.org/2000/svg"

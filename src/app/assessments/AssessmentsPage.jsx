@@ -23,7 +23,7 @@ class AssessmentsPage extends React.Component {
   }
 
   updateAssessmentList() {
-    const t = this.props.t;
+    const { t, messenger } = this.props;
     let callbacks = {
       context: this,
       success: function(list) {
@@ -34,7 +34,7 @@ class AssessmentsPage extends React.Component {
         this.setState(current);
       },
       error: function(error) {
-        this.showMessage(t('assessment:messages.listError'), 'ERROR');
+        messenger.showMessage(t('assessment:messages.listError'), 'ERROR');
         if (API.isAuthError(error)) {
           this.props.switcher.switchTo('loginPage');
         }
@@ -44,7 +44,7 @@ class AssessmentsPage extends React.Component {
   }
 
   updatePreviousList() {
-    const t = this.props.t;
+    const {t, messenger} = this.props;
     let callbacks = {
       context: this,
       success(list) {
@@ -53,7 +53,7 @@ class AssessmentsPage extends React.Component {
         this.setState(current);
       },
       error(error) {
-        this.showMessage(t('assessment:messages.listError'), 'ERROR');
+        messenger.showMessage(t('assessment:messages.listError'), 'ERROR');
         if (API.isAuthError(error)) {
           this.props.switcher.switchTo('loginPage');
         }
@@ -69,7 +69,7 @@ class AssessmentsPage extends React.Component {
   }
 
   updateNextList() {
-    const t = this.props.t;
+    const {t, messenger} = this.props;
     let callbacks = {
       context: this,
       success(list) {
@@ -82,7 +82,7 @@ class AssessmentsPage extends React.Component {
         this.setState(current);
       },
       error(error) {
-        this.showMessage(t('assessment:messages.listError'), 'ERROR');
+        messenger.showMessage(t('assessment:messages.listError'), 'ERROR');
         if (API.isAuthError(error)) {
           this.props.switcher.switchTo('loginPage');
         }
@@ -154,18 +154,18 @@ class AssessmentsPage extends React.Component {
   }
 
   deleteAssessment(seasonId, assessmentId) {
-    const t = this.props.t;
+    const {t, messenger} = this.props;
     let callbacks = {
       context: this,
       success() {
-        this.showMessage(t('assessment:messages.deleted'), 'MESSAGE');
+        messenger.showMessage(t('assessment:messages.deleted'), 'SUCCESS');
         this.updateAssessmentList();
       },
       warning() {
-        this.showMessage(t('assessment:messages.deleted'), 'WARNING');
+        messenger.showMessage(t('assessment:messages.deleted'), 'WARNING');
       },
       error() {
-        this.showMessage(t('assessment:messages.deletedError'), 'ERROR');
+        messenger.showMessage(t('assessment:messages.deletedError'), 'ERROR');
       },
     };
     API.assessments.delete(seasonId, assessmentId, callbacks);
@@ -180,10 +180,11 @@ class AssessmentsPage extends React.Component {
           <Grid item xs={12}>
             <Button fullWidth
               color="primary"
+              variant="contained"
               onClick={this.newAssessment.bind(this)}>{t('assessment:newAssessment.button')}</Button>
           </Grid>
           <AssessmentsGrid
-            assessments={this.state.assessments.bind(this)}
+            assessments={this.state.assessments}
             deleteAssessment={this.deleteAssessment.bind(this)}/>
           <Grid container >
             <Grid item xs={6} sm={4} lg={3} style={{padding:'5pt'}}>
@@ -221,7 +222,7 @@ class AssessmentsPage extends React.Component {
         </Grid>
         <NewAssessmentDialog
           open={this.state.editAssessment}
-          messenger={this}
+          messenger={this.props.messenger}
           onRequestClose={this.closeEdit.bind(this)} />
       </div>
     );

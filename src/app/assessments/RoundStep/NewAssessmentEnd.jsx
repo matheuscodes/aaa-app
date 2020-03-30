@@ -10,6 +10,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+import Grid from '@material-ui/core/Grid';
 
 import valueConverter from 'global/ValueConverter';
 
@@ -136,47 +137,63 @@ class NewAssessmentEnd extends React.Component {
       'X', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M',
     ].map(function(value) {
       return (
-        <Button variant="contained" size="small" color="primary"
-          key={value}
-          style={this.props.style.arrowButton}
-          labelColor={valueConverter.color[value]}
-          id={'aaa-newAssessmentEndArrow_' + value}
-          backgroundColor={valueConverter.backgroundColor[value]}
-          onClick={this[['pushArrow', value].join('')]}>{value}</Button>
+        <Grid item xs={3}>
+          <Button fullWidth
+            variant="contained"
+            size="small"
+            color="primary"
+            key={value}
+            id={'aaa-newAssessmentEndArrow_' + value}
+            style={{
+              backgroundColor:valueConverter.backgroundColor[value],
+              color:valueConverter.color[value],
+            }}
+            onClick={this[['pushArrow', value].join('')].bind(this)}>
+            {value}
+          </Button>
+        </Grid>
       );
     }, this);
-    actions.push(<br/>);
-    actions.push(<br/>);
     actions.push(
-      <Button variant="contained" size="small" color="primary"
-        onClick={this.undo}>{t('assessment:newAssessment.roundStep.undoEnd')}</Button>
+      <Grid item xs={6}>
+        <Button variant="contained" size="small" color="secondary" fullWidth
+          onClick={this.undo.bind(this)}>{t('assessment:newAssessment.roundStep.undoEnd')}</Button>
+      </Grid>
     );
     actions.push(
-      <Button variant="contained" size="small" color="primary"
-        keyboardFocused={true}
-        onClick={this.handleSubmit}>{t('assessment:submitEnd')}</Button>
+      <Grid item xs={6}>
+        <Button variant="contained" size="small" color="primary" fullWidth
+          keyboardFocused={true}
+          onClick={this.handleSubmit.bind(this)}>{t('assessment:submitEnd')}</Button>
+      </Grid>
     );
 
     return (
       <div>
-        <Button variant="contained" size="small" color="primary"
-          onClick={this.handleOpen}>{t('assessment:addEnd')}</Button>
+        <Button fullWidth
+                variant="contained"
+                size="small"
+                color="primary"
+                onClick={this.handleOpen.bind(this)}>
+          {t('assessment:addEnd')}
+        </Button>
         <Dialog open={this.state.open} onClose={this.handleClose.bind(this)} >
           <DialogTitle>
             {t('assessment:newEndTitle')}
           </DialogTitle>
           <DialogContent>
-            <EventListener
-              target="window"
-              onKeyDown={this.handleWindowKeyDown} />
             <ArrowRingRow
               rows={2}
-              style={this.props.style.arrowRow}
               arrows={this.state.arrows}
-              arrowSize={this.props.style.arrow.width} />
+              arrowSize={'24pt'} />
           </DialogContent>
           <DialogActions>
-            {actions}
+            <Grid container spacing={1}>
+              {actions}
+            </Grid>
+            <EventListener
+              target="window"
+              onKeyDown={this.handleWindowKeyDown.bind(this)} />
           </DialogActions>
         </Dialog>
       </div>
