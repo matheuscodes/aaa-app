@@ -1,8 +1,10 @@
 import React from 'react'
+import { withTranslation } from 'react-i18next'
 
-import MUI from 'app/common/MaterialUI'
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+
 import API from 'api'
-import i18nextReact from 'global/i18nextReact'
 
 import Waiting from 'app/common/Waiting'
 
@@ -11,21 +13,22 @@ import MonthGraph from 'svg/MonthGraph'
 import SeasonGraph from 'svg/SeasonGraph'
 
 const oneDay = 24 * 60 * 60 * 1000;
+const styles = {}
 
-const ReportTile = React.createClass({
-  getInitialState: function() {
-    return {};
-  },
-  updateContent: function(nextProps) {
+class ReportTile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.updateContent(props);
+  }
+  updateContent(nextProps) {
     var callbacks = {
       context: this,
       success: function(report) {
         this.setState(report);
       }
     };
-    console.log(">"+nextProps.pupilId)
     if(nextProps.pupilId){
-      console.log('dafuk')
       API.trainers.seasons.getMonthReport(nextProps.pupilId,
                               nextProps.seasonId,
                               nextProps.year,
@@ -36,13 +39,18 @@ const ReportTile = React.createClass({
                               nextProps.month, callbacks);
     }
     delete this.state.firstDay; // Showing the loading again.
-  },
-  componentWillReceiveProps: function(nextProps) {
-    this.updateContent(nextProps);
-  },
-  render: function() {
+  }
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (!this.state.season
+        || this.props.seasonId != nextProps.seasonId
+        || this.props.year != nextProps.year
+        || this.props.month != nextProps.month) {
+      this.updateContent(nextProps);
+    }
+    console.log('fucck',this.props,nextProps)
+  }
+  render() {
     const t = this.props.t;
-
     var content = <Waiting />;
     if (typeof this.state.firstDay !== 'undefined') {
       var allDays = {count: 0};
@@ -66,8 +74,8 @@ const ReportTile = React.createClass({
       }
       content = (
         <div id="aaa-reportPrintableArea">
-          <MUI.GridList cellHeight={'auto'} cols={1} padding={10} style={{width: '100%'}}>
-            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
               <h2>{t('report:tableTitle', {date: new Date(this.props.year, this.props.month - 1, 1)})}</h2>
               <MonthReportTable data={this.state} allDays={allDays}/>
               <h3>{t('report:dailyGraphTitle')}</h3>
@@ -79,14 +87,14 @@ const ReportTile = React.createClass({
                 extraPadding={
                   dailyGraphData.overview.length - this.state.season.goals.length
                 } />
-            </MUI.GridTile>
-          </MUI.GridList>
+            </Grid>
+          </Grid>
         </div>
       );
     }
 
     return content;
   }
-});
+}
 
-export default i18nextReact.setupTranslation(['report'], ReportTile);
+export default withTranslation('report')(withStyles(styles)(ReportTile));
