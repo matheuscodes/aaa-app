@@ -9,7 +9,6 @@ import Grid from '@material-ui/core/Grid';
 import Icon from '@material-ui/core/Icon';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -27,7 +26,6 @@ import API from 'api';
 import BaseStep from 'app/assessments/BaseStep/BaseStep';
 import WeatherStep from 'app/assessments/WeatherStep/WeatherStep';
 import RoundStep from 'app/assessments/RoundStep/RoundStep';
-import AssessmentTile from 'app/assessments/AssessmentTile';
 import AssessmentArrowTable from 'app/assessments/AssessmentArrowTable';
 import WeatherConditions from 'constants/WeatherConditions';
 import Compass from 'svg/icon/Compass';
@@ -334,7 +332,7 @@ class NewAssessmentDialog extends React.Component {
 
   render() {
     const { t } = this.props;
-    const { finished, stepIndex } = this.state;
+    const { stepIndex } = this.state;
 
     const CurrentWeather =
           WeatherIcons[WeatherConditions[this.state.weather]];

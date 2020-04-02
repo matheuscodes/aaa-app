@@ -9,10 +9,6 @@ import AssessmentArrowTableRow from 'app/assessments/AssessmentArrowTableRow';
 const styles = {}
 
 class AssessmentArrowTable extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const t = this.props.t;
 

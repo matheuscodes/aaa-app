@@ -1,5 +1,4 @@
 import React from 'react'
-import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
 import { withStyles } from '@material-ui/core/styles';
@@ -24,7 +23,7 @@ class TermsPage extends React.Component {
             <div style={{padding:12}}>
               <LogoName width={'100%'} height={96} />
             </div>
-            <img src='img/impressum.png' width={'400px'}  height={'150px'} />
+            <img src='img/impressum.png' width={'400px'}  height={'150px'} alt="" />
             <h2>{t('terms:disclaimer.title')}</h2>
               <h3>{t('terms:disclaimer.content.title')}</h3>
               <p>{t('terms:disclaimer.content.paragraph')}</p>
@@ -46,7 +45,7 @@ class TermsPage extends React.Component {
               </p>
 
               <p>
-                <a href={''}>Advanced Archery Application Server Code</a><br/>
+                Advanced Archery Application Server Code<br/>
                 Copyright © 2015-2019 Matheus Borges Teixeira<br/>
                 Closed Source*, all rights reserved
               </p>

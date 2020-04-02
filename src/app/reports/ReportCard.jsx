@@ -68,7 +68,7 @@ class ReportCard extends React.Component {
     current.months = [];
     delete current.selectedMonth;
     for (var i = new Date(season.start); i <= season.end; i.setMonth(i.getMonth() + 1)) {
-      if (i.getFullYear() == year) {
+      if (i.getFullYear() === year) {
         current.months.push(i.getMonth());
       }
     }

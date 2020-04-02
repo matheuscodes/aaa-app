@@ -3,23 +3,16 @@ import React from 'react';
 import { withTranslation } from 'react-i18next'
 
 import { withStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Icon from '@material-ui/core/Icon';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogActions from '@material-ui/core/DialogActions';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import StepContent from '@material-ui/core/StepContent';
 import FloatingActionButton from '@material-ui/core/fab';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Slide from '@material-ui/core/Slide';
+
 
 import API from 'api';
 
@@ -33,10 +26,6 @@ import AssessmentArrowTable from 'app/assessments/AssessmentArrowTable';
 import Waiting from 'app/common/Waiting';
 
 const styles = {}
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 class AssessmentReport extends React.Component {
   constructor(props) {

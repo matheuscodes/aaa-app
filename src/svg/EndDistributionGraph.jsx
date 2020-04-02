@@ -20,7 +20,6 @@ class EndDistributionGraph extends React.Component {
 
     var general_width = (size * 100 + 100 + 150);
     var general_height = 1000 + 150 + 50 + 100;
-    var width = 20.2 / (100 / general_width);
 
     var counts = [];
     var countsLabels = [];

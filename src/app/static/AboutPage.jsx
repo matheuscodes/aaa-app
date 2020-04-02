@@ -1,5 +1,4 @@
 import React from 'react'
-import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
 import { withStyles } from '@material-ui/core/styles';
@@ -40,7 +39,7 @@ class AboutPage extends React.Component {
         break;
       case 3: opened = <AboutAssessments />;
         break;
-      case 4: opened = <AboutReports />;
+      default: opened = <AboutReports />;
         break;
     }
 

@@ -18,11 +18,6 @@ function updateRegistration(eventId, callbacks, unregister) {
     method = 'DELETE';
   }
 
-  function errorCall(request){
-    let error = new Error(request.responseText.toString());
-    (callbacks.error || console.log).call(callbacks.context, error);
-  }
-
   var newCallbacks = {
     context: callbacks.context,
     201: callbacks.success,

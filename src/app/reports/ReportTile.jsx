@@ -42,9 +42,9 @@ class ReportTile extends React.Component {
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.state.season
-        || this.props.seasonId != nextProps.seasonId
-        || this.props.year != nextProps.year
-        || this.props.month != nextProps.month) {
+        || this.props.seasonId !== nextProps.seasonId
+        || this.props.year !== nextProps.year
+        || this.props.month !== nextProps.month) {
       this.updateContent(nextProps);
     }
     console.log('fucck',this.props,nextProps)

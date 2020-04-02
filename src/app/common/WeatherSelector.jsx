@@ -5,7 +5,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 
-import WeatherSelectorStyle from 'app/common/WeatherSelector.style';
 import WeatherConditions from 'constants/WeatherConditions'
 import WeatherIcons from 'svg/icon/Weather'
 

@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { withTranslation } from 'react-i18next'
-
-import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 
