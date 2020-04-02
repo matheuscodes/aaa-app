@@ -9,7 +9,6 @@ import API from 'api';
 import downloadFile from 'api/helpers/DownloadFile';
 import getLocalArcher from 'api/helpers/getLocalArcher';
 
-import LoginCardStyle from 'app/login/LoginCard.style';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -27,7 +26,6 @@ class LoginCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.style = new LoginCardStyle(this.props.styleProvider);
     this.state = {login: {}};
   }
 

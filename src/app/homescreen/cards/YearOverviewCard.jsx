@@ -3,6 +3,7 @@ import React from 'react'
 import i18nextReact from 'global/i18nextReact'
 import MUI from 'app/common/MaterialUI'
 import API from 'api'
+import RoutePaths from 'global/RoutePaths'
 
 const YearOverviewCard = React.createClass({
   getInitialState: function() {
@@ -16,7 +17,7 @@ const YearOverviewCard = React.createClass({
       },
       error: function(error){
         if(API.isAuthError(error)){
-          this.props.switcher.switchTo('loginPage');
+          this.props.history.push(RoutePaths.login);
         }
       },
     };

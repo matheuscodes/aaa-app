@@ -17,6 +17,7 @@ import Grid from '@material-ui/core/Grid';
 import getLocalArcher from 'api/helpers/getLocalArcher'
 
 import API from 'api'
+import RoutePaths from 'global/RoutePaths'
 
 import ReportTile from 'app/reports/ReportTile'
 
@@ -40,7 +41,7 @@ class ReportCard extends React.Component {
       },
       error: function(error) {
         if(API.isAuthError(error)){
-          this.props.switcher.switchTo('loginPage');
+          this.props.history.push(RoutePaths.login);
         }
       }
     };

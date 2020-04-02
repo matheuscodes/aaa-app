@@ -4,14 +4,14 @@ import { withTranslation } from 'react-i18next'
 
 import { withStyles } from '@material-ui/core/styles';
 
-import MessageablePage from 'components/MessageablePage';
 import LoginCard from 'app/login/LoginCard';
 import LogoName from 'svg/LogoName';
 import Grid from '@material-ui/core/Grid';
 
+import RoutePaths from 'global/RoutePaths'
 const styles = {}
 
-class LoginPage extends MessageablePage {
+class LoginPage extends React.Component {
 
   constructor(props) {
     super(props);

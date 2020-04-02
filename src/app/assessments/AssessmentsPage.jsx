@@ -8,8 +8,8 @@ import Grid from '@material-ui/core/Grid';
 import Icon from '@material-ui/core/Icon';
 
 import API from 'api';
+import RoutePaths from 'global/RoutePaths'
 
-import AssessmentsPageStyle from 'app/assessments/AssessmentsPage.style';
 import AssessmentsGrid from 'app/assessments/AssessmentsGrid';
 import NewAssessmentDialog from 'app/assessments/NewAssessmentDialog';
 
@@ -18,7 +18,6 @@ const styles = {}
 class AssessmentsPage extends React.Component {
   constructor(props) {
     super(props);
-    this.style = new AssessmentsPageStyle(this.props.styleProvider);
     this.state = {editAssessment: false, currentPage: 0};
   }
 
@@ -36,7 +35,7 @@ class AssessmentsPage extends React.Component {
       error: function(error) {
         messenger.showMessage(t('assessment:messages.listError'), 'ERROR');
         if (API.isAuthError(error)) {
-          this.props.switcher.switchTo('loginPage');
+          this.props.history.push(RoutePaths.login);
         }
       },
     };
@@ -55,7 +54,7 @@ class AssessmentsPage extends React.Component {
       error(error) {
         messenger.showMessage(t('assessment:messages.listError'), 'ERROR');
         if (API.isAuthError(error)) {
-          this.props.switcher.switchTo('loginPage');
+          this.props.history.push(RoutePaths.login);
         }
       },
     };
@@ -84,7 +83,7 @@ class AssessmentsPage extends React.Component {
       error(error) {
         messenger.showMessage(t('assessment:messages.listError'), 'ERROR');
         if (API.isAuthError(error)) {
-          this.props.switcher.switchTo('loginPage');
+          this.props.history.push(RoutePaths.login);
         }
       },
     };

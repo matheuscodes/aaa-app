@@ -8,10 +8,9 @@ import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 
 import API from 'api';
+import RoutePaths from 'global/RoutePaths'
 
 import Waiting from 'app/common/Waiting';
-
-import TrainingsPageStyle from 'app/trainings/TrainingsPage.style';
 
 import TrainingTile from 'app/trainings/TrainingTile';
 import NewTrainingDialog from 'app/trainings/NewTrainingDialog';
@@ -21,7 +20,6 @@ const styles = { };
 class TrainingsPage extends React.Component {
   constructor(props) {
     super(props);
-    this.style = new TrainingsPageStyle(this.props.styleProvider);
     this.state = {editTraining: false, currentPage:0};
   }
 
@@ -38,7 +36,7 @@ class TrainingsPage extends React.Component {
       error: function(error) {
         if(API.isAuthError(error)){
           this.showMessage(t('common:messages.notLoggedIn'), "ERROR");
-          this.props.switcher.switchTo('loginPage');
+          this.props.history.push(RoutePaths.login);
         }
         this.showMessage(t('training:messages.listError'), "ERROR");
       }
@@ -58,7 +56,7 @@ class TrainingsPage extends React.Component {
       error: function(error) {
         if(API.isAuthError(error)){
           this.showMessage(t('common:messages.notLoggedIn'), "ERROR");
-          this.props.switcher.switchTo('loginPage');
+          this.props.history.push(RoutePaths.login);
         }
         this.showMessage(t('training:messages.listError'), "ERROR");
       }
@@ -88,7 +86,7 @@ class TrainingsPage extends React.Component {
       error: function(error) {
         if(API.isAuthError(error)){
           this.showMessage(t('common:messages.notLoggedIn'), "ERROR");
-          this.props.switcher.switchTo('loginPage');
+          this.props.history.push(RoutePaths.login);
         }
         this.showMessage(t('training:messages.listError'), "ERROR");
       }
