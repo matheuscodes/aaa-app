@@ -19,6 +19,8 @@ import SeasonsPage from "app/seasons/SeasonsPage"
 import TrainingsPage from "app/trainings/TrainingsPage"
 import AssessmentsPage from "app/assessments/AssessmentsPage"
 import ReportsPage from "app/reports/ReportsPage"
+import AboutPage from "app/static/AboutPage"
+import TermsPage from "app/static/TermsPage"
 
 import RoutePaths from 'global/RoutePaths'
 import getLocalArcher from 'api/helpers/getLocalArcher'
@@ -85,6 +87,14 @@ class Application extends React.Component {
           <Route path={RoutePaths.reports}>
             <Header title={t('report:appBarTitle')} archer={archer} />
             <ReportsPage messenger={this} />
+          </Route>
+          <Route path={RoutePaths.about}>
+            <Header title={t('about:appBarTitle')} archer={archer} />
+            <AboutPage messenger={this} />
+          </Route>
+          <Route path={RoutePaths.terms}>
+            <Header title={t('terms:appBarTitle')} archer={archer} />
+            <TermsPage messenger={this} />
           </Route>
           <Redirect from='*' to='/' />
         </Switch>
