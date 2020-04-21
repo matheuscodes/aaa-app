@@ -21,6 +21,8 @@ import AssessmentsPage from "app/assessments/AssessmentsPage"
 import ReportsPage from "app/reports/ReportsPage"
 import AboutPage from "app/static/AboutPage"
 import TermsPage from "app/static/TermsPage"
+import ForgottenPage from "app/login/ForgottenPage"
+import NewLoginPage from "app/login/NewLoginPage"
 
 import RoutePaths from 'global/RoutePaths'
 import getLocalArcher from 'api/helpers/getLocalArcher'
@@ -95,6 +97,14 @@ class Application extends React.Component {
           <Route path={RoutePaths.terms}>
             <Header title={t('terms:appBarTitle')} archer={archer} />
             <TermsPage messenger={this} />
+          </Route>
+          <Route path={RoutePaths.forgotten}>
+            <Header title={t('login:resetAppBarTitle')} archer={archer} />
+            <ForgottenPage messenger={this} />
+          </Route>
+          <Route path={RoutePaths.newLogin}>
+            <Header title={t('login:newLoginAppBarTitle')} archer={archer} />
+            <NewLoginPage messenger={this} />
           </Route>
           <Redirect from='*' to='/' />
         </Switch>

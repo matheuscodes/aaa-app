@@ -6,5 +6,7 @@ export default {
   seasons: "/seasons",
   trainings: "/trainings",
   assessments: "/assessments",
-  reports: "/reports"
+  reports: "/reports",
+  forgotten: "/forgotten",
+  newLogin: "/new"
 }

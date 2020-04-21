@@ -4,7 +4,7 @@ import assessments from 'api/Assessments'
 import trainings from 'api/Trainings'
 import events from 'api/Events'
 import equipment from 'api/Equipment'
-import login from 'api/Login'
+import { login, reset, newLogin } from 'api/Login'
 import isAuthError from 'api/helpers/isAuthError'
 import trainers from 'api/trainers';
 
@@ -16,6 +16,8 @@ export default {
   events,
   equipment,
   login,
+  reset,
+  newLogin,
   isAuthError,
   trainers
 }

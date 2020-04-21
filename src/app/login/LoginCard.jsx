@@ -19,6 +19,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
 
 const styles = {}
 
@@ -133,6 +134,9 @@ class LoginCard extends React.Component {
                 onChange={this.changePassword.bind(this)}
                 type={'password'}
                 label={t('login:passwordTextField.label')} />
+              <Link href={RoutePaths.forgotten} style={{fontSize:'8pt', float:'right', margin:'5pt'}}>
+                {t('login:passwordForgotten')}
+              </Link>
             </Grid>
           </Grid>
         </CardContent>
