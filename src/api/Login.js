@@ -72,3 +72,25 @@ export function newLogin(data, callbacks) {
 
   request.send(stringData);
 };
+
+export function replaceLogin(data, callbacks) {
+  var successCall = function(request) {
+    callbacks.success.call(callbacks.context);
+  };
+
+  var failureCall = function(request) {
+    callbacks.error.call(callbacks.context);
+  };
+
+  var newCallbacks = {
+    context: callbacks.context,
+    204: successCall,
+    failure: failureCall
+  };
+
+  var request = requestBuilder('/login/', 'PATCH', newCallbacks);
+
+  var stringData = JSON.stringify(data);
+
+  request.send(stringData);
+};

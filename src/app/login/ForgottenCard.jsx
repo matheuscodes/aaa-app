@@ -21,7 +21,10 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 
-const styles = {}
+const styles = {
+  instructionText: {textAlign:"justify"}
+}
+
 
 class ForgottenCard extends React.Component {
 
@@ -53,7 +56,7 @@ class ForgottenCard extends React.Component {
   }
 
   render() {
-    const { t } = this.props;
+    const { t, classes } = this.props;
 
     return (
       <Card>
@@ -61,7 +64,7 @@ class ForgottenCard extends React.Component {
           <Grid container>
             <Grid item xs={12} >
               <Typography>
-                { !this.state.reset ? t('login:forgottenInstructionText') : t('login:forgottenConfirmationText') }
+                <p className={classes.instructionText}>{ !this.state.reset ? t('login:forgottenInstructionText') : t('login:forgottenConfirmationText') }</p>
               </Typography>
             </Grid>
             {!this.state.reset ? <Grid item xs={12} >
@@ -74,14 +77,14 @@ class ForgottenCard extends React.Component {
           </Grid>
         </CardContent>
         <CardActions>
-          <Button
+          { !this.state.reset ?<Button
             style={{width:'100%'}}
             color="primary"
             variant="contained"
             onClick={this.doReset.bind(this)}
             endIcon={<ChevronRightIcon />}>
             {t('login:forgottenButton.label')}
-            </Button>
+            </Button> : "" }          
         </CardActions>
       </Card>
     );

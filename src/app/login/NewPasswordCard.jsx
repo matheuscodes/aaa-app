@@ -28,11 +28,11 @@ const styles = {
   instructionText: {textAlign:"justify"}
 }
 
-class NewLoginCard extends React.Component {
+class NewPasswordCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {login: { credentials: {}}};
+    this.state = {login: { credentials: {email:props.email, token:props.token}}};
   }
 
   createNewLogin() {
@@ -47,7 +47,7 @@ class NewLoginCard extends React.Component {
         messenger.showMessage(t('login:messages.loginError'), 'ERROR');
       },
     };
-    API.newLogin(this.state.login, callbacks);
+    API.replaceLogin(this.state.login.credentials, callbacks);
   }
 
   doLogin() {
@@ -65,11 +65,6 @@ class NewLoginCard extends React.Component {
     API.login(this.state.login.credentials, callbacks);
   }
 
-  changeEmail(event) {
-    let current = this.state;
-    current.login.credentials.email = event.target.value;
-  }
-
   changePassword(event) {
     let current = this.state;
     current.login.credentials.password = event.target.value;
@@ -80,21 +75,6 @@ class NewLoginCard extends React.Component {
     let current = this.state;
     current.confirmPassword = event.target.value;
     this.setState(current);
-  }
-
-  changeFullName(event) {
-    let current = this.state;
-    current.login.name = event.target.value;
-  }
-
-  changeGender(event) {
-    let current = this.state;
-    current.login.gender = event.target.value;
-  }
-
-  changeBirthYear(event) {
-    let current = this.state;
-    current.login.birthYear = event.target.value;
   }
 
   get passwordsMatch() {
@@ -110,43 +90,8 @@ class NewLoginCard extends React.Component {
           <Grid container spacing={2}>
             <Grid item xs={12} >
               <Typography>
-                <p className={classes.instructionText}>{ !this.state.reset ? t('login:newLoginInstructionText') : t('login:newLoginConfirmationText') }</p>
+                <p className={classes.instructionText}>{t('login:changePasswordInstructionText')}</p>
               </Typography>
-            </Grid>
-            <Grid item xs={12} >
-              <TextField
-                style={{width:'100%'}}
-                id={'aaa-loginFullName'}
-                onChange={this.changeFullName.bind(this)}
-                label={t('login:fullNameTextField.label')} />
-            </Grid>
-            <Grid item xs={12} >
-              <TextField
-                style={{width:'100%'}}
-                id={'aaa-loginEmail'}
-                onChange={this.changeEmail.bind(this)}
-                label={t('login:emailTextField.label')} />
-            </Grid>
-            <Grid item xs={6} >
-              <TextField
-                style={{width:'100%'}}
-                id={'aaa-loginBirthYear'}
-                onChange={this.changeBirthYear.bind(this)}
-                label={t('login:birthYearTextField.label')} />
-            </Grid>
-            <Grid item xs={6} >
-              <InputLabel htmlFor="aaa-loginGender">
-                {t('login:loginGenderSelectField.label')}
-              </InputLabel>
-              <Select fullWidth
-                labelId="aaa-loginGender"
-                id="aaa-loginGender"
-                value={this.state.login.gender}
-                onChange={this.changeGender.bind(this)} >
-                <MenuItem value="male" >{t('login:genderMenuItem.male')}</MenuItem>
-                <MenuItem value="female" >{t('login:genderMenuItem.female')}</MenuItem>
-                <MenuItem value="other" >{t('login:genderMenuItem.other')}</MenuItem>
-              </Select>
             </Grid>
             <Grid item xs={12} >
               <TextField
@@ -175,7 +120,7 @@ class NewLoginCard extends React.Component {
             variant="contained"
             onClick={this.createNewLogin.bind(this)}
             endIcon={<ChevronRightIcon />}>
-            {t('login:newLoginButton.label')}
+            {t('login:changePassword.label')}
             </Button>
         </CardActions>
       </Card>
@@ -183,4 +128,4 @@ class NewLoginCard extends React.Component {
   }
 }
 
-export default withTranslation('login')(withRouter(withStyles(styles)(NewLoginCard)));
+export default withTranslation('login')(withRouter(withStyles(styles)(NewPasswordCard)));
