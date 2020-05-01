@@ -51,6 +51,26 @@ export function reset(credentials, callbacks) {
   request.send(data);
 };
 
+export function confirm(query, callbacks) {
+  var successCall = function(request) {
+    callbacks.success.call(callbacks.context);
+  };
+
+  var failureCall = function(request) {
+    callbacks.error.call(callbacks.context);
+  };
+
+  var newCallbacks = {
+    context: callbacks.context,
+    204: successCall,
+    failure: failureCall
+  };
+
+  var request = requestBuilder(`/login${query}`, 'GET', newCallbacks);
+
+  request.send();
+};
+
 export function newLogin(data, callbacks) {
   var successCall = function(request) {
     callbacks.success.call(callbacks.context);

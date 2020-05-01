@@ -8,6 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import API from 'api';
 import downloadFile from 'api/helpers/DownloadFile';
 import getLocalArcher from 'api/helpers/getLocalArcher';
+import passwordCheck from 'global/passwordCheck';
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -44,7 +45,7 @@ class NewPasswordCard extends React.Component {
         this.doLogin();
       },
       error: function(request) {
-        messenger.showMessage(t('login:messages.loginError'), 'ERROR');
+        messenger.showMessage(t('login:messages.resetError'), 'ERROR');
       },
     };
     API.replaceLogin(this.state.login.credentials, callbacks);
@@ -81,6 +82,14 @@ class NewPasswordCard extends React.Component {
     return this.state.login.credentials.password === this.state.confirmPassword
   }
 
+  get checkedPassword() {
+    return passwordCheck(this.state.login.credentials.password, this.props.t);
+  }
+
+  get canSubmit() {
+    return this.state.login.credentials.password && !this.checkedPassword.error && this.passwordsMatch
+  }
+
   render() {
     const { t, classes } = this.props;
 
@@ -99,6 +108,8 @@ class NewPasswordCard extends React.Component {
                 id={'aaa-loginPassword'}
                 onChange={this.changePassword.bind(this)}
                 type={'password'}
+                helperText={this.checkedPassword.text}
+                error={this.checkedPassword.error}
                 label={t('login:passwordTextField.label')} />
             </Grid>
             <Grid item xs={12} >
@@ -119,7 +130,8 @@ class NewPasswordCard extends React.Component {
             color="primary"
             variant="contained"
             onClick={this.createNewLogin.bind(this)}
-            endIcon={<ChevronRightIcon />}>
+            endIcon={<ChevronRightIcon />}
+            disabled={!this.canSubmit}>
             {t('login:changePassword.label')}
             </Button>
         </CardActions>

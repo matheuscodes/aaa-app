@@ -8,6 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import API from 'api';
 import downloadFile from 'api/helpers/DownloadFile';
 import getLocalArcher from 'api/helpers/getLocalArcher';
+import passwordCheck from 'global/passwordCheck';
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -23,6 +24,10 @@ import Link from '@material-ui/core/Link';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormGroup';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const styles = {
   instructionText: {textAlign:"justify"}
@@ -44,7 +49,7 @@ class NewLoginCard extends React.Component {
         this.doLogin();
       },
       error: function(request) {
-        messenger.showMessage(t('login:messages.loginError'), 'ERROR');
+        messenger.showMessage(t('login:messages.createError'), 'ERROR');
       },
     };
     API.newLogin(this.state.login, callbacks);
@@ -90,6 +95,7 @@ class NewLoginCard extends React.Component {
   changeGender(event) {
     let current = this.state;
     current.login.gender = event.target.value;
+    this.setState(current);
   }
 
   changeBirthYear(event) {
@@ -101,72 +107,107 @@ class NewLoginCard extends React.Component {
     return this.state.login.credentials.password === this.state.confirmPassword
   }
 
+  get checkedPassword() {
+    return passwordCheck(this.state.login.credentials.password, this.props.t);
+  }
+
+  get canSubmit() {
+    return this.state.login.credentials.password
+          && this.state.login.credentials.email
+          && this.state.login.name
+          && this.state.login.birthYear
+          && this.state.login.gender
+          && !this.checkedPassword.error && this.passwordsMatch
+          && this.state.termsConfirmation
+  }
+
+  toggleTermsConfirmation() {
+    let current = this.state;
+    current.termsConfirmation = !current.termsConfirmation;
+    this.setState(current);
+  }
+
   render() {
     const { t, classes } = this.props;
 
     return (
       <Card>
         <CardContent>
-          <Grid container spacing={2}>
-            <Grid item xs={12} >
-              <Typography>
-                <p className={classes.instructionText}>{ !this.state.reset ? t('login:newLoginInstructionText') : t('login:newLoginConfirmationText') }</p>
-              </Typography>
+          <FormControl>
+            <Grid container spacing={2}>
+              <Grid item xs={12} >
+                <Typography className={classes.instructionText}>
+                  { !this.state.reset ? t('login:newLoginInstructionText') : t('login:newLoginConfirmationText') }
+                </Typography>
+              </Grid>
+              <Grid item xs={12} >
+                <TextField
+                  style={{width:'100%'}}
+                  id={'aaa-loginFullName'}
+                  onChange={this.changeFullName.bind(this)}
+                  label={t('login:fullNameTextField.label')} />
+              </Grid>
+              <Grid item xs={12} >
+                <TextField
+                  style={{width:'100%'}}
+                  id={'aaa-loginEmail'}
+                  onChange={this.changeEmail.bind(this)}
+                  label={t('login:emailTextField.label')} />
+              </Grid>
+              <Grid item xs={6} >
+                <TextField
+                  style={{width:'100%'}}
+                  id={'aaa-loginBirthYear'}
+                  onChange={this.changeBirthYear.bind(this)}
+                  label={t('login:birthYearTextField.label')} />
+              </Grid>
+              <Grid item xs={6} >
+                <InputLabel htmlFor="aaa-loginGender">
+                  {t('login:loginGenderSelectField.label')}
+                </InputLabel>
+                <Select fullWidth
+                  labelId="aaa-loginGender"
+                  id="aaa-loginGender"
+                  value={this.state.login.gender ? this.state.login.gender : ""}
+                  onChange={this.changeGender.bind(this)} >
+                  <MenuItem value="male" >{t('login:genderMenuItem.male')}</MenuItem>
+                  <MenuItem value="female" >{t('login:genderMenuItem.female')}</MenuItem>
+                  <MenuItem value="other" >{t('login:genderMenuItem.other')}</MenuItem>
+                </Select>
+              </Grid>
+              <Grid item xs={12} >
+                <TextField
+                  style={{width:'100%'}}
+                  id={'aaa-loginPassword'}
+                  onChange={this.changePassword.bind(this)}
+                  type={'password'}
+                  helperText={this.checkedPassword.text}
+                  error={this.checkedPassword.error}
+                  label={t('login:passwordTextField.label')} />
+              </Grid>
+              <Grid item xs={12} >
+                <TextField
+                  style={{width:'100%'}}
+                  id={'aaa-loginConfirmPassword'}
+                  onChange={this.changeConfirmPassword.bind(this)}
+                  type={'password'}
+                  helperText={this.state.confirmPassword ? !this.passwordsMatch ? t('login:confirmPasswordTextField.errorMatch') : undefined : undefined}
+                  error={this.state.confirmPassword ? !this.passwordsMatch : false}
+                  label={t('login:confirmPasswordTextField.label')} />
+              </Grid>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={!!this.state.termsConfirmation} onChange={this.toggleTermsConfirmation.bind(this)} />}
+                  label={
+                    <Typography>
+                      {t('login:termsConfirmation')+" "}
+                      <Link underline="hover" href={RoutePaths.terms} target="_blank">{t('login:terms')}</Link>
+                    </Typography>
+                  }
+                />
+              </FormGroup>
             </Grid>
-            <Grid item xs={12} >
-              <TextField
-                style={{width:'100%'}}
-                id={'aaa-loginFullName'}
-                onChange={this.changeFullName.bind(this)}
-                label={t('login:fullNameTextField.label')} />
-            </Grid>
-            <Grid item xs={12} >
-              <TextField
-                style={{width:'100%'}}
-                id={'aaa-loginEmail'}
-                onChange={this.changeEmail.bind(this)}
-                label={t('login:emailTextField.label')} />
-            </Grid>
-            <Grid item xs={6} >
-              <TextField
-                style={{width:'100%'}}
-                id={'aaa-loginBirthYear'}
-                onChange={this.changeBirthYear.bind(this)}
-                label={t('login:birthYearTextField.label')} />
-            </Grid>
-            <Grid item xs={6} >
-              <InputLabel htmlFor="aaa-loginGender">
-                {t('login:loginGenderSelectField.label')}
-              </InputLabel>
-              <Select fullWidth
-                labelId="aaa-loginGender"
-                id="aaa-loginGender"
-                value={this.state.login.gender}
-                onChange={this.changeGender.bind(this)} >
-                <MenuItem value="male" >{t('login:genderMenuItem.male')}</MenuItem>
-                <MenuItem value="female" >{t('login:genderMenuItem.female')}</MenuItem>
-                <MenuItem value="other" >{t('login:genderMenuItem.other')}</MenuItem>
-              </Select>
-            </Grid>
-            <Grid item xs={12} >
-              <TextField
-                style={{width:'100%'}}
-                id={'aaa-loginPassword'}
-                onChange={this.changePassword.bind(this)}
-                type={'password'}
-                label={t('login:passwordTextField.label')} />
-            </Grid>
-            <Grid item xs={12} >
-              <TextField
-                style={{width:'100%'}}
-                id={'aaa-loginConfirmPassword'}
-                onChange={this.changeConfirmPassword.bind(this)}
-                type={'password'}
-                helperText={this.state.confirmPassword ? !this.passwordsMatch ? t('login:confirmPasswordTextField.errorMatch') : undefined : undefined}
-                error={this.state.confirmPassword ? !this.passwordsMatch : false}
-                label={t('login:confirmPasswordTextField.label')} />
-            </Grid>
-          </Grid>
+          </FormControl>
         </CardContent>
         <CardActions>
           <Button
@@ -174,7 +215,8 @@ class NewLoginCard extends React.Component {
             color="primary"
             variant="contained"
             onClick={this.createNewLogin.bind(this)}
-            endIcon={<ChevronRightIcon />}>
+            endIcon={<ChevronRightIcon />}
+            disabled={!this.canSubmit}>
             {t('login:newLoginButton.label')}
             </Button>
         </CardActions>

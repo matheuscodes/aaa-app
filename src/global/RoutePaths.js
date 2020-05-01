@@ -8,5 +8,6 @@ export default {
   assessments: "/assessments",
   reports: "/reports",
   forgotten: "/forgotten",
-  newLogin: "/new"
+  newLogin: "/new",
+  confirmLogin: "/confirm"
 }

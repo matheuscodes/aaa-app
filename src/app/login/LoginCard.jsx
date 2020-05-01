@@ -141,14 +141,27 @@ class LoginCard extends React.Component {
           </Grid>
         </CardContent>
         <CardActions>
-          <Button
-            style={{width:'100%'}}
-            color="primary"
-            variant="contained"
-            onClick={this.doLogin.bind(this)}
-            endIcon={<ChevronRightIcon />}>
-            {t('login:loginButton.label')}
-            </Button>
+          <Grid container spacing={2} >
+            <Grid item xs={12} >
+              <Button
+                style={{width:'100%'}}
+                color="primary"
+                variant="contained"
+                onClick={this.doLogin.bind(this)}
+                endIcon={<ChevronRightIcon />}>
+                {t('login:loginButton.label')}
+              </Button>
+            </Grid>
+            <Grid item xs={12} >
+              <Button
+                style={{width:'100%'}}
+                variant="contained"
+                href={RoutePaths.newLogin}
+                endIcon={<ChevronRightIcon />}>
+                {t('login:newLoginButton.label')}
+              </Button>
+            </Grid>
+          </Grid>
         </CardActions>
       </Card>
     );
