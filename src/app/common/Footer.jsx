@@ -91,7 +91,7 @@ class Footer extends React.Component {
             </FormControl>
           </Grid>
           <Grid item xs={12} style={{ textAlign: 'center', color:'grey' }}>
-              Matheus Borges Teixeira &copy; 2020 - Version 2.1.0
+              Matheus Borges Teixeira &copy; 2020 - Version 2.3.0
           </Grid>
         </Grid>
       </footer>
