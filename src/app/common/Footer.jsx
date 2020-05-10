@@ -1,113 +1,20 @@
 import React from 'react'
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router'
+import { withTranslation } from 'react-i18next'
 
-import MUI from 'app/common/MaterialUI'
-import i18nextReact from 'global/i18nextReact'
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
-import LanguageIcon from 'svg/icon/Languages'
-
+import RoutePaths from 'global/RoutePaths'
 import languages from 'constants/Languages'
 
-import ReactPageSwitcherType from 'global/ReactPageSwitcherType'
-
-import { Style } from 'global/StyleProvider';
-
-class FooterStyle extends Style {
-  get languageIcon() {
-    return {
-      float:'right',
-      width: `35px`,
-      height: `35px`,
-      fill: '#FFF',
-      margin: `20px 0 0 0`
-    }
-  }
-
-  get copyright() {
-    return {
-      div: {
-        width:'100%',
-        float:'left',
-        textAlign: 'center',
-      },
-      span: {
-        textAlign: 'center',
-        lineHeight: `${1.5 * this.baseLineHeight}px`,
-        color: MUI.palette.accent3Color,
-        fontSize: this.styleProvider.select({
-          phone: `${0.7 * this.baseFontsize}px`,
-          desktop: `${0.9 * this.baseFontsize}px`,
-        }),
-        margin: `${0.5 * this.defaultPadding}px`,
-      },
-    }
-  }
-
-  get footer() {
-    return {
-      width: '100%',
-      height: this.styleProvider.select({
-        phone: '200px',
-        desktop: '100px',
-      }),
-      backgroundColor: MUI.palette.darkAccent3Color,
-    }
-  }
-
-  get DropDownMenu() {
-    return {
-      labelStyle:{
-        color: MUI.palette.alternateTextColor,
-      },
-      float: 'right',
-    }
-  }
-
-  get FlatButton(){
-    return {
-      margin: `10px`,
-      maxWidth: this.styleProvider.select({
-        phone: '100%',
-        desktop: 'calc(50% - 20px)',
-      }),
-      minWidth: this.styleProvider.select({
-        phone: '100%',
-      }),
-      labelStyle: {
-        fontSize: '12px',
-        padding: '6px',
-      },
-    }
-  }
-
-  get divLanguages(){
-    return {
-      float: 'left',
-      maxWidth: this.styleProvider.select({
-        phone: '50%',
-        desktop: '30%',
-      }),
-      minWidth: this.styleProvider.select({
-        phone: '50%',
-        desktop: '30%',
-      }),
-    }
-  }
-
-  get divButtons(){
-    return {
-      float: 'left',
-      maxWidth: this.styleProvider.select({
-        phone: '50%',
-        desktop: '70%',
-      }),
-      minWidth: this.styleProvider.select({
-        phone: '50%',
-        desktop: '70%',
-      }),
-    }
-  }
-}
-
+import LanguageIcon from 'svg/icon/Languages'
 
 /**
  * Footer with language selection.
@@ -116,68 +23,84 @@ class FooterStyle extends Style {
  */
 var languageNodes = languages.map(function(language) {
   return (
-    <MUI.MenuItem
-      value={language.code}
-      key={language.code}
-      primaryText={language.name} />
+    <MenuItem color="secondary" value={language.code} key={language.code}>{language.name}</MenuItem>
   );
 });
 
-var Footer = React.createClass({
-  propTypes: {
-    switcher: ReactPageSwitcherType.isRequired,
-    t: React.PropTypes.func
+const styles = {
+  root: {
+    "& .MuiSelect-icon": {
+      fill: "rgba(255, 255, 255, 0.69)"
+    },
+    "& .MuiInput-underline::before": {
+      borderBottom: "1px solid rgba(255,255,255, 0.42)"
+    },
+    "&:hover .MuiInput-underline::before": {
+      borderBottom: "1px solid white"
+    },
   },
-  getInitialState: function(){
-    this.style = new FooterStyle(this.props.styleProvider);
-    return {language:this.props.i18n.language}
-  },
-  changeLanguage: function(event, index, value){
-    this.props.i18n.changeLanguage(value);
-    this.setState({language:this.props.i18n.language});
-  },
-  openTerms: function(event, index, value){
-  this.props.switcher.switchTo('termsPage');
-  },
-  openAbout: function(event, index, value){
-  this.props.switcher.switchTo('aboutPage');
-  },
-  render: function() {
-    var t = this.props.t;
+};
+
+class Footer extends React.Component {
+
+  constructor(props){
+    super(props)
+    this.state = {language:this.props.i18n.language}
+  }
+  changeLanguage(event){
+    this.props.i18n.changeLanguage(event.target.value);
+    this.setState({language: event.target.value});
+  }
+  openTerms(){
+    this.props.history.push(RoutePaths.terms)
+  }
+  openAbout(){
+    this.props.history.push(RoutePaths.about);
+  }
+  render() {
+    const { t, classes } = this.props;
     return (
-      <footer style={this.style.footer}>
-        <div style={this.style.divButtons}>
-          <MUI.FlatButton
-            style={this.style.FlatButton}
-            labelStyle={this.style.FlatButton.labelStyle}
-            label={t('common:footlinks.about')}
-            primary={true}
-            onTouchTap={this.openAbout} />
-          <MUI.FlatButton
-            style={this.style.FlatButton}
-            labelStyle={this.style.FlatButton.labelStyle}
-            label={t('common:footlinks.impressum')}
-            primary={true}
-            onTouchTap={this.openTerms} />
-        </div>
-        <div style={this.style.divLanguages}>
-          <MUI.DropDownMenu
-            style={this.style.DropDownMenu}
-            labelStyle={this.style.DropDownMenu.labelStyle}
-            onChange={this.changeLanguage}
-            value={this.state.language} >
-            {languageNodes}
-          </MUI.DropDownMenu>
-          <LanguageIcon style={this.style.languageIcon} />
-        </div>
-        <div style={this.style.copyright.div}>
-          <span style={this.style.copyright.span}>
-            Matheus Borges Teixeira &copy; 2020 - Version 2.1.0
-          </span>
-        </div>
+      <footer style={{padding:'10pt'}}>
+        <Grid container>
+          <Grid item xs={12} sm={6}>
+            <ButtonGroup color="primary" variant="text">
+              <Button onClick={this.openAbout.bind(this)}>{t('common:footlinks.about')}</Button>
+              <Button onClick={this.openTerms.bind(this)}>{t('common:footlinks.impressum')}</Button>
+            </ButtonGroup>
+          </Grid>
+          <Grid item xs={12} sm={6} style={{ textAlign: 'right' }}>
+            <LanguageIcon style={{
+              width: '24pt',
+              height: '24pt',
+              margin: '3pt 6pt 0 3pt',
+              fill: '#FFF',
+            }} />
+            <FormControl color="primary"
+              classes={classes}>
+              <Select
+                style={{
+                    color: 'white',
+                    marginRight: '10pt',
+                }}
+                labelId="footer-language-select-label"
+                id="footer-language-select"
+                value={this.state.language}
+                onChange={this.changeLanguage.bind(this)}>
+                {languageNodes}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} style={{ textAlign: 'center', color:'grey' }}>
+              Matheus Borges Teixeira &copy; 2020 - Version 2.3.0
+          </Grid>
+        </Grid>
       </footer>
     );
   }
-});
+}
 
-export default i18nextReact.setupTranslation(['common'], Footer);
+Footer.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withTranslation('common')(withRouter(withStyles(styles)(Footer)));

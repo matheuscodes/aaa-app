@@ -1,10 +1,9 @@
-'use strict';
 import React from 'react'
 
-import MUI from 'app/common/MaterialUI'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-export default React.createClass({
-  render: function() {
-    return (<div style={{textAlign: 'center'}}><MUI.CircularProgress /></div>);
+export default class Waiting extends React.Component {
+  render() {
+    return (<div style={{textAlign: 'center'}}><CircularProgress /></div>);
   }
-});
+};

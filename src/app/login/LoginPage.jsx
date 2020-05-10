@@ -1,55 +1,40 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {autobind} from 'core-decorators';
+import { withRouter } from 'react-router'
+import { withTranslation } from 'react-i18next'
 
-import MessageablePage from 'components/MessageablePage';
-import i18nextReact from 'global/i18nextReact';
-import pageSwitcherType from 'global/ReactPageSwitcherType';
-import BaseLayout from 'app/common/BaseLayout';
+import { withStyles } from '@material-ui/core/styles';
+
 import LoginCard from 'app/login/LoginCard';
-import LoginPageStyle from 'app/login/LoginPage.style';
 import LogoName from 'svg/LogoName';
+import Grid from '@material-ui/core/Grid';
 
-@autobind
-class LoginPage extends MessageablePage {
-  static get propTypes() {
-    return {
-      switcher: pageSwitcherType,
-      userAgent: PropTypes.string,
-      t: PropTypes.func,
-    };
-  }
+import RoutePaths from 'global/RoutePaths'
+const styles = {}
+
+class LoginPage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.style = new LoginPageStyle(this.props.styleProvider);
     this.state = {};
   }
 
   render() {
-    const t = this.props.t;
+    const { messenger } = this.props;
     return (
-      <BaseLayout
-        switcher={this.props.switcher}
-        userAgent={this.props.userAgent}
-        styleProvider={this.props.styleProvider}
-        messageSubscriber={this}
-        layoutName="loginPage"
-        title={t('login:appBarTitle')} >
-        <div style={{padding: this.style.logo.padding}}>
-          <LogoName
-            width={this.style.logo.width}
-            height={this.style.logo.height} />
-        </div>
-        <div style={this.style.card}>
-          <LoginCard
-            switcher={this.props.switcher}
-            messenger={this}
-            styleProvider={this.props.styleProvider} />
-        </div>
-      </BaseLayout>
+      <div style={{'backgroundColor':'white', padding:'10pt'}}>
+        <Grid justify="center" container>
+          <Grid item xs={12} sm={6} lg={3}>
+            <LogoName />
+          </Grid>
+          <Grid justify="center" container>
+            <Grid item xs={12} sm={6} lg={3}>
+              <LoginCard messenger={messenger} />
+            </Grid>
+          </Grid>
+        </Grid>
+      </div>
     );
   }
 }
 
-export default i18nextReact.setupTranslation(['login'], LoginPage);
+export default withTranslation('login')(withRouter(withStyles(styles)(LoginPage)));

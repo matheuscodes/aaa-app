@@ -2,8 +2,8 @@ import React from 'react'
 import valueConverter from 'global/ValueConverter'
 
 // TODO FUCKING REFACTOR THIS SHIT.
-const GraphStyle = React.createClass({
-  render: function() {
+class GraphStyle extends React.Component {
+  render() {
     const all = [
       ".border {fill:none;stroke:#00F;stroke-width:1;stroke-opacity:1}",
       ".plan {fill:#FFF;stroke:#000;stroke-opacity:1}",
@@ -49,6 +49,6 @@ const GraphStyle = React.createClass({
         </style>
     );
   }
-});
+}
 
 export default GraphStyle;

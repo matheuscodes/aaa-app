@@ -1,6 +1,5 @@
 import React from 'react'
-
-import i18nextReact from 'global/i18nextReact'
+import { withTranslation } from 'react-i18next'
 
 import GraphStyle from 'svg/common/GraphStyle'
 import GraphBottomLabels from 'svg/common/GraphBottomLabels'
@@ -14,13 +13,8 @@ import SeasonLabels from 'svg/season/SeasonLabels'
 const sideLabelsSize = 397;
 const columnWidth = 100;
 
-const MonthGraph = React.createClass({
-  propTypes: {
-    // TODO declare a class to validate
-    data: React.PropTypes.object,
-    graphId: React.PropTypes.number
-  },
-  render: function() {
+class MonthGraph extends React.Component {
+  render() {
     var days = [];
     var values = [];
 
@@ -84,6 +78,6 @@ const MonthGraph = React.createClass({
       </svg>
     );
   }
-});
+}
 
-export default i18nextReact.setupTranslation(['common'], MonthGraph);
+export default withTranslation('common')(MonthGraph);

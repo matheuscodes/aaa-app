@@ -1,31 +1,23 @@
 import React from 'react'
 
-import i18nextReact from 'global/i18nextReact'
-import MUI from 'app/common/MaterialUI'
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 
-const styles = {
-  gridList: {
-    width: '100%'
-  }
-};
+const styles = {}
 
-const AboutTrainings = React.createClass({
-  propTypes: {
-    t: React.PropTypes.func.isRequired
-  },
-  render: function() {
-    const t = this.props.t;
+class AboutTrainings extends React.Component {
+  render() {
     return (
-      <MUI.GridList style={styles.gridList} cellHeight={'auto'} cols={8} padding={10} >
-        <MUI.GridTile style={MUI.styles.GridTile} cols={3} >
-          <div><img src='img/new_training.png' width={'100%'} /></div>
-        </MUI.GridTile>
-        <MUI.GridTile style={MUI.styles.GridTile} cols={5} >
-          <div><img src='img/trainings.png' width={'100%'} /></div>
-        </MUI.GridTile>
-      </MUI.GridList>
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
+          <div><img src='img/new_training.png' width={'100%'} alt="" /></div>
+        </Grid>
+        <Grid item xs={8}>
+          <div><img src='img/trainings.png' width={'100%'} alt="" /></div>
+        </Grid>
+      </Grid>
     );
   }
-});
+}
 
-export default i18nextReact.setupTranslation(['common','about'], AboutTrainings);
+export default withStyles(styles)(AboutTrainings);

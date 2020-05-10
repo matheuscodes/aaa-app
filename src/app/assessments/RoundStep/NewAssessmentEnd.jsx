@@ -1,18 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import keycode from 'keycode';
 import EventListener from 'react-event-listener';
-import {autobind} from 'core-decorators';
 
-import MUI from 'app/common/MaterialUI';
+import { withTranslation } from 'react-i18next'
 
-import i18nextReact from 'global/i18nextReact';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Grid from '@material-ui/core/Grid';
+
 import valueConverter from 'global/ValueConverter';
 
 import ArrowRingRow from 'app/assessments/ArrowRingRow';
 
+const styles = {}
 
-@autobind
 class NewAssessmentEnd extends React.Component {
   constructor(props) {
     super(props);
@@ -132,70 +137,68 @@ class NewAssessmentEnd extends React.Component {
       'X', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M',
     ].map(function(value) {
       return (
-        <MUI.RaisedButton
-          key={value}
-          style={this.props.style.arrowButton}
-          labelColor={valueConverter.color[value]}
-          id={'aaa-newAssessmentEndArrow_' + value}
-          backgroundColor={valueConverter.backgroundColor[value]}
-          label={value}
-          onTouchTap={this[['pushArrow', value].join('')]} />
+        <Grid item xs={3}>
+          <Button fullWidth
+            variant="contained"
+            size="small"
+            color="primary"
+            key={value}
+            id={'aaa-newAssessmentEndArrow_' + value}
+            style={{
+              backgroundColor:valueConverter.backgroundColor[value],
+              color:valueConverter.color[value],
+            }}
+            onClick={this[['pushArrow', value].join('')].bind(this)}>
+            {value}
+          </Button>
+        </Grid>
       );
     }, this);
-    actions.push(<br/>);
-    actions.push(<br/>);
     actions.push(
-      <MUI.RaisedButton
-        style={this.props.style.actionButton}
-        label={t('assessment:newAssessment.roundStep.undoEnd')}
-        primary={false}
-        onTouchTap={this.undo} />
+      <Grid item xs={6}>
+        <Button variant="contained" size="small" color="secondary" fullWidth
+          onClick={this.undo.bind(this)}>{t('assessment:newAssessment.roundStep.undoEnd')}</Button>
+      </Grid>
     );
     actions.push(
-      <MUI.RaisedButton
-        style={this.props.style.actionButton}
-        label={t('assessment:submitEnd')}
-        primary={true}
-        keyboardFocused={true}
-        onTouchTap={this.handleSubmit} />
+      <Grid item xs={6}>
+        <Button variant="contained" size="small" color="primary" fullWidth
+          keyboardFocused={true}
+          onClick={this.handleSubmit.bind(this)}>{t('assessment:submitEnd')}</Button>
+      </Grid>
     );
 
     return (
-      <div style={this.props.style}>
-        <MUI.RaisedButton
-          style={this.props.style.mainButton}
-          label={t('assessment:addEnd')}
-          onTouchTap={this.handleOpen} />
-        <MUI.Dialog
-          contentStyle={this.props.style.Dialog.contentStyle}
-          actionsContainerStyle={this.props.style.Dialog.actionsContainerStyle}
-          title={t('assessment:newEndTitle')}
-          titleStyle={this.props.style.h3}
-          actions={actions}
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose} >
-          <EventListener
-            target="window"
-            onKeyDown={this.handleWindowKeyDown} />
-          <ArrowRingRow
-            rows={2}
-            style={this.props.style.arrowRow}
-            arrows={this.state.arrows}
-            arrowSize={this.props.style.arrow.width} />
-        </MUI.Dialog>
+      <div>
+        <Button fullWidth
+                variant="contained"
+                size="small"
+                color="primary"
+                onClick={this.handleOpen.bind(this)}>
+          {t('assessment:addEnd')}
+        </Button>
+        <Dialog open={this.state.open} onClose={this.handleClose.bind(this)} >
+          <DialogTitle>
+            {t('assessment:newEndTitle')}
+          </DialogTitle>
+          <DialogContent>
+            <ArrowRingRow
+              rows={2}
+              arrows={this.state.arrows}
+              arrowSize={'24pt'} />
+          </DialogContent>
+          <DialogActions>
+            <Grid container spacing={1}>
+              {actions}
+            </Grid>
+            <EventListener
+              target="window"
+              onKeyDown={this.handleWindowKeyDown.bind(this)} />
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }
 }
 
-NewAssessmentEnd.propTypes = {
-  t: PropTypes.func.isRequired,
-  style: PropTypes.object,
-  roundIndex: PropTypes.number,
-  addEnd: PropTypes.func,
-};
-
-
-export default i18nextReact.setupTranslation(['assessment'],
-                                               NewAssessmentEnd);
+export default withTranslation('assessment')(withStyles(styles)(NewAssessmentEnd));

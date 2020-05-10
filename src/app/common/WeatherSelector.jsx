@@ -1,43 +1,49 @@
-'use strict';
-
 import React from 'react'
-import MUI from 'app/common/MaterialUI'
 
-import SelectField from 'components/SelectField';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 
-import WeatherSelectorStyle from 'app/common/WeatherSelector.style';
 import WeatherConditions from 'constants/WeatherConditions'
 import WeatherIcons from 'svg/icon/Weather'
 
-export default React.createClass({
-  getInitialState: function() {
-    this.style = new WeatherSelectorStyle(this.props.style.styleProvider);
-    return {weathers: []};
-  },
-  componentDidMount: function() {
+export default class extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {weathers: []}
+  }
+
+  componentDidMount() {
     Object.keys(WeatherConditions).forEach((weather) => {
       const CurrentIcon = WeatherIcons[WeatherConditions[weather]];
       this.state.weathers.push(
         {
           id: weather,
-          label: (<CurrentIcon height={this.style.labelHeight} />),
-          name: (<CurrentIcon height={this.style.listHeight} />),
+          name: (<CurrentIcon height={'32pt'} />),
         }
       );
     });
     this.setState(this.state);
-  },
-  render: function() {
+  }
+
+  render() {
     return (
-      <SelectField
-        style={this.props.style}
-        id={'aaa-weatherSelector'}
-        value={this.props.value}
-        onChange={this.props.onChange}
-        items={this.state.weathers}
-        floatingLabelFixed={true}
-        floatingLabelText={" "}
-        hintText={this.props.hintText} />
+      <FormControl fullWidth>
+        <InputLabel id='aaa-weatherSelector'>{this.props.text}</InputLabel>
+        <Select
+          style={this.props.style}
+          id={'aaa-weatherSelector'}
+          value={this.props.value}
+          onChange={this.props.onChange}
+          items={this.state.weathers}
+          renderValue={weather => {
+            const CurrentIcon = WeatherIcons[WeatherConditions[weather]];
+            return (<CurrentIcon height={'16pt'} />);
+          }} >
+          {this.state.weathers.map((weather) => <MenuItem key={weather.id} value={weather.id} >{weather.name}</MenuItem> )}
+        </Select>
+      </FormControl>
     );
   }
-});
+}

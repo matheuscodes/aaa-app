@@ -6,6 +6,7 @@ import i18nextReact from 'global/i18nextReact'
 
 import Waiting from 'app/common/Waiting'
 import Notice from 'app/common/Notice'
+import RoutePaths from 'global/RoutePaths'
 
 const EventsCard = React.createClass({
   getInitialState: function() {
@@ -23,7 +24,7 @@ const EventsCard = React.createClass({
       },
       error: function(error){
         if(API.isAuthError(error)){
-          this.props.switcher.switchTo('loginPage');
+          this.props.history.push(RoutePaths.login);
         }
       },
     };

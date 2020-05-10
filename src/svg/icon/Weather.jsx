@@ -1,27 +1,19 @@
 import React from 'react'
 
 const baseSVG = function(icon) {
-  return React.createClass({
-    propTypes: {
-      // TODO Styles as objects to validate?
-      style: React.PropTypes.object,
-      height: React.PropTypes.number,
-      width: React.PropTypes.number
-    },
-    render: function() {
-      return (
-        <svg
-          style={this.props.style}
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 100 100"
-          height={(this.props.height || 100)}
-          width={(this.props.width || (this.props.height || 100))}>
-          {icon}
-        </svg>
-      );
-    }
-  });
-};
+  return function(props) {
+    return (
+      <svg
+        style={props.style}
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 100 100"
+        height={(props.height || (props.width || 100))}
+        width={(props.width || (props.height || 100))}>
+        {icon}
+      </svg>
+    );
+  }
+}
 
 const WeatherIcons = {
   Fair: baseSVG(<path d={[

@@ -1,19 +1,13 @@
 import React from 'react'
 
-const Windmills = React.createClass({
-  propTypes: {
-    // TODO Styles as objects to validate?
-    style: React.PropTypes.object,
-    height: React.PropTypes.number,
-    width: React.PropTypes.number
-  },
-  render: function() {
+class Windmills extends React.Component{
+  render() {
     return (
       <svg
         style={this.props.style}
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 100 100"
-        height={(this.props.height || 100)}
+        height={(this.props.height || (this.props.width || 100))}
         width={(this.props.width || (this.props.height || 100))}>
         <path
           xmlns="http://www.w3.org/2000/svg"
@@ -57,6 +51,6 @@ const Windmills = React.createClass({
       </svg>
     );
   }
-});
+}
 
 export default Windmills;

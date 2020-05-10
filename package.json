@@ -1,8 +1,7 @@
 {
   "name": "aaa-app",
-  "version": "2.1.0",
+  "version": "2.3.0",
   "description": "AAA - Advanced Archery Application",
-  "main": "src/server.js",
   "scripts": {
     "build": "webpack --progress",
     "build-production": "env-cmd production npm run build",
@@ -10,11 +9,16 @@
     "eslint": "eslint --ext .jsx,.svg --fix ",
     "fetch-languages": "rm -rf node_modules/aaa-languages && cp -R ../aaa-languages node_modules/",
     "revert-languages": "rm -rf node_modules/aaa-languages && npm run install aaa-languages",
-    "serve": "npm run build && SERVER=local node build/aaa-server.js",
+    "serve": "npm run build && env SERVER=local node build/aaa-server.js",
     "deploy-domain": "serverless create_domain",
     "delete-domain": "serverless delete_domain",
     "delete-stack": "serverless remove",
     "just-deploy": "serverless deploy",
+    "languages": " rm -rf public/locales && cp -r ./node_modules/aaa-languages/src public/locales",
+    "react-start": "npm run languages && react-scripts start",
+    "react-build": "react-scripts build",
+    "react-test": "react-scripts test",
+    "react-eject": "react-scripts eject",
     "deploy-stack": "npm run build-production && serverless deploy"
   },
   "repository": {
@@ -32,41 +36,39 @@
   },
   "homepage": "https://github.com/matheuscodes/aaa-app#readme",
   "dependencies": {
+    "@date-io/date-fns": "1.3.13",
+    "@material-ui/core": "4.9.5",
+    "@material-ui/icons": "4.9.1",
+    "@material-ui/lab": "4.0.0-alpha.46",
+    "@material-ui/pickers": "3.2.10",
     "aaa-languages": "git+https://github.com/matheuscodes/aaa-languages.git",
-    "aws-serverless-express": "3.3.6",
-    "core-decorators": "0.19.0",
-    "express": "4.17.1",
-    "i18next": "8.4.3",
-    "i18next-browser-languagedetector": "2.0.0",
-    "i18next-express-middleware": "1.0.5",
-    "i18next-node-fs-backend": "2.1.3",
-    "i18next-xhr-backend": "1.4.2",
-    "keycode": "2.1.9",
-    "material-ui": "0.18.6",
-    "mobile-detect": "1.3.6",
-    "moment": "2.24.0",
-    "react": "15.6.1",
-    "react-dom": "15.6.1",
-    "react-event-listener": "0.4.5",
-    "react-i18next": "4.6.2",
-    "react-tap-event-plugin": "2.0.1",
-    "serverless-domain-manager": "2.6.10"
-  },
-  "devDependencies": {
-    "@babel/core": "7.2.2",
-    "@babel/plugin-proposal-decorators": "^7.8.3",
-    "@babel/preset-env": "7.2.3",
-    "@babel/preset-react": "^7.8.3",
-    "babel-loader": "8.0.4",
-    "env-cmd": "5.1.0",
-    "eslint": "4.19.1",
-    "eslint-config-google": "0.9.1",
-    "eslint-plugin-react": "7.1.0",
+    "clsx": "1.1.0",
+    "date-fns": "2.11.0",
+    "i18next": "18.0.0",
+    "i18next-browser-languagedetector": "4.0.0",
+    "i18next-xhr-backend": "3.2.0",
     "intl": "1.2.5",
-    "prop-types": "15.5.10",
-    "serverless": "1.64.0",
-    "terser": "4.6.3",
-    "webpack": "4.28.2",
-    "webpack-cli": "3.1.2"
+    "keycode": "^2.2.0",
+    "mobile-detect": "1.4.4",
+    "moment": "^2.24.0",
+    "react": "16.11.0",
+    "react-dom": "16.11.0",
+    "react-event-listener": "^0.6.6",
+    "react-i18next": "11.0.0",
+    "react-router-dom": "5.1.2",
+    "react-scripts": "3.4.1"
+  },
+  "browserslist": {
+    "development": [
+      "last 2 chrome versions",
+      "last 2 firefox versions",
+      "last 2 edge versions"
+    ],
+    "production": [
+      ">1%",
+      "last 4 versions",
+      "Firefox ESR",
+      "not ie < 11"
+    ]
   }
 }

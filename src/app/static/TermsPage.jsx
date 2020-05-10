@@ -1,43 +1,29 @@
 import React from 'react'
+import { withTranslation } from 'react-i18next'
 
-import i18nextReact from 'global/i18nextReact'
+import { withStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+
 import LogoName from 'svg/LogoName'
-import MUI from 'app/common/MaterialUI'
-import API from 'api'
 
-import ReactPageSwitcherType from 'global/ReactPageSwitcherType'
-import BaseLayout from 'app/common/BaseLayout'
+const styles = {}
 
-const styles = {
-  gridList: {
-    width: '100%'
-  }
-};
-
-const TermsPage = React.createClass({
-  propTypes: {
-    switcher: ReactPageSwitcherType.isRequired,
-    userAgent: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]).isRequired,
-    t: React.PropTypes.func.isRequired
-  },
-  render: function() {
+class TermsPage extends React.Component {
+  render() {
     const t = this.props.t;
     return (
-      <BaseLayout
-        switcher={this.props.switcher}
-        layoutName="termsPage"
-        userAgent={this.props.userAgent}
-        styleProvider={this.props.styleProvider}
-        title={t('terms:appBarTitle')} >
-        <MUI.Card style={{margin:40,marginBottom:120}}>
-          <MUI.CardHeader
+      <div style={{'backgroundColor':'white', padding:'10pt'}}>
+        <Card style={{margin:40,marginBottom:120}}>
+          <CardHeader
             title={t('terms:title')}
-            subtitle={t('terms:subtitle')} />
-          <MUI.CardText>
+            subheader={t('terms:subtitle')} />
+          <CardContent>
             <div style={{padding:12}}>
               <LogoName width={'100%'} height={96} />
             </div>
-            <img src='img/impressum.png' width={'400px'}  height={'150px'} />
+            <img src='img/impressum.png' width={'400px'}  height={'150px'} alt="" />
             <h2>{t('terms:disclaimer.title')}</h2>
               <h3>{t('terms:disclaimer.content.title')}</h3>
               <p>{t('terms:disclaimer.content.paragraph')}</p>
@@ -59,7 +45,7 @@ const TermsPage = React.createClass({
               </p>
 
               <p>
-                <a href={''}>Advanced Archery Application Server Code</a><br/>
+                Advanced Archery Application Server Code<br/>
                 Copyright © 2015-2019 Matheus Borges Teixeira<br/>
                 Closed Source*, all rights reserved
               </p>
@@ -97,12 +83,11 @@ const TermsPage = React.createClass({
                 <p>{t('terms:data.cookies.paragraph')}</p>
 
             <h4>{t('terms:disclaimer.betaPhase.termination')}</h4>
-
-          </MUI.CardText>
-        </MUI.Card>
-      </BaseLayout>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
-});
+}
 
-export default i18nextReact.setupTranslation(['terms'], TermsPage);
+export default withTranslation('terms')(withStyles(styles)(TermsPage));

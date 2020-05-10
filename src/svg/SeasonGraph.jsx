@@ -1,7 +1,6 @@
 import React from 'react'
+import { withTranslation } from 'react-i18next'
 import moment from 'moment'
-
-import i18nextReact from 'global/i18nextReact'
 
 import GraphStyle from 'svg/common/GraphStyle'
 import GraphBottomLabels from 'svg/common/GraphBottomLabels'
@@ -18,22 +17,16 @@ import ShareBar from 'svg/season/ShareBar'
 const sideLabelsSize = 397;
 const columnWidth = 100;
 
-const SeasonGraph = React.createClass({
-  propTypes: {
-    // TODO declare a class to validate
-    data: React.PropTypes.object,
-    graphId: React.PropTypes.number,
-    t: React.PropTypes.func
-  },
-  render: function() {
+class SeasonGraph extends React.Component {
+  render() {
     const t = this.props.t;
 
-    const weekStart = moment(this.props.data.start).isoWeek();
+    //const weekStart = moment(this.props.data.start).isoWeek();
     const dateStart = moment(this.props.data.start).startOf('isoWeek');
     const dateEnd = moment(this.props.data.end).startOf('isoWeek');
 
     const mapData = {};
-    this.props.data.goals.map(function(single) {
+    this.props.data.goals.forEach(function(single) {
       mapData[single.week] = single;
     });
 
@@ -137,6 +130,6 @@ const SeasonGraph = React.createClass({
       </svg>
     );
   }
-});
+}
 
-export default i18nextReact.setupTranslation(['common'], SeasonGraph);
+export default withTranslation('common')(SeasonGraph);

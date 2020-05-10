@@ -1,24 +1,16 @@
 import React from 'react'
 
-const GraphEstimations = React.createClass({
-  propTypes: {
-    // TODO create a class to validate against
-    data: React.PropTypes.object,
-    contentName: React.PropTypes.string,
-    estimate: React.PropTypes.bool,
-    min: React.PropTypes.number,
-    max: React.PropTypes.number,
-    size: React.PropTypes.number
-  },
-  render: function() {
+class GraphEstimations extends React.Component {
+  render() {
     const estimations = [];
     var minResult = (this.props.min || 0);
     var maxResult = (this.props.max || 10);
+    var estimate;
     this.props.data.forEach(function(value, index) {
       if (typeof value !== 'undefined' && value > 0) {
         estimations.push(value);
       } else if (this.props.estimate && index > 1) {
-        var estimate = -1;
+        estimate = -1;
         if (estimations[index - 1] > 0) {
           estimate = estimations[index - 1];
         }
@@ -28,7 +20,7 @@ const GraphEstimations = React.createClass({
         }
         estimations.push(estimate);
       } else if (this.props.estimate && estimations[0] >= 0) {
-        var estimate = (estimations[0] + this.props.min) / 2;
+        estimate = (estimations[0] + this.props.min) / 2;
         estimations.push(estimate);
       } else {
         estimations.push(-1);
@@ -89,6 +81,6 @@ const GraphEstimations = React.createClass({
       </g>
     );
   }
-});
+}
 
 export default GraphEstimations;

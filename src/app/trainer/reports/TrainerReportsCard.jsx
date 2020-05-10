@@ -7,6 +7,7 @@ import MUI from 'app/common/MaterialUI'
 import API from 'api'
 
 import ReportTile from 'app/reports/ReportTile'
+import RoutePaths from 'global/RoutePaths'
 
 const ReportCard = React.createClass({
   getInitialState: function() {
@@ -26,7 +27,7 @@ const ReportCard = React.createClass({
       },
       error: function(error) {
         if(API.isAuthError(error)){
-          this.props.switcher.switchTo('loginPage');
+          this.props.history.push(RoutePaths.login);
         }
       }
     };
@@ -55,7 +56,7 @@ const ReportCard = React.createClass({
       },
       error: function(error) {
         if(API.isAuthError(error)){
-          this.props.switcher.switchTo('loginPage');
+          this.props.history.push(RoutePaths.login);
         }
       }
     };

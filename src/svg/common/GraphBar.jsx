@@ -1,14 +1,7 @@
 import React from 'react'
 
-const GraphBar = React.createClass({
-  propTypes: {
-    type: React.PropTypes.string,
-    column: React.PropTypes.number,
-    value: React.PropTypes.number,
-    position: React.PropTypes.number,
-    size: React.PropTypes.number
-  },
-  render: function() {
+class GraphBar extends React.Component {
+  render() {
     return (
       <g transform={'translate(0,' + (-this.props.value) + ')'}>
         <rect className={this.props.type}
@@ -19,6 +12,6 @@ const GraphBar = React.createClass({
       </g>
     );
   }
-});
+}
 
 export default GraphBar;

@@ -1,18 +1,9 @@
 import React from 'react'
-import i18nextReact from 'global/i18nextReact'
+import { withTranslation } from 'react-i18next'
 
-const GraphAxisLabels = React.createClass({
-  propTypes: {
-    title: React.PropTypes.string,
-    type: React.PropTypes.string,
-    suffix: React.PropTypes.string,
-    offset: React.PropTypes.number,
-    size: React.PropTypes.number,
-    max: React.PropTypes.number,
-    min: React.PropTypes.number,
-    t: React.PropTypes.func
-  },
-  render: function() {
+
+class GraphAxisLabels extends React.Component {
+  render() {
     const t = this.props.t;
     var unit = (this.props.max - this.props.min) / 10;
     var max = this.props.max;
@@ -53,6 +44,6 @@ const GraphAxisLabels = React.createClass({
       </g>
     );
   }
-});
+}
 
-export default i18nextReact.setupTranslation(['common'], GraphAxisLabels);
+export default withTranslation('common')(GraphAxisLabels);

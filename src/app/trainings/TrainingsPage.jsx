@@ -1,32 +1,25 @@
 import React from 'react';
-import {autobind} from 'core-decorators';
+import { withRouter } from 'react-router'
+import { withTranslation } from 'react-i18next'
 
-import i18nextReact from 'global/i18nextReact';
-import MUI from 'app/common/MaterialUI';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Icon from '@material-ui/core/Icon';
+import Button from '@material-ui/core/Button';
+
 import API from 'api';
+import RoutePaths from 'global/RoutePaths'
 
-import MessageablePage from 'components/MessageablePage';
-
-import ReactPageSwitcherType from 'global/ReactPageSwitcherType';
-import BaseLayout from 'app/common/BaseLayout';
 import Waiting from 'app/common/Waiting';
-
-import TrainingsPageStyle from 'app/trainings/TrainingsPage.style';
 
 import TrainingTile from 'app/trainings/TrainingTile';
 import NewTrainingDialog from 'app/trainings/NewTrainingDialog';
 
-const styles = {
-  gridList: {
-    width: '100%'
-  }
-};
+const styles = { };
 
-@autobind
-class TrainingsPage extends MessageablePage {
+class TrainingsPage extends React.Component {
   constructor(props) {
     super(props);
-    this.style = new TrainingsPageStyle(this.props.styleProvider);
     this.state = {editTraining: false, currentPage:0};
   }
 
@@ -43,7 +36,7 @@ class TrainingsPage extends MessageablePage {
       error: function(error) {
         if(API.isAuthError(error)){
           this.showMessage(t('common:messages.notLoggedIn'), "ERROR");
-          this.props.switcher.switchTo('loginPage');
+          this.props.history.push(RoutePaths.login);
         }
         this.showMessage(t('training:messages.listError'), "ERROR");
       }
@@ -63,7 +56,7 @@ class TrainingsPage extends MessageablePage {
       error: function(error) {
         if(API.isAuthError(error)){
           this.showMessage(t('common:messages.notLoggedIn'), "ERROR");
-          this.props.switcher.switchTo('loginPage');
+          this.props.history.push(RoutePaths.login);
         }
         this.showMessage(t('training:messages.listError'), "ERROR");
       }
@@ -93,7 +86,7 @@ class TrainingsPage extends MessageablePage {
       error: function(error) {
         if(API.isAuthError(error)){
           this.showMessage(t('common:messages.notLoggedIn'), "ERROR");
-          this.props.switcher.switchTo('loginPage');
+          this.props.history.push(RoutePaths.login);
         }
         this.showMessage(t('training:messages.listError'), "ERROR");
       }
@@ -144,7 +137,7 @@ class TrainingsPage extends MessageablePage {
     var callbacks = {
       context: this,
       success: function() {
-        this.showMessage(t('training:messages.deleted'), "MESSAGE");
+        this.showMessage(t('training:messages.deleted'), "SUCCESS");
         this.updateAll();
       },
       warning: function() {
@@ -173,12 +166,8 @@ class TrainingsPage extends MessageablePage {
   }
 
   showMessage(message, type) {
-    if(typeof this.messenger !== 'undefined'){
-      this.messenger.sendMessage({
-        text: message,
-        open: true,
-        type: type
-      });
+    if(typeof this.props.messenger !== 'undefined'){
+      this.props.messenger.showMessage(message, type);
     }
   }
 
@@ -193,99 +182,68 @@ class TrainingsPage extends MessageablePage {
     if (typeof this.state.trainings !== 'undefined') {
       trainings = this.state.trainings.map(function(training, index) {
         return (
-          <MUI.GridTile
-            key={['aaa-training_', index].join('')}
-            style={MUI.styles.GridTile} cols={this.style.columns} >
-            <TrainingTile data={training} onDelete={this.deleteTraining} />
-          </MUI.GridTile>
+          <Grid item xs={4}
+            key={['aaa-training_', index].join('')} >
+            <TrainingTile data={training} onDelete={this.deleteTraining.bind(this)} />
+          </Grid>
         );
       }, this);
     }
 
     return (
-      <BaseLayout
-        switcher={this.props.switcher}
-        userAgent={this.props.userAgent}
-        styleProvider={this.props.styleProvider}
-        messageSubscriber={this}
-        layoutName="trainingsPage"
-        title={t('training:appBarTitle')} >
-        <MUI.GridList cellHeight={'auto'} cols={4} padding={10} style={styles.gridList} >
-          <MUI.GridTile style={MUI.styles.GridTile}
-            cols={4} >
-            <MUI.RaisedButton
-              label={t('training:newTraining.button')}
-              fullWidth={true}
-              primary={true}
-              onTouchTap={this.newTraining} />
-          </MUI.GridTile>
+      <div style={{'backgroundColor':'white', padding:'10pt'}}>
+        <Button
+          style={{marginBottom:'10pt'}}
+          fullWidth={true}
+          color="primary"
+          variant="contained"
+          onClick={this.newTraining.bind(this)} >
+          {t('training:newTraining.button')}
+        </Button>
+        <Grid container spacing={2}>
+          {(trainings || <Grid item xs={12} ><Waiting /></Grid>)}
+        </Grid>
+        <Grid container >
+          <Grid item xs={6} sm={4} lg={3} style={{padding:'5pt'}}>
+            {
+              typeof this.state.previous !== 'undefined' ?
+              <Button
+                style={{marginBottom:'10pt'}}
+                fullWidth={true}
+                color="secondary"
+                variant="contained"
+                startIcon={<Icon>chevron_left</Icon>}
+                disabled={(this.state.previous === null)}
+                onClick={this.moveToPreviousPage.bind(this)} >
+                { t('training:previousButton') }
+              </Button> : ''
+            }
+          </Grid>
+          <Grid item xs={false} sm={4} lg={6} />
+          <Grid item xs={6} sm={4} lg={3} style={{padding:'5pt'}}>
+            {
+              typeof this.state.next !== 'undefined' ?
+              <Button
+                style={{marginBottom:'10pt'}}
+                fullWidth={true}
+                color="secondary"
+                variant="contained"
+                endIcon={<Icon>chevron_right</Icon>}
+                disabled={(this.state.next === null)}
+                onClick={this.moveToNextPage.bind(this)} >
+                { t('training:nextButton') }
+              </Button> : ''
+            }
+          </Grid>
+        </Grid>
 
-          <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
-            <MUI.GridList
-              cellHeight={'auto'}
-              cols={6}
-              padding={10}
-              style={styles.gridList} >
-            {(trainings || <MUI.GridTile cols={6} ><Waiting /></MUI.GridTile>)}
-            </MUI.GridList>
-          </MUI.GridTile>
-          <MUI.GridTile style={MUI.styles.GridTile} cols={this.style.cols} >
-            <MUI.GridList
-              cols={this.style.cols}
-              style={this.style.gridList} >
-              <MUI.GridTile
-                cols={this.style.buttonCols}
-                style={MUI.styles.GridTile} >
-                {
-                  typeof this.state.previous !== 'undefined' ?
-                  <MUI.RaisedButton
-                    label={
-                      this.style.navigationButton.text ?
-                        t('training:previousButton') : ' '
-                    }
-                    fullWidth={true}
-                    backgroundColor={MUI.colors.blue600}
-                    labelColor={MUI.palette.alternateTextColor}
-                    labelStyle={this.style.navigationButton.labelStyle}
-                    disabled={(this.state.previous === null)}
-                    onTouchTap={this.moveToPreviousPage}
-                    icon={<MUI.icons.navigation.chevron_left />} /> : ''
-                }
-              </MUI.GridTile>
-              <MUI.GridTile
-                cols={this.style.separatorCols}
-                style={MUI.styles.GridTile} >{''}</MUI.GridTile>
-              <MUI.GridTile
-                cols={this.style.buttonCols}
-                style={MUI.styles.GridTile} >
-                {
-                  typeof this.state.next !== 'undefined' ?
-                  <MUI.RaisedButton
-                    label={
-                      this.style.navigationButton.text ?
-                        t('training:nextButton') : ' '
-                    }
-                    fullWidth={true}
-                    backgroundColor={MUI.colors.blue600}
-                    labelColor={MUI.palette.alternateTextColor}
-                    labelPosition={'before'}
-                    labelStyle={this.style.navigationButton.labelStyle}
-                    disabled={(this.state.next === null)}
-                    onTouchTap={this.moveToNextPage}
-                    icon={<MUI.icons.navigation.chevron_right />} /> : ''
-                }
-              </MUI.GridTile>
-            </MUI.GridList>
-          </MUI.GridTile>
-        </MUI.GridList>
         <NewTrainingDialog
           open={this.state.editTraining}
-          messenger={this}
-          style={this.style}
-          onRequestClose={this.closeEdit} />
-      </BaseLayout>
+          messenger={this.props.messenger}
+          onRequestClose={this.closeEdit.bind(this)} />
+      </div>
     );
   }
 }
 
-export default i18nextReact.setupTranslation(['training'], TrainingsPage);
+export default withTranslation('training')(withRouter(withStyles(styles)(TrainingsPage)));

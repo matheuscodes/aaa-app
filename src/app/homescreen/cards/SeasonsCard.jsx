@@ -6,6 +6,7 @@ import API from 'api'
 
 import SeasonTile from 'app/seasons/SeasonTile'
 import Waiting from 'app/common/Waiting'
+import RoutePaths from 'global/RoutePaths'
 
 const SeasonsCard = React.createClass({
   getInitialState: function() {
@@ -21,7 +22,7 @@ const SeasonsCard = React.createClass({
       },
       error: function(error){
         if(API.isAuthError(error)){
-          this.props.switcher.switchTo('loginPage');
+          this.props.history.push(RoutePaths.login);
         }
       },
     };

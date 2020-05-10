@@ -1,30 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {autobind} from 'core-decorators';
 
-import i18nextReact from 'global/i18nextReact';
+import { withTranslation } from 'react-i18next'
 
-import AssessmentArrowTableStyle from 'app/assessments/AssessmentArrowTable.style';
+import { withStyles } from '@material-ui/core/styles';
+
 import AssessmentArrowTableRow from 'app/assessments/AssessmentArrowTableRow';
 
-@autobind
-class AssessmentArrowTable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.style = new AssessmentArrowTableStyle(props.style.styleProvider);
-  }
+const styles = {}
 
+class AssessmentArrowTable extends React.Component {
   render() {
     const t = this.props.t;
 
     return (
-      <table style={this.style.table}>
+      <table>
         <thead>
           <tr>
-            <th style={this.style.ringsHeader}>
+            <th>
               {t('assessment:rings')}
             </th>
-            <th style={this.style.totalHeader}>
+            <th>
               {t('assessment:total')}
             </th>
           </tr>
@@ -34,7 +29,6 @@ class AssessmentArrowTable extends React.Component {
             this.props.data.ends.map((end, endIndex) => {
               return (<AssessmentArrowTableRow
                         key={`aaa-AssessmentEnd_${endIndex}`}
-                        style={this.style}
                         end={end}
                         endIndex={endIndex}
                         roundIndex={this.props.data.index}
@@ -42,25 +36,25 @@ class AssessmentArrowTable extends React.Component {
             })
           }
           {this.props.data.totalScore ? <tr>
-            <th style={this.style.bottomSummary}>
+            <th>
               {t('assessment:totalPoints')}
             </th>
             <th>{this.props.data.totalScore}</th>
           </tr> : null}
           {this.props.data.nines ? <tr>
-            <th style={this.style.bottomSummary}>
+            <th>
               {t('assessment:totalNines')}
             </th>
             <th>{this.props.data.nines}</th>
           </tr> : null}
           {this.props.data.tens ? <tr>
-            <th style={this.style.bottomSummary}>
+            <th>
               {t('assessment:totalTens')}
             </th>
             <th>{this.props.data.tens}</th>
           </tr> : null}
           {this.props.data.xs ? <tr>
-            <th style={this.style.bottomSummary}>
+            <th>
               {t('assessment:totalXs')}
             </th>
             <th>{this.props.data.xs}</th>
@@ -69,14 +63,6 @@ class AssessmentArrowTable extends React.Component {
       </table>
     );
   }
-};
+}
 
-AssessmentArrowTable.propTypes = {
-  style: PropTypes.object,
-  data: PropTypes.object,
-  deleteEnd: PropTypes.func,
-  t: PropTypes.func,
-};
-
-export default i18nextReact.setupTranslation(['assessment'],
-                                               AssessmentArrowTable);
+export default withTranslation('assessment')(withStyles(styles)(AssessmentArrowTable));

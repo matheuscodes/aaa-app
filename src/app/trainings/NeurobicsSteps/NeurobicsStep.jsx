@@ -1,62 +1,27 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import MUI from 'app/common/MaterialUI';
+import { withTranslation } from 'react-i18next'
 
-import TextField from 'components/TextField';
-import SelectField from 'components/SelectField';
+import { withStyles } from '@material-ui/core/styles';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import StepContent from '@material-ui/core/StepContent';
 
-import NeurobicsStepStyle from 'app/trainings/NeurobicsSteps/NeurobicsStep.style';
+const styles = {}
 
-export default function NeurobicsStep(props) {
-  const style = new NeurobicsStepStyle(props.style.styleProvider);
-
-  function setArrows(event, isInputChecked){
-    props.setTrainingClasses({arrows:isInputChecked})
-  }
-
-  function setWorkouts(event, isInputChecked){
-    props.setTrainingClasses({workouts:isInputChecked})
-  }
-
-  function setNeurobics(event, isInputChecked){
-    props.setTrainingClasses({neurobics:isInputChecked})
-  }
-
+function NeurobicsStep(props) {
+  const { t } = props;
   return (
-    <div>
-      <MUI.GridList
-        cols={4}
-        cellHeight={'auto'}
-        style={style}>
-        <MUI.GridTile style={MUI.styles.GridTile} cols={4} >
+    <Step {...props}>
+      <StepLabel>{t('training:newTraining.NeurobicsSteps.NeurobicsStep.title')}</StepLabel>
+      <StepContent>
+        <div>
           <div>
-            <div>
-              {props.t('training:newTraining.NeurobicsSteps.comingSoon')}
-            </div>
-            <img
-              src={'img/neurobics.png'}
-              style={style.img} />
+            {props.t('training:newTraining.NeurobicsSteps.comingSoon')}
           </div>
-        </MUI.GridTile>
-      </MUI.GridList>
-    </div>
+          <img src={'img/neurobics.png'} alt=""/>
+        </div>
+      </StepContent>
+    </Step>
   );
 }
-
-NeurobicsStep.propTypes = {
-  t: PropTypes.func.isRequired,
-  style: PropTypes.object,
-  events: PropTypes.array,
-  targets: PropTypes.array,
-  seasons: PropTypes.array,
-  distance: PropTypes.string,
-  date: PropTypes.object,
-  eventId: PropTypes.number,
-  targetId: PropTypes.number,
-  seasonId: PropTypes.number,
-  changeSeason: PropTypes.func,
-  changeTarget: PropTypes.func,
-  changeEvent: PropTypes.func,
-  changeDistance: PropTypes.func,
-  changeDate: PropTypes.func,
-};
+export default withTranslation('training')(withStyles(styles)(NeurobicsStep));

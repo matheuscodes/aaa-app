@@ -1,19 +1,13 @@
 import React from 'react'
 // TODO attribute creative commons the author: "Created by Gabriele Fumero from the Noun Project"
-const ArcherAnchored = React.createClass({
-  propTypes: {
-    // TODO Styles as objects to validate?
-    style: React.PropTypes.object,
-    height: React.PropTypes.number,
-    width: React.PropTypes.number
-  },
-  render: function() {
+class ArcherAnchored extends React.Component {
+  render() {
     return (
       <svg
         style={this.props.style}
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 100 100"
-        height={(this.props.height || 100)}
+        height={(this.props.height || (this.props.width || 100))}
         width={(this.props.width || (this.props.height || 100))}>
         <path
           d={['M35.68,59.581c-1.597-1.298-3.942-1.055-5.238,0.544L19.298,',
@@ -46,6 +40,6 @@ const ArcherAnchored = React.createClass({
       </svg>
     );
   }
-});
+}
 
 export default ArcherAnchored;

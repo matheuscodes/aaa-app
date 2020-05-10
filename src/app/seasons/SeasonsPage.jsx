@@ -1,24 +1,23 @@
 import React from 'react'
+import { withRouter } from 'react-router'
+import { withTranslation } from 'react-i18next'
 
-import i18nextReact from 'global/i18nextReact'
-import MUI from 'app/common/MaterialUI'
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+
 import API from 'api'
+import RoutePaths from 'global/RoutePaths'
 
-import PageSwitcher from 'app/common/PageSwitcher'
 import Waiting from 'app/common/Waiting'
-import Notice from 'app/common/Notice'
 
-import BaseLayout from 'app/common/BaseLayout'
 import NewSeasonCard from 'app/seasons/NewSeasonCard'
 import SeasonTile from 'app/seasons/SeasonTile'
 
-const SeasonsPage = React.createClass({
-  propTypes: {
-    switcher: React.PropTypes.instanceOf(PageSwitcher),
-    userAgent: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]).isRequired,
-    t: React.PropTypes.func
-  },
-  updateSeasonsList: function() {
+const styles = {}
+
+class SeasonsPage extends React.Component {
+  updateSeasonsList() {
     const t = this.props.t;
     var callbacks = {
       context: this,
@@ -32,19 +31,20 @@ const SeasonsPage = React.createClass({
       error: function(error) {
         this.showMessage(t('season:messages.listError'), "ERROR");
         if(API.isAuthError(error)){
-          this.props.switcher.switchTo('loginPage');
+          this.props.history.push(RoutePaths.login)
         }
       }
     };
     API.seasons.getList(callbacks);
-  },
-  getInitialState: function() {
-    return {editSeason: false};
-  },
-  componentDidMount: function() {
+  }
+  constructor (props) {
+    super(props);
+    this.state = {editSeason: false};
+  }
+  componentDidMount() {
     this.updateSeasonsList();
-  },
-  closeEdit: function(refresh) {
+  }
+  closeEdit(refresh) {
     if (refresh) {
       this.updateSeasonsList();
     } else {
@@ -53,28 +53,19 @@ const SeasonsPage = React.createClass({
       delete current.seasonId;
       this.setState(current);
     }
-  },
-  editSeason: function(seasonId) {
+  }
+  editSeason(seasonId) {
     var current = this.state;
     current.editSeason = true;
     current.seasonId = seasonId;
     this.setState(current);
-  },
-  newSeason: function() {
+  }
+  newSeason() {
     var current = this.state;
     current.editSeason = true;
     this.setState(current);
-  },
-  showMessage: function(message, type) {
-    var current = this.state;
-    current.message = {
-      text: message,
-      open: true,
-      type: type
-    };
-    this.setState(current);
-  },
-  deleteSeason: function(seasonId) {
+  }
+  deleteSeason(seasonId) {
     const t = this.props.t;
     var callbacks = {
       context: this,
@@ -90,69 +81,56 @@ const SeasonsPage = React.createClass({
       }
     };
     API.seasons.delete(seasonId, callbacks);
-  },
-  showMessage: function(message, type) {
-    if(typeof this.messenger !== 'undefined'){
-      this.messenger.sendMessage({
-        text: message,
-        open: true,
-        type: type
-      });
+  }
+  showMessage(message, type) {
+    if(typeof this.props.messenger !== 'undefined'){
+      this.props.messenger.showMessage(message, type);
     }
-  },
-  subscribe: function(sender) {
+  }
+  subscribe(sender) {
     this.messenger = sender;
-  },
-  render: function() {
+  }
+  render() {
     const t = this.props.t;
     var seasons;
     if (typeof this.state.seasons !== 'undefined') {
       seasons = this.state.seasons.map(function(season, index) {
+        console.log(season)
         return (
-          <MUI.GridTile
+          <Grid item
             key={'aaa-season_' + season.id}
-            style={MUI.styles.GridTile}
-            cols={2} >
+            xs={12}
+            lg={6} >
             <SeasonTile
               seasonId={season.id}
               data={season}
-              onDelete={this.deleteSeason}
-              onEdit={this.editSeason} />
-          </MUI.GridTile>
+              onDelete={this.deleteSeason.bind(this)}
+              onEdit={this.editSeason.bind(this)} />
+          </Grid>
         );
       }, this);
     }
-
     return (
-      <BaseLayout
-        switcher={this.props.switcher}
-        layoutName="seasonsPage"
-        userAgent={this.props.userAgent}
-        styleProvider={this.props.styleProvider}
-        messageSubscriber={this}
-        title={t('season:appBarTitle')} >
-        <MUI.GridList
-          cellHeight={'auto'}
-          cols={4}
-          padding={10}
-          style={{width: '100%'}} >
-          <MUI.GridTile cols={4} style={MUI.styles.GridTile} >
-            <MUI.RaisedButton
-              label={t('season:newSeason.button')}
-              fullWidth={true}
-              primary={true}
-              onTouchTap={this.newSeason} />
-          </MUI.GridTile>
-          {(seasons || <MUI.GridTile cols={4} ><Waiting /></MUI.GridTile>)}
-        </MUI.GridList>
+      <div style={{'backgroundColor':'white', padding:'10pt'}}>
+        <Button
+          style={{marginBottom:'10pt'}}
+          fullWidth={true}
+          color="primary"
+          variant="contained"
+          onClick={this.newSeason.bind(this)} >
+          {t('season:newSeason.button')}
+        </Button>
+        <Grid container spacing={2}>
+          {(seasons || <Grid item xs={12} ><Waiting /></Grid>)}
+        </Grid>
         <NewSeasonCard
-          messenger={this.messenger}
+          messenger={this.props.messenger}
           seasonId={this.state.seasonId}
           open={this.state.editSeason}
-          onRequestClose={this.closeEdit} />
-      </BaseLayout>
+          onRequestClose={this.closeEdit.bind(this)} />
+      </div>
     );
   }
-});
+};
 
-export default i18nextReact.setupTranslation(['season'], SeasonsPage);
+export default withTranslation('season')(withRouter(withStyles(styles)(SeasonsPage)));

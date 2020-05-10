@@ -6,7 +6,7 @@ console.log("Using Request URL:",requestURL)
 export default function(path, method, callbacks) {
   var xmlhttp = new XMLHttpRequest();
   var url = requestURL;
-  if (path !== '/login/') {
+  if (!path.match(/login/)) {
     var archer = getLocalArcher();
     if (typeof archer !== 'undefined') {
       url += ['/archers/', archer.id].join('');
