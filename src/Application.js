@@ -10,7 +10,13 @@ import { withTranslation } from 'react-i18next'
 
 import { withStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import Link from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
 
 import Footer from "app/common/Footer"
 import Header from "app/common/Header"
@@ -37,6 +43,7 @@ class Application extends React.Component {
     this.state = {
       alarms: {},
       alarmCount: 0,
+      cookieAccepted: this.cookieAccepted,
     }
   }
 
@@ -53,6 +60,17 @@ class Application extends React.Component {
   handleAlarmClose(alarm) {
     delete this.state.alarms[alarm];
     this.setState(this.state);
+  }
+
+  handleCookieClose(event) {
+    const state = this.state;
+    document.cookie = "cookieTerms=accepted"
+    state.cookieAccepted = this.cookieAccepted;
+    this.setState(state);
+  }
+
+  get cookieAccepted() {
+    return !(document.cookie && document.cookie.includes("cookieTerms=accepted"))
   }
 
   render() {
@@ -121,6 +139,19 @@ class Application extends React.Component {
               </Alert>
             </Snackbar>)}
         </div>
+          <Snackbar open={this.state.cookieAccepted}  style={{width:'90%', minWidth:'90%'}} >
+            <Alert  severity="info" style={{width:'100%', minWidth:'100%'}}
+                    action={
+                      <Button color="inherit" size="small" onClick={this.handleCookieClose.bind(this)}>
+                        OK
+                      </Button>
+                    }>
+              <AlertTitle>{t("common:cookies.title")}</AlertTitle>
+              <Typography>
+                {t("common:cookies.message")} <a href={RoutePaths.terms}>{t("common:cookies.link")}</a>
+              </Typography>
+            </Alert>
+          </Snackbar>
         <Footer />
       </Router>
     );
