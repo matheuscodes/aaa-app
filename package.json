@@ -1,6 +1,6 @@
 {
   "name": "aaa-app",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "AAA - Advanced Archery Application",
   "scripts": {
     "build": "webpack --progress",
@@ -56,7 +56,7 @@
     "react-event-listener": "^0.6.6",
     "react-i18next": "11.0.0",
     "react-router-dom": "5.1.2",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.2.0"
   },
   "browserslist": {
     "development": [
