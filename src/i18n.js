@@ -32,7 +32,14 @@ i18n
   // init i18next
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
-    fallbackLng: 'en',
+    order: ['localStorage'],
+    lookupLocalStorage: 'i18nextLng',
+    caches: ['localStorage'],
+
+    fallbackLng: 'de',
+    whitelist: ['de', 'en'],
+    checkWhitelist: true,
+
     fallbackNS: 'common',
     ns: ['common', 'login', 'assessment', 'season', 'training', 'home', 'report', 'terms', 'about', 'trainer'],
 
@@ -42,7 +49,7 @@ i18n
       loadPath: 'locales/{{lng}}/{{ns}}.json',
       addPath: 'locales/missing/{{lng}}/{{ns}}.json',
     },
-    
+
     interpolation: {
       formatSeparator: ',',
       format: formatter
