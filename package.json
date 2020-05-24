@@ -1,6 +1,6 @@
 {
   "name": "aaa-app",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "AAA - Advanced Archery Application",
   "scripts": {
     "build": "webpack --progress",
@@ -16,7 +16,7 @@
     "just-deploy": "serverless deploy",
     "languages": " rm -rf public/locales && cp -r ./node_modules/aaa-languages/src public/locales",
     "react-start": "npm run languages && react-scripts start",
-    "react-build": "react-scripts build",
+    "react-build": "rm -rf build && npm run languages && react-scripts build",
     "react-test": "react-scripts test",
     "react-eject": "react-scripts eject",
     "deploy-stack": "npm run build-production && serverless deploy"
@@ -34,14 +34,15 @@
   "bugs": {
     "url": "https://github.com/matheuscodes/aaa-app/issues"
   },
-  "homepage": "https://github.com/matheuscodes/aaa-app#readme",
+  "homepage": "./",
   "dependencies": {
+    "aaa-languages": "git+https://github.com/matheuscodes/aaa-languages.git",
     "@date-io/date-fns": "1.3.13",
     "@material-ui/core": "4.9.5",
     "@material-ui/icons": "4.9.1",
     "@material-ui/lab": "4.0.0-alpha.46",
     "@material-ui/pickers": "3.2.10",
-    "aaa-languages": "git+https://github.com/matheuscodes/aaa-languages.git",
+    "chart.js": "^2.9.3",
     "clsx": "1.1.0",
     "date-fns": "2.11.0",
     "i18next": "18.0.0",
@@ -52,6 +53,7 @@
     "mobile-detect": "1.4.4",
     "moment": "^2.24.0",
     "react": "16.11.0",
+    "react-chartjs-2": "^2.9.0",
     "react-dom": "16.11.0",
     "react-event-listener": "^0.6.6",
     "react-i18next": "11.0.0",

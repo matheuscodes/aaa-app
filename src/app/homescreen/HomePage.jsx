@@ -1,152 +1,272 @@
 import React from 'react'
+import {Bar} from 'react-chartjs-2';
+import { withRouter } from 'react-router'
+import { withTranslation } from 'react-i18next'
 
-import i18nextReact from 'global/i18nextReact'
-import MUI from 'app/common/MaterialUI'
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 
-import BaseLayout from 'app/common/BaseLayout'
-import TotalArrowsCard from 'app/homescreen/cards/TotalArrowsCard'
-import EventsCard from 'app/homescreen/cards/EventsCard'
-import YearOverviewCard from 'app/homescreen/cards/YearOverviewCard'
-import ValueDistributionCard from 'app/homescreen/cards/ValueDistributionCard'
-import EndDistributionCard from 'app/homescreen/cards/EndDistributionCard'
-import SeasonsCard from 'app/homescreen/cards/SeasonsCard'
+import API from 'api'
+import RoutePaths from 'global/RoutePaths'
 
+const styles = { }
 
-//import GridContainer from 'app/homescreen/GridContainer'
-//import GridItem from 'app/homescreen/GridItem'
+const randomColor = () => "#" + Math.floor(Math.random()*16777215).toString(16);
 
-const successColor = ["#4caf50", "#66bb6a", "#43a047", "#5cb860"];
-const whiteColor = "#FFF";
-const grayColor = [
-  "#999",
-  "#777",
-  "#3C4858",
-  "#AAAAAA",
-  "#D2D2D2",
-  "#DDD",
-  "#b4b4b4",
-  "#555555",
-  "#333",
-  "#a9afbb",
-  "#eee",
-  "#e7e7e7"
-];
-const hexToRgb = input => {
-  input = input + "";
-  input = input.replace("#", "");
-  let hexRegex = /[0-9A-Fa-f]/g;
-  if (!hexRegex.test(input) || (input.length !== 3 && input.length !== 6)) {
-    throw new Error("input is not a valid hex color.");
-  }
-  if (input.length === 3) {
-    let first = input[0];
-    let second = input[1];
-    let last = input[2];
-    input = first + first + second + second + last + last;
-  }
-  input = input.toUpperCase(input);
-  let first = input[0] + input[1];
-  let second = input[2] + input[3];
-  let last = input[4] + input[5];
-  return (
-    parseInt(first, 16) +
-    ", " +
-    parseInt(second, 16) +
-    ", " +
-    parseInt(last, 16)
-  );
-};
-const dashboardStyle = {
-  successText: {
-    color: successColor[0]
+const rings = ['M', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+
+const optionsRings = {
+  responsive: true,
+  tooltips: {
+    mode: 'label'
   },
-  upArrowCardCategory: {
-    width: "16px",
-    height: "16px"
-  },
-  stats: {
-    color: grayColor[0],
-    display: "inline-flex",
-    fontSize: "12px",
-    lineHeight: "22px",
-    "& svg": {
-      top: "4px",
-      width: "16px",
-      height: "16px",
-      position: "relative",
-      marginRight: "3px",
-      marginLeft: "3px"
-    },
-    "& .fab,& .fas,& .far,& .fal,& .material-icons": {
-      top: "4px",
-      fontSize: "16px",
-      position: "relative",
-      marginRight: "3px",
-      marginLeft: "3px"
+  elements: {
+    line: {
+      fill: false
     }
   },
-  cardCategory: {
-    color: grayColor[0],
-    margin: "0",
-    fontSize: "14px",
-    marginTop: "0",
-    paddingTop: "10px",
-    marginBottom: "0"
-  },
-  cardCategoryWhite: {
-    color: "rgba(" + hexToRgb(whiteColor) + ",.62)",
-    margin: "0",
-    fontSize: "14px",
-    marginTop: "0",
-    marginBottom: "0"
-  },
-  cardTitle: {
-    color: grayColor[2],
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: "300",
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: "3px",
-    textDecoration: "none",
-    "& small": {
-      color: grayColor[1],
-      fontWeight: "400",
-      lineHeight: "1"
-    }
-  },
-  cardTitleWhite: {
-    color: whiteColor,
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: "300",
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: "3px",
-    textDecoration: "none",
-    "& small": {
-      color: grayColor[1],
-      fontWeight: "400",
-      lineHeight: "1"
-    }
+  scales: {
+    xAxes: [
+      {
+        display: true,
+        gridLines: {
+          display: false
+        },
+        labels: {
+          show: true
+        },
+        offset: true,
+        labels: rings,
+      }
+    ],
+    yAxes: [
+      {
+        type: 'linear',
+        display: true,
+        position: 'left',
+        id: 'y-axis-1',
+        gridLines: {
+          display: true
+        },
+        labels: {
+          show: true
+        },
+      }
+    ]
   }
 };
 
-const HomePage = React.createClass({
-  render: function() {
+class HomePage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {editTraining: false, currentPage:0};
+  }
+
+  updateAll() {
     const t = this.props.t;
+    var callbacks = {
+      context: this,
+      success: function(overview) {
+        var current = this.state;
+        current.overview = overview;
+        this.setState(current);
+      },
+      error: function(error) {
+        if(API.isAuthError(error)){
+          this.showMessage(t('common:messages.notLoggedIn'), "ERROR");
+          this.props.history.push(RoutePaths.login);
+        }
+        this.showMessage(t('home:messages.getError'), "ERROR");
+      }
+    };
+    API.overview.get(callbacks);
+  }
+
+  componentDidMount() {
+    this.updateAll();
+  }
+
+  showMessage(message, type) {
+    if(typeof this.props.messenger !== 'undefined'){
+      this.props.messenger.showMessage(message, type);
+    }
+  }
+
+  displayName: 'MixExample';
+
+  get yearlyReportLabels() {
+    if(!this.state.overview) {
+      return [];
+    }
+    return Object.keys(this.state.overview.report).sort();
+  }
+
+  get yearlyReportOptions() {
+    return {
+      responsive: true,
+      tooltips: {
+        mode: 'label'
+      },
+      elements: {
+        line: {
+          fill: false
+        }
+      },
+      scales: {
+        xAxes: [
+          {
+            display: true,
+            gridLines: {
+              display: false
+            },
+            labels: {
+              show: true
+            },
+            offset: true,
+            labels: this.yearlyReportLabels,
+          }
+        ],
+        yAxes: [
+          {
+            type: 'linear',
+            display: true,
+            position: 'left',
+            id: 'y-axis-1',
+            gridLines: {
+              display: true
+            },
+            labels: {
+              show: true
+            },
+          },
+          {
+            type: 'linear',
+            display: true,
+            position: 'right',
+            id: 'y-axis-2',
+            gridLines: {
+              display: true
+            },
+            labels: {
+              show: true
+            },
+          },
+        ]
+      }
+    }
+  }
+
+  get yearlyReportData() {
+    const data = { datasets: [] }
+    if(this.state.overview) {
+      const { t } = this.props;
+      const labels = this.yearlyReportLabels
+      data.datasets.push({
+        label: t("common:graphLabels.axis.results"),
+        type:'line',
+        data: labels.map(i => this.state.overview.report[i].score),
+        fill: false,
+        borderColor: randomColor(),
+        yAxisID: 'y-axis-2'
+      });
+      [0,1,2,3,4,5,6].forEach(j => {
+        data.datasets.push({
+          type: 'bar',
+          label: t(`common:weekday.long.${j}`),
+          data: labels.map(i => this.state.overview.report[i].weekdays[j]),
+          fill: false,
+          backgroundColor: randomColor(),
+          yAxisID: 'y-axis-1',
+          stack: 'weekDay',
+        });
+      });
+
+      ["9","10","X"].forEach(j => {
+        data.datasets.push({
+          type: 'bar',
+          label: `${j}s`,
+          data: labels.map(i => this.state.overview.report[i].gold[j]),
+          fill: false,
+          backgroundColor: randomColor(),
+          yAxisID: 'y-axis-1',
+          stack: 'rings',
+        });
+      });
+
+    }
+    return data;
+  }
+
+
+  get ringsData() {
+    if(!this.state.overview) {
+      return {datasets:[]}
+    }
+    const lastYear = rings.map(i => this.state.overview.rings.lastYear[i]*100);
+    const lastQuarter = rings.map(i => this.state.overview.rings.lastQuarter[i]*100);
+    const lastMonth = rings.map(i => this.state.overview.rings.lastMonth[i]*100);
+    const { t } = this.props;
+    return {
+      datasets: [{
+        type: 'bar',
+        label: t("home:rings.graph.distributionYear"),
+        data: lastYear,
+        fill: false,
+        backgroundColor: randomColor(),
+        yAxisID: 'y-axis-1',
+        barThickness: 'flex',
+      },{
+        type: 'bar',
+        label: t("home:rings.graph.distributionQuarter"),
+        data: lastQuarter,
+        fill: false,
+        backgroundColor: randomColor(),
+        yAxisID: 'y-axis-1',
+        barThickness: 'flex',
+      },{
+        type: 'bar',
+        label: t("home:rings.graph.distributionMonth"),
+        data: lastMonth,
+        fill: false,
+        backgroundColor: randomColor(),
+        yAxisID: 'y-axis-1',
+        barThickness: 'flex',
+      }]
+    }
+  }
+
+  render() {
+    const { t } = this.props;
     return (
-      <BaseLayout
-        switcher={this.props.switcher}
-        userAgent={this.props.userAgent}
-        styleProvider={this.props.styleProvider}
-        layoutName="homePage"
-        languages={this.props.languages}
-        title={t('home:appBarTitle')} >
-        <p style={{textAlign:'center'}}> Im moment, die App befindet sich unter Umbau, ich bitte ein bissen Geduld. </p>
-        <p style={{textAlign:'center'}}> Saisons, Trainings, Leistungskontrollen und Trainingsberichte sollen normal funktionieren, falls etwas nicht funktioniert, erst mal versuchen auszuloggen und wieder einloggen. </p>
-        <p style={{textAlign:'center'}}> Wenn das Problem immer noch da ist, bitte sofort melden. </p>
-      </BaseLayout>
+      <div style={{'backgroundColor':'white', padding:'10pt'}}>
+        <Grid container spacing={2} >
+          <Grid item xs={12} md={6} >
+            <Card>
+              <CardHeader
+                title={t('home:year.title')}
+                subheader={t('home:year.subtitle')} />
+              <CardContent>
+                <Bar data={this.yearlyReportData} options={this.yearlyReportOptions} />
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} md={6} >
+            <Card>
+              <CardHeader
+                title={t('home:rings.title')}
+                subheader={t('home:rings.subtitle')} />
+              <CardContent>
+                <Bar data={this.ringsData} options={optionsRings} />
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </div>
     );
   }
-});
+}
 
-export default i18nextReact.setupTranslation(['home'], HomePage);
+export default withTranslation('common', 'home')(withRouter(withStyles(styles)(HomePage)));

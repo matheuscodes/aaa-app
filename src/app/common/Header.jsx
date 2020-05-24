@@ -47,22 +47,27 @@ class Header extends React.Component {
 
   openSeasonsPage() {
     this.props.history.push(RoutePaths.seasons);
+    this.handleClose();
   }
 
   openReportsPage() {
     this.props.history.push(RoutePaths.reports);
+    this.handleClose();
   }
 
   openAssessmentsPage() {
     this.props.history.push(RoutePaths.assessments);
+    this.handleClose();
   }
 
   openTrainingsPage() {
     this.props.history.push(RoutePaths.trainings);
+    this.handleClose();
   }
 
   openHomePage() {
     this.props.history.push(RoutePaths.home);
+    this.handleClose();
   }
 
   logout() {

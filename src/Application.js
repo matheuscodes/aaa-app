@@ -30,6 +30,7 @@ import TermsPage from "app/static/TermsPage"
 import ForgottenPage from "app/login/ForgottenPage"
 import NewLoginPage from "app/login/NewLoginPage"
 import ConfirmLoginPage from "app/login/ConfirmLoginPage"
+import HomePage from "app/homescreen/HomePage"
 
 import RoutePaths from 'global/RoutePaths'
 import getLocalArcher from 'api/helpers/getLocalArcher'
@@ -85,9 +86,7 @@ class Application extends React.Component {
           </Route>
           <Route path={RoutePaths.home}>
             <Header title={t('home:appBarTitle')} archer={archer} />
-            <div style={{'backgroundColor':'white', padding:'10pt'}}>
-              <p>Homepage</p>
-            </div>
+            <HomePage messenger={this} />
           </Route>
           <Route path={RoutePaths.login}>
             <Header title={t('login:appBarTitle')} archer={archer} />

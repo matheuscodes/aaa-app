@@ -6,7 +6,8 @@ import events from 'api/Events'
 import equipment from 'api/Equipment'
 import { login, reset, confirm, newLogin, replaceLogin } from 'api/Login'
 import isAuthError from 'api/helpers/isAuthError'
-import trainers from 'api/trainers';
+import trainers from 'api/trainers'
+import overview from 'api/Overview'
 
 export default {
   reports,
@@ -21,5 +22,6 @@ export default {
   newLogin,
   replaceLogin,
   isAuthError,
-  trainers
+  trainers,
+  overview
 }
