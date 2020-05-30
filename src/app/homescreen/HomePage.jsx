@@ -14,8 +14,6 @@ import RoutePaths from 'global/RoutePaths'
 
 const styles = { }
 
-const randomColor = () => "#" + Math.floor(Math.random()*16777215).toString(16);
-
 const rings = ['M', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
 const optionsRings = {
@@ -160,6 +158,18 @@ class HomePage extends React.Component {
   }
 
   get yearlyReportData() {
+    const colors = {
+      "0":"#ff6666",
+      "1":"#ffff66",
+      "2":"#ffc0cb",
+      "3":"#66b266",
+      "4":"#ffc966",
+      "5":"#6666ff",
+      "6":"#993299",
+      "9":"#ffff00",
+      "10":"#ffbb00",
+      "X":"#ff8800",
+    }
     const data = { datasets: [] }
     if(this.state.overview) {
       const { t } = this.props;
@@ -169,7 +179,7 @@ class HomePage extends React.Component {
         type:'line',
         data: labels.map(i => this.state.overview.report[i].score),
         fill: false,
-        borderColor: randomColor(),
+        borderColor: "#000",
         yAxisID: 'y-axis-2'
       });
       [0,1,2,3,4,5,6].forEach(j => {
@@ -178,7 +188,7 @@ class HomePage extends React.Component {
           label: t(`common:weekday.long.${j}`),
           data: labels.map(i => this.state.overview.report[i].weekdays[j]),
           fill: false,
-          backgroundColor: randomColor(),
+          backgroundColor: colors[j],
           yAxisID: 'y-axis-1',
           stack: 'weekDay',
         });
@@ -190,7 +200,7 @@ class HomePage extends React.Component {
           label: `${j}s`,
           data: labels.map(i => this.state.overview.report[i].gold[j]),
           fill: false,
-          backgroundColor: randomColor(),
+          backgroundColor: colors[j],
           yAxisID: 'y-axis-1',
           stack: 'rings',
         });
@@ -209,13 +219,18 @@ class HomePage extends React.Component {
     const lastQuarter = rings.map(i => this.state.overview.rings.lastQuarter[i]*100);
     const lastMonth = rings.map(i => this.state.overview.rings.lastMonth[i]*100);
     const { t } = this.props;
+    const colors = {
+      "year": "#420420",
+      "quarter": "#133337",
+      "month": "#065535"
+    }
     return {
       datasets: [{
         type: 'bar',
         label: t("home:rings.graph.distributionYear"),
         data: lastYear,
         fill: false,
-        backgroundColor: randomColor(),
+        backgroundColor: colors["year"],
         yAxisID: 'y-axis-1',
         barThickness: 'flex',
       },{
@@ -223,7 +238,7 @@ class HomePage extends React.Component {
         label: t("home:rings.graph.distributionQuarter"),
         data: lastQuarter,
         fill: false,
-        backgroundColor: randomColor(),
+        backgroundColor: colors["quarter"],
         yAxisID: 'y-axis-1',
         barThickness: 'flex',
       },{
@@ -231,7 +246,7 @@ class HomePage extends React.Component {
         label: t("home:rings.graph.distributionMonth"),
         data: lastMonth,
         fill: false,
-        backgroundColor: randomColor(),
+        backgroundColor: colors["month"],
         yAxisID: 'y-axis-1',
         barThickness: 'flex',
       }]
