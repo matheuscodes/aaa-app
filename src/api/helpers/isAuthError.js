@@ -1,3 +1,5 @@
+import deleteLocalArcher from "./deleteLocalArcher"
+
 export default function isAuthError(error) {
   if(error instanceof Error){
     switch(error.message){
@@ -5,6 +7,8 @@ export default function isAuthError(error) {
       case 'Token is invalid.':
       case 'No token provided.':
       case 'Authentication error.':
+      case '{"message":"invalid signature"}':
+        deleteLocalArcher();
         return true;
       default:
         return false;
