@@ -33,9 +33,6 @@ const optionsRings = {
         gridLines: {
           display: false
         },
-        labels: {
-          show: true
-        },
         offset: true,
         labels: rings,
       }
@@ -119,9 +116,6 @@ class HomePage extends React.Component {
             display: true,
             gridLines: {
               display: false
-            },
-            labels: {
-              show: true
             },
             offset: true,
             labels: this.yearlyReportLabels,

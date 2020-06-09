@@ -9,7 +9,6 @@ import NewPasswordCard from 'app/login/NewPasswordCard';
 import LogoName from 'svg/LogoName';
 import Grid from '@material-ui/core/Grid';
 
-import RoutePaths from 'global/RoutePaths'
 const styles = {}
 
 class ForgottenPage extends React.Component {

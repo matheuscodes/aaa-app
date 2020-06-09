@@ -13,7 +13,7 @@
     "deploy-domain": "serverless create_domain",
     "delete-domain": "serverless delete_domain",
     "delete-stack": "serverless remove",
-    "just-deploy": "serverless deploy",
+    "just-deploy": "aws s3 cp build/ s3://frontend.archery.app.production/ --recursive --acl public-read",
     "languages": " rm -rf public/locales && cp -r ./node_modules/aaa-languages/src public/locales",
     "react-start": "npm run languages && react-scripts start",
     "react-build": "rm -rf build && npm run languages && react-scripts build",
@@ -58,7 +58,9 @@
     "react-event-listener": "^0.6.6",
     "react-i18next": "11.0.0",
     "react-router-dom": "5.1.2",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.2.0",
+    "serverless": "^1.72.0",
+    "serverless-domain-manager": "^4.1.1"
   },
   "browserslist": {
     "development": [

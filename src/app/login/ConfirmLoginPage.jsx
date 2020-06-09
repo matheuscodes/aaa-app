@@ -4,14 +4,12 @@ import { withTranslation } from 'react-i18next'
 
 import { withStyles } from '@material-ui/core/styles';
 
-import NewLoginCard from 'app/login/NewLoginCard';
 import LogoName from 'svg/LogoName';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
-import RoutePaths from 'global/RoutePaths'
 import API from 'api';
 
 const styles = {}

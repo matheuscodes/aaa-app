@@ -8,8 +8,6 @@ import NewLoginCard from 'app/login/NewLoginCard';
 import LogoName from 'svg/LogoName';
 import Grid from '@material-ui/core/Grid';
 
-import RoutePaths from 'global/RoutePaths'
-
 const styles = {}
 
 class NewLoginPage extends React.Component {

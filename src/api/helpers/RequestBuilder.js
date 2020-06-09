@@ -1,6 +1,6 @@
 import getLocalArcher from 'api/helpers/getLocalArcher'
 
-const requestURL = (process.env.clientRequestURL || "https://snotra.api.archery.app");
+const requestURL = (process.env.clientRequestURL || "https://api.archery.app");
 console.log("Using Request URL:",requestURL)
 
 export default function(path, method, callbacks) {
