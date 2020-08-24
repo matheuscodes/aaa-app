@@ -28,6 +28,7 @@ import ForgottenPage from "app/login/ForgottenPage"
 import NewLoginPage from "app/login/NewLoginPage"
 import ConfirmLoginPage from "app/login/ConfirmLoginPage"
 import HomePage from "app/homescreen/HomePage"
+import SettingsPage from "app/settings/SettingsPage"
 
 import RoutePaths from 'global/RoutePaths'
 import getLocalArcher from 'api/helpers/getLocalArcher'
@@ -81,13 +82,17 @@ class Application extends React.Component {
             <Header title={t('login:appBarTitle')} archer={archer} />
             <LoginPage messenger={this}/>
           </Route>
+          <Route path={RoutePaths.login}>
+            <Header title={t('login:appBarTitle')} archer={archer} />
+            <LoginPage messenger={this} />
+          </Route>
           <Route path={RoutePaths.home}>
             <Header title={t('home:appBarTitle')} archer={archer} />
             <HomePage messenger={this} />
           </Route>
-          <Route path={RoutePaths.login}>
-            <Header title={t('login:appBarTitle')} archer={archer} />
-            <LoginPage messenger={this} />
+          <Route path={RoutePaths.settings}>
+            <Header title={t('settings:appBarTitle')} archer={archer} />
+            <SettingsPage messenger={this} />
           </Route>
           <Route path={RoutePaths.seasons}>
             <Header title={t('season:appBarTitle')} archer={archer} />

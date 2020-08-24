@@ -3,31 +3,22 @@ import getLocalArcher from 'api/helpers/getLocalArcher'
 const requestURL = (process.env.clientRequestURL || "https://api.archery.app");
 //console.log("Using Request URL:",requestURL)
 
-export default function(path, method, callbacks) {
+export default function(method, path, callbacks) {
   var xmlhttp = new XMLHttpRequest();
-  var url = requestURL;
-  if (path !== '/login/') {
-    var archer = getLocalArcher();
-    if (typeof archer !== 'undefined') {
-      url += ['/trainers/', archer.id].join('');
+  var archer = getLocalArcher();
+
+  if (typeof archer === 'undefined') {
+    if (typeof callbacks.failure === 'undefined') {
+      console.error("Cannot callback to inform missing token.");
     } else {
-      if (typeof callbacks.failure === 'undefined') {
-        console.error("Cannot callback to inform missing token.");
-      } else {
-        callbacks.failure.call(callbacks.context,{responseText:'Missing Token.'});
-      }
-      return null;
+      callbacks.failure.call(callbacks.context,{responseText:'Missing Token.'});
     }
+    return null;
   }
-  url += path;
 
-  xmlhttp.open(method, url, true);
+  xmlhttp.open(method, requestURL + path, true);
   xmlhttp.setRequestHeader("Content-type", "application/json");
-  if (path !== '/login/') {
-    xmlhttp.setRequestHeader("X-AAA-Authorization", localStorage.loggedToken);
-  }
-
-
+  xmlhttp.setRequestHeader("X-AAA-Authorization", localStorage.loggedToken);
 
   if (typeof callbacks !== 'undefined') {
     xmlhttp.onreadystatechange = function() {

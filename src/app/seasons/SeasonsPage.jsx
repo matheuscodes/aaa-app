@@ -95,7 +95,6 @@ class SeasonsPage extends React.Component {
     var seasons;
     if (typeof this.state.seasons !== 'undefined') {
       seasons = this.state.seasons.map(function(season, index) {
-        console.log(season)
         return (
           <Grid item
             key={'aaa-season_' + season.id}

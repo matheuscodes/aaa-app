@@ -76,6 +76,11 @@ class Header extends React.Component {
     this.props.history.push(RoutePaths.login);
   }
 
+  settings() {
+    this.props.history.push(RoutePaths.settings);
+    this.handleClose();
+  }
+
   expandProfile() {
     const state = this.state;
     state.expandProfile = !state.expandProfile;
@@ -119,6 +124,12 @@ class Header extends React.Component {
               </ListItem>
               <Collapse in={this.state.expandProfile} timeout="auto" unmountOnExit>
                 <List>
+                  <ListItem button onClick={this.settings.bind(this)}>
+                    <ListItemIcon>
+                      <Icon>settings</Icon>
+                    </ListItemIcon>
+                    <ListItemText primary={t('common:settings')} />
+                  </ListItem>
                   <ListItem button onClick={this.logout.bind(this)}>
                     <ListItemIcon>
                       <Icon>exit_to_app</Icon>
