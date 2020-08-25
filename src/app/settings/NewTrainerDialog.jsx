@@ -25,9 +25,9 @@ class NewTrainerDialog extends React.Component {
   }
 
   getInitialState() {
-    return {trainers:[]};
+    return {};
   }
-  componentDidMount() {
+  componentDidUpdate() {
     this.updateContent();
   }
   updateContent() {
@@ -35,16 +35,18 @@ class NewTrainerDialog extends React.Component {
     var callbacks = {
       context: this,
       success: function(list) {
-        console.log(list)
         this.setState({trainers: list});
       },
       failure: function() {
         this.showMessage(t('settings:trainer.new.error'), "ERROR");
+        this.setState({trainers: []});
       }
     };
-    API.trainers.getAllTrainers(callbacks);
+    if(typeof this.state.trainers === 'undefined'){
+      API.trainers.getAllTrainers(callbacks);
+    }
   }
-  handleClose(refresh) {
+  handleClose() {
     const initial = this.getInitialState();
     this.setState(initial);
     this.props.onRequestClose();
@@ -53,6 +55,19 @@ class NewTrainerDialog extends React.Component {
     if(typeof this.props.messenger !== 'undefined'){
       this.props.messenger.showMessage(message, type);
     }
+  }
+  submitRequest(pupilRequest) {
+    const t = this.props.t;
+    var callbacks = {
+      context: this,
+      success: function(list) {
+        this.handleClose();
+      },
+      failure: function() {
+        this.showMessage(t('settings:trainer.new.error'), "ERROR");
+      }
+    };
+    API.trainers.postArcherToTrainer(pupilRequest, callbacks);
   }
   render() {
     const { t } = this.props;
@@ -66,7 +81,7 @@ class NewTrainerDialog extends React.Component {
             lg={6} >
             <TrainerTile
               data={trainer}
-              onSelect={console.log} />
+              onSelect={this.submitRequest.bind(this)} />
           </Grid>
         );
       }, this);
@@ -84,6 +99,13 @@ class NewTrainerDialog extends React.Component {
             {(trainers || <Grid item xs={12} ><Waiting /></Grid>)}
           </Grid>
         </DialogContent>
+        <DialogActions>
+          <FloatingActionButton
+            size="small" color="secondary"
+            onClick={this.handleClose.bind(this)}>
+            <Icon>cancel</Icon>
+          </FloatingActionButton>
+        </DialogActions>
       </Dialog>
     );
   }

@@ -7,17 +7,28 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
 import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 
 const styles = {}
 
 class TrainerTile extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      trainerId: props.data.id,
+      message: "",
+    }
   }
 
   onSelect() {
-    this.props.onSelect(this.props.data);
+    this.props.onSelect(this.state);
+  }
+
+  changeMessage(event) {
+    let current = this.state;
+    current.message = event.target.value;
   }
 
   render() {
@@ -48,9 +59,24 @@ class TrainerTile extends React.Component {
           </ul>
         </CardContent>
         <CardActions>
-          <IconButton onClick={this.onSelect.bind(this)} color="primary" variant="contained" >
-            <Icon>send</Icon>
-          </IconButton>
+          <Grid container spacing={2}>
+            <Grid item xs={8} >
+              <TextField
+                style={{width:'100%'}}
+                id={`aaa-trainer-message-${this.props.data.id}`}
+                onChange={this.changeMessage.bind(this)}
+                label={t('trainer:tile.message')} />
+            </Grid>
+            <Grid item xs={4} >
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={this.onSelect.bind(this)}
+                endIcon={<Icon>send</Icon>} >
+                {t("trainer:tile.request")}
+              </Button>
+            </Grid>
+          </Grid>
         </CardActions>
       </Card>
     );

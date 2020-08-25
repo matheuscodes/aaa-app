@@ -1,4 +1,5 @@
 import authRequestBuilder from 'api/helpers/AuthRequestBuilder';
+import getLocalArcher from 'api/helpers/getLocalArcher'
 
 import TrainerArchersEndpoint from 'api/trainers/TrainerArchers';
 import TrainerSeasonsEndpoint from 'api/trainers/TrainerSeasons';
@@ -23,6 +24,19 @@ export default {
 
     if(request !== null){
       request.send();
+    }
+  },
+  postArcherToTrainer: function(pupilRequest, callbacks) {
+    const request = authRequestBuilder('POST', `/trainers/${pupilRequest.trainerId}/archers`, {
+      200: function(response) {
+        callbacks.success.bind(callbacks.context)();
+      },
+      failure: callbacks.failure.bind(callbacks.context),
+    });
+
+    if(request !== null) {
+      pupilRequest.archerId = getLocalArcher().id;
+      request.send(JSON.stringify(pupilRequest));
     }
   }
 };
