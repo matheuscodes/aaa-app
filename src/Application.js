@@ -29,6 +29,7 @@ import NewLoginPage from "app/login/NewLoginPage"
 import ConfirmLoginPage from "app/login/ConfirmLoginPage"
 import HomePage from "app/homescreen/HomePage"
 import SettingsPage from "app/settings/SettingsPage"
+import TrainerRequestsPage from "app/trainer/TrainerRequestsPage"
 
 import RoutePaths from 'global/RoutePaths'
 import getLocalArcher from 'api/helpers/getLocalArcher'
@@ -129,6 +130,10 @@ class Application extends React.Component {
           <Route path={RoutePaths.confirmLogin}>
             <Header title={t('login:confirmLoginAppBarTitle')} archer={archer} />
             <ConfirmLoginPage messenger={this} />
+          </Route>
+          <Route path={RoutePaths.trainer.requests}>
+            <Header title={t('login:trainerRequestsAppBarTitle')} archer={archer} />
+            <TrainerRequestsPage messenger={this} />
           </Route>
           <Redirect from='*' to='/' />
         </Switch>

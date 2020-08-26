@@ -11,4 +11,7 @@ export default {
   newLogin: "/new",
   confirmLogin: "/confirm",
   settings: "/settings",
+  trainer: {
+    requests: "/trainer/requests",
+  }
 }

@@ -21,6 +21,7 @@ import Collapse from '@material-ui/core/Collapse';
 import LogoName from 'svg/LogoName'
 
 import deleteLocalArcher from 'api/helpers/deleteLocalArcher'
+import getLocalRoles from 'api/helpers/getLocalRoles'
 
 import RoutePaths from 'global/RoutePaths'
 
@@ -34,15 +35,15 @@ const styles = {}
 class Header extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {open: false, expandProfile: false};
+    this.state = {open: false, expandProfile: false, expandTrainer: false};
   }
 
   handleToggle() {
-    this.setState({open: !this.state.open, expandProfile: false});
+    this.setState({open: !this.state.open, expandProfile: false, expandTrainer: false});
   }
 
   handleClose() {
-    this.setState({open: false, expandProfile: false});
+    this.setState({open: false, expandProfile: false, expandTrainer: false});
   }
 
   openSeasonsPage() {
@@ -81,9 +82,20 @@ class Header extends React.Component {
     this.handleClose();
   }
 
+  trainer(page) {
+    this.props.history.push(RoutePaths.trainer[page]);
+    this.handleClose();
+  }
+
   expandProfile() {
     const state = this.state;
     state.expandProfile = !state.expandProfile;
+    this.setState(state);
+  }
+
+  expandTrainer() {
+    const state = this.state;
+    state.expandTrainer = !state.expandTrainer;
     this.setState(state);
   }
 
@@ -171,13 +183,39 @@ class Header extends React.Component {
                 </ListItemIcon>
                 <ListItemText primary={t('common:menuDrawer.reportsPage')} />
               </ListItem>
-              <ListItem button onClick={this.handleClose.bind(this)}>
-                <ListItemIcon>
-                  <Icon>help_outline</Icon>
-                </ListItemIcon>
-                <ListItemText primary={t('common:menuDrawer.helpPage')} />
-              </ListItem>
             </List>
+
+            <ListItem button onClick={this.expandTrainer.bind(this)}>
+              <ListItemIcon>
+                <Icon>sports</Icon>
+              </ListItemIcon>
+              <ListItemText primary={t('common:menuDrawer.trainer.trainerAreaTitle')} />
+              {this.state.expandTrainer ? <Icon>expand_less</Icon> : <Icon>expand_more</Icon>}
+            </ListItem>
+            <Collapse in={this.state.expandTrainer} timeout="auto" unmountOnExit>
+              <List>
+                <ListItem button onClick={this.trainer.bind(this,'requests')}>
+                  <ListItemIcon>
+                    <Icon>playlist_add</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary={t('common:menuDrawer.trainer.trainerRequestsPage')} />
+                </ListItem>
+                <ListItem button onClick={this.trainer.bind(this,'pupils')}>
+                  <ListItemIcon>
+                    <Icon>assignment_ind</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary={t('common:menuDrawer.trainer.trainerPupilsPage')} />
+                </ListItem>
+                <ListItem button onClick={this.trainer.bind(this,'reports')}>
+                  <ListItemIcon>
+                    <Icon>history</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary={t('common:menuDrawer.trainer.trainerReportsPage')} />
+                </ListItem>
+              </List>
+            </Collapse>
+
+
         </Drawer>
       </div>
     );

@@ -1,5 +1,5 @@
 import authRequestBuilder from 'api/helpers/AuthRequestBuilder';
-import getLocalArcher from 'api/helpers/getLocalArcher'
+import getLocalArcher from 'api/helpers/getLocalArcher';
 
 import TrainerArchersEndpoint from 'api/trainers/TrainerArchers';
 import TrainerSeasonsEndpoint from 'api/trainers/TrainerSeasons';
@@ -35,8 +35,20 @@ export default {
     });
 
     if(request !== null) {
-      pupilRequest.archerId = getLocalArcher().id;
       request.send(JSON.stringify(pupilRequest));
     }
-  }
+  },
+  getTrainerRequests: function(callbacks) {
+    const request = authRequestBuilder('GET', `/trainers/${getLocalArcher().trainerId}/requests`, {
+      200: function(response) {
+        var requests = JSON.parse(response.responseText.toString());
+        callbacks.success.bind(callbacks.context)(requests);
+      },
+      failure: callbacks.failure.bind(callbacks.context),
+    });
+
+    if(request !== null) {
+      request.send();
+    }
+  },
 };
