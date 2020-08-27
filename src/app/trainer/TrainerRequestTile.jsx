@@ -18,19 +18,13 @@ class TrainerRequestTile extends React.Component {
     super(props)
   }
 
-  onApprove() {
-  }
-
-  onReject() {
-  }
-
   render() {
     const { t } = this.props;
     return (
       <Card>
         <CardHeader
           title={this.props.data.archer.name}
-          subheader={this.props.data.receivedAt} />
+          subheader={`${this.props.data.receivedAt}`.substring(0,10)} />
         <CardContent>
           {this.props.data.message}
         </CardContent>
@@ -41,7 +35,7 @@ class TrainerRequestTile extends React.Component {
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={this.onReject.bind(this)}
+                onClick={() => this.props.onReject(this.props.data)}
                 endIcon={<Icon>thumb_down</Icon>} >
                 {t("trainer:request.reject")}
               </Button>
@@ -50,7 +44,7 @@ class TrainerRequestTile extends React.Component {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={this.onApprove.bind(this)}
+                onClick={() => this.props.onApprove(this.props.data)}
                 endIcon={<Icon>thumb_up</Icon>} >
                 {t("trainer:request.approve")}
               </Button>

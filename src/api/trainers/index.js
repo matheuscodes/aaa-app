@@ -51,4 +51,28 @@ export default {
       request.send();
     }
   },
+  putArcherToTrainer: function(pupilRequest, callbacks) {
+    const request = authRequestBuilder('PUT', `/trainers/${pupilRequest.trainerId}/archers/${pupilRequest.archer.archerId}`, {
+      201: function(response) {
+        callbacks.success.bind(callbacks.context)();
+      },
+      failure: callbacks.failure.bind(callbacks.context),
+    });
+
+    if(request !== null) {
+      request.send(JSON.stringify(pupilRequest.archer));
+    }
+  },
+  deleteArcherToTrainer: function(pupilRequest, callbacks) {
+    const request = authRequestBuilder('DELETE', `/trainers/${pupilRequest.trainerId}/archers/${pupilRequest.archer.archerId}`, {
+      204: function(response) {
+        callbacks.success.bind(callbacks.context)();
+      },
+      failure: callbacks.failure.bind(callbacks.context),
+    });
+
+    if(request !== null) {
+      request.send(JSON.stringify());
+    }
+  },
 };

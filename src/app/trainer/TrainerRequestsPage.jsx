@@ -32,6 +32,12 @@ class TrainerRequestsPage extends React.Component {
     this.updateContent();
   }
 
+  showMessage(message, type) {
+    if(typeof this.props.messenger !== 'undefined'){
+      this.props.messenger.showMessage(message, type);
+    }
+  }
+
   updateContent() {
     const t = this.props.t;
     var callbacks = {
@@ -49,6 +55,36 @@ class TrainerRequestsPage extends React.Component {
     }
   }
 
+  rejectArcher(archer) {
+    const t = this.props.t;
+    var callbacks = {
+      context: this,
+      success: function() {
+        this.setState(this.getInitialState());
+        this.updateContent();
+      },
+      failure: function() {
+        this.showMessage(t('trainer:requests.rejectError'), "ERROR");
+      }
+    };
+    API.trainers.deleteArcherToTrainer(archer, callbacks);
+  }
+
+  approveArcher(archer) {
+    const t = this.props.t;
+    var callbacks = {
+      context: this,
+      success: function() {
+        this.setState(this.getInitialState());
+        this.updateContent();
+      },
+      failure: function() {
+        this.showMessage(t('trainer:requests.approveError'), "ERROR");
+      }
+    };
+    API.trainers.putArcherToTrainer(archer, callbacks);
+  }
+
   render() {
     const { t } = this.props;
     let requests;
@@ -60,7 +96,9 @@ class TrainerRequestsPage extends React.Component {
             xs={12}
             lg={6} >
             <TrainerRequestTile
-              data={request} />
+              data={request}
+              onApprove={this.approveArcher.bind(this)}
+              onReject={this.rejectArcher.bind(this)} />
           </Grid>
         );
       }, this);
