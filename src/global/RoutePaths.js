@@ -13,5 +13,6 @@ export default {
   settings: "/settings",
   trainer: {
     requests: "/trainer/requests",
+    archers: "/trainer/archers",
   }
 }

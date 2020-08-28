@@ -51,6 +51,31 @@ export default {
       request.send();
     }
   },
+  getTrainerArchers: function(callbacks) {
+    const request = authRequestBuilder('GET', `/trainers/${getLocalArcher().trainerId}/archers`, {
+      200: function(response) {
+        var requests = JSON.parse(response.responseText.toString());
+        callbacks.success.bind(callbacks.context)(requests);
+      },
+      failure: callbacks.failure.bind(callbacks.context),
+    });
+
+    if(request !== null) {
+      request.send();
+    }
+  },
+  putTrainerArcher: function(archer, callbacks) {
+    const request = authRequestBuilder('PUT', `/trainers/${getLocalArcher().trainerId}/archers/${archer.archerId}`, {
+      201: function(response) {
+        callbacks.success.bind(callbacks.context)();
+      },
+      failure: callbacks.failure.bind(callbacks.context),
+    });
+
+    if(request !== null) {
+      request.send(JSON.stringify(archer));
+    }
+  },
   putArcherToTrainer: function(pupilRequest, callbacks) {
     const request = authRequestBuilder('PUT', `/trainers/${pupilRequest.trainerId}/archers/${pupilRequest.archer.archerId}`, {
       201: function(response) {

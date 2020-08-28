@@ -200,7 +200,7 @@ class Header extends React.Component {
                   </ListItemIcon>
                   <ListItemText primary={t('common:menuDrawer.trainer.trainerRequestsPage')} />
                 </ListItem>
-                <ListItem button onClick={this.trainer.bind(this,'pupils')}>
+                <ListItem button onClick={this.trainer.bind(this,'archers')}>
                   <ListItemIcon>
                     <Icon>assignment_ind</Icon>
                   </ListItemIcon>
