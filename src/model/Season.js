@@ -17,10 +17,6 @@ export default class Season {
       if(typeof this.max === 'undefined'){
         this.max = 1;
       }
-      this.permissions = {}
-      if(Array.isArray(this.permitted)){
-        this.permitted.forEach(trainerId => this.setPermission(trainerId,true));
-      }
 
     }
 
@@ -70,10 +66,15 @@ export default class Season {
       }
     }
 
-    setPermission(trainerId,permission){
-      if(typeof this.permissions === 'undefined'){
-        this.permissions = {};
+    setPermission(trainerId,permitted){
+      if(typeof this.permitted === 'undefined'){
+        this.permitted = [];
       }
-      this.permissions[trainerId] = permission;
+      if(permitted && (this.permitted.indexOf(trainerId) < 0)) {
+        this.permitted.push(trainerId);
+      } else if(this.permitted.indexOf(trainerId) > -1){
+        this.permitted.splice(this.permitted.indexOf(trainerId),1);
+      }
+
     }
 }

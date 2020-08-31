@@ -39,7 +39,8 @@ class NewSeasonCardForm extends React.Component {
       disabled:{},
       disabledTrainers:{},
       registeredEvents:[],
-      trainers: getLocalArcher().trainers}
+      trainers: this.props.season.availableTrainers
+    }
   }
   componentDidMount(){
     this.loadRegisteredEvents();
@@ -131,65 +132,67 @@ class NewSeasonCardForm extends React.Component {
     };
     API.events.getList(callbacks, this.state.season.start, this.state.season.end);
   }
-  getEvents() {
-    const t = this.props.t;
-
-    if(this.state.events && this.state.events.length > 0)
-      return this.state.events.map( (event,index) => {
-        function checkFunction(ignoreThis, isInputChecked){
-          this.state.disabled[event.id] = true;
-          const callbacks = {
-            context: this,
-            success: function() {
-              this.state.chosen[event.id] = isInputChecked;
-              this.state.disabled[event.id] = false;
-              this.state.registeredEvents.push(event);
-              this.setState(this.state);
-              this.showMessage(t('season:messages.registerSuccess'), "SUCCESS");
-            },
-            error: function() {
-              this.state.chosen[event.id] = !isInputChecked;
-              this.state.disabled[event.id] = false;
-              this.setState(this.state);
-              this.showMessage(t('season:messages.registerError'), "ERROR");
-            }
-          };
-          if(isInputChecked){
-            API.events.register(event.id,callbacks);
-          } else {
-            API.events.unregister(event.id,callbacks);
-          }
-          this.setState(this.state);
-        }
-        return <ListItem
-          key={['aaa-events', index].join('_')}
-          leftCheckbox={<Checkbox
-                          checked={this.state.chosen[event.id]}
-                          disabled={this.state.disabled[event.id] === true}
-                          onCheck={checkFunction.bind(this)}/>}
-          primaryText={t('season:newSeason.events.primaryText',event)}
-          secondaryText={t('season:newSeason.events.secondaryText',event)} />
-      }, this);
-    else if(this.state.events === null){
-      return <Waiting />;
-    }
-    return t('season:newSeason.events.noEvents');
-  }
+  // getEvents() {
+  //   const t = this.props.t;
+  //
+  //   if(this.state.events && this.state.events.length > 0)
+  //     return this.state.events.map( (event,index) => {
+  //       function checkFunction(ignoreThis, isInputChecked){
+  //         this.state.disabled[event.id] = true;
+  //         const callbacks = {
+  //           context: this,
+  //           success: function() {
+  //             this.state.chosen[event.id] = isInputChecked;
+  //             this.state.disabled[event.id] = false;
+  //             this.state.registeredEvents.push(event);
+  //             this.setState(this.state);
+  //             this.showMessage(t('season:messages.registerSuccess'), "SUCCESS");
+  //           },
+  //           error: function() {
+  //             this.state.chosen[event.id] = !isInputChecked;
+  //             this.state.disabled[event.id] = false;
+  //             this.setState(this.state);
+  //             this.showMessage(t('season:messages.registerError'), "ERROR");
+  //           }
+  //         };
+  //         if(isInputChecked){
+  //           API.events.register(event.id,callbacks);
+  //         } else {
+  //           API.events.unregister(event.id,callbacks);
+  //         }
+  //         this.setState(this.state);
+  //       }
+  //       return <ListItem
+  //         key={['aaa-events', index].join('_')}
+  //         leftCheckbox={<Checkbox
+  //                         checked={this.state.chosen[event.id]}
+  //                         disabled={this.state.disabled[event.id] === true}
+  //                         onCheck={checkFunction.bind(this)}/>}
+  //         primaryText={t('season:newSeason.events.primaryText',event)}
+  //         secondaryText={t('season:newSeason.events.secondaryText',event)} />
+  //     }, this);
+  //   else if(this.state.events === null){
+  //     return <Waiting />;
+  //   }
+  //   return t('season:newSeason.events.noEvents');
+  // }
   getTrainers() {
     const t = this.props.t;
 
     if(this.state.trainers && this.state.trainers.length > 0) {
       return this.state.trainers.map( (trainer,index) => {
-        function checkTrainerFunction(ignoreThis, isInputChecked){
+        function checkTrainerFunction(isInputChecked) {
           const callbacks = {
             context: this,
             success: function() {
+              console.log("here",isInputChecked, this.state.season);
               this.state.season.setPermission(trainer.trainerId,isInputChecked);
               this.state.disabledTrainers[trainer.trainerId] = false;
               this.setState(this.state);
               this.showMessage(t('season:messages.permissionSuccess'), "SUCCESS");
             },
             error: function() {
+              console.log("never",isInputChecked, this.state.season);
               this.state.season.setPermission(trainer.trainerId,!isInputChecked);
               this.state.disabledTrainers[trainer.trainerId] = false;
               this.setState(this.state);
@@ -207,15 +210,14 @@ class NewSeasonCardForm extends React.Component {
             this.state.season.setPermission(trainer.trainerId,isInputChecked);
             this.state.disabledTrainers[trainer.trainerId] = false;
           }
-          this.setState(this.state);
         }
         return <ListItem
           key={['aaa-events', index].join('_')}>
           <FormControlLabel
             control={<Checkbox
-                          checked={this.state.season.permissions[trainer.trainerId]}
+                          checked={this.state.season.permitted.includes(trainer.trainerId)}
                           disabled={this.state.disabledTrainers[trainer.trainerId] === true}
-                          onCheck={checkTrainerFunction.bind(this)}/>}
+                          onChange={(event) => checkTrainerFunction.bind(this, event.target.checked)()} />}
             label={t('season:newSeason.trainers.primaryText',trainer)} />
           </ListItem>
       }, this);
@@ -224,11 +226,7 @@ class NewSeasonCardForm extends React.Component {
   }
   showMessage(message, type) {
     if(typeof this.props.messenger !== 'undefined'){
-      this.props.messenger.sendMessage({
-        text: message,
-        open: true,
-        type: type
-      });
+      this.props.messenger.showMessage(message, type);
     }
   }
   render() {

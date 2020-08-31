@@ -9,7 +9,7 @@ import API from 'api'
 
 const styles = { }
 
-class ReportsPage extends React.Component {
+class TrainerReportsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {seasons:[]}
@@ -41,4 +41,4 @@ class ReportsPage extends React.Component {
   }
 }
 
-export default withStyles(styles)(ReportsPage);
+export default withStyles(styles)(TrainerReportsPage);

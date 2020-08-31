@@ -47,7 +47,6 @@ class ReportTile extends React.Component {
         || this.props.month !== nextProps.month) {
       this.updateContent(nextProps);
     }
-    console.log('fucck',this.props,nextProps)
   }
   render() {
     const t = this.props.t;

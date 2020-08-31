@@ -16,7 +16,6 @@ import Grid from '@material-ui/core/Grid';
 
 import getLocalArcher from 'api/helpers/getLocalArcher'
 
-import API from 'api'
 import RoutePaths from 'global/RoutePaths'
 
 import ReportTile from 'app/reports/ReportTile'
@@ -29,23 +28,12 @@ class ReportCard extends React.Component {
     this.state = this.getInitialState();
   }
   getInitialState() {
-    return {seasons: [], years: [], months: []};
+    return {seasons: this.props.seasons, years: [], months: []};
   }
-  componentDidMount() {
-    var callbacks = {
-      context: this,
-      success: function(seasons) {
-        var current = this.state;
-        current.seasons = seasons;
-        this.setState(current);
-      },
-      error: function(error) {
-        if(API.isAuthError(error)){
-          this.props.history.push(RoutePaths.login);
-        }
-      }
-    };
-    API.seasons.getList(callbacks);
+  componentDidUpdate(prevProps) {
+    if (this.props.seasons !== prevProps.seasons) {
+      this.setState(this.getInitialState())
+    }
   }
   changeSeason(event) {
     var season = this.state.seasons[event.target.value];
