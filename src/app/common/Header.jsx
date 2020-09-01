@@ -140,7 +140,7 @@ class Header extends React.Component {
                     <ListItemIcon>
                       <Icon>settings</Icon>
                     </ListItemIcon>
-                    <ListItemText primary={t('common:settings')} />
+                    <ListItemText primary={t('common:menuDrawer.settings')} />
                   </ListItem>
                   <ListItem button onClick={this.logout.bind(this)}>
                     <ListItemIcon>

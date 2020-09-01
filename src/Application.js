@@ -134,15 +134,15 @@ class Application extends React.Component {
             <ConfirmLoginPage messenger={this} />
           </Route>
           <Route path={RoutePaths.trainer.requests}>
-            <Header title={t('login:trainerRequestsAppBarTitle')} archer={archer} />
+            <Header title={t('trainer:trainerRequestsAppBarTitle')} archer={archer} />
             <TrainerRequestsPage messenger={this} />
           </Route>
           <Route path={RoutePaths.trainer.archers}>
-            <Header title={t('login:trainerArchersAppBarTitle')} archer={archer} />
+            <Header title={t('trainer:trainerArchersAppBarTitle')} archer={archer} />
             <TrainerArchersPage messenger={this} />
           </Route>
           <Route path={RoutePaths.trainer.reports}>
-            <Header title={t('login:trainerArchersAppBarTitle')} archer={archer} />
+            <Header title={t('trainer:trainerReportsAppBarTitle')} archer={archer} />
             <TrainerReportsPage messenger={this} />
           </Route>
           <Redirect from='*' to='/' />

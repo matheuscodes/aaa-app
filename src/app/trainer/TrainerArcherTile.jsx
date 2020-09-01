@@ -34,7 +34,6 @@ class TrainerRequestTile extends React.Component {
   changePrivateNotes(event) {
     this.state.changed = true;
     this.state.archer.privateNotes = event.target.value;
-    console.log(this.state);
     this.setState(this.state)
   }
 

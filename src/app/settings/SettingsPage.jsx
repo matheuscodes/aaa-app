@@ -63,4 +63,4 @@ class SettingsPage extends React.Component {
   }
 }
 
-export default withTranslation('common', 'settings')(withRouter(withStyles(styles)(SettingsPage)));
+export default withTranslation('settings')(withRouter(withStyles(styles)(SettingsPage)));

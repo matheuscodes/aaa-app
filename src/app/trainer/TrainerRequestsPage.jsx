@@ -38,7 +38,7 @@ class TrainerRequestsPage extends React.Component {
     }
   }
 
-  updateContent() {
+  updateContent(forceUpdate) {
     const t = this.props.t;
     var callbacks = {
       context: this,
@@ -50,7 +50,7 @@ class TrainerRequestsPage extends React.Component {
         this.setState({requests: []});
       }
     };
-    if(typeof this.state.requests === 'undefined'){
+    if(typeof this.state.requests === 'undefined' || forceUpdate){
       API.trainers.getTrainerRequests(callbacks);
     }
   }
@@ -61,7 +61,7 @@ class TrainerRequestsPage extends React.Component {
       context: this,
       success: function() {
         this.setState(this.getInitialState());
-        this.updateContent();
+        this.updateContent(true);
       },
       failure: function() {
         this.showMessage(t('trainer:requests.rejectError'), "ERROR");
@@ -76,7 +76,7 @@ class TrainerRequestsPage extends React.Component {
       context: this,
       success: function() {
         this.setState(this.getInitialState());
-        this.updateContent();
+        this.updateContent(true);
       },
       failure: function() {
         this.showMessage(t('trainer:requests.approveError'), "ERROR");
