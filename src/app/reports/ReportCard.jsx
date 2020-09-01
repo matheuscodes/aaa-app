@@ -68,27 +68,6 @@ class ReportCard extends React.Component {
     current.selectedMonth = this.state.months[event.target.value];
     this.setState(current);
   }
-  printReport() {
-    if(document.getElementById('aaa-reportPrintableArea')){
-      const newWindow =  window.open('printable?document=monthReport');
-      const dataToPrint = document.getElementById('aaa-reportPrintableArea').innerHTML;
-      newWindow.onload = () => {
-        newWindow.document.body.innerHTML=[
-          '<div style="text-align:center"><img height="96" src="aaa-logo.png" /></div>',
-          '<div style="text-align:center"><h2>',
-          getLocalArcher().name,
-          '</h2></div>',
-          dataToPrint,
-          '<br/><br/><br/><br/>',
-          '<div style="text-align:center;font-size:8pt">Advanced Archery App - Copyright © Matheus Borges Teixeira</div>',
-        ].join('');
-        newWindow.print();
-        newWindow.close();
-      }
-    } else {
-      //TODO send a message it can't print!
-    }
-  }
   render() {
     const t = this.props.t;
     var seasons = this.state.seasons.map(function(season, index) {
@@ -159,17 +138,13 @@ class ReportCard extends React.Component {
               {seasonId && selectedYear && typeof selectedMonth !== 'undefined'?
                 <ReportTile
                   seasonId={seasonId}
+                  pupilId={this.props.pupilId}
                   year={selectedYear}
-                  month={selectedMonth > 8 ? (selectedMonth + 1) : '0' + (selectedMonth + 1)} />
+                  month={selectedMonth > 8 ? (selectedMonth + 1) : '0' + (selectedMonth + 1)} messenger={this.props.messenger} />
               : <center><h1>{t('report:noneSelected')}</h1></center>}
             </Grid>
           </Grid>
         </CardContent>
-        <CardActions disableSpacing>
-          <IconButton onClick={this.printReport.bind(this)} color="secondary" variant="contained" >
-            <Icon>print</Icon>
-          </IconButton>
-        </CardActions>
       </Card>
     );
   }

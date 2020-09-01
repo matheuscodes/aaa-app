@@ -14,5 +14,6 @@ export default {
   trainer: {
     requests: "/trainer/requests",
     archers: "/trainer/archers",
+    reports: "/trainer/reports",
   }
 }

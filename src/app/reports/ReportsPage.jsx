@@ -33,7 +33,7 @@ class ReportsPage extends React.Component {
       <div style={{'backgroundColor':'white', padding:'10pt'}}>
         <Grid container spacing={2} >
           <Grid item xs={12} >
-            <ReportCard seasons={this.state.seasons}/>
+              <ReportCard seasons={this.state.seasons} messenger={this.props.messenger} />
           </Grid>
         </Grid>
       </div>

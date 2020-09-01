@@ -13,11 +13,20 @@ var processReport = function(response) {
   return report;
 };
 
+var processResponseList = function(response) {
+  var data = JSON.parse(response.toString());
+  for (var i = 0; i < data.length; i++) {
+    data[i].start = new Date(data[i].start);
+    data[i].end = new Date(data[i].end);
+  }
+  return data;
+};
+
 export default class TrainerSeasonsEndpoint {
   list(pupilId, callbacks){
     const request = authRequestBuilder('GET', `/trainers/${getLocalArcher().trainerId}/archers/${pupilId}/seasons`, {
       200: function(response) {
-        var seasons = JSON.parse(response.responseText.toString());
+        var seasons = processResponseList(response.responseText);
         callbacks.success.bind(callbacks.context)(seasons);
       },
       failure: callbacks.failure.bind(callbacks.context),
@@ -36,8 +45,8 @@ export default class TrainerSeasonsEndpoint {
     ].join('/');
     const request = authRequestBuilder('GET', `/trainers/${getLocalArcher().trainerId}/${path}`, {
       200: function(response) {
-        var seasons = JSON.parse(response.responseText.toString());
-        callbacks.success.bind(callbacks.context)(seasons);
+        var report = processReport(response.responseText);
+        callbacks.success.bind(callbacks.context)(report);
       },
       failure: callbacks.failure.bind(callbacks.context),
     });

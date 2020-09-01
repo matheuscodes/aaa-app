@@ -31,6 +31,7 @@ import HomePage from "app/homescreen/HomePage"
 import SettingsPage from "app/settings/SettingsPage"
 import TrainerRequestsPage from "app/trainer/TrainerRequestsPage"
 import TrainerArchersPage from "app/trainer/TrainerArchersPage"
+import TrainerReportsPage from "app/trainer/TrainerReportsPage"
 
 import RoutePaths from 'global/RoutePaths'
 import getLocalArcher from 'api/helpers/getLocalArcher'
@@ -139,6 +140,10 @@ class Application extends React.Component {
           <Route path={RoutePaths.trainer.archers}>
             <Header title={t('login:trainerArchersAppBarTitle')} archer={archer} />
             <TrainerArchersPage messenger={this} />
+          </Route>
+          <Route path={RoutePaths.trainer.reports}>
+            <Header title={t('login:trainerArchersAppBarTitle')} archer={archer} />
+            <TrainerReportsPage messenger={this} />
           </Route>
           <Redirect from='*' to='/' />
         </Switch>
