@@ -1,45 +1,42 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import MUI from 'app/common/MaterialUI';
+import { withTranslation } from 'react-i18next'
+
+import { withStyles } from '@material-ui/core/styles';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import StepContent from '@material-ui/core/StepContent';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import ArrowTrainingTypes from 'constants/ArrowTrainingTypes';
 
-import TextField from 'components/TextField';
-import SelectField from 'components/SelectField';
+const styles = {}
 
-import TypesStepStyle from 'app/trainings/ArrowSteps/TypesStep.style';
-
-
-export default function TypesStep(props) {
-  const style = new TypesStepStyle(props.style.styleProvider);
-
+function TypesStep(props) {
+  const { t } = props;
   return (
-    <div>
-      <MUI.GridList
-        cols={2}
-        cellHeight={'auto'}
-        style={style}>
-          {
-            ArrowTrainingTypes.map(type => (
-              <MUI.GridTile style={MUI.styles.GridTile} cols={style.columns} >
-                <MUI.Checkbox
-                  onCheck={(event, isInputChecked) => {
-                    props.setArrowTrainingTypes({[type]:isInputChecked});
-                  }}
-                  defaultChecked={props.arrowTrainingTypes[type]}
+    <Step {...props}>
+      <StepLabel>{t('training:newTraining.ArrowsSteps.TypesStep.title')}</StepLabel>
+      <StepContent>
+        <FormGroup>
+          <Grid container>
+            {ArrowTrainingTypes.map((type, index) => (
+              <Grid item xs={6} key={index} >
+                <FormControlLabel
+                  control={<Checkbox checked={props.arrowTrainingTypes[type]} onChange={(event) => {
+                    props.setArrowTrainingTypes({[type]:event.target.checked});
+                  }} />}
                   label={
                     props.t(`training:arrowTrainingTypes.${type}`)
                   } />
-              </MUI.GridTile>
-            ))
-          }
-      </MUI.GridList>
-    </div>
+              </Grid>
+            ))}
+          </Grid>
+        </FormGroup>
+      </StepContent>
+    </Step>
   );
 }
-
-TypesStep.propTypes = {
-  t: PropTypes.func.isRequired,
-  style: PropTypes.object,
-  setArrowTrainingTypes: PropTypes.func,
-};
+export default withTranslation('training')(withStyles(styles)(TypesStep));

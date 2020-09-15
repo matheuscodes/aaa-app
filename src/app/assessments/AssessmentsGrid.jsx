@@ -1,42 +1,32 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import MUI from 'app/common/MaterialUI';
+
+import { withTranslation } from 'react-i18next'
+
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 
 import Waiting from 'app/common/Waiting';
 import AssessmentTile from 'app/assessments/AssessmentTile';
 
-export default function AssessmentsGrid(props) {
-  const style = (props.style || {});
+const styles = {}
+
+function AssessmentsGrid(props) {
   return (
-    <MUI.GridList
-      cellHeight={style.cellHeight}
-      cols={props.cols}
-      padding={style.defaultPadding}
-      style={style.gridList} >
+    <Grid container spacing={2}>
       {
         props.assessments ?
           props.assessments.map((assessment, index) => {
             return (
-              <MUI.GridTile
-                key={`aaa-assessment_${assessment.date}`}
-                style={MUI.styles.GridTile}
-                cols={Math.floor(props.cols / style.columns)} >
+              <Grid item key={`aaa-assessment_${assessment.date}`} xs={3} >
                 <AssessmentTile
-                  style={style}
                   data={assessment}
-                  allowMore={style.allowMore}
                   onDelete={props.deleteAssessment} />
-              </MUI.GridTile>
+              </Grid>
             );
-          }) : <MUI.GridTile cols={props.cols} ><Waiting /></MUI.GridTile>
+          }) : <Grid item xs={12} ><Waiting /></Grid>
       }
-    </MUI.GridList>
+    </Grid>
   );
 }
 
-AssessmentsGrid.propTypes = {
-  style: PropTypes.object,
-  cols: PropTypes.number,
-  assessments: PropTypes.array,
-  deleteAssessment: PropTypes.func,
-};
+export default withTranslation('assessment')(withStyles(styles)(AssessmentsGrid));

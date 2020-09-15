@@ -1,28 +1,20 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 
-const styles = {
-  gridList: {
-    width: '100%'
-  }
-};
+const styles = {}
 
-const AboutReports = React.createClass({
-  propTypes: {
-    t: React.PropTypes.func.isRequired
-  },
-  render: function() {
-    const t = this.props.t;
+class AboutReports extends React.Component {
+  render() {
     return (
-      <MUI.GridList style={styles.gridList} cellHeight={'auto'} cols={1} padding={10} >
-        <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
-          <div><img src='img/report.png' width={'100%'} /></div>
-        </MUI.GridTile>
-      </MUI.GridList>
+      <Grid container spacing={2} >
+        <Grid item xs={12}>
+          <div><img src='img/report.png' width={'100%'} alt="" /></div>
+        </Grid>
+      </Grid>
     );
   }
-});
+}
 
-module.exports = i18nextReact.setupTranslation(['common','about'], AboutReports);
+export default withStyles(styles)(AboutReports);

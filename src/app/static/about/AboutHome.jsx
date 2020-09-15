@@ -1,40 +1,23 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 
-const styles = {
-  gridList: {
-    width: '100%'
-  }
-};
+const styles = {}
 
-const AboutHome = React.createClass({
-  propTypes: {
-    t: React.PropTypes.func.isRequired
-  },
-  render: function() {
-    const t = this.props.t;
+class AboutHome extends React.Component {
+  render() {
     return (
-      <MUI.GridList style={styles.gridList} cellHeight={'auto'} cols={13} padding={10} >
-        <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
-          <div><img src='img/home_counts.png' width={'100%'} /></div>
-        </MUI.GridTile>
-        <MUI.GridTile style={MUI.styles.GridTile} cols={3} >
-          <div><img src='img/home_ring_distribution.png' width={'100%'} /></div>
-        </MUI.GridTile>
-        <MUI.GridTile style={MUI.styles.GridTile} cols={3} >
-          <div><img src='img/home_end_overview.png' width={'100%'} /></div>
-        </MUI.GridTile>
-        <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
-          <div><img src='img/home_events.png' width={'100%'} /></div>
-        </MUI.GridTile>
-        <MUI.GridTile style={MUI.styles.GridTile} cols={3} >
-          <div><img src='img/home_year_overview.png' width={'100%'} /></div>
-        </MUI.GridTile>
-      </MUI.GridList>
+      <Grid container spacing={2} >
+        <Grid item xs={6} >
+          <div><img src='img/home_ring_distribution.png' width={'100%'} alt="" /></div>
+        </Grid>
+        <Grid item xs={6} >
+          <div><img src='img/home_year_overview.png' width={'100%'} alt="" /></div>
+        </Grid>
+      </Grid>
     );
   }
-});
+}
 
-module.exports = i18nextReact.setupTranslation(['common','about'], AboutHome);
+export default withStyles(styles)(AboutHome);

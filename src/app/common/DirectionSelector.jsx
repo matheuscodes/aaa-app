@@ -1,48 +1,41 @@
-const React = require('react');
-const MUI = require('app/common/MaterialUI');
+import React from 'react'
 
-import DirectionSelectorStyle from 'app/common/DirectionSelector.style';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+
 import directions from 'constants/Directions';
-import SelectField from 'components/SelectField';
 
-const Compass = require('svg/icon/Compass');
+import Compass from 'svg/icon/Compass'
 
-const DirectionSelector = React.createClass({
-  propTypes: {
-    style: React.PropTypes.object,
-    type: React.PropTypes.string,
-    value: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    hintText: React.PropTypes.string
-  },
+class DirectionSelector extends React.Component{
+  constructor(props) {
+    super(props)
+    this.state = {directions: directions.map((direction) => {
+      return {
+        id: direction,
+        name: (<Compass direction={direction} height={'32pt'} />),
+      }
+    })}
+  }
 
-  getInitialState: function(){
-    this.style = new DirectionSelectorStyle(this.props.style.styleProvider);
-    return {};
-  },
-
-  render: function() {
+  render() {
     return (
-      <SelectField
-        style={this.props.style}
-        value={this.props.value}
-        onChange={this.props.onChange}
-        floatingLabelFixed={true}
-        floatingLabelText={" "}
-        items={directions.map((direction) => {
-          return {
-            id: direction,
-            label: (<Compass
-                            direction={direction}
-                            height={this.style.labelHeight} />),
-            name: (<Compass
-                            direction={direction}
-                            height={this.style.listHeight} />),
-          }
-        }, this)}
-        hintText={this.props.hintText} />
+      <FormControl fullWidth>
+        <InputLabel id='aaa-directionSelector'>{this.props.text}</InputLabel>
+        <Select
+          id={'aaa-directionSelector'}
+          value={this.props.value}
+          onChange={this.props.onChange}
+          renderValue={direction => {
+            return (<Compass direction={direction} height={'16pt'} />);
+          }} >
+          {this.state.directions.map((direction) => <MenuItem key={direction.id} value={direction.id} >{direction.name}</MenuItem> )}
+        </Select>
+      </FormControl>
     );
   }
-});
+}
 
-module.exports = DirectionSelector;
+export default DirectionSelector;

@@ -1,12 +1,7 @@
-const React = require('react');
+import React from 'react'
 
-const ActualBar = React.createClass({
-  propTypes: {
-    target: React.PropTypes.number,
-    training: React.PropTypes.number,
-    column: React.PropTypes.number
-  },
-  render: function() {
+class ActualBar extends React.Component {
+  render() {
     return (
       <g transform={[
         'translate(0,', (-this.props.target - this.props.training), ')'
@@ -25,6 +20,6 @@ const ActualBar = React.createClass({
       </g>
     );
   }
-});
+}
 
-module.exports = ActualBar;
+export default ActualBar;

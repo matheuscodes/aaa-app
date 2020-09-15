@@ -1,27 +1,19 @@
-const React = require('react');
+import React from 'react'
 
 const baseSVG = function(icon) {
-  return React.createClass({
-    propTypes: {
-      // TODO Styles as objects to validate?
-      style: React.PropTypes.object,
-      height: React.PropTypes.number,
-      width: React.PropTypes.number
-    },
-    render: function() {
-      return (
-        <svg
-          style={this.props.style}
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 100 100"
-          height={(this.props.height || 100)}
-          width={(this.props.width || (this.props.height || 100))}>
-          {icon}
-        </svg>
-      );
-    }
-  });
-};
+  return function(props) {
+    return (
+      <svg
+        style={props.style}
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 100 100"
+        height={(props.height || (props.width || 100))}
+        width={(props.width || (props.height || 100))}>
+        {icon}
+      </svg>
+    );
+  }
+}
 
 const WeatherIcons = {
   Fair: baseSVG(<path d={[
@@ -116,4 +108,4 @@ const WeatherIcons = {
   Rainy: baseSVG(<path d="M51.312,6.0312c-13.094,0-23.718,10.6-23.718,23.688,0,0.296,0.08,0.579,0.094,0.875-0.296-0.02-0.58-0.094-0.876-0.094-7.044,0-12.75,5.705-12.75,12.75,0,0.087,0.032,0.194,0.032,0.281-1.008-0.302-2.054-0.531-3.156-0.531-6.0435,0-10.938,4.9-10.938,10.938,0,6.042,4.8945,8.343,10.938,8.343h70.312c10.358,0,18.75-8.391,18.75-18.75s-8.391-18.75-18.75-18.75c-2.34,0-4.568,0.47-6.625,1.25-1.788-11.321-11.495-20-23.313-20zm-27.843,62.438l-9.031,24.781,1.937,0.719,9.313-25.5h-2.219zm17.219,0l-9.032,24.781,1.938,0.719,9.281-25.5h-2.187zm17.218,0l-9.031,24.781,1.937,0.719,9.282-25.5h-2.188zm17.188,0l-9,24.781,1.937,0.719,9.281-25.5h-2.218z"/>)
 };
 
-module.exports = WeatherIcons;
+export default WeatherIcons;

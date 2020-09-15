@@ -1,12 +1,12 @@
-const getLocalArcher = require('api/helpers/getLocalArcher');
+import getLocalArcher from 'api/helpers/getLocalArcher'
 
-const requestURL = (process.env.clientRequestURL || 'none');
+const requestURL = (process.env.clientRequestURL || "https://api.archery.app");
 console.log("Using Request URL:",requestURL)
 
-module.exports = function(path, method, callbacks) {
+export default function(path, method, callbacks) {
   var xmlhttp = new XMLHttpRequest();
   var url = requestURL;
-  if (path !== '/login/') {
+  if (!path.match(/login/)) {
     var archer = getLocalArcher();
     if (typeof archer !== 'undefined') {
       url += ['/archers/', archer.id].join('');

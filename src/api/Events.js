@@ -1,5 +1,5 @@
-const requestBuilder = require('api/helpers/RequestBuilder');
-const publicRequest = require('api/helpers/getPublicRequest');
+import requestBuilder from 'api/helpers/RequestBuilder'
+import publicRequest from 'api/helpers/getPublicRequest'
 import Event from 'model/Event'
 
 var processResponseList = function(response) {
@@ -18,11 +18,6 @@ function updateRegistration(eventId, callbacks, unregister) {
     method = 'DELETE';
   }
 
-  function errorCall(request){
-    let error = new Error(request.responseText.toString());
-    (callbacks.error || console.log).call(callbacks.context, error);
-  }
-
   var newCallbacks = {
     context: callbacks.context,
     201: callbacks.success,
@@ -37,48 +32,52 @@ function updateRegistration(eventId, callbacks, unregister) {
   }
 }
 
-module.exports = {
+export default {
   getList: function(callbacks, from, to) {
-    var successCall = function(request) {
-      var response = processResponseList(request.responseText);
-      callbacks.success.call(callbacks.context, response);
-    };
-
-    var newCallbacks = {
-      context: callbacks.context,
-      200: successCall,
-      failure: (callbacks.error || console.log)
-    };
-
-    var url = '/events/';
-    if (from || to) url += '?';
-    url += from ? '&from=' + from.toISOString() : '';
-    url += to ? '&to=' + to.toISOString() : '';
-    var request = requestBuilder(url, 'GET', newCallbacks);
-    if(request !== null){
-      request.send();
-    }
+    //TODO turn on events again.
+    callbacks.success.call(callbacks.context, [])
+    // var successCall = function(request) {
+    //   var response = processResponseList(request.responseText);
+    //   callbacks.success.call(callbacks.context, response);
+    // };
+    //
+    // var newCallbacks = {
+    //   context: callbacks.context,
+    //   200: successCall,
+    //   failure: (callbacks.error || console.log)
+    // };
+    //
+    // var url = '/events/';
+    // if (from || to) url += '?';
+    // url += from ? '&from=' + from.toISOString() : '';
+    // url += to ? '&to=' + to.toISOString() : '';
+    // var request = requestBuilder(url, 'GET', newCallbacks);
+    // if(request !== null){
+    //   request.send();
+    // }
   },
   getPublicEvents: function(callbacks, from, to) {
-    const successCall = function(request) {
-      var response = processResponseList(request.responseText);
-      callbacks.success.call(callbacks.context, response);
-    };
-
-    const newCallbacks = {
-      context: callbacks.context,
-      200: successCall,
-      failure: (callbacks.error || console.log)
-    };
-
-    let url = '/events/';
-    if (from || to) url += '?';
-    url += from ? '&from=' + from.toISOString() : '';
-    url += to ? '&to=' + to.toISOString() : '';
-    const request = publicRequest(url, 'GET', newCallbacks);
-    if(request !== null){
-      request.send();
-    }
+    //TODO turn on events again.
+    callbacks.success.call(callbacks.context, [])
+    // const successCall = function(request) {
+    //   var response = processResponseList(request.responseText);
+    //   callbacks.success.call(callbacks.context, response);
+    // };
+    //
+    // const newCallbacks = {
+    //   context: callbacks.context,
+    //   200: successCall,
+    //   failure: (callbacks.error || console.log)
+    // };
+    //
+    // let url = '/events/';
+    // if (from || to) url += '?';
+    // url += from ? '&from=' + from.toISOString() : '';
+    // url += to ? '&to=' + to.toISOString() : '';
+    // const request = publicRequest(url, 'GET', newCallbacks);
+    // if(request !== null){
+    //   request.send();
+    // }
   },
   register: function (eventId,callbacks){
     updateRegistration(eventId,callbacks);

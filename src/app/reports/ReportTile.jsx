@@ -1,31 +1,40 @@
-const React = require('react');
+import React from 'react'
+import { withTranslation } from 'react-i18next'
 
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
-const i18nextReact = require('global/i18nextReact');
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 
-const Waiting = require('app/common/Waiting');
+import API from 'api'
 
-const MonthReportTable = require('svg/MonthReportTable');
-const MonthGraph = require('svg/MonthGraph');
-const SeasonGraph = require('svg/SeasonGraph');
+import Waiting from 'app/common/Waiting'
+
+import MonthReportTable from 'svg/MonthReportTable'
+import MonthGraph from 'svg/MonthGraph'
+import SeasonGraph from 'svg/SeasonGraph'
 
 const oneDay = 24 * 60 * 60 * 1000;
+const styles = {}
 
-const ReportTile = React.createClass({
-  getInitialState: function() {
-    return {};
-  },
-  updateContent: function(nextProps) {
+class ReportTile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.updateContent(props);
+  }
+  updateContent(nextProps) {
+    const t = this.props.t;
     var callbacks = {
       context: this,
       success: function(report) {
+        delete this.state.failed;
         this.setState(report);
+      },
+      failure: function() {
+        this.showMessage(t('report:loadError'), "ERROR");
+        this.setState({failed:true})
       }
     };
-    console.log(">"+nextProps.pupilId)
     if(nextProps.pupilId){
-      console.log('dafuk')
       API.trainers.seasons.getMonthReport(nextProps.pupilId,
                               nextProps.seasonId,
                               nextProps.year,
@@ -36,13 +45,25 @@ const ReportTile = React.createClass({
                               nextProps.month, callbacks);
     }
     delete this.state.firstDay; // Showing the loading again.
-  },
-  componentWillReceiveProps: function(nextProps) {
-    this.updateContent(nextProps);
-  },
-  render: function() {
-    const t = this.props.t;
+  }
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if(this.state.failed) return;
+    if (!this.state.season
+        || this.props.seasonId !== nextProps.seasonId
+        || this.props.year !== nextProps.year
+        || this.props.month !== nextProps.month) {
+      this.updateContent(nextProps);
+    }
+  }
 
+  showMessage(message, type) {
+    if(typeof this.props.messenger !== 'undefined'){
+      this.props.messenger.showMessage(message, type);
+    }
+  }
+
+  render() {
+    const t = this.props.t;
     var content = <Waiting />;
     if (typeof this.state.firstDay !== 'undefined') {
       var allDays = {count: 0};
@@ -66,8 +87,8 @@ const ReportTile = React.createClass({
       }
       content = (
         <div id="aaa-reportPrintableArea">
-          <MUI.GridList cellHeight={'auto'} cols={1} padding={10} style={{width: '100%'}}>
-            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
               <h2>{t('report:tableTitle', {date: new Date(this.props.year, this.props.month - 1, 1)})}</h2>
               <MonthReportTable data={this.state} allDays={allDays}/>
               <h3>{t('report:dailyGraphTitle')}</h3>
@@ -79,14 +100,14 @@ const ReportTile = React.createClass({
                 extraPadding={
                   dailyGraphData.overview.length - this.state.season.goals.length
                 } />
-            </MUI.GridTile>
-          </MUI.GridList>
+            </Grid>
+          </Grid>
         </div>
       );
     }
 
     return content;
   }
-});
+}
 
-module.exports = i18nextReact.setupTranslation(['report'], ReportTile);
+export default withTranslation('report')(withStyles(styles)(ReportTile));

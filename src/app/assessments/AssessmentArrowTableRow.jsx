@@ -1,15 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {autobind} from 'core-decorators';
 
-import MUI from 'app/common/MaterialUI';
-import i18nextReact from 'global/i18nextReact';
+import { withTranslation } from 'react-i18next'
+
+import { withStyles } from '@material-ui/core/styles';
+import FloatingActionButton from '@material-ui/core/Fab';
+import Icon from '@material-ui/core/Icon';
 
 import valueConverter from 'global/ValueConverter';
 
 import ArrowRingRow from 'app/assessments/ArrowRingRow';
 
-@autobind
+const styles = {}
 class AssessmentArrowTableRow extends React.Component {
   deleteEnd() {
     this.props.deleteEnd(this.props.roundIndex, this.props.endIndex);
@@ -23,34 +24,20 @@ class AssessmentArrowTableRow extends React.Component {
       <tr>
         <td>
           <ArrowRingRow
-            style={this.props.style.rings}
-            arrows={this.props.end}
-            arrowSize={this.props.style.arrow.width} />
+            arrows={this.props.end} />
         </td>
         <td>
-          <div style={this.props.style.total} >{ total }</div>
+          <div style={{textAlign:'center'}}>{ total }</div>
+        </td>
+        <td>
           { this.props.deleteEnd ?
-            <MUI.FloatingActionButton
-              onTouchTap={this.deleteEnd}
-              secondary={true}
-              style={this.props.style.deleteButton}
-              iconStyle={this.props.style.deleteButton.iconStyle} >
-              <MUI.icons.navigation.cancel
-                style={this.props.style.deleteButton.icon} />
-            </MUI.FloatingActionButton> : null }
+            <FloatingActionButton size="small" onClick={this.deleteEnd.bind(this)} color="secondary" >
+              <Icon>cancel</Icon>
+            </FloatingActionButton> : null }
         </td>
       </tr>
     );
   }
 };
 
-AssessmentArrowTableRow.propTypes = {
-  style: PropTypes.object,
-  end: PropTypes.array,
-  deleteEnd: PropTypes.func,
-  roundIndex: PropTypes.number,
-  endIndex: PropTypes.number,
-};
-
-module.exports = i18nextReact.setupTranslation(['assessment'],
-                                               AssessmentArrowTableRow);
+export default withTranslation('assessment')(withStyles(styles)(AssessmentArrowTableRow));

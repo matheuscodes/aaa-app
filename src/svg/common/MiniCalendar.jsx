@@ -1,15 +1,8 @@
-const React = require('react');
-const i18nextReact = require('global/i18nextReact');
+import React from 'react'
+import { withTranslation } from 'react-i18next'
 
-const MiniCalendar = React.createClass({
-  propTypes: {
-    height: React.PropTypes.number,
-    width: React.PropTypes.number,
-    month: React.PropTypes.number,
-    day: React.PropTypes.number,
-    t: React.PropTypes.func
-  },
-  render: function() {
+class MiniCalendar extends React.Component {
+  render() {
     const t = this.props.t;
 
     const rimStyle = {
@@ -121,6 +114,6 @@ const MiniCalendar = React.createClass({
       </svg>
     );
   }
-});
+}
 
-module.exports = i18nextReact.setupTranslation(['common'], MiniCalendar);
+export default withTranslation('common')(MiniCalendar);

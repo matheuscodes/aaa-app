@@ -1,4 +1,4 @@
-module.exports = function(url, callbacks) {
+export default function(url, callbacks) {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.open('GET', url, true);
 

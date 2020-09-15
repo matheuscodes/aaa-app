@@ -1,8 +1,8 @@
-const React = require('react');
+import React from 'react'
 
 // TODO FUCKING REFACTOR THIS SHIT.
-const ReportTableStyle = React.createClass({
-  render: function() {
+class ReportTableStyle extends React.Component {
+  render() {
     const all = [
       ".aaa-reportSideLabel{fill:#000000;text-anchor:end;font-size:75%}",
       ".aaa-reportDay{fill:#FFFFFF}",
@@ -25,6 +25,6 @@ const ReportTableStyle = React.createClass({
         </style>
     );
   }
-});
+}
 
-module.exports = ReportTableStyle;
+export default ReportTableStyle;

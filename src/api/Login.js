@@ -1,6 +1,6 @@
-var requestBuilder = require('api/helpers/RequestBuilder');
+import requestBuilder from 'api/helpers/RequestBuilder'
 
-module.exports = function login(credentials, callbacks) {
+export function login(credentials, callbacks) {
   var successCall = function(request) {
     if (typeof localStorage !== 'undefined') {
       localStorage.loggedToken = request.responseText;
@@ -26,4 +26,91 @@ module.exports = function login(credentials, callbacks) {
   var data = JSON.stringify(credentials);
 
   request.send(data);
+};
+
+
+export function reset(credentials, callbacks) {
+  var successCall = function(request) {
+    callbacks.success.call(callbacks.context);
+  };
+
+  var failureCall = function(request) {
+    callbacks.error.call(callbacks.context);
+  };
+
+  var newCallbacks = {
+    context: callbacks.context,
+    204: successCall,
+    failure: failureCall
+  };
+
+  var request = requestBuilder('/login/', 'DELETE', newCallbacks);
+
+  var data = JSON.stringify(credentials);
+
+  request.send(data);
+};
+
+export function confirm(query, callbacks) {
+  var successCall = function(request) {
+    callbacks.success.call(callbacks.context);
+  };
+
+  var failureCall = function(request) {
+    callbacks.error.call(callbacks.context);
+  };
+
+  var newCallbacks = {
+    context: callbacks.context,
+    204: successCall,
+    failure: failureCall
+  };
+
+  var request = requestBuilder(`/login${query}`, 'GET', newCallbacks);
+
+  request.send();
+};
+
+export function newLogin(data, callbacks) {
+  var successCall = function(request) {
+    callbacks.success.call(callbacks.context);
+  };
+
+  var failureCall = function(request) {
+    callbacks.error.call(callbacks.context);
+  };
+
+  var newCallbacks = {
+    context: callbacks.context,
+    200: successCall,
+    failure: failureCall
+  };
+
+  var request = requestBuilder('/login/', 'PUT', newCallbacks);
+
+  var stringData = JSON.stringify(data);
+
+  request.send(stringData);
+};
+
+export function replaceLogin(data, callbacks) {
+  var successCall = function(request) {
+    callbacks.success.call(callbacks.context);
+  };
+
+  var failureCall = function(request) {
+    callbacks.error.call(callbacks.context);
+  };
+
+  var newCallbacks = {
+    context: callbacks.context,
+    204: successCall,
+    failure: failureCall
+  };
+
+  var request = requestBuilder('/login/', 'PATCH', newCallbacks);
+
+  var stringData = JSON.stringify(data);
+
+  request.send(stringData);
 };

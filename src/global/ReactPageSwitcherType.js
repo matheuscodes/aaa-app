@@ -1,6 +1,6 @@
-const React = require('react');
+import React from 'react'
 
-module.exports = React.PropTypes.shape({
+export default React.PropTypes.shape({
     getPageUrlPath: React.PropTypes.func.isRequired,
     renderPage: React.PropTypes.func.isRequired,
     switchTo: React.PropTypes.func.isRequired,

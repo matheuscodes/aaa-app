@@ -1,196 +1,225 @@
-const React = require('react');
+import React from 'react'
+import { withRouter } from 'react-router'
+import { withTranslation } from 'react-i18next'
 
-const i18nextReact = require('global/i18nextReact');
-const UserTypes = require('constants/UserTypes');
-const MUI = require('app/common/MaterialUI');
+import { withStyles } from '@material-ui/core/styles';
 
-const LogoName = require('svg/LogoName');
+import AppBar from '@material-ui/core/AppBar';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemIcon from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import Divider from '@material-ui/core/Divider';
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Collapse from '@material-ui/core/Collapse';
 
-const getLocalArcher = require('api/helpers/getLocalArcher');
-const deleteLocalArcher = require('api/helpers/deleteLocalArcher');
+import LogoName from 'svg/LogoName'
 
-const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
+import deleteLocalArcher from 'api/helpers/deleteLocalArcher'
+import getLocalRoles from 'api/helpers/getLocalRoles'
 
-import { Style } from 'global/StyleProvider';
+import RoutePaths from 'global/RoutePaths'
 
-class HeaderStyle extends Style {
-  get AppBar() {
-    return {
-      title: {
-        fontSize: `20px`,
-      },
-      backgroundColor: MUI.colors.blue600,
-    }
-  }
-
-  get Drawer() {
-    return {
-      width: this.styleProvider.select({
-        phone: this.styleProvider.percent(90),
-        tablet: this.styleProvider.percent(50),
-        desktop: this.styleProvider.percent(30),
-      }),
-    }
-  }
-
-  get Subheader(){
-    return {
-      padding: this.defaultPadding,
-    }
-  }
-
-  get logo() {
-    return{
-      height: this.styleProvider.select({
-        phone: this.styleProvider.percent(15),
-        tablet: this.styleProvider.percent(11.25),
-        desktop: this.styleProvider.percent(6),
-      }),
-      width: '100%',
-    }
-  }
-}
+const styles = {}
 
 /**
  * Header with an undocked drawer and a logout button.
  * @author Matheus
  * @since 1.0.0
  */
-const Header = React.createClass({
-  propTypes: {
-    switcher: ReactPageSwitcherType.isRequired,
-    title: React.PropTypes.string.isRequired,
-    t: React.PropTypes.func.isRequired
-  },
-  getInitialState: function() {
-    this.style = new HeaderStyle(this.props.styleProvider);
-    return {open: false};
-  },
-  componentDidMount: function() {
-    var current = this.state;
-    current.archer = getLocalArcher();
-    this.setState(current);
-  },
-  handleToggle: function() {
-    this.setState({open: !this.state.open});
-  },
-  handleClose: function() {
-    this.setState({open: false});
-  },
-  openSeasonsPage: function() {
-    this.props.switcher.switchTo('seasonsPage');
-  },
-  openReportsPage: function() {
-    this.props.switcher.switchTo('reportsPage');
-  },
-  openAssessmentsPage: function() {
-    this.props.switcher.switchTo('assessmentsPage');
-  },
-  openTrainingsPage: function() {
-    this.props.switcher.switchTo('trainingsPage');
-  },
-  openHomePage: function() {
-    this.props.switcher.switchTo('homePage');
-  },
-  logout: function() {
+class Header extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {open: false, expandProfile: false, expandTrainer: false};
+  }
+
+  handleToggle() {
+    this.setState({open: !this.state.open, expandProfile: false, expandTrainer: false});
+  }
+
+  handleClose() {
+    this.setState({open: false, expandProfile: false, expandTrainer: false});
+  }
+
+  openSeasonsPage() {
+    this.props.history.push(RoutePaths.seasons);
+    this.handleClose();
+  }
+
+  openReportsPage() {
+    this.props.history.push(RoutePaths.reports);
+    this.handleClose();
+  }
+
+  openAssessmentsPage() {
+    this.props.history.push(RoutePaths.assessments);
+    this.handleClose();
+  }
+
+  openTrainingsPage() {
+    this.props.history.push(RoutePaths.trainings);
+    this.handleClose();
+  }
+
+  openHomePage() {
+    this.props.history.push(RoutePaths.home);
+    this.handleClose();
+  }
+
+  logout() {
     deleteLocalArcher();
-    this.props.switcher.switchTo('loginPage');
-  },
-  openTrainerReportsPage: function() {
-    this.props.switcher.switchTo('trainerReportsPage');
-  },
-  render: function() {
-    const t = this.props.t;
-    const menu = (
-    <MUI.Menu>
-      <MUI.MenuItem
-        onTouchTap={this.openHomePage}
-        leftIcon={<MUI.icons.action.assessment />} >
-        {t('common:menuDrawer.homePage')}
-      </MUI.MenuItem>
-      <MUI.MenuItem
-        onTouchTap={this.openSeasonsPage}
-        leftIcon={<MUI.icons.action.today />}>
-        {t('common:menuDrawer.seasonsPage')}
-      </MUI.MenuItem>
-      <MUI.MenuItem
-        onTouchTap={this.openTrainingsPage}
-        leftIcon={<MUI.icons.content.create />}>
-        {t('common:menuDrawer.trainingsPage')}
-      </MUI.MenuItem>
-      <MUI.MenuItem
-        onTouchTap={this.openAssessmentsPage}
-        leftIcon={<MUI.icons.action.timeline />}>
-        {t('common:menuDrawer.assessmentsPage')}
-      </MUI.MenuItem>
-      <MUI.MenuItem
-        onTouchTap={this.openReportsPage}
-        leftIcon={<MUI.icons.action.history />}>
-        {t('common:menuDrawer.reportsPage')}
-      </MUI.MenuItem>
-      <MUI.MenuItem onTouchTap={this.handleClose}
-        leftIcon={<MUI.icons.action.help_outline />}>
-        {t('common:menuDrawer.helpPage')}
-      </MUI.MenuItem>
-    </MUI.Menu>
-    );
+    this.handleClose();
+    this.props.history.push(RoutePaths.login);
+  }
 
-    var leftIcon = (<MUI.IconButton onTouchTap={this.handleToggle}>
-      <MUI.icons.navigation.menu />
-    </MUI.IconButton>);
+  settings() {
+    this.props.history.push(RoutePaths.settings);
+    this.handleClose();
+  }
 
-    const trainerArea = (
-      <MUI.List>
-        <MUI.ListItem
-          primaryText={t('common:menuDrawer.trainer.trainerAreaTitle')}
-          disabled={true}
-          nestedItems={[
-            <MUI.ListItem key={'aaa-trainerReports'}
-              onTouchTap={this.openTrainerReportsPage}
-              primaryText={t('common:menuDrawer.trainer.trainerReportsPage')}
-              leftIcon={<MUI.icons.action.history />} />
-          ]} />
-      </MUI.List>
-    );
+  trainer(page) {
+    this.props.history.push(RoutePaths.trainer[page]);
+    this.handleClose();
+  }
+
+  expandProfile() {
+    const state = this.state;
+    state.expandProfile = !state.expandProfile;
+    this.setState(state);
+  }
+
+  expandTrainer() {
+    const state = this.state;
+    state.expandTrainer = !state.expandTrainer;
+    this.setState(state);
+  }
+
+  render() {
+    const { t } = this.props;
 
     return (
       <div>
-        <MUI.AppBar
-            style={this.style.AppBar}
-            title={this.props.title}
-            titleStyle={this.style.AppBar.title}
-            showMenuIconButton={ this.state.archer ? true : false }
-            iconElementLeft={ this.state.archer ? leftIcon : null } />
-        <MUI.Drawer
+        <AppBar position="static">
+          <Toolbar>
+            { this.props.archer && (
+              <IconButton edge="start" color="inherit" onClick={this.handleToggle.bind(this)}>
+                <Icon>menu</Icon>
+              </IconButton>
+            )}
+            <Typography variant="h6">
+              {this.props.title}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+            anchor={'left'}
             docked={false}
-            width={this.style.Drawer.width}
             open={this.state.open}
-            onRequestChange={this.handleClose} >
-            <MUI.List>
-              <MUI.Subheader style={this.style.Subheader} inset={true}>
-                <LogoName
-                  width={this.style.logo.width}
-                  height={this.style.logo.height} />
-              </MUI.Subheader>
-              <MUI.ListItem
-                primaryText={ this.state.archer ? this.state.archer.name : null }
-                secondaryText={ this.state.archer ? this.state.archer.email : null }
-                disabled={true}
-                nestedItems={[
-                  <MUI.ListItem key={'aaa-headerLogout'}
-                    onTouchTap={this.logout}
-                    primaryText={t('common:logout')}
-                    leftIcon={<MUI.icons.action.exit_to_app />} />
-                ]} />
-            </MUI.List>
-            <MUI.Divider />
-            {menu}
-            {this.state.archer && this.state.archer.type === UserTypes.TRAINER ? trainerArea : ''}
-            <MUI.Divider />
-        </MUI.Drawer>
+            onClose={this.handleClose.bind(this)} >
+            <List
+              component="nav"
+              subheader={
+                <ListSubheader inset={true}>
+                  <LogoName height={"64pt"} />
+                </ListSubheader>
+              }>
+              <ListItem button onClick={this.expandProfile.bind(this)}>
+                <ListItemText
+                  primary={ this.props.archer ? this.props.archer.name : null }
+                  secondary={ this.props.archer ? this.props.archer.email : null } />
+                {this.state.expandProfile ? <Icon>expand_less</Icon> : <Icon>expand_more</Icon>}
+              </ListItem>
+              <Collapse in={this.state.expandProfile} timeout="auto" unmountOnExit>
+                <List>
+                  <ListItem button onClick={this.settings.bind(this)}>
+                    <ListItemIcon>
+                      <Icon>settings</Icon>
+                    </ListItemIcon>
+                    <ListItemText primary={t('common:menuDrawer.settings')} />
+                  </ListItem>
+                  <ListItem button onClick={this.logout.bind(this)}>
+                    <ListItemIcon>
+                      <Icon>exit_to_app</Icon>
+                    </ListItemIcon>
+                    <ListItemText primary={t('common:logout')} />
+                  </ListItem>
+                </List>
+              </Collapse>
+            </List>
+            <Divider />
+            <List component="nav" >
+              <ListItem button onClick={this.openHomePage.bind(this)}>
+                <ListItemIcon>
+                  <Icon>assessment</Icon>
+                </ListItemIcon>
+                <ListItemText primary={t('common:menuDrawer.homePage')} />
+              </ListItem>
+              <ListItem button onClick={this.openSeasonsPage.bind(this)}>
+                <ListItemIcon>
+                  <Icon>today</Icon>
+                </ListItemIcon>
+                <ListItemText primary={t('common:menuDrawer.seasonsPage')} />
+              </ListItem>
+              <ListItem button onClick={this.openTrainingsPage.bind(this)}>
+                <ListItemIcon>
+                  <Icon>create</Icon>
+                </ListItemIcon>
+                <ListItemText primary={t('common:menuDrawer.trainingsPage')} />
+              </ListItem>
+              <ListItem button onClick={this.openAssessmentsPage.bind(this)}>
+                <ListItemIcon>
+                  <Icon>timeline</Icon>
+                </ListItemIcon>
+                <ListItemText primary={t('common:menuDrawer.assessmentsPage')} />
+              </ListItem>
+              <ListItem button onClick={this.openReportsPage.bind(this)}>
+                <ListItemIcon>
+                  <Icon>history</Icon>
+                </ListItemIcon>
+                <ListItemText primary={t('common:menuDrawer.reportsPage')} />
+              </ListItem>
+            </List>
+
+            <ListItem button onClick={this.expandTrainer.bind(this)}>
+              <ListItemIcon>
+                <Icon>sports</Icon>
+              </ListItemIcon>
+              <ListItemText primary={t('common:menuDrawer.trainer.trainerAreaTitle')} />
+              {this.state.expandTrainer ? <Icon>expand_less</Icon> : <Icon>expand_more</Icon>}
+            </ListItem>
+            <Collapse in={this.state.expandTrainer} timeout="auto" unmountOnExit>
+              <List>
+                <ListItem button onClick={this.trainer.bind(this,'requests')}>
+                  <ListItemIcon>
+                    <Icon>playlist_add</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary={t('common:menuDrawer.trainer.trainerRequestsPage')} />
+                </ListItem>
+                <ListItem button onClick={this.trainer.bind(this,'archers')}>
+                  <ListItemIcon>
+                    <Icon>assignment_ind</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary={t('common:menuDrawer.trainer.trainerPupilsPage')} />
+                </ListItem>
+                <ListItem button onClick={this.trainer.bind(this,'reports')}>
+                  <ListItemIcon>
+                    <Icon>history</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary={t('common:menuDrawer.trainer.trainerReportsPage')} />
+                </ListItem>
+              </List>
+            </Collapse>
+
+
+        </Drawer>
       </div>
     );
   }
-});
+};
 
-module.exports = i18nextReact.setupTranslation(['common'], Header);
+export default withTranslation('common')(withRouter(withStyles(styles)(Header)));

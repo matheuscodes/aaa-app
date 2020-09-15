@@ -1,9 +1,8 @@
-const React = require('react');
-const moment = require('moment');
+import React from 'react'
+import moment from 'moment'
+import { withTranslation } from 'react-i18next'
 
-const i18nextReact = require('global/i18nextReact');
-
-const ReportTableStyle = require('svg/common/ReportTableStyle');
+import ReportTableStyle from 'svg/common/ReportTableStyle'
 
 const styles = {
   reportDay: {
@@ -234,14 +233,8 @@ const composeWeekColumns = function(start, end, rows, title) {
   return row;
 };
 
-const MonthReportTable = React.createClass({
-  propTypes: {
-    // TODO declare a class to validate
-    data: React.PropTypes.object,
-    allDays: React.PropTypes.object,
-    t: React.PropTypes.func
-  },
-  render: function() {
+class MonthReportTable extends React.Component {
+  render() {
     const t = this.props.t;
     var rows = 0;
     var data = this.props.data;
@@ -462,6 +455,6 @@ const MonthReportTable = React.createClass({
       </svg>
     );
   }
-});
+}
 
-module.exports = i18nextReact.setupTranslation(['report'], MonthReportTable);
+export default withTranslation('report')(MonthReportTable);

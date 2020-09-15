@@ -1,36 +1,44 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 
-const BaseLayout = require('app/common/BaseLayout');
-const ReportCard = require('app/reports/ReportCard');
+import ReportCard from 'app/reports/ReportCard'
 
-const styles = {
-  gridList: {
-    width: '100%'
+import API from 'api'
+
+const styles = { }
+
+class ReportsPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {seasons:[]}
   }
-};
 
-const ReportsPage = React.createClass({
-  render: function() {
-    const t = this.props.t;
+  componentDidMount() {
+    var callbacks = {
+      context: this,
+      success: function(seasons) {
+        var current = this.state;
+        current.seasons = seasons;
+        this.setState(current);
+      },
+      error: console.log,
+    };
+    API.seasons.getList(callbacks);
+  }
+
+  render() {
     return (
-      <BaseLayout
-        switcher={this.props.switcher}
-        layoutName="reportsPage"
-        userAgent={this.props.userAgent}
-        styleProvider={this.props.styleProvider}
-        languages={this.props.languages}
-        title={t('report:appBarTitle')} >
-        <MUI.GridList cellHeight={'auto'} cols={1} padding={10} style={styles.gridList} >
-          <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
-            <ReportCard switcher={this.props.switcher} />
-          </MUI.GridTile>
-        </MUI.GridList>
-      </BaseLayout>
+      <div style={{'backgroundColor':'white', padding:'10pt'}}>
+        <Grid container spacing={2} >
+          <Grid item xs={12} >
+              <ReportCard seasons={this.state.seasons} messenger={this.props.messenger} />
+          </Grid>
+        </Grid>
+      </div>
     );
   }
-});
+}
 
-module.exports = i18nextReact.setupTranslation(['report'], ReportsPage);
+export default withStyles(styles)(ReportsPage);

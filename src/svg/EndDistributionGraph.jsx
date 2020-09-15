@@ -1,22 +1,25 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
+import { withTranslation } from 'react-i18next'
 
-const GraphStyle = require('svg/common/GraphStyle');
-const GraphBar = require('svg/common/GraphBar');
-const GraphBottomLabels = require('svg/common/GraphBottomLabels');
-const GraphAxisLabels = require('svg/common/GraphAxisLabels');
-const GraphEstimations = require('svg/common/GraphEstimations');
-const GraphGrid = require('svg/common/GraphGrid');
+import { withStyles } from '@material-ui/core/styles';
 
-const EndDistributionGraph = React.createClass({
-  render: function() {
+import GraphStyle from 'svg/common/GraphStyle'
+import GraphBar from 'svg/common/GraphBar'
+import GraphBottomLabels from 'svg/common/GraphBottomLabels'
+import GraphAxisLabels from 'svg/common/GraphAxisLabels'
+import GraphEstimations from 'svg/common/GraphEstimations'
+import GraphGrid from 'svg/common/GraphGrid'
+
+const styles = {}
+
+class EndDistributionGraph extends React.Component {
+  render() {
     const t = this.props.t;
     var size = this.props.data.endCount;
 
     var general_width = (size * 100 + 100 + 150);
     var general_height = 1000 + 150 + 50 + 100;
-    var width = 20.2 / (100 / general_width);
 
     var counts = [];
     var countsLabels = [];
@@ -128,7 +131,6 @@ const EndDistributionGraph = React.createClass({
       </svg>
     );
   }
-});
+}
 
-module.exports = i18nextReact.setupTranslation(['assessment'],
-                                               EndDistributionGraph);
+export default withTranslation('assessment')(withStyles(styles)(EndDistributionGraph));

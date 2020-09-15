@@ -1,11 +1,7 @@
-const React = require('react');
+import React from 'react'
 
-const PlanBar = React.createClass({
-  propTypes: {
-    value: React.PropTypes.number,
-    column: React.PropTypes.number
-  },
-  render: function() {
+class PlanBar extends React.Component {
+  render() {
     return (
       <g transform={'translate(0,' + (-this.props.value) + ')'}>
         <rect
@@ -14,6 +10,6 @@ const PlanBar = React.createClass({
       </g>
     );
   }
-});
+}
 
-module.exports = PlanBar;
+export default PlanBar;

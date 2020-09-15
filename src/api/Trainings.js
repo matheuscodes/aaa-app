@@ -1,4 +1,4 @@
-const requestBuilder = require('api/helpers/RequestBuilder');
+import requestBuilder from 'api/helpers/RequestBuilder'
 
 function processResponse(data) {
   data.date = new Date(data.date);
@@ -42,7 +42,7 @@ function processRequest(original) {
   return JSON.stringify(training);
 };
 
-module.exports = {
+export default {
   getList: function(page, callbacks) {
     function successCall(request) {
       var response = processResponseList(request.responseText);
@@ -67,6 +67,7 @@ module.exports = {
     }
   },
   save: function(training, callbacks) {
+    // TODO: Validate against empty data
     function errorCall(request){
       let error = new Error(request.responseText.toString());
       (callbacks.error || console.log).call(callbacks.context, error);

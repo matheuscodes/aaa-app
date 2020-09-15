@@ -1,35 +1,42 @@
-const React = require('react');
+import React from 'react'
+import { withRouter } from 'react-router'
+import { withTranslation } from 'react-i18next'
 
-const getLocalArcher = require('api/helpers/getLocalArcher');
+import { withStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardActions from '@material-ui/core/CardActions';
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import Grid from '@material-ui/core/Grid';
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
+import getLocalArcher from 'api/helpers/getLocalArcher'
 
-const ReportTile = require('app/reports/ReportTile');
+import RoutePaths from 'global/RoutePaths'
 
-const ReportCard = React.createClass({
-  getInitialState: function() {
-    return {seasons: [], years: [], months: []};
-  },
-  componentDidMount: function() {
-    var callbacks = {
-      context: this,
-      success: function(seasons) {
-        var current = this.state;
-        current.seasons = seasons;
-        this.setState(current);
-      },
-      error: function(error) {
-        if(API.isAuthError(error)){
-          this.props.switcher.switchTo('loginPage');
-        }
-      }
-    };
-    API.seasons.getList(callbacks);
-  },
-  changeSeason: function(event, index, value) {
-    var season = this.state.seasons[index];
+import ReportTile from 'app/reports/ReportTile'
+
+const styles = {}
+
+class ReportCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = this.getInitialState();
+  }
+  getInitialState() {
+    return {seasons: this.props.seasons, years: [], months: []};
+  }
+  componentDidUpdate(prevProps) {
+    if (this.props.seasons !== prevProps.seasons) {
+      this.setState(this.getInitialState())
+    }
+  }
+  changeSeason(event) {
+    var season = this.state.seasons[event.target.value];
     var current = this.state;
     current.selectedSeason = season;
     current.seasonId = season.id;
@@ -41,145 +48,106 @@ const ReportCard = React.createClass({
       current.years.push(i);
     }
     this.setState(current);
-  },
-  changeYear: function(event, index, value) {
-    var year = this.state.years[index];
+  }
+  changeYear(event) {
+    var year = this.state.years[event.target.value];
     var current = this.state;
     var season = current.selectedSeason;
     current.selectedYear = year;
     current.months = [];
     delete current.selectedMonth;
     for (var i = new Date(season.start); i <= season.end; i.setMonth(i.getMonth() + 1)) {
-      if (i.getFullYear() == year) {
+      if (i.getFullYear() === year) {
         current.months.push(i.getMonth());
       }
     }
     this.setState(current);
-  },
-  changeMonth: function(event, index, value) {
+  }
+  changeMonth(event) {
     var current = this.state;
-    current.selectedMonth = this.state.months[index];
+    current.selectedMonth = this.state.months[event.target.value];
     this.setState(current);
-  },
-  printReport: function() {
-    if(document.getElementById('aaa-reportPrintableArea')){
-      const newWindow =  window.open('printable?document=monthReport');
-      const dataToPrint = document.getElementById('aaa-reportPrintableArea').innerHTML;
-      newWindow.onload = () => {
-        newWindow.document.body.innerHTML=[
-          '<div style="text-align:center"><img height="96" src="aaa-logo.png" /></div>',
-          '<div style="text-align:center"><h2>',
-          getLocalArcher().name,
-          '</h2></div>',
-          dataToPrint,
-          '<br/><br/><br/><br/>',
-          '<div style="text-align:center;font-size:8pt">Advanced Archery App - Copyright © Matheus Borges Teixeira</div>',
-        ].join('');
-        newWindow.print();
-        newWindow.close();
-      }
-    } else {
-      //TODO send a message it can't print!
-    }
-  },
-  render: function() {
+  }
+  render() {
     const t = this.props.t;
     var seasons = this.state.seasons.map(function(season, index) {
       return (
-        <MUI.MenuItem
-          key={'aaa-reportSeason_' + index}
-          value={season.id}
-          primaryText={season.name} />
+        <MenuItem key={'aaa-reportSeason_' + index} value={index} >{season.name}</MenuItem>
       );
     });
 
     var years = this.state.years.map(function(year, index) {
       return (
-        <MUI.MenuItem
-          key={'aaa-reportYear_' + index}
-          value={year}
-          primaryText={year} />
+        <MenuItem key={'aaa-reportYear_' + index} value={index} >{year}</MenuItem>
       );
     });
 
     var months = this.state.months.map(function(month, index) {
       return (
-        <MUI.MenuItem
-          key={'aaa-reportYear_' + index}
-          value={month}
-          primaryText={t('common:month.long.' + month)} />
+        <MenuItem key={'aaa-reportYear_' + index} value={index} >{t('common:month.long.' + month)}</MenuItem>
       );
     });
-
+    const {seasonId, selectedYear, selectedMonth} = this.state;
     return (
-      <MUI.Card>
-        <MUI.CardHeader
+      <Card>
+        <CardHeader
           title={t('report:cardTitle')}
-          subtitle={t('report:cardSubtitle')} />
-        <MUI.CardText>
-          <MUI.GridList cellHeight={'auto'} cols={12} padding={10} style={{width: '100%'}}>
-            <MUI.GridTile style={MUI.styles.GridTile} cols={1} >
+          subheader={t('report:cardSubtitle')} />
+        <CardContent>
+          <Grid container spacing={2}>
+            <Grid item xs={1} >
               {' '}
-            </MUI.GridTile>
-            <MUI.GridTile style={MUI.styles.GridTile} cols={5} >
-              <MUI.SelectField
-                style={{width: '100%'}}
-                id={'aaa-reportSeason'}
+            </Grid>
+            <Grid item xs={5} >
+              <InputLabel htmlFor="aaa-reportSeason">
+                {t('report:seasonSelectField.label')}
+              </InputLabel>
+              <Select fullWidth
+                labelId="aaa-reportSeason"
+                id="aaa-reportSeason"
                 value={this.state.seasonId}
-                onChange={this.changeSeason}
-                floatingLabelText={
-                  t('report:seasonSelectField.label')
-                } >
+                onChange={this.changeSeason.bind(this)} >
                 {seasons}
-              </MUI.SelectField>
-            </MUI.GridTile>
-            <MUI.GridTile style={MUI.styles.GridTile} cols={2} >
-              <MUI.SelectField
-                style={{width: '100%'}}
-                id={'aaa-reportYear'}
+              </Select>
+            </Grid>
+            <Grid item xs={2} >
+              <InputLabel htmlFor="aaa-reportYear">
+                {t('report:yearSelectField.label')}
+              </InputLabel>
+              <Select fullWidth
+                labelId="aaa-reportYear"
+                id="aaa-reportYear"
                 value={this.state.selectedYear}
-                onChange={this.changeYear}
-                floatingLabelText={
-                  t('report:yearSelectField.label')
-                } >
+                onChange={this.changeYear.bind(this)} >
                 {years}
-              </MUI.SelectField>
-            </MUI.GridTile>
-            <MUI.GridTile style={MUI.styles.GridTile} cols={3} >
-              <MUI.SelectField
-                style={{width: '100%'}}
-                id={'aaa-reportMonth'}
+              </Select>
+            </Grid>
+            <Grid item xs={3} >
+              <InputLabel htmlFor="aaa-reportMonth">
+                {t('report:monthSelectField.label')}
+              </InputLabel>
+              <Select fullWidth
+                labelId="aaa-reportMonth"
+                id="aaa-reportMonth"
                 value={this.state.selectedMonth}
-                onChange={this.changeMonth}
-                floatingLabelText={
-                  t('report:monthSelectField.label')
-                } >
+                onChange={this.changeMonth.bind(this)} >
                 {months}
-              </MUI.SelectField>
-            </MUI.GridTile>
-            <MUI.GridTile style={MUI.styles.GridTile} cols={12} >
-              {this.state.seasonId &&
-               this.state.selectedYear &&
-               typeof this.state.selectedMonth !== 'undefined' ?
-              <ReportTile
-                seasonId={this.state.seasonId}
-                year={this.state.selectedYear}
-                month={this.state.selectedMonth > 8 ? (this.state.selectedMonth + 1) : '0' + (this.state.selectedMonth + 1)} />
+              </Select>
+            </Grid>
+            <Grid item xs={12} >
+              {seasonId && selectedYear && typeof selectedMonth !== 'undefined'?
+                <ReportTile
+                  seasonId={seasonId}
+                  pupilId={this.props.pupilId}
+                  year={selectedYear}
+                  month={selectedMonth > 8 ? (selectedMonth + 1) : '0' + (selectedMonth + 1)} messenger={this.props.messenger} />
               : <center><h1>{t('report:noneSelected')}</h1></center>}
-            </MUI.GridTile>
-          </MUI.GridList>
-        </MUI.CardText>
-        <MUI.CardActions style={{textAlign: 'right'}}>
-          <MUI.FloatingActionButton
-            mini={true}
-            style={{margin: '5pt'}}
-            onTouchTap={this.printReport}>
-            <MUI.icons.action.print />
-          </MUI.FloatingActionButton>
-        </MUI.CardActions>
-      </MUI.Card>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
     );
   }
-});
+}
 
-module.exports = i18nextReact.setupTranslation(['common', 'report'], ReportCard);
+export default withTranslation('common', 'report')(withRouter(withStyles(styles)(ReportCard)));

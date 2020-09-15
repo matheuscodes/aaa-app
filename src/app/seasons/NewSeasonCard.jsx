@@ -1,32 +1,42 @@
-const React = require('react');
+import React from 'react'
+import { withTranslation } from 'react-i18next'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
+import API from 'api'
 
-const NewSeasonForm = require('app/seasons/NewSeasonForm');
-const Waiting = require('app/common/Waiting');
+import NewSeasonForm from 'app/seasons/NewSeasonForm'
+import Waiting from 'app/common/Waiting'
+
+import { withStyles } from '@material-ui/core/styles';
+import FloatingActionButton from '@material-ui/core/Fab';
+import Icon from '@material-ui/core/Icon';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
 
 import Season from 'model/Season';
 
-const NewSeasonCard = React.createClass({
-  propTypes: {
-    seasonId: React.PropTypes.number,
-    onRequestClose: React.PropTypes.func,
-    t: React.PropTypes.func
-  },
-  getInitialState: function() {
+const styles = {}
+
+class NewSeasonCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = this.getInitialState();
+  }
+
+  getInitialState() {
     return {equipment: []};
-  },
-  componentDidMount: function() {
+  }
+  componentDidMount() {
     this.updateContent();
-  },
-  componentDidUpdate: function(prevProps) {
+  }
+  componentDidUpdate(prevProps) {
     if(this.props.seasonId !== prevProps.seasonId){
       this.updateContent();
     }
-  },
-  updateContent: function() {
+  }
+  updateContent() {
     if (typeof this.props.seasonId === 'undefined') {
       API.equipment.getList(this, function(list) {
         this.setState({equipment: list, season: new Season()});
@@ -44,27 +54,13 @@ const NewSeasonCard = React.createClass({
       this.state.season = null;
       this.setState(this.state);
     }
-  },
-  submitSeason: function() {
+  }
+  submitSeason() {
     const t = this.props.t;
     var callbacks = {
       context: this,
       success: function(response) {
-        if(!this.state.season.id){
-          //FIXME for pete's sake... remove this and do it properly.
-          const seasonId = parseInt(response.responseText,10);
-          Object.keys(this.state.season.permissions).forEach(trainerId => {
-            if(this.state.season.permissions[trainerId]){
-              API.seasons.permit(seasonId,trainerId,{
-                context:this,
-                success:() => {},
-                warning:() => {},
-                error:() => {}
-              });
-            }
-          },this);
-        }
-        this.showMessage(t('season:messages.newSaved'), "MESSAGE");
+        this.showMessage(t('season:messages.newSaved'), "SUCCESS");
         this.handleClose(true);
       },
       warning: function() {
@@ -74,65 +70,50 @@ const NewSeasonCard = React.createClass({
         this.showMessage(t('season:messages.newError'), "ERROR");
       }
     };
+    console.log('save', this.state.season)
     API.seasons.save(this.state.season, callbacks);
-  },
-  handleClose: function(refresh) {
+  }
+  handleClose(refresh) {
     const initial = this.getInitialState();
     this.setState(initial);
     this.props.onRequestClose(refresh);
-  },
-  showMessage: function(message, type) {
+  }
+  showMessage(message, type) {
     if(typeof this.props.messenger !== 'undefined'){
-      this.props.messenger.sendMessage({
-        text: message,
-        open: true,
-        type: type
-      });
+      this.props.messenger.showMessage(message, type);
     }
-  },
-  render: function() {
-    const t = this.props.t;
-
-    const actions = [];
-
-    actions.push(
-      <MUI.FloatingActionButton
-        mini={true} secondary={true}
-        style={{margin: 5}}
-        onTouchTap={this.handleClose}>
-        <MUI.icons.navigation.cancel />
-      </MUI.FloatingActionButton>
-    );
-
-    actions.push(
-      <MUI.FloatingActionButton
-        style={{margin: 5}}
-        onTouchTap={this.submitSeason} >
-        <MUI.icons.action.backup />
-      </MUI.FloatingActionButton>
-    );
-
+  }
+  render() {
+    const { t } = this.props;
     return (
-      <MUI.Dialog
-          title={t('season:newSeason.title')}
-          autoDetectWindowHeight={true}
-          contentStyle={{width:'100%', maxWidth: 'none'}}
-          modal={false}
-          actions={actions}
-          open={this.props.open}
-          onRequestClose={this.handleClose}
-          autoScrollBodyContent={true}>
-        <div>
-          <h5>{t('season:newSeason.subtitle')}</h5>
+      <Dialog open={this.props.open} onClose={this.handleClose.bind(this)} fullScreen>
+        <DialogTitle id="form-dialog-title">
+          {t('season:newSeason.title')}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {t('season:newSeason.subtitle')}
+          </DialogContentText>
           {this.state.season ?
             <NewSeasonForm
               messenger={this.props.messenger}
               equipment={this.state.equipment}
               season={this.state.season} /> : <Waiting />}
-        </div>
-      </MUI.Dialog>
+        </DialogContent>
+        <DialogActions>
+          <FloatingActionButton
+            size="small" color="secondary"
+            onClick={this.handleClose.bind(this)}>
+            <Icon>cancel</Icon>
+          </FloatingActionButton>
+          <FloatingActionButton
+            onClick={this.submitSeason.bind(this)} >
+            <Icon>backup</Icon>
+          </FloatingActionButton>
+        </DialogActions>
+      </Dialog>
     );
   }
-});
+}
 
-module.exports = i18nextReact.setupTranslation(['season'], NewSeasonCard);
+export default withTranslation('season')(withStyles(styles)(NewSeasonCard));

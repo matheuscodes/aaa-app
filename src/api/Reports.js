@@ -1,6 +1,6 @@
-var requestBuilder = require('api/helpers/RequestBuilder');
+import requestBuilder from 'api/helpers/RequestBuilder'
 
-module.exports = {
+export default {
   getYearOverview: function(callbacks) {
     const to = new Date();
     const from = new Date(to.getTime() - 1000 * 60 * 60 * 24 * 365);

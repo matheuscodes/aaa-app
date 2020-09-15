@@ -1,15 +1,7 @@
-const React = require('react');
+import React from 'react'
 
-const GraphBottomLabels = React.createClass({
-  propTypes: {
-    // TODO create a class to validate against
-    content: React.PropTypes.object,
-    prefix: React.PropTypes.string,
-    multiplier: React.PropTypes.number,
-    min: React.PropTypes.number,
-    max: React.PropTypes.number
-  },
-  render: function() {
+class GraphBottomLabels extends React.Component {
+  render() {
     var unit = (this.props.max - this.props.min) / 10;
 
     if (unit <= 0) return (<g id="left" transform="translate(0,0)"></g>);
@@ -39,6 +31,6 @@ const GraphBottomLabels = React.createClass({
       </g>
     );
   }
-});
+}
 
-module.exports = GraphBottomLabels;
+export default GraphBottomLabels;

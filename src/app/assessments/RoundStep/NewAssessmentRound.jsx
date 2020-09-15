@@ -1,13 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {autobind} from 'core-decorators';
 
-import MUI from 'app/common/MaterialUI';
-import i18nextReact from 'global/i18nextReact';
+import { withTranslation } from 'react-i18next'
+
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
+import TextField from '@material-ui/core/TextField';
 
 import valueConverter from 'global/ValueConverter';
-
-import TextField from 'components/TextField';
 
 function createRound(rings, arrows, ends) {
   const endSize = Math.floor(arrows / ends);
@@ -40,7 +44,8 @@ function createRound(rings, arrows, ends) {
   return {ends: allEnds};
 }
 
-@autobind
+const styles = {}
+
 class NewAssessmentRound extends React.Component {
   constructor(props) {
     super(props);
@@ -81,65 +86,54 @@ class NewAssessmentRound extends React.Component {
   render() {
     const t = this.props.t;
     return (
-      <div style={this.props.style ? this.props.style : null}>
-        <MUI.RaisedButton
-          style={this.props.style.mainButton}
-          label={t('assessment:addTotal')}
-          onTouchTap={this.handleOpen} />
-        <MUI.Dialog
-          contentStyle={this.props.style.Dialog.contentStyle}
-          actionsContainerStyle={this.props.style.Dialog.actionsContainerStyle}
-          title={t('assessment:newRound.title')}
-          titleStyle={this.props.style.h3}
-          actions={
-            <MUI.RaisedButton
-              style={this.props.style}
-              label={t('assessment:newRound.submit')}
-              primary={true}
+      <div>
+        <Button fullWidth
+                variant="contained"
+                size="small"
+                color="secondary"
+                onClick={this.handleOpen.bind(this)} >
+          {t('assessment:addTotal')}
+        </Button>
+        <Dialog open={this.state.open} onClose={this.handleClose.bind(this)}>
+          <DialogTitle>
+            {t('assessment:newRound.title')}
+          </DialogTitle>
+          <DialogContent>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField fullWidth
+                  id={'aaa-newRoundRings'}
+                  onChange={this.changeRings.bind(this)}
+                  hintText={t('assessment:newRound.ringsTextField.hint')}
+                  label={t('assessment:newRound.ringsTextField.label')} />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField fullWidth
+                  id={'aaa-newRoundArrows'}
+                  onChange={this.changeArrows.bind(this)}
+                  hintText={t('assessment:newRound.arrowsTextField.hint')}
+                  label={t('assessment:newRound.arrowsTextField.label')} />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField fullWidth
+                  id={'aaa-newRoundEnds'}
+                  onChange={this.changeEnds.bind(this)}
+                  hintText={t('assessment:newRound.endsTextField.hint')}
+                  label={t('assessment:newRound.endsTextField.label')} />
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button color="primary"
               keyboardFocused={true}
-              onTouchTap={this.handleSubmit} />
-          }
-          modal={true}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-          repositionOnUpdate={true}
-          autoDetectWindowHeight={true}
-          autoScrollBodyContent={true} >
-          <TextField
-            style={this.props.style}
-            id={'aaa-newRoundRings'}
-            onChange={this.changeRings}
-            type={'number'}
-            hintText={t('assessment:newRound.ringsTextField.hint')}
-            floatingLabelText={t('assessment:newRound.ringsTextField.label')} />
-          <TextField
-            style={this.props.style}
-            id={'aaa-newRoundArrows'}
-            onChange={this.changeArrows}
-            type={'number'}
-            hintText={t('assessment:newRound.arrowsTextField.hint')}
-            floatingLabelText={
-              t('assessment:newRound.arrowsTextField.label')
-            } />
-          <TextField
-            style={this.props.style}
-            id={'aaa-newRoundEnds'}
-            onChange={this.changeEnds}
-            type={'number'}
-            hintText={t('assessment:newRound.endsTextField.hint')}
-            floatingLabelText={t('assessment:newRound.endsTextField.label')} />
-        </MUI.Dialog>
+              onClick={this.handleSubmit.bind(this)}>
+              {t('assessment:newRound.submit')}
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }
 }
 
-NewAssessmentRound.propTypes = {
-  t: PropTypes.func.isRequired,
-  style: PropTypes.object,
-  addRound: PropTypes.func,
-  roundIndex: PropTypes.number,
-};
-
-module.exports = i18nextReact.setupTranslation(['assessment'],
-                                               NewAssessmentRound);
+export default withTranslation('assessment')(withStyles(styles)(NewAssessmentRound));

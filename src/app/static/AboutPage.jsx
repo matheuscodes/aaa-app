@@ -1,32 +1,33 @@
-const React = require('react');
+import React from 'react'
+import { withTranslation } from 'react-i18next'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
-const API = require('api');
+import { withStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import Icon from '@material-ui/core/Icon';
 
-const ReactPageSwitcherType = require('global/ReactPageSwitcherType');
-const LogoName = require('svg/LogoName');
-const BaseLayout = require('app/common/BaseLayout');
+import LogoName from 'svg/LogoName'
 
-const AboutHome = require('app/static/about/AboutHome');
-const AboutSeasons = require('app/static/about/AboutSeasons');
-const AboutTrainings = require('app/static/about/AboutTrainings');
-const AboutAssessments = require('app/static/about/AboutAssessments');
-const AboutReports = require('app/static/about/AboutReports');
+import AboutHome from 'app/static/about/AboutHome'
+import AboutSeasons from 'app/static/about/AboutSeasons'
+import AboutTrainings from 'app/static/about/AboutTrainings'
+import AboutAssessments from 'app/static/about/AboutAssessments'
+import AboutReports from 'app/static/about/AboutReports'
 
-const AboutPage = React.createClass({
-  propTypes: {
-    switcher: ReactPageSwitcherType.isRequired,
-    userAgent: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]).isRequired,
-    t: React.PropTypes.func.isRequired
-  },
-  getInitialState: function(){
-    return {selectedIndex: 0}
-  },
-  select: function(index){
+const styles = {}
+
+class AboutPage extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {selectedIndex: 0}
+  }
+  select(index){
     this.setState({selectedIndex: index})
-  },
-  render: function() {
+  }
+  render() {
     const t = this.props.t;
     let opened;
     switch(this.state.selectedIndex){
@@ -38,53 +39,38 @@ const AboutPage = React.createClass({
         break;
       case 3: opened = <AboutAssessments />;
         break;
-      case 4: opened = <AboutReports />;
+      default: opened = <AboutReports />;
         break;
     }
 
     return (
-      <BaseLayout
-        switcher={this.props.switcher}
-        layoutName="aboutPage"
-        userAgent={this.props.userAgent}
-        styleProvider={this.props.styleProvider}
-        title={t('about:appBarTitle')} >
-        <MUI.Card style={{margin:40,marginBottom:120}}>
-          <MUI.CardHeader
+      <div style={{'backgroundColor':'white', padding:'10pt'}}>
+        <Card style={{margin:40,marginBottom:120}}>
+          <CardHeader
             title={t('about:title')}
-            subtitle={t('about:subtitle')} />
-          <MUI.CardText>
+            subheader={t('about:subtitle')} />
+          <CardContent>
             <div style={{padding:12}}>
               <LogoName width={'100%'} height={96} />
             </div>
-            <MUI.BottomNavigation selectedIndex={this.state.selectedIndex}>
-              <MUI.BottomNavigationItem
-                  label={t('common:menuDrawer.homePage')}
-                  icon={<MUI.icons.action.assessment />}
-                  onTouchTap={() => this.select(0)} />
-              <MUI.BottomNavigationItem
-                  label={t('common:menuDrawer.seasonsPage')}
-                  icon={<MUI.icons.action.today />}
-                  onTouchTap={() => this.select(1)} />
-              <MUI.BottomNavigationItem
-                  label={t('common:menuDrawer.trainingsPage')}
-                  icon={<MUI.icons.content.create />}
-                  onTouchTap={() => this.select(2)} />
-              <MUI.BottomNavigationItem
-                  label={t('common:menuDrawer.assessmentsPage')}
-                  icon={<MUI.icons.action.timeline />}
-                  onTouchTap={() => this.select(3)} />
-              <MUI.BottomNavigationItem
-                  label={t('common:menuDrawer.reportsPage')}
-                  icon={<MUI.icons.action.history />}
-                  onTouchTap={() => this.select(4)} />
-            </MUI.BottomNavigation>
+            <BottomNavigation
+              value={this.state.selectedIndex}
+              onChange={(event, newValue) => {
+                this.select(newValue);
+              }}
+              showLabels >
+              <BottomNavigationAction label={t('common:menuDrawer.homePage')} icon={<Icon>assessment</Icon>} />
+              <BottomNavigationAction label={t('common:menuDrawer.seasonsPage')} icon={<Icon>today</Icon>} />
+              <BottomNavigationAction label={t('common:menuDrawer.trainingsPage')} icon={<Icon>create</Icon>} />
+              <BottomNavigationAction label={t('common:menuDrawer.assessmentsPage')} icon={<Icon>timeline</Icon>} />
+              <BottomNavigationAction label={t('common:menuDrawer.reportsPage')} icon={<Icon>history</Icon>} />
+            </BottomNavigation>
             {opened}
-          </MUI.CardText>
-        </MUI.Card>
-      </BaseLayout>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
-});
+}
 
-module.exports = i18nextReact.setupTranslation(['common','about'], AboutPage);
+export default withTranslation('common','about')(withStyles(styles)(AboutPage));

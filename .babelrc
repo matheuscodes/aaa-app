@@ -1,8 +1,6 @@
 {
-  "presets": ["latest","react"],
+  "presets": ["@babel/preset-env", "@babel/preset-react"],
   "plugins": [
-    ["module-resolver", { "root": ["./src"], "extensions":[".js", ".jsx", ".json", ".svg"] }],
-    ["transform-inline-environment-variables"],
-    ["transform-decorators-legacy"]
+    ["@babel/plugin-proposal-decorators", { "legacy": true }]
   ]
 }

@@ -1,30 +1,27 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import MUI from 'app/common/MaterialUI';
+
+import Avatar from '@material-ui/core/Avatar';
+import Grid from '@material-ui/core/Grid';
+
 import valueConverter from 'global/ValueConverter';
 
 export default function ArrowRingRow(props) {
-  const style = (props.style || {});
-  style.minHeight = props.arrowSize * (props.rows ? props.rows : 1);
 
   return (
-    <div style={style}>
+    <Grid container spacing={1}>
       {
         props.arrows.map((arrow, arrowIndex) => (
-          <MUI.Avatar
-            key={`aaa-newAssessmentEndNewArrow_${arrowIndex}`}
-            color={valueConverter.color[arrow]}
-            backgroundColor={valueConverter.backgroundColor[arrow]}
-            size={props.arrowSize} >{ arrow }</MUI.Avatar>
+          <Grid item xs={2}>
+            <Avatar
+              key={`aaa-newAssessmentEndNewArrow_${arrowIndex}`}
+              style={{
+                backgroundColor:valueConverter.backgroundColor[arrow],
+                color:valueConverter.color[arrow],
+              }}
+              size={(props.arrowSize || '16pt')} >{ arrow }</Avatar>
+          </Grid>
         ))
       }
-    </div>
+    </Grid>
   );
 }
-
-ArrowRingRow.propTypes = {
-  style: PropTypes.object,
-  arrowSize: PropTypes.number,
-  rows: PropTypes.number,
-  arrows: PropTypes.array,
-};

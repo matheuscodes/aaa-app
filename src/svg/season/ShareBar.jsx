@@ -1,11 +1,7 @@
-const React = require('react');
+import React from 'react'
 
-const ShareBar = React.createClass({
-  propTypes: {
-    column: React.PropTypes.number,
-    value: React.PropTypes.number
-  },
-  render: function() {
+class ShareBar extends React.Component {
+  render() {
     return (
       <g transform={[
         'translate(', (this.props.column * 100), ',', (-this.props.value), ')'
@@ -15,6 +11,6 @@ const ShareBar = React.createClass({
       </g>
     );
   }
-});
+}
 
-module.exports = ShareBar;
+export default ShareBar;

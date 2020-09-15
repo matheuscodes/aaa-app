@@ -1,6 +1,6 @@
-var requestBuilder = require('api/helpers/RequestBuilder');
+import requestBuilder from 'api/helpers/RequestBuilder'
 
-module.exports = {
+export default {
   getList: function(context, callback) {
     callback.call(context, []);
   },

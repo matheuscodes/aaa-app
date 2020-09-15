@@ -1,32 +1,24 @@
-const React = require('react');
+import React from 'react'
 
-const i18nextReact = require('global/i18nextReact');
-const MUI = require('app/common/MaterialUI');
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 
-const styles = {
-  gridList: {
-    width: '100%'
-  }
-};
+const styles = {}
 
-const AboutSeasons = React.createClass({
-  propTypes: {
-    t: React.PropTypes.func.isRequired
-  },
-  render: function() {
-    const t = this.props.t;
+class AboutSeasons extends React.Component {
+  render() {
     return (
-      <MUI.GridList style={styles.gridList} cellHeight={'auto'} cols={8} padding={10} >
-        <MUI.GridTile style={MUI.styles.GridTile} cols={3} >
-          <div><img src='img/new_season.png' width={'100%'} /></div>
-          <div><img src='img/new_season_created.png' width={'100%'} /></div>
-        </MUI.GridTile>
-        <MUI.GridTile style={MUI.styles.GridTile} cols={5} >
-          <div><img src='img/seasons.png' width={'100%'} /></div>
-        </MUI.GridTile>
-      </MUI.GridList>
+      <Grid container spacing={2} >
+        <Grid item xs={4} >
+          <div><img src='img/new_season.png' width={'100%'} alt="" /></div>
+          <div><img src='img/new_season_created.png' width={'100%'} alt="" /></div>
+        </Grid>
+        <Grid item xs={8} >
+          <div><img src='img/seasons.png' width={'100%'} alt="" /></div>
+        </Grid>
+      </Grid>
     );
   }
-});
+}
 
-module.exports = i18nextReact.setupTranslation(['common','about'], AboutSeasons);
+export default withStyles(styles)(AboutSeasons);
