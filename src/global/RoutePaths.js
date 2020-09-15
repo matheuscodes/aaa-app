@@ -9,5 +9,11 @@ export default {
   reports: "/reports",
   forgotten: "/forgotten",
   newLogin: "/new",
-  confirmLogin: "/confirm"
+  confirmLogin: "/confirm",
+  settings: "/settings",
+  trainer: {
+    requests: "/trainer/requests",
+    archers: "/trainer/archers",
+    reports: "/trainer/reports",
+  }
 }

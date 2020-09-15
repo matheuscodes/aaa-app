@@ -28,6 +28,10 @@ import ForgottenPage from "app/login/ForgottenPage"
 import NewLoginPage from "app/login/NewLoginPage"
 import ConfirmLoginPage from "app/login/ConfirmLoginPage"
 import HomePage from "app/homescreen/HomePage"
+import SettingsPage from "app/settings/SettingsPage"
+import TrainerRequestsPage from "app/trainer/TrainerRequestsPage"
+import TrainerArchersPage from "app/trainer/TrainerArchersPage"
+import TrainerReportsPage from "app/trainer/TrainerReportsPage"
 
 import RoutePaths from 'global/RoutePaths'
 import getLocalArcher from 'api/helpers/getLocalArcher'
@@ -81,13 +85,17 @@ class Application extends React.Component {
             <Header title={t('login:appBarTitle')} archer={archer} />
             <LoginPage messenger={this}/>
           </Route>
+          <Route path={RoutePaths.login}>
+            <Header title={t('login:appBarTitle')} archer={archer} />
+            <LoginPage messenger={this} />
+          </Route>
           <Route path={RoutePaths.home}>
             <Header title={t('home:appBarTitle')} archer={archer} />
             <HomePage messenger={this} />
           </Route>
-          <Route path={RoutePaths.login}>
-            <Header title={t('login:appBarTitle')} archer={archer} />
-            <LoginPage messenger={this} />
+          <Route path={RoutePaths.settings}>
+            <Header title={t('settings:appBarTitle')} archer={archer} />
+            <SettingsPage messenger={this} />
           </Route>
           <Route path={RoutePaths.seasons}>
             <Header title={t('season:appBarTitle')} archer={archer} />
@@ -124,6 +132,18 @@ class Application extends React.Component {
           <Route path={RoutePaths.confirmLogin}>
             <Header title={t('login:confirmLoginAppBarTitle')} archer={archer} />
             <ConfirmLoginPage messenger={this} />
+          </Route>
+          <Route path={RoutePaths.trainer.requests}>
+            <Header title={t('trainer:trainerRequestsAppBarTitle')} archer={archer} />
+            <TrainerRequestsPage messenger={this} />
+          </Route>
+          <Route path={RoutePaths.trainer.archers}>
+            <Header title={t('trainer:trainerArchersAppBarTitle')} archer={archer} />
+            <TrainerArchersPage messenger={this} />
+          </Route>
+          <Route path={RoutePaths.trainer.reports}>
+            <Header title={t('trainer:trainerReportsAppBarTitle')} archer={archer} />
+            <TrainerReportsPage messenger={this} />
           </Route>
           <Redirect from='*' to='/' />
         </Switch>

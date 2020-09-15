@@ -60,20 +60,6 @@ class NewSeasonCard extends React.Component {
     var callbacks = {
       context: this,
       success: function(response) {
-        if(!this.state.season.id){
-          //FIXME for pete's sake... remove this and do it properly.
-          const seasonId = parseInt(response.responseText,10);
-          Object.keys(this.state.season.permissions).forEach(trainerId => {
-            if(this.state.season.permissions[trainerId]){
-              API.seasons.permit(seasonId,trainerId,{
-                context:this,
-                success:() => {},
-                warning:() => {},
-                error:() => {}
-              });
-            }
-          },this);
-        }
         this.showMessage(t('season:messages.newSaved'), "SUCCESS");
         this.handleClose(true);
       },

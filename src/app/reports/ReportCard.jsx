@@ -16,7 +16,6 @@ import Grid from '@material-ui/core/Grid';
 
 import getLocalArcher from 'api/helpers/getLocalArcher'
 
-import API from 'api'
 import RoutePaths from 'global/RoutePaths'
 
 import ReportTile from 'app/reports/ReportTile'
@@ -29,23 +28,12 @@ class ReportCard extends React.Component {
     this.state = this.getInitialState();
   }
   getInitialState() {
-    return {seasons: [], years: [], months: []};
+    return {seasons: this.props.seasons, years: [], months: []};
   }
-  componentDidMount() {
-    var callbacks = {
-      context: this,
-      success: function(seasons) {
-        var current = this.state;
-        current.seasons = seasons;
-        this.setState(current);
-      },
-      error: function(error) {
-        if(API.isAuthError(error)){
-          this.props.history.push(RoutePaths.login);
-        }
-      }
-    };
-    API.seasons.getList(callbacks);
+  componentDidUpdate(prevProps) {
+    if (this.props.seasons !== prevProps.seasons) {
+      this.setState(this.getInitialState())
+    }
   }
   changeSeason(event) {
     var season = this.state.seasons[event.target.value];
@@ -79,27 +67,6 @@ class ReportCard extends React.Component {
     var current = this.state;
     current.selectedMonth = this.state.months[event.target.value];
     this.setState(current);
-  }
-  printReport() {
-    if(document.getElementById('aaa-reportPrintableArea')){
-      const newWindow =  window.open('printable?document=monthReport');
-      const dataToPrint = document.getElementById('aaa-reportPrintableArea').innerHTML;
-      newWindow.onload = () => {
-        newWindow.document.body.innerHTML=[
-          '<div style="text-align:center"><img height="96" src="aaa-logo.png" /></div>',
-          '<div style="text-align:center"><h2>',
-          getLocalArcher().name,
-          '</h2></div>',
-          dataToPrint,
-          '<br/><br/><br/><br/>',
-          '<div style="text-align:center;font-size:8pt">Advanced Archery App - Copyright © Matheus Borges Teixeira</div>',
-        ].join('');
-        newWindow.print();
-        newWindow.close();
-      }
-    } else {
-      //TODO send a message it can't print!
-    }
   }
   render() {
     const t = this.props.t;
@@ -171,17 +138,13 @@ class ReportCard extends React.Component {
               {seasonId && selectedYear && typeof selectedMonth !== 'undefined'?
                 <ReportTile
                   seasonId={seasonId}
+                  pupilId={this.props.pupilId}
                   year={selectedYear}
-                  month={selectedMonth > 8 ? (selectedMonth + 1) : '0' + (selectedMonth + 1)} />
+                  month={selectedMonth > 8 ? (selectedMonth + 1) : '0' + (selectedMonth + 1)} messenger={this.props.messenger} />
               : <center><h1>{t('report:noneSelected')}</h1></center>}
             </Grid>
           </Grid>
         </CardContent>
-        <CardActions disableSpacing>
-          <IconButton onClick={this.printReport.bind(this)} color="secondary" variant="contained" >
-            <Icon>print</Icon>
-          </IconButton>
-        </CardActions>
       </Card>
     );
   }

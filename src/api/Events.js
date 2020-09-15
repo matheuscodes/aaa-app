@@ -34,46 +34,50 @@ function updateRegistration(eventId, callbacks, unregister) {
 
 export default {
   getList: function(callbacks, from, to) {
-    var successCall = function(request) {
-      var response = processResponseList(request.responseText);
-      callbacks.success.call(callbacks.context, response);
-    };
-
-    var newCallbacks = {
-      context: callbacks.context,
-      200: successCall,
-      failure: (callbacks.error || console.log)
-    };
-
-    var url = '/events/';
-    if (from || to) url += '?';
-    url += from ? '&from=' + from.toISOString() : '';
-    url += to ? '&to=' + to.toISOString() : '';
-    var request = requestBuilder(url, 'GET', newCallbacks);
-    if(request !== null){
-      request.send();
-    }
+    //TODO turn on events again.
+    callbacks.success.call(callbacks.context, [])
+    // var successCall = function(request) {
+    //   var response = processResponseList(request.responseText);
+    //   callbacks.success.call(callbacks.context, response);
+    // };
+    //
+    // var newCallbacks = {
+    //   context: callbacks.context,
+    //   200: successCall,
+    //   failure: (callbacks.error || console.log)
+    // };
+    //
+    // var url = '/events/';
+    // if (from || to) url += '?';
+    // url += from ? '&from=' + from.toISOString() : '';
+    // url += to ? '&to=' + to.toISOString() : '';
+    // var request = requestBuilder(url, 'GET', newCallbacks);
+    // if(request !== null){
+    //   request.send();
+    // }
   },
   getPublicEvents: function(callbacks, from, to) {
-    const successCall = function(request) {
-      var response = processResponseList(request.responseText);
-      callbacks.success.call(callbacks.context, response);
-    };
-
-    const newCallbacks = {
-      context: callbacks.context,
-      200: successCall,
-      failure: (callbacks.error || console.log)
-    };
-
-    let url = '/events/';
-    if (from || to) url += '?';
-    url += from ? '&from=' + from.toISOString() : '';
-    url += to ? '&to=' + to.toISOString() : '';
-    const request = publicRequest(url, 'GET', newCallbacks);
-    if(request !== null){
-      request.send();
-    }
+    //TODO turn on events again.
+    callbacks.success.call(callbacks.context, [])
+    // const successCall = function(request) {
+    //   var response = processResponseList(request.responseText);
+    //   callbacks.success.call(callbacks.context, response);
+    // };
+    //
+    // const newCallbacks = {
+    //   context: callbacks.context,
+    //   200: successCall,
+    //   failure: (callbacks.error || console.log)
+    // };
+    //
+    // let url = '/events/';
+    // if (from || to) url += '?';
+    // url += from ? '&from=' + from.toISOString() : '';
+    // url += to ? '&to=' + to.toISOString() : '';
+    // const request = publicRequest(url, 'GET', newCallbacks);
+    // if(request !== null){
+    //   request.send();
+    // }
   },
   register: function (eventId,callbacks){
     updateRegistration(eventId,callbacks);

@@ -171,7 +171,7 @@ export default {
       'permissions',
       trainerId
     ].join('/')
-    const request = requestBuilder(path, 'POST', newCallbacks);
+    const request = requestBuilder(path, 'PUT', newCallbacks);
     request.send();
   },
   deny: function(seasonId,trainerId, callbacks) {

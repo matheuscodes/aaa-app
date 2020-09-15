@@ -22,10 +22,16 @@ class ReportTile extends React.Component {
     this.updateContent(props);
   }
   updateContent(nextProps) {
+    const t = this.props.t;
     var callbacks = {
       context: this,
       success: function(report) {
+        delete this.state.failed;
         this.setState(report);
+      },
+      failure: function() {
+        this.showMessage(t('report:loadError'), "ERROR");
+        this.setState({failed:true})
       }
     };
     if(nextProps.pupilId){
@@ -41,14 +47,21 @@ class ReportTile extends React.Component {
     delete this.state.firstDay; // Showing the loading again.
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
+    if(this.state.failed) return;
     if (!this.state.season
         || this.props.seasonId !== nextProps.seasonId
         || this.props.year !== nextProps.year
         || this.props.month !== nextProps.month) {
       this.updateContent(nextProps);
     }
-    console.log('fucck',this.props,nextProps)
   }
+
+  showMessage(message, type) {
+    if(typeof this.props.messenger !== 'undefined'){
+      this.props.messenger.showMessage(message, type);
+    }
+  }
+
   render() {
     const t = this.props.t;
     var content = <Waiting />;

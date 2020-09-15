@@ -1,4 +1,6 @@
 import trainerRequestBuilder from 'api/helpers/TrainerRequestBuilder';
+import authRequestBuilder from 'api/helpers/AuthRequestBuilder';
+import getLocalArcher from 'api/helpers/getLocalArcher';
 
 import Season from 'model/Season';
 
@@ -11,59 +13,45 @@ var processReport = function(response) {
   return report;
 };
 
+var processResponseList = function(response) {
+  var data = JSON.parse(response.toString());
+  for (var i = 0; i < data.length; i++) {
+    data[i].start = new Date(data[i].start);
+    data[i].end = new Date(data[i].end);
+  }
+  return data;
+};
+
 export default class TrainerSeasonsEndpoint {
   list(pupilId, callbacks){
-    function successCall(request) {
-      const response = JSON.parse(request.responseText);
-      const seasons = []
-      if(Array.isArray(response)){
-        response.forEach( item => seasons.push(new Season(item)));
-        callbacks.success.call(callbacks.context, seasons);
-      } else {
-        callbacks.error.call(callbacks.context, new Error('Response not an array'));
-      }
-    };
+    const request = authRequestBuilder('GET', `/trainers/${getLocalArcher().trainerId}/archers/${pupilId}/seasons`, {
+      200: function(response) {
+        var seasons = processResponseList(response.responseText);
+        callbacks.success.bind(callbacks.context)(seasons);
+      },
+      failure: callbacks.failure.bind(callbacks.context),
+    });
 
-    function errorCall(request){
-      let error = new Error(request.responseText.toString());
-      callbacks.error.call(callbacks.context, error);
-    };
-
-    var newCallbacks = {
-      context: callbacks.context,
-      200: successCall,
-      failure: errorCall
-    };
-    const path = ['/archers', pupilId, 'seasons'].join('/')
-    var request = trainerRequestBuilder(path, 'GET', newCallbacks);
-    if(request !== null){
+    if(request !== null) {
       request.send();
     }
   }
 
   getMonthReport(pupilId, id, year, month, callbacks) {
-    var successCall = function(request) {
-      var response = processReport(request.responseText);
-      callbacks.success.call(callbacks.context, response);
-    };
-
-    function errorCall(request){
-      let error = new Error(request.responseText.toString());
-      callbacks.error.call(callbacks.context, error);
-    }
-
-    var newCallbacks = {
-      context: callbacks.context,
-      200: successCall,
-      failure: errorCall
-    };
     const path = [
-      '/archers',  pupilId,
+      'archers',  pupilId,
       'seasons', id,
       'report', year, month
     ].join('/');
-    var request = trainerRequestBuilder(path, 'GET', newCallbacks);
-    if(request !== null){
+    const request = authRequestBuilder('GET', `/trainers/${getLocalArcher().trainerId}/${path}`, {
+      200: function(response) {
+        var report = processReport(response.responseText);
+        callbacks.success.bind(callbacks.context)(report);
+      },
+      failure: callbacks.failure.bind(callbacks.context),
+    });
+
+    if(request !== null) {
       request.send();
     }
   }
