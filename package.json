@@ -9,10 +9,6 @@
     "eslint": "eslint --ext .jsx,.svg --fix ",
     "fetch-languages": "rm -rf node_modules/aaa-languages && cp -R ../aaa-languages node_modules/",
     "revert-languages": "rm -rf node_modules/aaa-languages && npm run install aaa-languages",
-    "serve": "npm run build && env SERVER=local node build/aaa-server.js",
-    "deploy-domain": "serverless create_domain",
-    "delete-domain": "serverless delete_domain",
-    "delete-stack": "serverless remove",
     "just-deploy": "aws s3 cp build/ s3://frontend.archery.app.production/ --recursive --acl public-read",
     "resync": "aws s3 sync --delete build/ s3://frontend.archery.app.production --acl public-read",
     "languages": " rm -rf public/locales && cp -r ./node_modules/aaa-languages/src public/locales",
@@ -20,7 +16,7 @@
     "react-build": "rm -rf build && npm run languages && react-scripts build",
     "react-test": "react-scripts test",
     "react-eject": "react-scripts eject",
-    "deploy-stack": "npm run build-production && serverless deploy"
+    "deploy-stack": "npm run build && npm run resync"
   },
   "repository": {
     "type": "git",
