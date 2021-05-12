@@ -39,7 +39,7 @@
     "@material-ui/lab": "4.0.0-alpha.46",
     "@material-ui/pickers": "3.2.10",
     "aaa-languages": "git+https://github.com/matheuscodes/aaa-languages.git",
-    "chart.js": "2.9.3",
+    "chart.js": "2.9.4",
     "clsx": "1.1.0",
     "date-fns": "2.11.0",
     "i18next": "18.0.0",
