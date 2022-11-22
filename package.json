@@ -55,7 +55,7 @@
     "react-event-listener": "0.6.6",
     "react-i18next": "11.0.0",
     "react-router-dom": "5.1.2",
-    "react-scripts": "3.4.3"
+    "react-scripts": "5.0.1"
   },
   "browserslist": {
     "development": [
