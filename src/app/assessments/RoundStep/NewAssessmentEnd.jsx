@@ -1,6 +1,5 @@
 import React from 'react';
 import keycode from 'keycode';
-import EventListener from 'react-event-listener';
 
 import { withTranslation } from 'react-i18next'
 
@@ -22,6 +21,15 @@ class NewAssessmentEnd extends React.Component {
   constructor(props) {
     super(props);
     this.state = {open: false, arrows: []};
+    this.handleWindowKeyDown = this.handleWindowKeyDown.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleWindowKeyDown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleWindowKeyDown);
   }
 
   handleOpen(event, index, value) {
@@ -191,9 +199,6 @@ class NewAssessmentEnd extends React.Component {
             <Grid container spacing={1}>
               {actions}
             </Grid>
-            <EventListener
-              target="window"
-              onKeyDown={this.handleWindowKeyDown.bind(this)} />
           </DialogActions>
         </Dialog>
       </div>
