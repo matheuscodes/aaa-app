@@ -10,8 +10,8 @@
     "just-deploy": "aws s3 cp build/ s3://frontend.archery.app.production/ --recursive --acl public-read",
     "resync": "aws s3 sync --delete build/ s3://frontend.archery.app.production --acl public-read",
     "languages": " rm -rf public/locales && cp -r ./node_modules/aaa-languages/src public/locales",
-    "react-start": "npm run languages && react-scripts start",
-    "react-build": "rm -rf build && npm run languages && react-scripts build",
+    "react-start": "npm run languages && vite",
+    "react-build": "rm -rf build && npm run languages && vite build",
     "test": "jest --coverage"
   },
   "repository": {
@@ -51,7 +51,6 @@
     "react-event-listener": "0.6.6",
     "react-i18next": "11.0.0",
     "react-router-dom": "5.1.2",
-    "react-scripts": "5.0.1",
     "typescript": "4.9.5"
   },
   "browserslist": {
@@ -68,10 +67,12 @@
     ]
   },
   "devDependencies": {
-    "@craco/craco": "^7.1.0",
     "@testing-library/jest-dom": "4.2.4",
     "@testing-library/react": "12.1.5",
+    "@vitejs/plugin-react-swc": "4.3.0",
     "identity-obj-proxy": "3.0.0",
-    "react-test-renderer": "17.0.2"
+    "react-scripts": "5.0.1",
+    "react-test-renderer": "17.0.2",
+    "vite": "5.4.21"
   }
 }
