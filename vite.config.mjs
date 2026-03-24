@@ -23,8 +23,6 @@ export default defineConfig({
       global: resolve(srcPath, 'global'),
       model: resolve(srcPath, 'model'),
       svg: resolve(srcPath, 'svg'),
-      // Material-UI uses mixed-case Fab but some imports use lowercase 'fab'
-      '@material-ui/core/fab': '@material-ui/core/Fab',
     },
   },
   define: {
