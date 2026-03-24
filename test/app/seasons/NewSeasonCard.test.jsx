@@ -15,6 +15,10 @@ jest.mock('api', () => ({
     getList: jest.fn(),
     getPublicEvents: jest.fn(),
   },
+  equipment: {
+    getList: jest.fn(),
+    getById: jest.fn(),
+  },
 }));
 jest.mock('api/helpers/getLocalArcher', () => jest.fn(() => ({ id: 1, name: 'Test' })));
 
