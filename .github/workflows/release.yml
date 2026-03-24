@@ -46,3 +46,5 @@ jobs:
           tag_name: v${{ steps.package_version.outputs.version }}
           name: v${{ steps.package_version.outputs.version }}
           files: aaa-app-${{ steps.package_version.outputs.version }}.zip
+          fail_on_unmatched_files: true
+          make_latest: true
