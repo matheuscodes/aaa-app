@@ -90,7 +90,7 @@ class HomePage extends React.Component {
     }
   }
 
-  displayName: 'MixExample';
+  displayName = 'MixExample';
 
   get yearlyReportLabels() {
     if(!this.state.overview) {
