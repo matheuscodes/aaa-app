@@ -26,6 +26,8 @@ jobs:
         run: npm ci --force
 
       - name: Build
+        env:
+          CI: false
         run: npm run react-build
 
       - name: Read version from package.json
