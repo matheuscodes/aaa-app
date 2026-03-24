@@ -14,6 +14,7 @@
     "languages": " rm -rf public/locales && cp -r ./node_modules/aaa-languages/src public/locales",
     "react-start": "npm run languages && react-scripts start",
     "react-build": "rm -rf build && npm run languages && react-scripts build",
+    "test": "jest --coverage",
     "react-test": "react-scripts test",
     "react-eject": "react-scripts eject",
     "deploy-stack": "npm run build && npm run resync"
@@ -69,5 +70,11 @@
       "Firefox ESR",
       "not ie < 11"
     ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "identity-obj-proxy": "^3.0.0",
+    "react-test-renderer": "^16.14.0"
   }
 }
