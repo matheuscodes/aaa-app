@@ -1,15 +1,14 @@
 extends:
-  - google
-  - plugin:react/recommended
+  - react-app
+  - react-app/jest
 plugins:
   - react
 env:
   browser: true
   node: true
-parser: babel-eslint
 rules:
   react/no-direct-mutation-state: 0
   require-jsdoc: 0
   max-len:
-    - error
+    - warn
     - ignorePattern: import.*;
