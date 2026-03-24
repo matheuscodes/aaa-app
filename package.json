@@ -3,8 +3,6 @@
   "version": "2.6.0",
   "description": "AAA - Advanced Archery Application",
   "scripts": {
-    "build": "webpack --progress",
-    "build-production": "env-cmd production npm run build",
     "clean": "rm -rf node_modules && rm -rf build",
     "eslint": "eslint --ext .jsx,.svg --fix ",
     "fetch-languages": "rm -rf node_modules/aaa-languages && cp -R ../aaa-languages node_modules/",
@@ -14,10 +12,7 @@
     "languages": " rm -rf public/locales && cp -r ./node_modules/aaa-languages/src public/locales",
     "react-start": "npm run languages && react-scripts start",
     "react-build": "rm -rf build && npm run languages && react-scripts build",
-    "test": "jest --coverage",
-    "react-test": "react-scripts test",
-    "react-eject": "react-scripts eject",
-    "deploy-stack": "npm run build && npm run resync"
+    "test": "jest --coverage"
   },
   "repository": {
     "type": "git",
