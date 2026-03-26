@@ -2,23 +2,17 @@ import React from 'react';
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
 
 import API from 'api';
 
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import Grid from '@material-ui/core/Grid';
-
-const styles = {
-  instructionText: {textAlign:"justify"}
-}
-
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import Grid from '@mui/material/Grid';
 
 class ForgottenCard extends React.Component {
 
@@ -50,7 +44,7 @@ class ForgottenCard extends React.Component {
   }
 
   render() {
-    const { t, classes } = this.props;
+    const { t } = this.props;
 
     return (
       <Card>
@@ -58,7 +52,7 @@ class ForgottenCard extends React.Component {
           <Grid container>
             <Grid item xs={12} >
               <Typography>
-                <p className={classes.instructionText}>{ !this.state.reset ? t('login:forgottenInstructionText') : t('login:forgottenConfirmationText') }</p>
+                <p style={{textAlign:"justify"}}>{ !this.state.reset ? t('login:forgottenInstructionText') : t('login:forgottenConfirmationText') }</p>
               </Typography>
             </Grid>
             {!this.state.reset ? <Grid item xs={12} >
@@ -85,4 +79,4 @@ class ForgottenCard extends React.Component {
   }
 }
 
-export default withTranslation('login')(withRouter(withStyles(styles)(ForgottenCard)));
+export default withTranslation('login')(withRouter(ForgottenCard));

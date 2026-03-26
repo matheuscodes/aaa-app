@@ -1,13 +1,12 @@
 import React from 'react'
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import Icon from '@material-ui/core/Icon';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import Icon from '@mui/material/Icon';
 
 import LogoName from 'svg/LogoName'
 
@@ -17,7 +16,6 @@ import AboutTrainings from 'app/static/about/AboutTrainings'
 import AboutAssessments from 'app/static/about/AboutAssessments'
 import AboutReports from 'app/static/about/AboutReports'
 
-const styles = {}
 
 class AboutPage extends React.Component {
   constructor(props) {
@@ -73,4 +71,4 @@ class AboutPage extends React.Component {
   }
 }
 
-export default withTranslation('common','about')(withStyles(styles)(AboutPage));
+export default withTranslation('common','about')(AboutPage);

@@ -15,6 +15,6 @@ describe('DirectionSelector', () => {
     const { container } = render(
       <DirectionSelector value="N" text="Direction" onChange={jest.fn()} />
     );
-    expect(container.querySelector('select, [role="button"]')).toBeTruthy();
+    expect(container.querySelector('select, [role="combobox"], [role="button"]')).toBeTruthy();
   });
 });

@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { ThemeProvider } from '@material-ui/core/styles';
-import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns as AdapterDateFnsV2 } from '@mui/x-date-pickers/AdapterDateFnsV2';
 // import './index.css';
 
 // import i18n (needs to be bundled ;))
@@ -23,8 +23,8 @@ ReactDOM.render(
   <ThemeProvider theme={theme}>
     <CssBaseline />
     <Suspense fallback={<Loader />}>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <LocalizationProvider dateAdapter={AdapterDateFnsV2}>
         <App />
-      </MuiPickersUtilsProvider>
+      </LocalizationProvider>
     </Suspense>
   </ThemeProvider>, document.getElementById('root'));

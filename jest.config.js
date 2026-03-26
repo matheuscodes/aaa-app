@@ -19,6 +19,5 @@ module.exports = {
   moduleNameMapper: {
     '\\.(css|less|scss)$': 'identity-obj-proxy',
     '\\.(jpg|jpeg|png|gif|woff2?)$': '<rootDir>/test/__mocks__/fileMock.js',
-    '@material-ui/core/fab': '@material-ui/core/Fab',
   },
 };

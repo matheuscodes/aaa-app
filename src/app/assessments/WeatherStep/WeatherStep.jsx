@@ -2,12 +2,11 @@ import React from 'react';
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import StepContent from '@material-ui/core/StepContent';
-import TextField from '@material-ui/core/TextField';
+import Grid from '@mui/material/Grid';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import StepContent from '@mui/material/StepContent';
+import TextField from '@mui/material/TextField';
 
 import Thermometer from 'svg/icon/Thermometer';
 import Windmills from 'svg/icon/Windmills';
@@ -16,7 +15,6 @@ import ArcherAnchored from 'svg/icon/ArcherAnchored';
 import DirectionSelector from 'app/common/DirectionSelector';
 import WeatherSelector from 'app/common/WeatherSelector';
 
-const styles = {}
 
 function WeatherStep(props) {
   const { t } = props;
@@ -78,4 +76,4 @@ function WeatherStep(props) {
   );
 }
 
-export default withTranslation('assessment')(withStyles(styles)(WeatherStep));
+export default withTranslation('assessment')(WeatherStep);

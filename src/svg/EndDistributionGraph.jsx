@@ -2,7 +2,6 @@ import React from 'react'
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
 
 import GraphStyle from 'svg/common/GraphStyle'
 import GraphBar from 'svg/common/GraphBar'
@@ -11,7 +10,6 @@ import GraphAxisLabels from 'svg/common/GraphAxisLabels'
 import GraphEstimations from 'svg/common/GraphEstimations'
 import GraphGrid from 'svg/common/GraphGrid'
 
-const styles = {}
 
 class EndDistributionGraph extends React.Component {
   render() {
@@ -133,4 +131,4 @@ class EndDistributionGraph extends React.Component {
   }
 }
 
-export default withTranslation('assessment')(withStyles(styles)(EndDistributionGraph));
+export default withTranslation('assessment')(EndDistributionGraph);

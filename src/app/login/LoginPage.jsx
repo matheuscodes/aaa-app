@@ -2,13 +2,11 @@ import React from 'react';
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
 
 import LoginCard from 'app/login/LoginCard';
 import LogoName from 'svg/LogoName';
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 
-const styles = {}
 
 class LoginPage extends React.Component {
 
@@ -36,4 +34,4 @@ class LoginPage extends React.Component {
   }
 }
 
-export default withTranslation('login')(withRouter(withStyles(styles)(LoginPage)));
+export default withTranslation('login')(withRouter(LoginPage));

@@ -1,19 +1,17 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import StepContent from '@material-ui/core/StepContent';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Checkbox from '@material-ui/core/Checkbox';
-import FloatingActionButton from '@material-ui/core/Fab';
-import Icon from '@material-ui/core/Icon';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import StepContent from '@mui/material/StepContent';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+import Checkbox from '@mui/material/Checkbox';
+import FloatingActionButton from '@mui/material/Fab';
+import Icon from '@mui/material/Icon';
 
-const styles = {}
 
 class DistancesStep extends React.Component {
 
@@ -101,4 +99,4 @@ class DistancesStep extends React.Component {
   }
 }
 
-export default withTranslation('training')(withStyles(styles)(DistancesStep));
+export default withTranslation('training')(DistancesStep);

@@ -2,9 +2,8 @@ import React from 'react'
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
 
 import API from 'api'
 import RoutePaths from 'global/RoutePaths'
@@ -14,7 +13,6 @@ import Waiting from 'app/common/Waiting'
 import NewSeasonCard from 'app/seasons/NewSeasonCard'
 import SeasonTile from 'app/seasons/SeasonTile'
 
-const styles = {}
 
 class SeasonsPage extends React.Component {
   updateSeasonsList() {
@@ -132,4 +130,4 @@ class SeasonsPage extends React.Component {
   }
 };
 
-export default withTranslation('season')(withRouter(withStyles(styles)(SeasonsPage)));
+export default withTranslation('season')(withRouter(SeasonsPage));

@@ -1,5 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns as AdapterDateFnsV2 } from '@mui/x-date-pickers/AdapterDateFnsV2';
 
 import BaseStep from 'app/assessments/BaseStep/BaseStep';
 import WeatherStep from 'app/assessments/WeatherStep/WeatherStep';
@@ -36,9 +38,11 @@ const mockWeatherProps = {
 describe('BaseStep', () => {
   it('renders without crashing', () => {
     const { container } = render(
-      <div>
-        <BaseStep {...mockProps} />
-      </div>
+      <LocalizationProvider dateAdapter={AdapterDateFnsV2}>
+        <div>
+          <BaseStep {...mockProps} />
+        </div>
+      </LocalizationProvider>
     );
     expect(container).toBeTruthy();
   });

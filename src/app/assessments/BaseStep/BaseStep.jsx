@@ -2,20 +2,18 @@ import React from 'react';
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import StepContent from '@material-ui/core/StepContent';
+import Grid from '@mui/material/Grid';
+import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import StepContent from '@mui/material/StepContent';
 
-import { KeyboardDatePicker } from '@material-ui/pickers';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-const styles = {}
 
 function BaseStep(props) {
   const { t } = props;
@@ -40,9 +38,8 @@ function BaseStep(props) {
           </Grid>
           <Grid item xs={6} >
             <FormControl fullWidth>
-              <KeyboardDatePicker fullWidth autoOk
-                margin="normal"
-                id={'newAssessmentDate'}
+              <DatePicker
+                slotProps={{ textField: { fullWidth: true, margin: 'normal', id: 'newAssessmentDate' } }}
                 label={t('assessment:newAssessment.dateDatepicker.label')}
                 format="dd.MM.yyyy"
                 value={props.date}
@@ -93,4 +90,4 @@ function BaseStep(props) {
   );
 }
 
-export default withTranslation('assessment')(withStyles(styles)(BaseStep));
+export default withTranslation('assessment')(BaseStep);

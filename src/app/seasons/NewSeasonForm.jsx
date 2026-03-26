@@ -5,26 +5,24 @@ import getLocalArcher from 'api/helpers/getLocalArcher'
 
 import API from 'api'
 
-import { withStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import MenuItem from '@material-ui/core/MenuItem';
-import Checkbox from '@material-ui/core/Checkbox';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListSubheader from '@mui/material/ListSubheader';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
-import {KeyboardDatePicker} from '@material-ui/pickers';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import NewSeasonGoal from 'app/seasons/NewSeasonGoal'
 import SeasonGraph from 'svg/SeasonGraph'
 import Waiting from 'app/common/Waiting'
 
 
-const styles = {}
 
 class NewSeasonCardForm extends React.Component {
   constructor(props) {
@@ -257,9 +255,8 @@ class NewSeasonCardForm extends React.Component {
             </Select>
           </Grid>
           <Grid item xs={2} >
-            <KeyboardDatePicker fullWidth autoOk
-              margin="normal"
-              id={'aaa-seasonStartDate'}
+            <DatePicker
+              slotProps={{ textField: { fullWidth: true, margin: 'normal', id: 'aaa-seasonStartDate' } }}
               label={t('season:newSeason.startDateDatepicker.label')}
               format="dd.MM.yyyy"
               value={this.props.season.start}
@@ -267,9 +264,8 @@ class NewSeasonCardForm extends React.Component {
               onChange={this.changeStart.bind(this)} />
           </Grid>
           <Grid item xs={2} >
-            <KeyboardDatePicker fullWidth autoOk
-              margin="normal"
-              id={'aaa-seasonEndDate'}
+            <DatePicker
+              slotProps={{ textField: { fullWidth: true, margin: 'normal', id: 'aaa-seasonEndDate' } }}
               label={t('season:newSeason.endDateDatepicker.label')}
               format="dd.MM.yyyy"
               value={this.props.season.end}
@@ -298,4 +294,4 @@ class NewSeasonCardForm extends React.Component {
   }
 }
 
-export default withTranslation('season')(withStyles(styles)(NewSeasonCardForm));
+export default withTranslation('season')(NewSeasonCardForm);

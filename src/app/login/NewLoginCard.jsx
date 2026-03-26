@@ -3,31 +3,26 @@ import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 import RoutePaths from 'global/RoutePaths'
 
-import { withStyles } from '@material-ui/core/styles';
 
 import API from 'api';
 import passwordCheck from 'global/passwordCheck';
 
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormGroup';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-
-const styles = {
-  instructionText: {textAlign:"justify"}
-}
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormGroup';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 class NewLoginCard extends React.Component {
 
@@ -124,7 +119,7 @@ class NewLoginCard extends React.Component {
   }
 
   render() {
-    const { t, classes } = this.props;
+    const { t } = this.props;
 
     return (
       <Card>
@@ -132,7 +127,7 @@ class NewLoginCard extends React.Component {
           <FormControl>
             <Grid container spacing={2}>
               <Grid item xs={12} >
-                <Typography className={classes.instructionText}>
+                <Typography style={{textAlign:"justify"}}>
                   { !this.state.reset ? t('login:newLoginInstructionText') : t('login:newLoginConfirmationText') }
                 </Typography>
               </Grid>
@@ -221,4 +216,4 @@ class NewLoginCard extends React.Component {
   }
 }
 
-export default withTranslation('login')(withRouter(withStyles(styles)(NewLoginCard)));
+export default withTranslation('login')(withRouter(NewLoginCard));

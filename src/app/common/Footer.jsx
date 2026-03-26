@@ -1,15 +1,13 @@
 import React from 'react'
-import PropTypes from 'prop-types';
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button'
-import ButtonGroup from '@material-ui/core/ButtonGroup'
-import MenuItem from '@material-ui/core/MenuItem'
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button'
+import ButtonGroup from '@mui/material/ButtonGroup'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 import RoutePaths from 'global/RoutePaths'
 import languages from 'constants/Languages'
@@ -27,19 +25,6 @@ var languageNodes = languages.map(function(language) {
   );
 });
 
-const styles = {
-  root: {
-    "& .MuiSelect-icon": {
-      fill: "rgba(255, 255, 255, 0.69)"
-    },
-    "& .MuiInput-underline::before": {
-      borderBottom: "1px solid rgba(255,255,255, 0.42)"
-    },
-    "&:hover .MuiInput-underline::before": {
-      borderBottom: "1px solid white"
-    },
-  },
-};
 
 class Footer extends React.Component {
 
@@ -99,8 +84,6 @@ class Footer extends React.Component {
   }
 }
 
-Footer.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+Footer.propTypes = {};
 
-export default withTranslation('common')(withRouter(withStyles(styles)(Footer)));
+export default withTranslation('common')(withRouter(Footer));

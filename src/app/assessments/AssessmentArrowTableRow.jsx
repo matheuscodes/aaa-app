@@ -2,15 +2,13 @@ import React from 'react';
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import FloatingActionButton from '@material-ui/core/Fab';
-import Icon from '@material-ui/core/Icon';
+import FloatingActionButton from '@mui/material/Fab';
+import Icon from '@mui/material/Icon';
 
 import valueConverter from 'global/ValueConverter';
 
 import ArrowRingRow from 'app/assessments/ArrowRingRow';
 
-const styles = {}
 class AssessmentArrowTableRow extends React.Component {
   deleteEnd() {
     this.props.deleteEnd(this.props.roundIndex, this.props.endIndex);
@@ -40,4 +38,4 @@ class AssessmentArrowTableRow extends React.Component {
   }
 };
 
-export default withTranslation('assessment')(withStyles(styles)(AssessmentArrowTableRow));
+export default withTranslation('assessment')(AssessmentArrowTableRow);

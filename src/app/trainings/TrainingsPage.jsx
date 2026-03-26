@@ -2,10 +2,9 @@ import React from 'react';
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Icon from '@material-ui/core/Icon';
-import Button from '@material-ui/core/Button';
+import Grid from '@mui/material/Grid';
+import Icon from '@mui/material/Icon';
+import Button from '@mui/material/Button';
 
 import API from 'api';
 import RoutePaths from 'global/RoutePaths'
@@ -14,8 +13,6 @@ import Waiting from 'app/common/Waiting';
 
 import TrainingTile from 'app/trainings/TrainingTile';
 import NewTrainingDialog from 'app/trainings/NewTrainingDialog';
-
-const styles = { };
 
 class TrainingsPage extends React.Component {
   constructor(props) {
@@ -246,4 +243,4 @@ class TrainingsPage extends React.Component {
   }
 }
 
-export default withTranslation('training')(withRouter(withStyles(styles)(TrainingsPage)));
+export default withTranslation('training')(withRouter(TrainingsPage));
