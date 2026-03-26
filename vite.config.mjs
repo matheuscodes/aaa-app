@@ -15,6 +15,13 @@ export default defineConfig({
     outDir: 'build',
   },
   resolve: {
+    dedupe: ['react', 'react-dom'],
+    // Vite 8 uses Rolldown for pre-bundling. Rolldown has a bug where it generates
+    // broken __esmMin lazy initializers for the ESM builds of @material-ui/styles,
+    // causing `import_react$2 is undefined` when ThemeProvider calls React.useMemo.
+    // Forcing resolution to prefer the CJS 'main' entry over the ESM 'module' entry
+    // makes Rolldown use __commonJSMin instead, which initializes correctly.
+    mainFields: ['browser', 'main'],
     alias: {
       // Mirror jsconfig.json baseUrl: "src" so all top-level src imports resolve
       api: resolve(srcPath, 'api'),
@@ -23,6 +30,17 @@ export default defineConfig({
       global: resolve(srcPath, 'global'),
       model: resolve(srcPath, 'model'),
       svg: resolve(srcPath, 'svg'),
+    },
+  },
+  optimizeDeps: {
+    // Vite 8 uses Rolldown for pre-bundling. Rolldown has a bug where it generates
+    // broken __esmMin lazy initializers for @material-ui/styles ESM modules, causing
+    // `import_react$2 is undefined` at runtime. Forcing Rolldown to use the CJS entry
+    // (via mainFields without 'module') avoids the ESM code path and the bug.
+    rolldownOptions: {
+      resolve: {
+        mainFields: ['browser', 'main'],
+      },
     },
   },
   define: {
