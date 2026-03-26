@@ -1,5 +1,16 @@
 import React from 'react'
 import {Bar} from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
@@ -12,14 +23,27 @@ import CardHeader from '@material-ui/core/CardHeader';
 import API from 'api'
 import RoutePaths from 'global/RoutePaths'
 
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend,
+);
+
 const styles = { }
 
 const rings = ['M', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
 const optionsRings = {
   responsive: true,
-  tooltips: {
-    mode: 'label'
+  plugins: {
+    tooltip: {
+      mode: 'label'
+    }
   },
   elements: {
     line: {
@@ -27,30 +51,21 @@ const optionsRings = {
     }
   },
   scales: {
-    xAxes: [
-      {
-        display: true,
-        gridLines: {
-          display: false
-        },
-        offset: true,
-        labels: rings,
-      }
-    ],
-    yAxes: [
-      {
-        type: 'linear',
-        display: true,
-        position: 'left',
-        id: 'y-axis-1',
-        gridLines: {
-          display: true
-        },
-        labels: {
-          show: true
-        },
-      }
-    ]
+    x: {
+      display: true,
+      grid: {
+        display: false
+      },
+      offset: true,
+    },
+    'y-axis-1': {
+      type: 'linear',
+      display: true,
+      position: 'left',
+      grid: {
+        display: true
+      },
+    }
   }
 };
 
@@ -102,8 +117,10 @@ class HomePage extends React.Component {
   get yearlyReportOptions() {
     return {
       responsive: true,
-      tooltips: {
-        mode: 'label'
+      plugins: {
+        tooltip: {
+          mode: 'label'
+        }
       },
       elements: {
         line: {
@@ -111,42 +128,29 @@ class HomePage extends React.Component {
         }
       },
       scales: {
-        xAxes: [
-          {
-            display: true,
-            gridLines: {
-              display: false
-            },
-            offset: true,
-            labels: this.yearlyReportLabels,
-          }
-        ],
-        yAxes: [
-          {
-            type: 'linear',
-            display: true,
-            position: 'left',
-            id: 'y-axis-1',
-            gridLines: {
-              display: true
-            },
-            labels: {
-              show: true
-            },
+        x: {
+          display: true,
+          grid: {
+            display: false
           },
-          {
-            type: 'linear',
-            display: true,
-            position: 'right',
-            id: 'y-axis-2',
-            gridLines: {
-              display: true
-            },
-            labels: {
-              show: true
-            },
+          offset: true,
+        },
+        'y-axis-1': {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          grid: {
+            display: true
           },
-        ]
+        },
+        'y-axis-2': {
+          type: 'linear',
+          display: true,
+          position: 'right',
+          grid: {
+            display: true
+          },
+        },
       }
     }
   }
@@ -164,7 +168,7 @@ class HomePage extends React.Component {
       "10":"#ffbb00",
       "X":"#ff8800",
     }
-    const data = { datasets: [] }
+    const data = { labels: this.yearlyReportLabels, datasets: [] }
     if(this.state.overview) {
       const { t } = this.props;
       const labels = this.yearlyReportLabels
@@ -207,7 +211,7 @@ class HomePage extends React.Component {
 
   get ringsData() {
     if(!this.state.overview) {
-      return {datasets:[]}
+      return { labels: rings, datasets:[] }
     }
     const lastYear = rings.map(i => this.state.overview.rings.lastYear[i]*100);
     const lastQuarter = rings.map(i => this.state.overview.rings.lastQuarter[i]*100);
@@ -219,6 +223,7 @@ class HomePage extends React.Component {
       "month": "#065535"
     }
     return {
+      labels: rings,
       datasets: [{
         type: 'bar',
         label: t("home:rings.graph.distributionYear"),
