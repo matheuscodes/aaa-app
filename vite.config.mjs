@@ -15,6 +15,7 @@ export default defineConfig({
     outDir: 'build',
   },
   resolve: {
+    dedupe: ['react', 'react-dom'],
     alias: {
       // Mirror jsconfig.json baseUrl: "src" so all top-level src imports resolve
       api: resolve(srcPath, 'api'),
