@@ -2,16 +2,16 @@ import React from 'react';
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Icon from '@material-ui/core/Icon';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import FloatingActionButton from '@material-ui/core/Fab';
-import Toolbar from '@material-ui/core/Toolbar';
-import AppBar from '@material-ui/core/AppBar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@mui/styles';
+import Grid from '@mui/material/Grid';
+import Icon from '@mui/material/Icon';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import FloatingActionButton from '@mui/material/Fab';
+import Toolbar from '@mui/material/Toolbar';
+import AppBar from '@mui/material/AppBar';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
 
 
 import API from 'api';

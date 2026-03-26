@@ -2,8 +2,8 @@ import React from 'react';
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@mui/styles';
+import Grid from '@mui/material/Grid';
 
 import Waiting from 'app/common/Waiting';
 import AssessmentTile from 'app/assessments/AssessmentTile';

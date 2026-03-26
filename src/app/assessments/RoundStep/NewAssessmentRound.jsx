@@ -2,14 +2,14 @@ import React from 'react';
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogActions from '@material-ui/core/DialogActions';
-import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@mui/styles';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import TextField from '@mui/material/TextField';
 
 import valueConverter from 'global/ValueConverter';
 

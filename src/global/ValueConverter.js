@@ -1,9 +1,4 @@
-import grey from '@material-ui/core/colors/grey';
-import blue from '@material-ui/core/colors/blue';
-import red from '@material-ui/core/colors/red';
-import yellow from '@material-ui/core/colors/yellow';
-import amber from '@material-ui/core/colors/amber';
-import green from '@material-ui/core/colors/green';
+import { grey, blue, red, yellow, amber, green } from '@mui/material/colors';
 
 export default {
   color: {

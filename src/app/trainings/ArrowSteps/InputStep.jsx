@@ -1,13 +1,13 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import StepContent from '@material-ui/core/StepContent';
-import Grid from '@material-ui/core/Grid';
-import InputLabel from '@material-ui/core/InputLabel';
-import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@mui/styles';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import StepContent from '@mui/material/StepContent';
+import Grid from '@mui/material/Grid';
+import InputLabel from '@mui/material/InputLabel';
+import TextField from '@mui/material/TextField';
 
 const styles = {}
 

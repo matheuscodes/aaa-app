@@ -2,9 +2,9 @@ import React from 'react';
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import FloatingActionButton from '@material-ui/core/Fab';
-import Icon from '@material-ui/core/Icon';
+import { withStyles } from '@mui/styles';
+import FloatingActionButton from '@mui/material/Fab';
+import Icon from '@mui/material/Icon';
 
 import valueConverter from 'global/ValueConverter';
 

@@ -3,23 +3,23 @@ import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 import RoutePaths from 'global/RoutePaths'
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@mui/styles';
 
 import API from 'api';
 import downloadFile from 'api/helpers/DownloadFile';
 import getLocalArcher from 'api/helpers/getLocalArcher';
 
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardMedia from '@mui/material/CardMedia';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardActionArea from '@mui/material/CardActionArea';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
 
 const styles = {}
 

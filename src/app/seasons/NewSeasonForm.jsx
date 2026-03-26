@@ -5,19 +5,19 @@ import getLocalArcher from 'api/helpers/getLocalArcher'
 
 import API from 'api'
 
-import { withStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import MenuItem from '@material-ui/core/MenuItem';
-import Checkbox from '@material-ui/core/Checkbox';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { withStyles } from '@mui/styles';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListSubheader from '@mui/material/ListSubheader';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
-import {KeyboardDatePicker} from '@material-ui/pickers';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import NewSeasonGoal from 'app/seasons/NewSeasonGoal'
 import SeasonGraph from 'svg/SeasonGraph'
@@ -257,24 +257,24 @@ class NewSeasonCardForm extends React.Component {
             </Select>
           </Grid>
           <Grid item xs={2} >
-            <KeyboardDatePicker fullWidth autoOk
-              margin="normal"
-              id={'aaa-seasonStartDate'}
+            <DatePicker
               label={t('season:newSeason.startDateDatepicker.label')}
               format="dd.MM.yyyy"
               value={this.props.season.start}
               maxDate={this.props.season.end}
-              onChange={this.changeStart.bind(this)} />
+              onChange={this.changeStart.bind(this)}
+              slotProps={{ textField: { fullWidth: true, margin: 'normal', id: 'aaa-seasonStartDate' } }}
+            />
           </Grid>
           <Grid item xs={2} >
-            <KeyboardDatePicker fullWidth autoOk
-              margin="normal"
-              id={'aaa-seasonEndDate'}
+            <DatePicker
               label={t('season:newSeason.endDateDatepicker.label')}
               format="dd.MM.yyyy"
               value={this.props.season.end}
               minDate={this.props.season.start}
-              onChange={this.changeEnd.bind(this)} />
+              onChange={this.changeEnd.bind(this)}
+              slotProps={{ textField: { fullWidth: true, margin: 'normal', id: 'aaa-seasonEndDate' } }}
+            />
           </Grid>
           <Grid item style={styles.GridTile} xs={4} >
             <List>

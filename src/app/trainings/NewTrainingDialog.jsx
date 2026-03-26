@@ -1,18 +1,18 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Icon from '@material-ui/core/Icon';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogActions from '@material-ui/core/DialogActions';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import StepContent from '@material-ui/core/StepContent';
+import { withStyles } from '@mui/styles';
+import Stepper from '@mui/material/Stepper';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Icon from '@mui/material/Icon';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import StepContent from '@mui/material/StepContent';
 
 import API from 'api';
 

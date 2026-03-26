@@ -8,12 +8,12 @@ import {
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
-import Snackbar from '@material-ui/core/Snackbar';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@mui/styles';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Snackbar from '@mui/material/Snackbar';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 import Footer from "app/common/Footer"
 import Header from "app/common/Header"
