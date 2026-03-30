@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class extends React.Component {
+export default class Compass extends React.Component {
   render() {
     // TODO FIX THIS HACK AND CALCULATE CORRECTLY
     var transforms = [];

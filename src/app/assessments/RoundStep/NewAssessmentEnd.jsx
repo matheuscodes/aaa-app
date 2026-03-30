@@ -143,7 +143,7 @@ class NewAssessmentEnd extends React.Component {
       'X', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M',
     ].map(function(value) {
       return (
-        <Grid item xs={3}>
+        <Grid item xs={3} key={value}>
           <Button fullWidth
             variant="contained"
             size="small"

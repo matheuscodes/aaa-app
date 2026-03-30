@@ -1,7 +1,7 @@
 
 import React from 'react'
 
-export default class extends React.Component {
+export default class ArcherWheelChair extends React.Component {
   render() {
     return (
       <svg style={this.props.globalStyle} id="svg2" version="1.1" x="0px" y="0px" width={this.props.width} height={this.props.height} viewBox="0 0 300 300" enableBackground="new 0 0 300 300">

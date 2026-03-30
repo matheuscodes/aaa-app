@@ -8,7 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import WeatherConditions from 'constants/WeatherConditions'
 import WeatherIcons from 'svg/icon/Weather'
 
-export default class extends React.Component {
+export default class WeatherSelector extends React.Component {
   constructor(props) {
     super(props);
     this.state = {weathers: []}

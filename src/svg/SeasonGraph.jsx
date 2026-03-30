@@ -59,7 +59,7 @@ class SeasonGraph extends React.Component {
       values.push(single.averageGrade);
       // TODO maybe move unit to the components themselves?
       return (
-        <g>
+        <g key={index}>
           <PlanBar
             value={single.arrowCount * barUnit}
             column={index}
@@ -79,7 +79,7 @@ class SeasonGraph extends React.Component {
 
     const eventBars = (this.props.events || []).map(function(single, index) {
       return (
-        <g>
+        <g key={index}>
           <EventBar event={single}
                     column={weekIndex[moment(single.date).isoWeek()]} />
         </g>
