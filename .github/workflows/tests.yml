@@ -38,8 +38,8 @@ jobs:
       - name: Run lint
         run: npm run eslint
 
-      - name: Run tests
-        run: npm run test
+      - name: Run tests with coverage
+        run: npm run test:coverage
 
       - name: SonarQube Scan
         if: github.actor != 'dependabot[bot]'
