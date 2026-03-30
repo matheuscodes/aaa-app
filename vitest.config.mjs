@@ -28,6 +28,7 @@ export default defineConfig({
     include: ['test/**/*.test.{js,jsx}'],
     coverage: {
       provider: 'v8',
+      reporter: ['text', 'lcov'],
       include: ['src/**/*.{js,jsx}'],
       thresholds: {
         lines: 40,
