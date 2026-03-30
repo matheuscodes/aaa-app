@@ -8,7 +8,7 @@ import NewAssessmentRound from 'app/assessments/RoundStep/NewAssessmentRound';
 describe('NewAssessmentEnd', () => {
   it('renders without crashing', () => {
     const { container } = render(
-      <NewAssessmentEnd roundIndex={0} addEnd={jest.fn()} />
+      <NewAssessmentEnd roundIndex={0} addEnd={vi.fn()} />
     );
     expect(container).toBeTruthy();
   });
@@ -17,7 +17,7 @@ describe('NewAssessmentEnd', () => {
 describe('NewAssessmentRound', () => {
   it('renders without crashing', () => {
     const { container } = render(
-      <NewAssessmentRound roundIndex={0} addRound={jest.fn()} />
+      <NewAssessmentRound roundIndex={0} addRound={vi.fn()} />
     );
     expect(container).toBeTruthy();
   });
@@ -32,9 +32,9 @@ describe('RoundStep', () => {
         <RoundStep
           roundIndex={0}
           round={round}
-          addEnd={jest.fn()}
-          addRound={jest.fn()}
-          deleteEnd={jest.fn()}
+          addEnd={vi.fn()}
+          addRound={vi.fn()}
+          deleteEnd={vi.fn()}
         />
       </div>
     );

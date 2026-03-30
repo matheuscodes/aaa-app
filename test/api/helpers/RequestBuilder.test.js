@@ -1,6 +1,6 @@
 import RequestBuilder from 'api/helpers/RequestBuilder';
 
-jest.mock('api/helpers/getLocalArcher', () => jest.fn());
+vi.mock('api/helpers/getLocalArcher', () => ({ default: vi.fn() }));
 
 import getLocalArcher from 'api/helpers/getLocalArcher';
 
@@ -9,19 +9,19 @@ describe('RequestBuilder', () => {
 
   beforeEach(() => {
     mockXhr = {
-      open: jest.fn(),
-      setRequestHeader: jest.fn(),
-      send: jest.fn(),
+      open: vi.fn(),
+      setRequestHeader: vi.fn(),
+      send: vi.fn(),
       readyState: 4,
       status: 200,
       onreadystatechange: null,
     };
-    global.XMLHttpRequest = jest.fn(() => mockXhr);
+    global.XMLHttpRequest = vi.fn(function() { return mockXhr; });
     localStorage.clear();
   });
 
   it('builds a login request without archer check', () => {
-    const request = RequestBuilder('/login/', 'POST', { failure: jest.fn(), context: {} });
+    const request = RequestBuilder('/login/', 'POST', { failure: vi.fn(), context: {} });
     expect(request).toBe(mockXhr);
     expect(mockXhr.open).toHaveBeenCalledWith('POST', expect.stringContaining('/login/'), true);
   });
@@ -29,7 +29,7 @@ describe('RequestBuilder', () => {
   it('builds an authenticated request when archer is available', () => {
     getLocalArcher.mockReturnValue({ id: 42 });
     localStorage.loggedToken = 'mock-token';
-    const request = RequestBuilder('/seasons/', 'GET', { failure: jest.fn(), context: {} });
+    const request = RequestBuilder('/seasons/', 'GET', { failure: vi.fn(), context: {} });
     expect(request).toBe(mockXhr);
     expect(mockXhr.open).toHaveBeenCalledWith('GET', expect.stringContaining('/archers/42/seasons/'), true);
     expect(mockXhr.setRequestHeader).toHaveBeenCalledWith('X-AAA-Authorization', 'mock-token');
@@ -37,7 +37,7 @@ describe('RequestBuilder', () => {
 
   it('returns null and calls failure when archer is missing for non-login path', () => {
     getLocalArcher.mockReturnValue(undefined);
-    const failureMock = jest.fn();
+    const failureMock = vi.fn();
     const request = RequestBuilder('/seasons/', 'GET', { failure: failureMock, context: {} });
     expect(request).toBeNull();
     expect(failureMock).toHaveBeenCalled();
@@ -46,8 +46,8 @@ describe('RequestBuilder', () => {
   it('calls status callback on readyState 4', () => {
     getLocalArcher.mockReturnValue({ id: 1 });
     localStorage.loggedToken = 'mock-token';
-    const successCallback = jest.fn();
-    RequestBuilder('/seasons/', 'GET', { 200: successCallback, failure: jest.fn(), context: {} });
+    const successCallback = vi.fn();
+    RequestBuilder('/seasons/', 'GET', { 200: successCallback, failure: vi.fn(), context: {} });
     mockXhr.onreadystatechange && mockXhr.onreadystatechange();
     expect(successCallback).toHaveBeenCalledWith(mockXhr);
   });
@@ -55,9 +55,9 @@ describe('RequestBuilder', () => {
   it('calls failure callback for unexpected status', () => {
     getLocalArcher.mockReturnValue({ id: 1 });
     localStorage.loggedToken = 'mock-token';
-    const failureCallback = jest.fn();
+    const failureCallback = vi.fn();
     mockXhr.status = 404;
-    RequestBuilder('/seasons/', 'GET', { 200: jest.fn(), failure: failureCallback, context: {} });
+    RequestBuilder('/seasons/', 'GET', { 200: vi.fn(), failure: failureCallback, context: {} });
     mockXhr.onreadystatechange && mockXhr.onreadystatechange();
     expect(failureCallback).toHaveBeenCalledWith(mockXhr);
   });

@@ -1,26 +1,28 @@
-jest.mock('api', () => ({
-  isAuthError: jest.fn(() => false),
-  seasons: {
-    getList: jest.fn(),
-    getById: jest.fn(),
-    save: jest.fn(),
-    delete: jest.fn(),
-    permit: jest.fn(),
-    deny: jest.fn(),
-  },
-  trainers: {
-    getAllTrainers: jest.fn(),
-  },
-  events: {
-    getList: jest.fn(),
-    getPublicEvents: jest.fn(),
-  },
-  equipment: {
-    getList: jest.fn(),
-    getById: jest.fn(),
-  },
+vi.mock('api', () => ({
+  default: {
+    isAuthError: vi.fn(() => false),
+    seasons: {
+      getList: vi.fn(),
+      getById: vi.fn(),
+      save: vi.fn(),
+      delete: vi.fn(),
+      permit: vi.fn(),
+      deny: vi.fn(),
+    },
+    trainers: {
+      getAllTrainers: vi.fn(),
+    },
+    events: {
+      getList: vi.fn(),
+      getPublicEvents: vi.fn(),
+    },
+    equipment: {
+      getList: vi.fn(),
+      getById: vi.fn(),
+    },
+    },
 }));
-jest.mock('api/helpers/getLocalArcher', () => jest.fn(() => ({ id: 1, name: 'Test' })));
+vi.mock('api/helpers/getLocalArcher', () => ({ default: vi.fn(() => ({ id: 1, name: 'Test' })) }));
 
 import React from 'react';
 import { render } from '@testing-library/react';
@@ -38,7 +40,7 @@ const season = new Season({
 describe('NewSeasonCard', () => {
   it('renders FAB button without crashing', () => {
     const { container } = render(
-      <NewSeasonCard messenger={{ showMessage: jest.fn() }} onSaved={jest.fn()} />
+      <NewSeasonCard messenger={{ showMessage: vi.fn() }} onSaved={vi.fn()} />
     );
     expect(container).toBeTruthy();
   });

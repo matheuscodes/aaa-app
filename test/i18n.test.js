@@ -1,26 +1,25 @@
-jest.mock('i18next-http-backend', () => ({
+vi.mock('i18next-http-backend', () => ({
   __esModule: true,
-  default: { type: 'backend', init: jest.fn(), read: jest.fn() },
+  default: { type: 'backend', init: vi.fn(), read: vi.fn() },
 }));
 
-jest.mock('i18next-browser-languagedetector', () => ({
+vi.mock('i18next-browser-languagedetector', () => ({
   __esModule: true,
-  default: { type: 'languageDetector', detect: jest.fn(), init: jest.fn(), cacheUserLanguage: jest.fn() },
+  default: { type: 'languageDetector', detect: vi.fn(), init: vi.fn(), cacheUserLanguage: vi.fn() },
 }));
+
+import i18n from 'i18n';
 
 describe('i18n', () => {
   it('initialises and exports the i18n instance', () => {
-    const i18n = require('i18n').default;
     expect(i18n).toBeDefined();
   });
 
   it('i18n has the changeLanguage method', () => {
-    const i18n = require('i18n').default;
     expect(typeof i18n.changeLanguage).toBe('function');
   });
 
   it('i18n has the t function', () => {
-    const i18n = require('i18n').default;
     expect(typeof i18n.t).toBe('function');
   });
 });

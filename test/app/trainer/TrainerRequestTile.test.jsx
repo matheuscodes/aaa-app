@@ -17,8 +17,8 @@ describe('TrainerRequestTile', () => {
     const { container } = render(
       <TrainerRequestTile
         data={data}
-        onReject={jest.fn()}
-        onApprove={jest.fn()}
+        onReject={vi.fn()}
+        onApprove={vi.fn()}
       />
     );
     expect(container).toBeTruthy();
@@ -28,8 +28,8 @@ describe('TrainerRequestTile', () => {
     const { container } = render(
       <TrainerRequestTile
         data={data}
-        onReject={jest.fn()}
-        onApprove={jest.fn()}
+        onReject={vi.fn()}
+        onApprove={vi.fn()}
       />
     );
     expect(container.querySelectorAll('button').length).toBeGreaterThanOrEqual(2);
@@ -40,8 +40,8 @@ describe('TrainerRequestTile', () => {
     const { container } = render(
       <TrainerRequestTile
         data={approvedData}
-        onReject={jest.fn()}
-        onApprove={jest.fn()}
+        onReject={vi.fn()}
+        onApprove={vi.fn()}
       />
     );
     expect(container.querySelectorAll('button').length).toBeLessThan(2);

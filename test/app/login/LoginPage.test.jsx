@@ -1,20 +1,22 @@
-jest.mock('api/helpers/DownloadFile', () => jest.fn());
-jest.mock('api/helpers/getLocalArcher', () => jest.fn());
-jest.mock('api', () => ({
-  login: jest.fn(),
-  reset: jest.fn(),
-  confirm: jest.fn(),
-  newLogin: jest.fn(),
-  replaceLogin: jest.fn(),
-  isAuthError: jest.fn(),
-  seasons: { getList: jest.fn() },
-  assessments: { getList: jest.fn() },
-  trainings: { getList: jest.fn() },
-  reports: { getYearOverview: jest.fn(), getLastWeeksOverview: jest.fn(), getRingsOverview: jest.fn(), getAssessmentsOverview: jest.fn() },
-  events: { getList: jest.fn(), getPublicEvents: jest.fn() },
-  overview: { get: jest.fn() },
-  equipment: { getList: jest.fn() },
-  trainers: { getAllTrainers: jest.fn(), archers: { list: jest.fn() }, seasons: { list: jest.fn() } },
+vi.mock('api/helpers/DownloadFile', () => ({ default: vi.fn() }));
+vi.mock('api/helpers/getLocalArcher', () => ({ default: vi.fn() }));
+vi.mock('api', () => ({
+  default: {
+    login: vi.fn(),
+    reset: vi.fn(),
+    confirm: vi.fn(),
+    newLogin: vi.fn(),
+    replaceLogin: vi.fn(),
+    isAuthError: vi.fn(),
+    seasons: { getList: vi.fn() },
+    assessments: { getList: vi.fn() },
+    trainings: { getList: vi.fn() },
+    reports: { getYearOverview: vi.fn(), getLastWeeksOverview: vi.fn(), getRingsOverview: vi.fn(), getAssessmentsOverview: vi.fn() },
+    events: { getList: vi.fn(), getPublicEvents: vi.fn() },
+    overview: { get: vi.fn() },
+    equipment: { getList: vi.fn() },
+    trainers: { getAllTrainers: vi.fn(), archers: { list: vi.fn() }, seasons: { list: vi.fn() } },
+    },
 }));
 
 import React from 'react';
@@ -25,12 +27,12 @@ import LoginPage from 'app/login/LoginPage';
 
 describe('LoginPage', () => {
   it('renders without crashing', () => {
-    const { container } = render(<MemoryRouter><LoginPage messenger={{showMessage: jest.fn()}} /></MemoryRouter>);
+    const { container } = render(<MemoryRouter><LoginPage messenger={{showMessage: vi.fn()}} /></MemoryRouter>);
     expect(container).toBeTruthy();
   });
 
   it('renders the logo', () => {
-    const { container } = render(<MemoryRouter><LoginPage messenger={{showMessage: jest.fn()}} /></MemoryRouter>);
+    const { container } = render(<MemoryRouter><LoginPage messenger={{showMessage: vi.fn()}} /></MemoryRouter>);
     expect(container.querySelector('svg')).toBeTruthy();
   });
 });

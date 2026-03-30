@@ -6,7 +6,7 @@ import WeatherSelector from 'app/common/WeatherSelector';
 describe('WeatherSelector', () => {
   it('renders without crashing', () => {
     const { container } = render(
-      <WeatherSelector value="FAIR" text="Weather" onChange={jest.fn()} />
+      <WeatherSelector value="FAIR" text="Weather" onChange={vi.fn()} />
     );
     expect(container).toBeTruthy();
   });

@@ -5,13 +5,13 @@ describe('DownloadFile', () => {
 
   beforeEach(() => {
     mockXhr = {
-      open: jest.fn(),
-      send: jest.fn(),
+      open: vi.fn(),
+      send: vi.fn(),
       readyState: 4,
       status: 200,
       onreadystatechange: null,
     };
-    global.XMLHttpRequest = jest.fn(() => mockXhr);
+    global.XMLHttpRequest = vi.fn(function() { return mockXhr; });
   });
 
   it('opens a GET request to the given URL', () => {
@@ -25,7 +25,7 @@ describe('DownloadFile', () => {
   });
 
   it('calls status-specific callback when readyState is 4', () => {
-    const callback200 = jest.fn();
+    const callback200 = vi.fn();
     const callbacks = { 200: callback200, context: {} };
     DownloadFile('http://example.com/file', callbacks);
     mockXhr.onreadystatechange && mockXhr.onreadystatechange();
@@ -33,9 +33,9 @@ describe('DownloadFile', () => {
   });
 
   it('calls failure callback for unexpected status', () => {
-    const failureCallback = jest.fn();
+    const failureCallback = vi.fn();
     mockXhr.status = 500;
-    const callbacks = { 200: jest.fn(), failure: failureCallback, context: {} };
+    const callbacks = { 200: vi.fn(), failure: failureCallback, context: {} };
     DownloadFile('http://example.com/file', callbacks);
     mockXhr.onreadystatechange && mockXhr.onreadystatechange();
     expect(failureCallback).toHaveBeenCalledWith(mockXhr);

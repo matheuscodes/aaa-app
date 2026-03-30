@@ -5,14 +5,14 @@ describe('getPublicRequest', () => {
 
   beforeEach(() => {
     mockXhr = {
-      open: jest.fn(),
-      setRequestHeader: jest.fn(),
-      send: jest.fn(),
+      open: vi.fn(),
+      setRequestHeader: vi.fn(),
+      send: vi.fn(),
       readyState: 4,
       status: 200,
       onreadystatechange: null,
     };
-    global.XMLHttpRequest = jest.fn(() => mockXhr);
+    global.XMLHttpRequest = vi.fn(function() { return mockXhr; });
   });
 
   it('creates an XMLHttpRequest and opens it with GET', () => {
@@ -26,7 +26,7 @@ describe('getPublicRequest', () => {
   });
 
   it('calls the appropriate status callback on readyState 4', () => {
-    const successCallback = jest.fn();
+    const successCallback = vi.fn();
     const callbacks = { 200: successCallback, context: {} };
     getPublicRequest('/some/path', 'GET', callbacks);
     mockXhr.onreadystatechange && mockXhr.onreadystatechange();
@@ -34,9 +34,9 @@ describe('getPublicRequest', () => {
   });
 
   it('calls failure callback when status has no matching handler', () => {
-    const failureCallback = jest.fn();
+    const failureCallback = vi.fn();
     mockXhr.status = 404;
-    const callbacks = { 200: jest.fn(), failure: failureCallback, context: {} };
+    const callbacks = { 200: vi.fn(), failure: failureCallback, context: {} };
     getPublicRequest('/some/path', 'GET', callbacks);
     mockXhr.onreadystatechange && mockXhr.onreadystatechange();
     expect(failureCallback).toHaveBeenCalledWith(mockXhr);

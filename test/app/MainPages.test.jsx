@@ -1,10 +1,12 @@
-jest.mock('api', () => ({
-  assessments: { getList: jest.fn(), getTargets: jest.fn() },
-  trainings: { getList: jest.fn() },
-  seasons: { getList: jest.fn() },
-  isAuthError: jest.fn(() => false),
+vi.mock('api', () => ({
+  default: {
+    assessments: { getList: vi.fn(), getTargets: vi.fn() },
+    trainings: { getList: vi.fn() },
+    seasons: { getList: vi.fn() },
+    isAuthError: vi.fn(() => false),
+    },
 }));
-jest.mock('api/helpers/getLocalArcher', () => jest.fn(() => ({ id: 1, name: 'Test' })));
+vi.mock('api/helpers/getLocalArcher', () => ({ default: vi.fn(() => ({ id: 1, name: 'Test' })) }));
 
 import React from 'react';
 import { render } from '@testing-library/react';
@@ -17,7 +19,7 @@ describe('AssessmentsPage', () => {
   it('renders without crashing', () => {
     const { container } = render(
       <MemoryRouter>
-        <AssessmentsPage messenger={{ showMessage: jest.fn() }} />
+        <AssessmentsPage messenger={{ showMessage: vi.fn() }} />
       </MemoryRouter>
     );
     expect(container).toBeTruthy();
@@ -28,7 +30,7 @@ describe('TrainingsPage', () => {
   it('renders without crashing', () => {
     const { container } = render(
       <MemoryRouter>
-        <TrainingsPage messenger={{ showMessage: jest.fn() }} />
+        <TrainingsPage messenger={{ showMessage: vi.fn() }} />
       </MemoryRouter>
     );
     expect(container).toBeTruthy();

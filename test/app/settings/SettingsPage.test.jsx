@@ -1,10 +1,12 @@
-jest.mock('api', () => ({
-  isAuthError: jest.fn(() => false),
-  login: jest.fn(),
-  seasons: { getList: jest.fn() },
-  assessments: { getList: jest.fn() },
+vi.mock('api', () => ({
+  default: {
+    isAuthError: vi.fn(() => false),
+    login: vi.fn(),
+    seasons: { getList: vi.fn() },
+    assessments: { getList: vi.fn() },
+    },
 }));
-jest.mock('api/helpers/getLocalArcher', () => jest.fn(() => ({ id: 1, name: 'Test' })));
+vi.mock('api/helpers/getLocalArcher', () => ({ default: vi.fn(() => ({ id: 1, name: 'Test' })) }));
 
 import React from 'react';
 import { render } from '@testing-library/react';
@@ -16,7 +18,7 @@ describe('SettingsPage', () => {
   it('renders without crashing', () => {
     const { container } = render(
       <MemoryRouter>
-        <SettingsPage messenger={{ showMessage: jest.fn() }} />
+        <SettingsPage messenger={{ showMessage: vi.fn() }} />
       </MemoryRouter>
     );
     expect(container).toBeTruthy();
@@ -25,7 +27,7 @@ describe('SettingsPage', () => {
   it('renders some settings content', () => {
     const { container } = render(
       <MemoryRouter>
-        <SettingsPage messenger={{ showMessage: jest.fn() }} />
+        <SettingsPage messenger={{ showMessage: vi.fn() }} />
       </MemoryRouter>
     );
     expect(container.querySelector('div')).toBeTruthy();

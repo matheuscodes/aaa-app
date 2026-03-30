@@ -1,14 +1,16 @@
-jest.mock('api', () => ({
-  isAuthError: jest.fn(() => false),
-  reports: {
-    getYearOverview: jest.fn(),
-    getLastWeeksOverview: jest.fn(),
-    getRingsOverview: jest.fn(),
-    getAssessmentsOverview: jest.fn(),
-  },
-  seasons: { getList: jest.fn(), getById: jest.fn(), getMonthReport: jest.fn() },
+vi.mock('api', () => ({
+  default: {
+    isAuthError: vi.fn(() => false),
+    reports: {
+      getYearOverview: vi.fn(),
+      getLastWeeksOverview: vi.fn(),
+      getRingsOverview: vi.fn(),
+      getAssessmentsOverview: vi.fn(),
+    },
+    seasons: { getList: vi.fn(), getById: vi.fn(), getMonthReport: vi.fn() },
+    },
 }));
-jest.mock('api/helpers/getLocalArcher', () => jest.fn(() => ({ id: 1, name: 'Test' })));
+vi.mock('api/helpers/getLocalArcher', () => ({ default: vi.fn(() => ({ id: 1, name: 'Test' })) }));
 
 import React from 'react';
 import { render } from '@testing-library/react';
@@ -20,7 +22,7 @@ describe('ReportsPage', () => {
   it('renders without crashing', () => {
     const { container } = render(
       <MemoryRouter>
-        <ReportsPage messenger={{ showMessage: jest.fn() }} />
+        <ReportsPage messenger={{ showMessage: vi.fn() }} />
       </MemoryRouter>
     );
     expect(container).toBeTruthy();

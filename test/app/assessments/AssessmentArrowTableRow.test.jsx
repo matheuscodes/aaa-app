@@ -37,7 +37,7 @@ describe('AssessmentArrowTableRow', () => {
           end={['X', '10']}
           endIndex={0}
           roundIndex={0}
-          deleteEnd={jest.fn()}
+          deleteEnd={vi.fn()}
         />
       </tbody></table>
     );

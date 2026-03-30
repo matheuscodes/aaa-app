@@ -1,4 +1,4 @@
-jest.mock('api/helpers/RequestBuilder', () => jest.fn());
+vi.mock('api/helpers/RequestBuilder', () => ({ default: vi.fn() }));
 
 import requestBuilder from 'api/helpers/RequestBuilder';
 import Events from 'api/Events';
@@ -8,11 +8,11 @@ describe('Events API', () => {
   let callbacks;
 
   beforeEach(() => {
-    mockXhr = { send: jest.fn() };
+    mockXhr = { send: vi.fn() };
     requestBuilder.mockReturnValue(mockXhr);
     callbacks = {
-      success: jest.fn(),
-      error: jest.fn(),
+      success: vi.fn(),
+      error: vi.fn(),
       context: {},
     };
   });
