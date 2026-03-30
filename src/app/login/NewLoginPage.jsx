@@ -2,11 +2,13 @@ import React from 'react';
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
+import { withStyles } from '@mui/styles';
 
 import NewLoginCard from 'app/login/NewLoginCard';
 import LogoName from 'svg/LogoName';
 import Grid from '@mui/material/Grid';
 
+const styles = {}
 
 class NewLoginPage extends React.Component {
 
@@ -34,4 +36,4 @@ class NewLoginPage extends React.Component {
   }
 }
 
-export default withTranslation('login')(withRouter(NewLoginPage));
+export default withTranslation('login')(withRouter(withStyles(styles)(NewLoginPage)));

@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
+import { withStyles } from '@mui/styles';
 
 import LogoName from 'svg/LogoName';
 import Grid from '@mui/material/Grid';
@@ -11,6 +12,7 @@ import Typography from '@mui/material/Typography';
 
 import API from 'api';
 
+const styles = {}
 
 class ConfirmLoginPage extends React.Component {
 
@@ -62,4 +64,4 @@ class ConfirmLoginPage extends React.Component {
   }
 }
 
-export default withTranslation('login')(withRouter(ConfirmLoginPage));
+export default withTranslation('login')(withRouter(withStyles(styles)(ConfirmLoginPage)));

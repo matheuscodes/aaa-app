@@ -2,6 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
+import { withStyles } from '@mui/styles';
 
 import AppBar from '@mui/material/AppBar';
 import Drawer from '@mui/material/Drawer';
@@ -24,6 +25,7 @@ import getLocalRoles from 'api/helpers/getLocalRoles'
 
 import RoutePaths from 'global/RoutePaths'
 
+const styles = {}
 
 /**
  * Header with an undocked drawer and a logout button.
@@ -220,4 +222,4 @@ class Header extends React.Component {
   }
 };
 
-export default withTranslation('common')(withRouter(Header));
+export default withTranslation('common')(withRouter(withStyles(styles)(Header)));

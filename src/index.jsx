@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns as AdapterDateFnsV2 } from '@mui/x-date-pickers/AdapterDateFnsV2';
 // import './index.css';
 
 // import i18n (needs to be bundled ;))
@@ -18,13 +18,14 @@ const Loader = () => (
   </div>
 );
 
-
-ReactDOM.render(
+const root = createRoot(document.getElementById('root'));
+root.render(
   <ThemeProvider theme={theme}>
     <CssBaseline />
     <Suspense fallback={<Loader />}>
-      <LocalizationProvider dateAdapter={AdapterDateFnsV2}>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
         <App />
       </LocalizationProvider>
     </Suspense>
-  </ThemeProvider>, document.getElementById('root'));
+  </ThemeProvider>
+);

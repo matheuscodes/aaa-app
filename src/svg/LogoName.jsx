@@ -1,9 +1,11 @@
 import React from 'react'
 import { withTranslation } from 'react-i18next'
 
+import { withStyles } from '@mui/styles';
 
 import Logo from 'svg/Logo'
 
+const styles = {}
 
 class LogoName extends React.Component {
   render() {
@@ -25,4 +27,4 @@ class LogoName extends React.Component {
   }
 }
 
-export default withTranslation('common')(LogoName);
+export default withTranslation('common')(withStyles(styles)(LogoName));

@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
+import { withStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 import Icon from '@mui/material/Icon';
 import Button from '@mui/material/Button';
@@ -13,6 +14,8 @@ import Waiting from 'app/common/Waiting';
 
 import TrainingTile from 'app/trainings/TrainingTile';
 import NewTrainingDialog from 'app/trainings/NewTrainingDialog';
+
+const styles = { };
 
 class TrainingsPage extends React.Component {
   constructor(props) {
@@ -243,4 +246,4 @@ class TrainingsPage extends React.Component {
   }
 }
 
-export default withTranslation('training')(withRouter(TrainingsPage));
+export default withTranslation('training')(withRouter(withStyles(styles)(TrainingsPage)));

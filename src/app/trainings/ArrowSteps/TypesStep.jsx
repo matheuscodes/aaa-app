@@ -1,6 +1,7 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next'
 
+import { withStyles } from '@mui/styles';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import StepContent from '@mui/material/StepContent';
@@ -11,6 +12,7 @@ import Checkbox from '@mui/material/Checkbox';
 
 import ArrowTrainingTypes from 'constants/ArrowTrainingTypes';
 
+const styles = {}
 
 function TypesStep(props) {
   const { t } = props;
@@ -37,4 +39,4 @@ function TypesStep(props) {
     </Step>
   );
 }
-export default withTranslation('training')(TypesStep);
+export default withTranslation('training')(withStyles(styles)(TypesStep));

@@ -1,6 +1,7 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next'
 
+import { withStyles } from '@mui/styles';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import StepContent from '@mui/material/StepContent';
@@ -12,6 +13,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FloatingActionButton from '@mui/material/Fab';
 import Icon from '@mui/material/Icon';
 
+const styles = {}
 
 class DistancesStep extends React.Component {
 
@@ -99,4 +101,4 @@ class DistancesStep extends React.Component {
   }
 }
 
-export default withTranslation('training')(DistancesStep);
+export default withTranslation('training')(withStyles(styles)(DistancesStep));

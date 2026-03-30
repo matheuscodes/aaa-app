@@ -2,6 +2,7 @@ import React from 'react';
 
 import { withTranslation } from 'react-i18next'
 
+import { withStyles } from '@mui/styles';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Icon from '@mui/material/Icon';
@@ -12,6 +13,7 @@ import RoutePaths from 'global/RoutePaths'
 import AssessmentsGrid from 'app/assessments/AssessmentsGrid';
 import NewAssessmentDialog from 'app/assessments/NewAssessmentDialog';
 
+const styles = {}
 
 class AssessmentsPage extends React.Component {
   constructor(props) {
@@ -226,4 +228,4 @@ class AssessmentsPage extends React.Component {
   }
 }
 
-export default withTranslation('assessment')(AssessmentsPage);
+export default withTranslation('assessment')(withStyles(styles)(AssessmentsPage));

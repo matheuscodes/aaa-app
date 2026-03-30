@@ -1,6 +1,7 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next'
 
+import { withStyles } from '@mui/styles';
 import Stepper from '@mui/material/Stepper';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -23,6 +24,7 @@ import NeurobicsStep from 'app/trainings/NeurobicsSteps/NeurobicsStep';
 import WorkoutStep from 'app/trainings/WorkoutSteps/WorkoutStep';
 import TrainingTile from 'app/trainings/TrainingTile';
 
+const styles = {}
 
 class NewTrainingDialog extends React.Component {
   constructor(props) {
@@ -323,4 +325,4 @@ class NewTrainingDialog extends React.Component {
   }
 }
 
-export default withTranslation('training')(NewTrainingDialog);
+export default withTranslation('training')(withStyles(styles)(NewTrainingDialog));

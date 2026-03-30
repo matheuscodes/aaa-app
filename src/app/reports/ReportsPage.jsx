@@ -1,11 +1,13 @@
 import React from 'react'
 
+import { withStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 
 import ReportCard from 'app/reports/ReportCard'
 
 import API from 'api'
 
+const styles = { }
 
 class ReportsPage extends React.Component {
   constructor(props) {
@@ -39,4 +41,4 @@ class ReportsPage extends React.Component {
   }
 }
 
-export default ReportsPage;
+export default withStyles(styles)(ReportsPage);

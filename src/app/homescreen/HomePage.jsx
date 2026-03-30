@@ -14,6 +14,7 @@ import {
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
+import { withStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -33,6 +34,7 @@ ChartJS.register(
   Legend,
 );
 
+const styles = { }
 
 const rings = ['M', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
@@ -281,4 +283,4 @@ class HomePage extends React.Component {
   }
 }
 
-export default withTranslation('common', 'home')(withRouter(HomePage));
+export default withTranslation('common', 'home')(withRouter(withStyles(styles)(HomePage)));

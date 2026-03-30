@@ -3,6 +3,7 @@ import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 import RoutePaths from 'global/RoutePaths'
 
+import { withStyles } from '@mui/styles';
 
 import API from 'api';
 import passwordCheck from 'global/passwordCheck';
@@ -15,6 +16,10 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Grid from '@mui/material/Grid';
+
+const styles = {
+  instructionText: {textAlign:"justify"}
+}
 
 class NewPasswordCard extends React.Component {
 
@@ -78,7 +83,7 @@ class NewPasswordCard extends React.Component {
   }
 
   render() {
-    const { t } = this.props;
+    const { t, classes } = this.props;
 
     return (
       <Card>
@@ -86,7 +91,7 @@ class NewPasswordCard extends React.Component {
           <Grid container spacing={2}>
             <Grid item xs={12} >
               <Typography>
-                <p style={{textAlign:"justify"}}>{t('login:changePasswordInstructionText')}</p>
+                <p className={classes.instructionText}>{t('login:changePasswordInstructionText')}</p>
               </Typography>
             </Grid>
             <Grid item xs={12} >
@@ -127,4 +132,4 @@ class NewPasswordCard extends React.Component {
   }
 }
 
-export default withTranslation('login')(withRouter(NewPasswordCard));
+export default withTranslation('login')(withRouter(withStyles(styles)(NewPasswordCard)));

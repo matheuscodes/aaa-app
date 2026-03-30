@@ -6,6 +6,7 @@ import API from 'api'
 import NewSeasonForm from 'app/seasons/NewSeasonForm'
 import Waiting from 'app/common/Waiting'
 
+import { withStyles } from '@mui/styles';
 import FloatingActionButton from '@mui/material/Fab';
 import Icon from '@mui/material/Icon';
 import Dialog from '@mui/material/Dialog';
@@ -16,6 +17,7 @@ import DialogActions from '@mui/material/DialogActions';
 
 import Season from 'model/Season';
 
+const styles = {}
 
 class NewSeasonCard extends React.Component {
   constructor(props) {
@@ -114,4 +116,4 @@ class NewSeasonCard extends React.Component {
   }
 }
 
-export default withTranslation('season')(NewSeasonCard);
+export default withTranslation('season')(withStyles(styles)(NewSeasonCard));

@@ -3,6 +3,7 @@ import {Bar} from 'react-chartjs-2';
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
+import { withStyles } from '@mui/styles';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
@@ -14,6 +15,7 @@ import RoutePaths from 'global/RoutePaths'
 import TrainerRequestTile from 'app/trainer/TrainerRequestTile'
 import Waiting from 'app/common/Waiting';
 
+const styles = { }
 
 class TrainerRequestsPage extends React.Component {
   constructor(props) {
@@ -122,4 +124,4 @@ class TrainerRequestsPage extends React.Component {
   }
 }
 
-export default withTranslation('trainer')(withRouter(TrainerRequestsPage));
+export default withTranslation('trainer')(withRouter(withStyles(styles)(TrainerRequestsPage)));

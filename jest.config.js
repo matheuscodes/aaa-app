@@ -4,6 +4,9 @@ module.exports = {
   transform: {
     '^.+\\.(js|jsx)$': 'babel-jest',
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!(@mui|@emotion)/)',
+  ],
   moduleDirectories: ['node_modules', 'src'],
   moduleFileExtensions: ['js', 'jsx', 'json'],
   collectCoverageFrom: [
@@ -19,5 +22,6 @@ module.exports = {
   moduleNameMapper: {
     '\\.(css|less|scss)$': 'identity-obj-proxy',
     '\\.(jpg|jpeg|png|gif|woff2?)$': '<rootDir>/test/__mocks__/fileMock.js',
+    '@mui/material/fab': '@mui/material/Fab',
   },
 };

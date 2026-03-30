@@ -5,6 +5,7 @@ import getLocalArcher from 'api/helpers/getLocalArcher'
 
 import API from 'api'
 
+import { withStyles } from '@mui/styles';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListSubheader from '@mui/material/ListSubheader';
@@ -23,6 +24,7 @@ import SeasonGraph from 'svg/SeasonGraph'
 import Waiting from 'app/common/Waiting'
 
 
+const styles = {}
 
 class NewSeasonCardForm extends React.Component {
   constructor(props) {
@@ -256,21 +258,23 @@ class NewSeasonCardForm extends React.Component {
           </Grid>
           <Grid item xs={2} >
             <DatePicker
-              slotProps={{ textField: { fullWidth: true, margin: 'normal', id: 'aaa-seasonStartDate' } }}
               label={t('season:newSeason.startDateDatepicker.label')}
               format="dd.MM.yyyy"
               value={this.props.season.start}
               maxDate={this.props.season.end}
-              onChange={this.changeStart.bind(this)} />
+              onChange={this.changeStart.bind(this)}
+              slotProps={{ textField: { fullWidth: true, margin: 'normal', id: 'aaa-seasonStartDate' } }}
+            />
           </Grid>
           <Grid item xs={2} >
             <DatePicker
-              slotProps={{ textField: { fullWidth: true, margin: 'normal', id: 'aaa-seasonEndDate' } }}
               label={t('season:newSeason.endDateDatepicker.label')}
               format="dd.MM.yyyy"
               value={this.props.season.end}
               minDate={this.props.season.start}
-              onChange={this.changeEnd.bind(this)} />
+              onChange={this.changeEnd.bind(this)}
+              slotProps={{ textField: { fullWidth: true, margin: 'normal', id: 'aaa-seasonEndDate' } }}
+            />
           </Grid>
           <Grid item style={styles.GridTile} xs={4} >
             <List>
@@ -294,4 +298,4 @@ class NewSeasonCardForm extends React.Component {
   }
 }
 
-export default withTranslation('season')(NewSeasonCardForm);
+export default withTranslation('season')(withStyles(styles)(NewSeasonCardForm));

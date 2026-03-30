@@ -2,9 +2,11 @@ import React from 'react';
 
 import { withTranslation } from 'react-i18next'
 
+import { withStyles } from '@mui/styles';
 
 import AssessmentArrowTableRow from 'app/assessments/AssessmentArrowTableRow';
 
+const styles = {}
 
 class AssessmentArrowTable extends React.Component {
   render() {
@@ -63,4 +65,4 @@ class AssessmentArrowTable extends React.Component {
   }
 }
 
-export default withTranslation('assessment')(AssessmentArrowTable);
+export default withTranslation('assessment')(withStyles(styles)(AssessmentArrowTable));

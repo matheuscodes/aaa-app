@@ -2,6 +2,7 @@ import React from 'react';
 
 import { withTranslation } from 'react-i18next'
 
+import { withStyles } from '@mui/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
@@ -12,6 +13,7 @@ import AssessmentReport from 'app/assessments/AssessmentReport';
 
 import MiniCalendar from 'svg/common/MiniCalendar';
 
+const styles = {}
 
 class AssessmentTile extends React.Component {
   constructor(props) {
@@ -73,4 +75,4 @@ class AssessmentTile extends React.Component {
   }
 }
 
-export default withTranslation('assessment')(AssessmentTile);
+export default withTranslation('assessment')(withStyles(styles)(AssessmentTile));

@@ -1,6 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
+import { withStyles } from '@mui/styles';
 
 import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
@@ -15,6 +16,7 @@ import ReportCard from 'app/reports/ReportCard'
 
 import API from 'api'
 
+const styles = { }
 
 class TrainerReportsPage extends React.Component {
   constructor(props) {
@@ -113,4 +115,4 @@ class TrainerReportsPage extends React.Component {
   }
 }
 
-export default withTranslation('common', 'trainer')(withRouter(TrainerReportsPage));
+export default withTranslation('common', 'trainer')(withRouter(withStyles(styles)(TrainerReportsPage)));

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { withTranslation } from 'react-i18next'
 
+import { withStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
@@ -15,6 +16,7 @@ import ArcherAnchored from 'svg/icon/ArcherAnchored';
 import DirectionSelector from 'app/common/DirectionSelector';
 import WeatherSelector from 'app/common/WeatherSelector';
 
+const styles = {}
 
 function WeatherStep(props) {
   const { t } = props;
@@ -76,4 +78,4 @@ function WeatherStep(props) {
   );
 }
 
-export default withTranslation('assessment')(WeatherStep);
+export default withTranslation('assessment')(withStyles(styles)(WeatherStep));

@@ -1,6 +1,7 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next'
 
+import { withStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
@@ -16,6 +17,7 @@ import StepContent from '@mui/material/StepContent';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
+const styles = {}
 
 function BaseStep(props) {
 
@@ -51,11 +53,12 @@ function BaseStep(props) {
             </Grid>
             <Grid item xs={2} >
               <DatePicker
-                slotProps={{ textField: { fullWidth: true, margin: 'normal', id: 'newAssessmentDate' } }}
                 label={t('training:newTraining.dateDatepicker.label')}
                 format="dd.MM.yyyy"
                 value={props.date}
-                onChange={props.changeDate.bind(this)} />
+                onChange={props.changeDate.bind(this)}
+                slotProps={{ textField: { fullWidth: true, margin: 'normal', id: 'newAssessmentDate' } }}
+              />
             </Grid>
 
             <Grid item xs={10} >
@@ -88,4 +91,4 @@ function BaseStep(props) {
     </Step>
   );
 }
-export default withTranslation('training')(BaseStep);
+export default withTranslation('training')(withStyles(styles)(BaseStep));

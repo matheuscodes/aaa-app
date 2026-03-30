@@ -2,12 +2,14 @@ import React from 'react';
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
+import { withStyles } from '@mui/styles';
 
 import ForgottenCard from 'app/login/ForgottenCard';
 import NewPasswordCard from 'app/login/NewPasswordCard';
 import LogoName from 'svg/LogoName';
 import Grid from '@mui/material/Grid';
 
+const styles = {}
 
 class ForgottenPage extends React.Component {
 
@@ -41,4 +43,4 @@ class ForgottenPage extends React.Component {
   }
 }
 
-export default withTranslation('login')(withRouter(ForgottenPage));
+export default withTranslation('login')(withRouter(withStyles(styles)(ForgottenPage)));

@@ -3,6 +3,7 @@ import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 import RoutePaths from 'global/RoutePaths'
 
+import { withStyles } from '@mui/styles';
 
 import API from 'api';
 import downloadFile from 'api/helpers/DownloadFile';
@@ -20,6 +21,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 
+const styles = {}
 
 class LoginCard extends React.Component {
 
@@ -166,4 +168,4 @@ class LoginCard extends React.Component {
   }
 }
 
-export default withTranslation('login')(withRouter(LoginCard));
+export default withTranslation('login')(withRouter(withStyles(styles)(LoginCard)));

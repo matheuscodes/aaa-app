@@ -2,6 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
+import { withStyles } from '@mui/styles';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -19,6 +20,7 @@ import RoutePaths from 'global/RoutePaths'
 
 import ReportTile from 'app/reports/ReportTile'
 
+const styles = {}
 
 class ReportCard extends React.Component {
   constructor(props) {
@@ -148,4 +150,4 @@ class ReportCard extends React.Component {
   }
 }
 
-export default withTranslation('common', 'report')(withRouter(ReportCard));
+export default withTranslation('common', 'report')(withRouter(withStyles(styles)(ReportCard)));
