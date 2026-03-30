@@ -1,21 +1,21 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import StepContent from '@material-ui/core/StepContent';
+import { withStyles } from '@mui/styles';
+import Grid from '@mui/material/Grid';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import StepContent from '@mui/material/StepContent';
 
-import {KeyboardDatePicker} from '@material-ui/pickers';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const styles = {}
 
@@ -52,13 +52,13 @@ function BaseStep(props) {
               </Select>
             </Grid>
             <Grid item xs={2} >
-              <KeyboardDatePicker fullWidth autoOk
-                margin="normal"
-                id={'newAssessmentDate'}
+              <DatePicker
                 label={t('training:newTraining.dateDatepicker.label')}
                 format="dd.MM.yyyy"
                 value={props.date}
-                onChange={props.changeDate.bind(this)} />
+                onChange={props.changeDate.bind(this)}
+                slotProps={{ textField: { fullWidth: true, margin: 'normal', id: 'newAssessmentDate' } }}
+              />
             </Grid>
 
             <Grid item xs={10} >

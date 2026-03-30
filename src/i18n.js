@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import moment from 'moment';
-import Backend from 'i18next-xhr-backend';
+import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 
@@ -21,8 +21,8 @@ function formatter(value, format, lng) {
 }
 
 i18n
-  // load translation using xhr -> see /public/locales
-  // learn more: https://github.com/i18next/i18next-xhr-backend
+  // load translation using http -> see /public/locales
+  // learn more: https://github.com/i18next/i18next-http-backend
   .use(Backend)
   // detect user language
   // learn more: https://github.com/i18next/i18next-browser-languageDetector
@@ -37,8 +37,7 @@ i18n
     caches: ['localStorage'],
 
     fallbackLng: 'de',
-    whitelist: ['de', 'en'],
-    checkWhitelist: true,
+    supportedLngs: ['de', 'en'],
 
     fallbackNS: 'common',
     ns: ['common', 'login', 'assessment', 'season', 'training', 'home', 'report', 'terms', 'about', 'trainer'],

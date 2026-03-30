@@ -2,11 +2,11 @@ import React from 'react';
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@mui/styles';
 
 import NewLoginCard from 'app/login/NewLoginCard';
 import LogoName from 'svg/LogoName';
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 
 const styles = {}
 

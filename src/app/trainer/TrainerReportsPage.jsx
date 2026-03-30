@@ -1,16 +1,16 @@
 import React from 'react'
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@mui/styles';
 
-import Grid from '@material-ui/core/Grid';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardActions from '@material-ui/core/CardActions';
+import Grid from '@mui/material/Grid';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import CardActions from '@mui/material/CardActions';
 
 import ReportCard from 'app/reports/ReportCard'
 

@@ -1,8 +1,10 @@
-jest.mock('i18next-xhr-backend', () => ({
+jest.mock('i18next-http-backend', () => ({
+  __esModule: true,
   default: { type: 'backend', init: jest.fn(), read: jest.fn() },
 }));
 
 jest.mock('i18next-browser-languagedetector', () => ({
+  __esModule: true,
   default: { type: 'languageDetector', detect: jest.fn(), init: jest.fn(), cacheUserLanguage: jest.fn() },
 }));
 

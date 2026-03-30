@@ -6,14 +6,14 @@ import API from 'api'
 import NewSeasonForm from 'app/seasons/NewSeasonForm'
 import Waiting from 'app/common/Waiting'
 
-import { withStyles } from '@material-ui/core/styles';
-import FloatingActionButton from '@material-ui/core/Fab';
-import Icon from '@material-ui/core/Icon';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogActions from '@material-ui/core/DialogActions';
+import { withStyles } from '@mui/styles';
+import FloatingActionButton from '@mui/material/Fab';
+import Icon from '@mui/material/Icon';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
 
 import Season from 'model/Season';
 

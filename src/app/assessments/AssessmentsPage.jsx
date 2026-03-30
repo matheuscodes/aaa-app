@@ -2,10 +2,10 @@ import React from 'react';
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Icon from '@material-ui/core/Icon';
+import { withStyles } from '@mui/styles';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Icon from '@mui/material/Icon';
 
 import API from 'api';
 import RoutePaths from 'global/RoutePaths'

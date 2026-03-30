@@ -2,9 +2,9 @@ import React from 'react'
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+import { withStyles } from '@mui/styles';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
 
 import API from 'api'
 import RoutePaths from 'global/RoutePaths'
