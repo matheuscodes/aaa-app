@@ -19,17 +19,18 @@ jest.mock('api', () => ({
 
 import React from 'react';
 import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import LoginPage from 'app/login/LoginPage';
 
 describe('LoginPage', () => {
   it('renders without crashing', () => {
-    const { container } = render(<LoginPage messenger={{showMessage: jest.fn()}} />);
+    const { container } = render(<MemoryRouter><LoginPage messenger={{showMessage: jest.fn()}} /></MemoryRouter>);
     expect(container).toBeTruthy();
   });
 
   it('renders the logo', () => {
-    const { container } = render(<LoginPage messenger={{showMessage: jest.fn()}} />);
+    const { container } = render(<MemoryRouter><LoginPage messenger={{showMessage: jest.fn()}} /></MemoryRouter>);
     expect(container.querySelector('svg')).toBeTruthy();
   });
 });

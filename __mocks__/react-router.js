@@ -13,8 +13,9 @@ const withRouter = (WrappedComponent) => {
   return WithRouter;
 };
 
+const useNavigate = () => jest.fn();
 const useHistory = () => ({ push: jest.fn(), replace: jest.fn(), goBack: jest.fn() });
 const useLocation = () => ({ pathname: '/', search: '', hash: '' });
 const useParams = () => ({});
 
-module.exports = { withRouter, useHistory, useLocation, useParams };
+module.exports = { withRouter, useNavigate, useHistory, useLocation, useParams };

@@ -1,6 +1,6 @@
 import React from 'react'
 import {Bar} from 'react-chartjs-2';
-import { withRouter } from 'react-router'
+import withRouter from 'global/withRouter'
 import { withTranslation } from 'react-i18next'
 
 import Button from '@mui/material/Button';

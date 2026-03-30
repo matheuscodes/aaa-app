@@ -13,13 +13,16 @@ jest.mock('api/helpers/getLocalArcher', () => jest.fn(() => ({ id: 1, name: 'Tes
 
 import React from 'react';
 import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import SeasonsPage from 'app/seasons/SeasonsPage';
 
 describe('SeasonsPage', () => {
   it('renders without crashing', () => {
     const { container } = render(
-      <SeasonsPage messenger={{ showMessage: jest.fn() }} />
+      <MemoryRouter>
+        <SeasonsPage messenger={{ showMessage: jest.fn() }} />
+      </MemoryRouter>
     );
     expect(container).toBeTruthy();
   });

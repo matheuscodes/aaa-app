@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router'
+import withRouter from 'global/withRouter'
 import { withTranslation } from 'react-i18next'
 
 import Grid from '@mui/material/Grid';
