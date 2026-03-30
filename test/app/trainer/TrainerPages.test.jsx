@@ -18,6 +18,7 @@ jest.mock('api/helpers/getLocalArcher', () => jest.fn(() => ({ id: 1, name: 'Tes
 
 import React from 'react';
 import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import TrainerRequestsPage from 'app/trainer/TrainerRequestsPage';
 import TrainerArchersPage from 'app/trainer/TrainerArchersPage';
@@ -26,7 +27,9 @@ import TrainerReportsPage from 'app/trainer/TrainerReportsPage';
 describe('TrainerRequestsPage', () => {
   it('renders without crashing', () => {
     const { container } = render(
-      <TrainerRequestsPage messenger={{ showMessage: jest.fn() }} />
+      <MemoryRouter>
+        <TrainerRequestsPage messenger={{ showMessage: jest.fn() }} />
+      </MemoryRouter>
     );
     expect(container).toBeTruthy();
   });
@@ -35,7 +38,9 @@ describe('TrainerRequestsPage', () => {
 describe('TrainerArchersPage', () => {
   it('renders without crashing', () => {
     const { container } = render(
-      <TrainerArchersPage messenger={{ showMessage: jest.fn() }} />
+      <MemoryRouter>
+        <TrainerArchersPage messenger={{ showMessage: jest.fn() }} />
+      </MemoryRouter>
     );
     expect(container).toBeTruthy();
   });
@@ -44,7 +49,9 @@ describe('TrainerArchersPage', () => {
 describe('TrainerReportsPage', () => {
   it('renders without crashing', () => {
     const { container } = render(
-      <TrainerReportsPage messenger={{ showMessage: jest.fn() }} />
+      <MemoryRouter>
+        <TrainerReportsPage messenger={{ showMessage: jest.fn() }} />
+      </MemoryRouter>
     );
     expect(container).toBeTruthy();
   });

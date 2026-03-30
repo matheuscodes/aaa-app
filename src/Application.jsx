@@ -1,9 +1,9 @@
 import React from 'react';
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
-  Redirect,
+  Navigate,
 } from "react-router-dom";
 
 import { withTranslation } from 'react-i18next'
@@ -78,73 +78,25 @@ class Application extends React.Component {
     const archer = getLocalArcher();
     return (
       <Router>
-        <Switch>
-          <Route exact path="/">
-            <Header title={t('login:appBarTitle')} archer={archer} />
-            <LoginPage messenger={this}/>
-          </Route>
-          <Route path={RoutePaths.login}>
-            <Header title={t('login:appBarTitle')} archer={archer} />
-            <LoginPage messenger={this} />
-          </Route>
-          <Route path={RoutePaths.home}>
-            <Header title={t('home:appBarTitle')} archer={archer} />
-            <HomePage messenger={this} />
-          </Route>
-          <Route path={RoutePaths.settings}>
-            <Header title={t('settings:appBarTitle')} archer={archer} />
-            <SettingsPage messenger={this} />
-          </Route>
-          <Route path={RoutePaths.seasons}>
-            <Header title={t('season:appBarTitle')} archer={archer} />
-            <SeasonsPage messenger={this} />
-          </Route>
-          <Route path={RoutePaths.trainings}>
-            <Header title={t('training:appBarTitle')} archer={archer} />
-            <TrainingsPage messenger={this} />
-          </Route>
-          <Route path={RoutePaths.assessments}>
-            <Header title={t('assessment:appBarTitle')} archer={archer} />
-            <AssessmentsPage messenger={this} />
-          </Route>
-          <Route path={RoutePaths.reports}>
-            <Header title={t('report:appBarTitle')} archer={archer} />
-            <ReportsPage messenger={this} />
-          </Route>
-          <Route path={RoutePaths.about}>
-            <Header title={t('about:appBarTitle')} archer={archer} />
-            <AboutPage messenger={this} />
-          </Route>
-          <Route path={RoutePaths.terms}>
-            <Header title={t('terms:appBarTitle')} archer={archer} />
-            <TermsPage messenger={this} />
-          </Route>
-          <Route path={RoutePaths.forgotten}>
-            <Header title={t('login:resetAppBarTitle')} archer={archer} />
-            <ForgottenPage messenger={this} />
-          </Route>
-          <Route path={RoutePaths.newLogin}>
-            <Header title={t('login:newLoginAppBarTitle')} archer={archer} />
-            <NewLoginPage messenger={this} />
-          </Route>
-          <Route path={RoutePaths.confirmLogin}>
-            <Header title={t('login:confirmLoginAppBarTitle')} archer={archer} />
-            <ConfirmLoginPage messenger={this} />
-          </Route>
-          <Route path={RoutePaths.trainer.requests}>
-            <Header title={t('trainer:trainerRequestsAppBarTitle')} archer={archer} />
-            <TrainerRequestsPage messenger={this} />
-          </Route>
-          <Route path={RoutePaths.trainer.archers}>
-            <Header title={t('trainer:trainerArchersAppBarTitle')} archer={archer} />
-            <TrainerArchersPage messenger={this} />
-          </Route>
-          <Route path={RoutePaths.trainer.reports}>
-            <Header title={t('trainer:trainerReportsAppBarTitle')} archer={archer} />
-            <TrainerReportsPage messenger={this} />
-          </Route>
-          <Redirect from='*' to='/' />
-        </Switch>
+        <Routes>
+          <Route path="/" element={<><Header title={t('login:appBarTitle')} archer={archer} /><LoginPage messenger={this}/></>} />
+          <Route path={RoutePaths.login} element={<><Header title={t('login:appBarTitle')} archer={archer} /><LoginPage messenger={this} /></>} />
+          <Route path={RoutePaths.home} element={<><Header title={t('home:appBarTitle')} archer={archer} /><HomePage messenger={this} /></>} />
+          <Route path={RoutePaths.settings} element={<><Header title={t('settings:appBarTitle')} archer={archer} /><SettingsPage messenger={this} /></>} />
+          <Route path={RoutePaths.seasons} element={<><Header title={t('season:appBarTitle')} archer={archer} /><SeasonsPage messenger={this} /></>} />
+          <Route path={RoutePaths.trainings} element={<><Header title={t('training:appBarTitle')} archer={archer} /><TrainingsPage messenger={this} /></>} />
+          <Route path={RoutePaths.assessments} element={<><Header title={t('assessment:appBarTitle')} archer={archer} /><AssessmentsPage messenger={this} /></>} />
+          <Route path={RoutePaths.reports} element={<><Header title={t('report:appBarTitle')} archer={archer} /><ReportsPage messenger={this} /></>} />
+          <Route path={RoutePaths.about} element={<><Header title={t('about:appBarTitle')} archer={archer} /><AboutPage messenger={this} /></>} />
+          <Route path={RoutePaths.terms} element={<><Header title={t('terms:appBarTitle')} archer={archer} /><TermsPage messenger={this} /></>} />
+          <Route path={RoutePaths.forgotten} element={<><Header title={t('login:resetAppBarTitle')} archer={archer} /><ForgottenPage messenger={this} /></>} />
+          <Route path={RoutePaths.newLogin} element={<><Header title={t('login:newLoginAppBarTitle')} archer={archer} /><NewLoginPage messenger={this} /></>} />
+          <Route path={RoutePaths.confirmLogin} element={<><Header title={t('login:confirmLoginAppBarTitle')} archer={archer} /><ConfirmLoginPage messenger={this} /></>} />
+          <Route path={RoutePaths.trainer.requests} element={<><Header title={t('trainer:trainerRequestsAppBarTitle')} archer={archer} /><TrainerRequestsPage messenger={this} /></>} />
+          <Route path={RoutePaths.trainer.archers} element={<><Header title={t('trainer:trainerArchersAppBarTitle')} archer={archer} /><TrainerArchersPage messenger={this} /></>} />
+          <Route path={RoutePaths.trainer.reports} element={<><Header title={t('trainer:trainerReportsAppBarTitle')} archer={archer} /><TrainerReportsPage messenger={this} /></>} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
         <div style={{'backgroundColor':'white', padding:'10pt'}}>
           {Object.keys(this.state.alarms).map((alarm) =>
             <Snackbar open={alarm} autoHideDuration={6000} onClose={this.handleAlarmClose.bind(this,alarm)}>

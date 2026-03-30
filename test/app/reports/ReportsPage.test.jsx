@@ -12,13 +12,16 @@ jest.mock('api/helpers/getLocalArcher', () => jest.fn(() => ({ id: 1, name: 'Tes
 
 import React from 'react';
 import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import ReportsPage from 'app/reports/ReportsPage';
 
 describe('ReportsPage', () => {
   it('renders without crashing', () => {
     const { container } = render(
-      <ReportsPage messenger={{ showMessage: jest.fn() }} />
+      <MemoryRouter>
+        <ReportsPage messenger={{ showMessage: jest.fn() }} />
+      </MemoryRouter>
     );
     expect(container).toBeTruthy();
   });

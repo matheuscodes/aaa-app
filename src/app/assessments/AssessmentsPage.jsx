@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { withTranslation } from 'react-i18next'
+import withRouter from 'global/withRouter'
 
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -226,4 +227,4 @@ class AssessmentsPage extends React.Component {
   }
 }
 
-export default withTranslation('assessment')(AssessmentsPage);
+export default withTranslation('assessment')(withRouter(AssessmentsPage));

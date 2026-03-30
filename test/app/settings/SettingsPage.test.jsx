@@ -8,20 +8,25 @@ jest.mock('api/helpers/getLocalArcher', () => jest.fn(() => ({ id: 1, name: 'Tes
 
 import React from 'react';
 import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import SettingsPage from 'app/settings/SettingsPage';
 
 describe('SettingsPage', () => {
   it('renders without crashing', () => {
     const { container } = render(
-      <SettingsPage messenger={{ showMessage: jest.fn() }} />
+      <MemoryRouter>
+        <SettingsPage messenger={{ showMessage: jest.fn() }} />
+      </MemoryRouter>
     );
     expect(container).toBeTruthy();
   });
 
   it('renders some settings content', () => {
     const { container } = render(
-      <SettingsPage messenger={{ showMessage: jest.fn() }} />
+      <MemoryRouter>
+        <SettingsPage messenger={{ showMessage: jest.fn() }} />
+      </MemoryRouter>
     );
     expect(container.querySelector('div')).toBeTruthy();
   });

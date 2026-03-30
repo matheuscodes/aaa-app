@@ -8,6 +8,7 @@ jest.mock('api/helpers/getLocalArcher', () => jest.fn(() => ({ id: 1, name: 'Tes
 
 import React from 'react';
 import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import AssessmentsPage from 'app/assessments/AssessmentsPage';
 import TrainingsPage from 'app/trainings/TrainingsPage';
@@ -15,7 +16,9 @@ import TrainingsPage from 'app/trainings/TrainingsPage';
 describe('AssessmentsPage', () => {
   it('renders without crashing', () => {
     const { container } = render(
-      <AssessmentsPage messenger={{ showMessage: jest.fn() }} />
+      <MemoryRouter>
+        <AssessmentsPage messenger={{ showMessage: jest.fn() }} />
+      </MemoryRouter>
     );
     expect(container).toBeTruthy();
   });
@@ -24,7 +27,9 @@ describe('AssessmentsPage', () => {
 describe('TrainingsPage', () => {
   it('renders without crashing', () => {
     const { container } = render(
-      <TrainingsPage messenger={{ showMessage: jest.fn() }} />
+      <MemoryRouter>
+        <TrainingsPage messenger={{ showMessage: jest.fn() }} />
+      </MemoryRouter>
     );
     expect(container).toBeTruthy();
   });

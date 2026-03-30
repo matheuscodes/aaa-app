@@ -1,13 +1,16 @@
 const React = require('react');
 
 const MemoryRouter = ({ children }) => React.createElement('div', { 'data-testid': 'router' }, children);
-const Route = ({ children, render, component: Component }) => {
+const Route = ({ children, render, component: Component, element }) => {
+  if (element) return element;
   if (Component) return React.createElement(Component, {});
   if (render) return render({ location: { pathname: '/', search: '', hash: '' }, match: { params: {}, isExact: true, path: '/', url: '/' }, history: { push: jest.fn(), replace: jest.fn(), goBack: jest.fn() } });
   return children || null;
 };
+const Routes = ({ children }) => React.createElement('div', null, children);
 const Switch = ({ children }) => React.createElement('div', null, children);
 const Redirect = () => null;
+const Navigate = () => null;
 const Link = ({ children, to }) => React.createElement('a', { href: to }, children);
 const NavLink = ({ children, to }) => React.createElement('a', { href: to }, children);
 
@@ -24,6 +27,7 @@ const withRouter = (WrappedComponent) => {
   return WithRouter;
 };
 
+const useNavigate = () => jest.fn();
 const useHistory = () => ({ push: jest.fn(), replace: jest.fn(), goBack: jest.fn() });
 const useLocation = () => ({ pathname: '/', search: '', hash: '' });
 const useParams = () => ({});
@@ -36,11 +40,14 @@ module.exports = {
   HashRouter,
   MemoryRouter,
   Route,
+  Routes,
   Switch,
   Redirect,
+  Navigate,
   Link,
   NavLink,
   withRouter,
+  useNavigate,
   useHistory,
   useLocation,
   useParams,
