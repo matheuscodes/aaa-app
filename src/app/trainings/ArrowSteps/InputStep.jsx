@@ -1,7 +1,6 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import StepContent from '@mui/material/StepContent';
@@ -9,7 +8,6 @@ import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
 import TextField from '@mui/material/TextField';
 
-const styles = {}
 
 class InputStep extends React.Component {
 
@@ -106,4 +104,4 @@ class InputStep extends React.Component {
 
 }
 
-export default withTranslation('training')(withStyles(styles)(InputStep));
+export default withTranslation('training')(InputStep);

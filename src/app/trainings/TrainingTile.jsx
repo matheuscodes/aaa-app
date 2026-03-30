@@ -1,7 +1,6 @@
 import React from 'react'
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
@@ -19,7 +18,6 @@ import Paper from '@mui/material/Paper';
 import MiniCalendar from 'svg/common/MiniCalendar'
 import TrainingTypes from 'constants/ArrowTrainingTypes'
 
-const styles = {}
 
 class TrainingTile extends React.Component{
   delete() {
@@ -105,4 +103,4 @@ class TrainingTile extends React.Component{
   }
 }
 
-export default withTranslation('training')(withStyles(styles)(TrainingTile));
+export default withTranslation('training')(TrainingTile);

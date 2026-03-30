@@ -8,7 +8,6 @@ import {
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Snackbar from '@mui/material/Snackbar';
@@ -36,7 +35,6 @@ import TrainerReportsPage from "app/trainer/TrainerReportsPage"
 import RoutePaths from 'global/RoutePaths'
 import getLocalArcher from 'api/helpers/getLocalArcher'
 
-const styles = {}
 
 class Application extends React.Component {
 
@@ -174,4 +172,4 @@ class Application extends React.Component {
   }
 }
 
-export default withTranslation()(withStyles(styles)(Application));
+export default withTranslation()(Application);

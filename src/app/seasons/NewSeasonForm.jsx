@@ -5,7 +5,6 @@ import getLocalArcher from 'api/helpers/getLocalArcher'
 
 import API from 'api'
 
-import { withStyles } from '@mui/styles';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListSubheader from '@mui/material/ListSubheader';
@@ -24,7 +23,6 @@ import SeasonGraph from 'svg/SeasonGraph'
 import Waiting from 'app/common/Waiting'
 
 
-const styles = {}
 
 class NewSeasonCardForm extends React.Component {
   constructor(props) {
@@ -276,7 +274,7 @@ class NewSeasonCardForm extends React.Component {
               slotProps={{ textField: { fullWidth: true, margin: 'normal', id: 'aaa-seasonEndDate' } }}
             />
           </Grid>
-          <Grid item style={styles.GridTile} xs={4} >
+          <Grid item xs={4} >
             <List>
               <ListSubheader>
                 {t('season:newSeason.trainers.subheader')}
@@ -298,4 +296,4 @@ class NewSeasonCardForm extends React.Component {
   }
 }
 
-export default withTranslation('season')(withStyles(styles)(NewSeasonCardForm));
+export default withTranslation('season')(NewSeasonCardForm);

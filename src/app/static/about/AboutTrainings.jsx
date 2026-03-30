@@ -1,9 +1,7 @@
 import React from 'react'
 
-import { withStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 
-const styles = {}
 
 class AboutTrainings extends React.Component {
   render() {
@@ -20,4 +18,4 @@ class AboutTrainings extends React.Component {
   }
 }
 
-export default withStyles(styles)(AboutTrainings);
+export default AboutTrainings;

@@ -1,7 +1,6 @@
 import React from 'react'
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -17,7 +16,6 @@ import AboutTrainings from 'app/static/about/AboutTrainings'
 import AboutAssessments from 'app/static/about/AboutAssessments'
 import AboutReports from 'app/static/about/AboutReports'
 
-const styles = {}
 
 class AboutPage extends React.Component {
   constructor(props) {
@@ -73,4 +71,4 @@ class AboutPage extends React.Component {
   }
 }
 
-export default withTranslation('common','about')(withStyles(styles)(AboutPage));
+export default withTranslation('common','about')(AboutPage);

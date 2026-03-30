@@ -1,7 +1,6 @@
 import React from 'react'
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
@@ -12,7 +11,6 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-const styles = {}
 
 class TrainerRequestTile extends React.Component {
   constructor(props) {
@@ -66,4 +64,4 @@ class TrainerRequestTile extends React.Component {
   }
 }
 
-export default withTranslation('trainer')(withStyles(styles)(TrainerRequestTile));
+export default withTranslation('trainer')(TrainerRequestTile);

@@ -2,7 +2,6 @@ import React from 'react';
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Dialog from '@mui/material/Dialog';
@@ -44,7 +43,6 @@ function createRound(rings, arrows, ends) {
   return {ends: allEnds};
 }
 
-const styles = {}
 
 class NewAssessmentRound extends React.Component {
   constructor(props) {
@@ -136,4 +134,4 @@ class NewAssessmentRound extends React.Component {
   }
 }
 
-export default withTranslation('assessment')(withStyles(styles)(NewAssessmentRound));
+export default withTranslation('assessment')(NewAssessmentRound);

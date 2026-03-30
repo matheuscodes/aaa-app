@@ -1,7 +1,6 @@
 import React from 'react'
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 
 import API from 'api'
@@ -13,7 +12,6 @@ import MonthGraph from 'svg/MonthGraph'
 import SeasonGraph from 'svg/SeasonGraph'
 
 const oneDay = 24 * 60 * 60 * 1000;
-const styles = {}
 
 class ReportTile extends React.Component {
   constructor(props) {
@@ -110,4 +108,4 @@ class ReportTile extends React.Component {
   }
 }
 
-export default withTranslation('report')(withStyles(styles)(ReportTile));
+export default withTranslation('report')(ReportTile);

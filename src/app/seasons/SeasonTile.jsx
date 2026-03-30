@@ -1,7 +1,6 @@
 import React from 'react'
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
@@ -14,7 +13,6 @@ import SeasonGraph from 'svg/SeasonGraph'
 
 import API from 'api'
 
-const styles = {}
 
 class SeasonTile extends React.Component {
   constructor(props) {
@@ -63,4 +61,4 @@ class SeasonTile extends React.Component {
   }
 }
 
-export default withTranslation('season')(withStyles(styles)(SeasonTile));
+export default withTranslation('season')(SeasonTile);

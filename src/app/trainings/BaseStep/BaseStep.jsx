@@ -1,7 +1,6 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
@@ -17,7 +16,6 @@ import StepContent from '@mui/material/StepContent';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-const styles = {}
 
 function BaseStep(props) {
 
@@ -91,4 +89,4 @@ function BaseStep(props) {
     </Step>
   );
 }
-export default withTranslation('training')(withStyles(styles)(BaseStep));
+export default withTranslation('training')(BaseStep);
