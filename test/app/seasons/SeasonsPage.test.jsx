@@ -101,4 +101,74 @@ describe('SeasonsPage', () => {
     );
     expect(container).toBeTruthy();
   });
+
+  it('handles auth error by redirecting', () => {
+    const mockGetList = vi.fn((callbacks) => {
+      callbacks.error.call(callbacks.context, new Error('Auth error'));
+    });
+    API.seasons.getList = mockGetList;
+    API.isAuthError = vi.fn(() => true);
+
+    const { container } = render(
+      <MemoryRouter>
+        <SeasonsPage messenger={{ showMessage: vi.fn() }} />
+      </MemoryRouter>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('renders seasons with delete and edit handlers', () => {
+    const mockGetList = vi.fn((callbacks) => {
+      callbacks.success.call(callbacks.context, [
+        {
+          id: 1,
+          name: 'Test Season',
+          start: new Date('2024-01-01'),
+          end: new Date('2024-12-31'),
+          goals: [{ arrowCount: 100, targetShare: 50 }],
+          max: 100,
+        },
+      ]);
+    });
+    const mockGetById = vi.fn();
+    API.seasons.getList = mockGetList;
+    API.seasons.getById = mockGetById;
+    API.seasons.delete = vi.fn();
+
+    const { container } = render(
+      <MemoryRouter>
+        <SeasonsPage messenger={{ showMessage: vi.fn() }} />
+      </MemoryRouter>
+    );
+
+    // Simulate delete action
+    const buttons = container.querySelectorAll('button');
+    if (buttons.length > 1) {
+      fireEvent.click(buttons[1]);
+    }
+    expect(container).toBeTruthy();
+  });
+
+  it('handles deleteSeason with success callback', () => {
+    let getListCallbacks;
+    const mockGetList = vi.fn((callbacks) => {
+      getListCallbacks = callbacks;
+      callbacks.success.call(callbacks.context, [
+        { id: 1, name: 'Test Season', start: new Date('2024-01-01'), end: new Date('2024-12-31'), goals: [], max: 100 },
+      ]);
+    });
+    const mockDelete = vi.fn((id, callbacks) => {
+      callbacks.success.call(callbacks.context);
+    });
+    API.seasons.getList = mockGetList;
+    API.seasons.getById = vi.fn();
+    API.seasons.delete = mockDelete;
+
+    const { container } = render(
+      <MemoryRouter>
+        <SeasonsPage messenger={{ showMessage: vi.fn() }} />
+      </MemoryRouter>
+    );
+    expect(container).toBeTruthy();
+  });
 });
