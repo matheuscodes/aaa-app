@@ -73,4 +73,89 @@ describe('Seasons API', () => {
     Seasons.deny(1, 'trainer1', callbacks);
     expect(requestBuilder).toHaveBeenCalledWith('/seasons/1/permissions/trainer1', 'DELETE', expect.any(Object));
   });
+
+  it('getList calls success callback on 200', () => {
+    let capturedCallbacks;
+    requestBuilder.mockImplementation((path, method, cbs) => {
+      capturedCallbacks = cbs;
+      return mockXhr;
+    });
+    Seasons.getList(callbacks);
+    const data = [{ id: 1, start: '2024-01-01', end: '2024-12-31', goals: [] }];
+    capturedCallbacks[200].call({}, { responseText: JSON.stringify(data) });
+    expect(callbacks.success).toHaveBeenCalled();
+  });
+
+  it('getList calls error callback on failure', () => {
+    let capturedCallbacks;
+    requestBuilder.mockImplementation((path, method, cbs) => {
+      capturedCallbacks = cbs;
+      return mockXhr;
+    });
+    Seasons.getList(callbacks);
+    capturedCallbacks.failure.call({}, { responseText: 'error' });
+    expect(callbacks.error).toHaveBeenCalled();
+  });
+
+  it('getActive calls success callback on 200', () => {
+    let capturedCallbacks;
+    requestBuilder.mockImplementation((path, method, cbs) => {
+      capturedCallbacks = cbs;
+      return mockXhr;
+    });
+    Seasons.getActive(callbacks);
+    const data = [{ id: 1, start: '2024-01-01', end: '2024-12-31', goals: [] }];
+    capturedCallbacks[200].call({}, { responseText: JSON.stringify(data) });
+    expect(callbacks.success).toHaveBeenCalled();
+  });
+
+  it('getById calls success callback on 200', () => {
+    let capturedCallbacks;
+    requestBuilder.mockImplementation((path, method, cbs) => {
+      capturedCallbacks = cbs;
+      return mockXhr;
+    });
+    Seasons.getById(42, callbacks);
+    const data = { id: 42, start: '2024-01-01', end: '2024-12-31', goals: [] };
+    capturedCallbacks[200].call({}, { responseText: JSON.stringify(data) });
+    expect(callbacks.success).toHaveBeenCalled();
+  });
+
+  it('getMonthReport calls success callback on 200', () => {
+    let capturedCallbacks;
+    requestBuilder.mockImplementation((path, method, cbs) => {
+      capturedCallbacks = cbs;
+      return mockXhr;
+    });
+    Seasons.getMonthReport(1, 2024, 6, callbacks);
+    const data = { firstDay: '2024-06-01', lastDay: '2024-06-30', month: 6, season: { goals: [] }, totalCounts: {}, techniqueCounts: {}, totalScores: {} };
+    capturedCallbacks[200].call({}, { responseText: JSON.stringify(data) });
+    expect(callbacks.success).toHaveBeenCalled();
+  });
+
+  it('getMonthReport calls error callback on failure', () => {
+    let capturedCallbacks;
+    requestBuilder.mockImplementation((path, method, cbs) => {
+      capturedCallbacks = cbs;
+      return mockXhr;
+    });
+    Seasons.getMonthReport(1, 2024, 6, callbacks);
+    capturedCallbacks.failure.call({}, { responseText: 'error' });
+    expect(callbacks.error).toHaveBeenCalled();
+  });
+
+  it('save handles goals with i18n properties', () => {
+    const season = {
+      id: 5,
+      name: 'S1',
+      start: new Date('2024-01-01'),
+      end: new Date('2024-12-31'),
+      goals: [{ arrowCount: 100, targetShare: 50, lng: 'en', ns: 'season' }],
+      events: [],
+      permissions: {},
+      permitted: [],
+    };
+    Seasons.save(season, callbacks);
+    expect(requestBuilder).toHaveBeenCalled();
+  });
 });
