@@ -11,28 +11,28 @@ const mockProps = {
   targets: [{ id: 'face', name: 'Face' }],
   events: [],
   seasonId: 1,
-  changeSeason: jest.fn(),
+  changeSeason: vi.fn(),
   date: new Date(),
-  changeDate: jest.fn(),
+  changeDate: vi.fn(),
   distance: 18,
-  changeDistance: jest.fn(),
+  changeDistance: vi.fn(),
   target: 'face',
-  changeTarget: jest.fn(),
+  changeTarget: vi.fn(),
   event: '',
-  changeEvent: jest.fn(),
+  changeEvent: vi.fn(),
 };
 
 const mockWeatherProps = {
   temperature: 20,
-  changeTemperature: jest.fn(),
+  changeTemperature: vi.fn(),
   weather: 'FAIR',
-  changeWeather: jest.fn(),
+  changeWeather: vi.fn(),
   windSpeed: 5,
-  changeWindSpeed: jest.fn(),
+  changeWindSpeed: vi.fn(),
   windDirection: 'N',
-  changeWindDirection: jest.fn(),
+  changeWindDirection: vi.fn(),
   shootDirection: 'S',
-  changeShootDirection: jest.fn(),
+  changeShootDirection: vi.fn(),
 };
 
 describe('BaseStep', () => {

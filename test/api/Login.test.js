@@ -1,4 +1,4 @@
-jest.mock('api/helpers/RequestBuilder', () => jest.fn());
+vi.mock('api/helpers/RequestBuilder', () => ({ default: vi.fn() }));
 
 import requestBuilder from 'api/helpers/RequestBuilder';
 import { login, reset, confirm, newLogin, replaceLogin } from 'api/Login';
@@ -9,15 +9,15 @@ describe('Login API', () => {
 
   beforeEach(() => {
     mockXhr = {
-      send: jest.fn(),
+      send: vi.fn(),
       readyState: 4,
       status: 200,
       responseText: 'mock-token',
     };
     requestBuilder.mockReturnValue(mockXhr);
     callbacks = {
-      success: jest.fn(),
-      error: jest.fn(),
+      success: vi.fn(),
+      error: vi.fn(),
       context: {},
     };
     localStorage.clear();

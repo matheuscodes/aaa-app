@@ -18,14 +18,14 @@ describe('TrainingTile', () => {
 
   it('renders without crashing', () => {
     const { container } = render(
-      <TrainingTile data={data} onDelete={jest.fn()} />
+      <TrainingTile data={data} onDelete={vi.fn()} />
     );
     expect(container).toBeTruthy();
   });
 
   it('renders a card', () => {
     const { container } = render(
-      <TrainingTile data={data} onDelete={jest.fn()} />
+      <TrainingTile data={data} onDelete={vi.fn()} />
     );
     expect(container.querySelector('[class*="MuiCard"]')).toBeTruthy();
   });

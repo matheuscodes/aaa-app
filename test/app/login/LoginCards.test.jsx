@@ -1,9 +1,11 @@
-jest.mock('api', () => ({
-  login: jest.fn(),
-  reset: jest.fn(),
-  confirm: jest.fn(),
-  newLogin: jest.fn(),
-  replaceLogin: jest.fn(),
+vi.mock('api', () => ({
+  default: {
+    login: vi.fn(),
+    reset: vi.fn(),
+    confirm: vi.fn(),
+    newLogin: vi.fn(),
+    replaceLogin: vi.fn(),
+    },
 }));
 
 import React from 'react';
@@ -18,7 +20,7 @@ describe('ForgottenCard', () => {
   it('renders without crashing', () => {
     const { container } = render(
       <MemoryRouter>
-        <ForgottenCard messenger={{ showMessage: jest.fn() }} />
+        <ForgottenCard messenger={{ showMessage: vi.fn() }} />
       </MemoryRouter>
     );
     expect(container).toBeTruthy();
@@ -27,7 +29,7 @@ describe('ForgottenCard', () => {
   it('renders email input', () => {
     const { container } = render(
       <MemoryRouter>
-        <ForgottenCard messenger={{ showMessage: jest.fn() }} />
+        <ForgottenCard messenger={{ showMessage: vi.fn() }} />
       </MemoryRouter>
     );
     expect(container.querySelector('input')).toBeTruthy();
@@ -38,7 +40,7 @@ describe('NewPasswordCard', () => {
   it('renders without crashing', () => {
     const { container } = render(
       <MemoryRouter>
-        <NewPasswordCard email="test@test.com" token="abc" messenger={{ showMessage: jest.fn() }} />
+        <NewPasswordCard email="test@test.com" token="abc" messenger={{ showMessage: vi.fn() }} />
       </MemoryRouter>
     );
     expect(container).toBeTruthy();
@@ -49,7 +51,7 @@ describe('NewLoginCard', () => {
   it('renders without crashing', () => {
     const { container } = render(
       <MemoryRouter>
-        <NewLoginCard messenger={{ showMessage: jest.fn() }} />
+        <NewLoginCard messenger={{ showMessage: vi.fn() }} />
       </MemoryRouter>
     );
     expect(container).toBeTruthy();
@@ -58,7 +60,7 @@ describe('NewLoginCard', () => {
   it('renders registration form inputs', () => {
     const { container } = render(
       <MemoryRouter>
-        <NewLoginCard messenger={{ showMessage: jest.fn() }} />
+        <NewLoginCard messenger={{ showMessage: vi.fn() }} />
       </MemoryRouter>
     );
     expect(container.querySelectorAll('input').length).toBeGreaterThan(0);

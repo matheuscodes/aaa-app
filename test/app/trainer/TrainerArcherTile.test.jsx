@@ -17,8 +17,8 @@ describe('TrainerArcherTile', () => {
     const { container } = render(
       <TrainerArcherTile
         data={data}
-        onReject={jest.fn()}
-        onApprove={jest.fn()}
+        onReject={vi.fn()}
+        onApprove={vi.fn()}
       />
     );
     expect(container).toBeTruthy();
@@ -28,8 +28,8 @@ describe('TrainerArcherTile', () => {
     const { container } = render(
       <TrainerArcherTile
         data={data}
-        onReject={jest.fn()}
-        onApprove={jest.fn()}
+        onReject={vi.fn()}
+        onApprove={vi.fn()}
       />
     );
     expect(container.querySelector('[class*="MuiCard"]')).toBeTruthy();

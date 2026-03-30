@@ -1,20 +1,22 @@
-jest.mock('api', () => ({
-  isAuthError: jest.fn(() => false),
-  trainers: {
-    getAllTrainers: jest.fn(),
-    getTrainerRequests: jest.fn(),
-    getTrainerArchers: jest.fn(),
-    postArcherToTrainer: jest.fn(),
-    putArcherToTrainer: jest.fn(),
-    putTrainerArcher: jest.fn(),
-    deleteArcherToTrainer: jest.fn(),
-    archers: { list: jest.fn() },
-    seasons: { list: jest.fn(), getMonthReport: jest.fn() },
-  },
-  seasons: { getList: jest.fn(), getById: jest.fn(), getMonthReport: jest.fn() },
-  reports: { getYearOverview: jest.fn(), getLastWeeksOverview: jest.fn(), getRingsOverview: jest.fn(), getAssessmentsOverview: jest.fn() },
+vi.mock('api', () => ({
+  default: {
+    isAuthError: vi.fn(() => false),
+    trainers: {
+      getAllTrainers: vi.fn(),
+      getTrainerRequests: vi.fn(),
+      getTrainerArchers: vi.fn(),
+      postArcherToTrainer: vi.fn(),
+      putArcherToTrainer: vi.fn(),
+      putTrainerArcher: vi.fn(),
+      deleteArcherToTrainer: vi.fn(),
+      archers: { list: vi.fn() },
+      seasons: { list: vi.fn(), getMonthReport: vi.fn() },
+    },
+    seasons: { getList: vi.fn(), getById: vi.fn(), getMonthReport: vi.fn() },
+    reports: { getYearOverview: vi.fn(), getLastWeeksOverview: vi.fn(), getRingsOverview: vi.fn(), getAssessmentsOverview: vi.fn() },
+    },
 }));
-jest.mock('api/helpers/getLocalArcher', () => jest.fn(() => ({ id: 1, name: 'Test', trainerId: 100 })));
+vi.mock('api/helpers/getLocalArcher', () => ({ default: vi.fn(() => ({ id: 1, name: 'Test', trainerId: 100 })) }));
 
 import React from 'react';
 import { render } from '@testing-library/react';
@@ -28,7 +30,7 @@ describe('TrainerRequestsPage', () => {
   it('renders without crashing', () => {
     const { container } = render(
       <MemoryRouter>
-        <TrainerRequestsPage messenger={{ showMessage: jest.fn() }} />
+        <TrainerRequestsPage messenger={{ showMessage: vi.fn() }} />
       </MemoryRouter>
     );
     expect(container).toBeTruthy();
@@ -39,7 +41,7 @@ describe('TrainerArchersPage', () => {
   it('renders without crashing', () => {
     const { container } = render(
       <MemoryRouter>
-        <TrainerArchersPage messenger={{ showMessage: jest.fn() }} />
+        <TrainerArchersPage messenger={{ showMessage: vi.fn() }} />
       </MemoryRouter>
     );
     expect(container).toBeTruthy();
@@ -50,7 +52,7 @@ describe('TrainerReportsPage', () => {
   it('renders without crashing', () => {
     const { container } = render(
       <MemoryRouter>
-        <TrainerReportsPage messenger={{ showMessage: jest.fn() }} />
+        <TrainerReportsPage messenger={{ showMessage: vi.fn() }} />
       </MemoryRouter>
     );
     expect(container).toBeTruthy();

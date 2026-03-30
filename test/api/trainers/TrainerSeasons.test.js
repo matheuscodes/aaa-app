@@ -1,6 +1,6 @@
-jest.mock('api/helpers/AuthRequestBuilder', () => jest.fn());
-jest.mock('api/helpers/getLocalArcher', () => jest.fn());
-jest.mock('api/helpers/TrainerRequestBuilder', () => jest.fn());
+vi.mock('api/helpers/AuthRequestBuilder', () => ({ default: vi.fn() }));
+vi.mock('api/helpers/getLocalArcher', () => ({ default: vi.fn() }));
+vi.mock('api/helpers/TrainerRequestBuilder', () => ({ default: vi.fn() }));
 
 import authRequestBuilder from 'api/helpers/AuthRequestBuilder';
 import getLocalArcher from 'api/helpers/getLocalArcher';
@@ -12,13 +12,13 @@ describe('TrainerSeasons API', () => {
   let callbacks;
 
   beforeEach(() => {
-    mockXhr = { send: jest.fn() };
+    mockXhr = { send: vi.fn() };
     authRequestBuilder.mockReturnValue(mockXhr);
     getLocalArcher.mockReturnValue({ id: 1, trainerId: 100 });
     endpoint = new TrainerSeasons();
     callbacks = {
-      success: jest.fn(),
-      failure: jest.fn(),
+      success: vi.fn(),
+      failure: vi.fn(),
       context: {},
     };
   });

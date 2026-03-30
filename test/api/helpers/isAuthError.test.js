@@ -1,6 +1,6 @@
 import isAuthError from 'api/helpers/isAuthError';
 
-jest.mock('api/helpers/deleteLocalArcher', () => jest.fn());
+vi.mock('api/helpers/deleteLocalArcher', () => ({ default: vi.fn() }));
 
 import deleteLocalArcher from 'api/helpers/deleteLocalArcher';
 

@@ -1,7 +1,7 @@
-jest.mock('api/helpers/RequestBuilder', () => jest.fn());
-jest.mock('api/helpers/AuthRequestBuilder', () => jest.fn());
-jest.mock('api/helpers/getLocalArcher', () => jest.fn());
-jest.mock('api/helpers/TrainerRequestBuilder', () => jest.fn());
+vi.mock('api/helpers/RequestBuilder', () => ({ default: vi.fn() }));
+vi.mock('api/helpers/AuthRequestBuilder', () => ({ default: vi.fn() }));
+vi.mock('api/helpers/getLocalArcher', () => ({ default: vi.fn() }));
+vi.mock('api/helpers/TrainerRequestBuilder', () => ({ default: vi.fn() }));
 
 import Api from 'api/index';
 

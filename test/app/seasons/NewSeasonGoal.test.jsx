@@ -12,8 +12,8 @@ describe('NewSeasonGoal', () => {
         goal={goal}
         goalIndex={0}
         xs={4}
-        changeWeekPlan={jest.fn()}
-        changeWeekShare={jest.fn()}
+        changeWeekPlan={vi.fn()}
+        changeWeekShare={vi.fn()}
       />
     );
     expect(container).toBeTruthy();
@@ -25,8 +25,8 @@ describe('NewSeasonGoal', () => {
         goal={goal}
         goalIndex={0}
         xs={4}
-        changeWeekPlan={jest.fn()}
-        changeWeekShare={jest.fn()}
+        changeWeekPlan={vi.fn()}
+        changeWeekShare={vi.fn()}
       />
     );
     expect(container.querySelectorAll('input').length).toBeGreaterThan(0);

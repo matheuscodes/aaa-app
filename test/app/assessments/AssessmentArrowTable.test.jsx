@@ -25,7 +25,7 @@ describe('AssessmentArrowTable', () => {
 
   it('renders with delete function', () => {
     const { container } = render(
-      <AssessmentArrowTable data={roundData} deleteEnd={jest.fn()} />
+      <AssessmentArrowTable data={roundData} deleteEnd={vi.fn()} />
     );
     expect(container.querySelector('table')).toBeTruthy();
   });

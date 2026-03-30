@@ -1,15 +1,17 @@
-jest.mock('api', () => ({
-  seasons: { getList: jest.fn(), getById: jest.fn(), delete: jest.fn() },
-  assessments: { getList: jest.fn() },
-  trainings: { getList: jest.fn() },
-  reports: { getYearOverview: jest.fn(), getLastWeeksOverview: jest.fn(), getRingsOverview: jest.fn(), getAssessmentsOverview: jest.fn() },
-  events: { getList: jest.fn(), getPublicEvents: jest.fn() },
-  overview: { get: jest.fn() },
-  equipment: { getList: jest.fn() },
-  trainers: { getAllTrainers: jest.fn(), archers: { list: jest.fn() }, seasons: { list: jest.fn() } },
-  isAuthError: jest.fn(() => false),
+vi.mock('api', () => ({
+  default: {
+    seasons: { getList: vi.fn(), getById: vi.fn(), delete: vi.fn() },
+    assessments: { getList: vi.fn() },
+    trainings: { getList: vi.fn() },
+    reports: { getYearOverview: vi.fn(), getLastWeeksOverview: vi.fn(), getRingsOverview: vi.fn(), getAssessmentsOverview: vi.fn() },
+    events: { getList: vi.fn(), getPublicEvents: vi.fn() },
+    overview: { get: vi.fn() },
+    equipment: { getList: vi.fn() },
+    trainers: { getAllTrainers: vi.fn(), archers: { list: vi.fn() }, seasons: { list: vi.fn() } },
+    isAuthError: vi.fn(() => false),
+    },
 }));
-jest.mock('api/helpers/getLocalArcher', () => jest.fn(() => ({ id: 1, name: 'Test' })));
+vi.mock('api/helpers/getLocalArcher', () => ({ default: vi.fn(() => ({ id: 1, name: 'Test' })) }));
 
 import React from 'react';
 import { render } from '@testing-library/react';
@@ -21,7 +23,7 @@ describe('SeasonsPage', () => {
   it('renders without crashing', () => {
     const { container } = render(
       <MemoryRouter>
-        <SeasonsPage messenger={{ showMessage: jest.fn() }} />
+        <SeasonsPage messenger={{ showMessage: vi.fn() }} />
       </MemoryRouter>
     );
     expect(container).toBeTruthy();

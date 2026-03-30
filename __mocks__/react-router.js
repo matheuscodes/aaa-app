@@ -3,7 +3,7 @@ const React = require('react');
 const withRouter = (WrappedComponent) => {
   const WithRouter = (props) => {
     const routerProps = {
-      history: { push: jest.fn(), replace: jest.fn(), goBack: jest.fn(), listen: jest.fn() },
+      history: { push: vi.fn(), replace: vi.fn(), goBack: vi.fn(), listen: vi.fn() },
       location: { pathname: '/', search: '', hash: '', state: {} },
       match: { params: {}, isExact: true, path: '/', url: '/' },
     };
@@ -13,8 +13,8 @@ const withRouter = (WrappedComponent) => {
   return WithRouter;
 };
 
-const useNavigate = () => jest.fn();
-const useHistory = () => ({ push: jest.fn(), replace: jest.fn(), goBack: jest.fn() });
+const useNavigate = () => vi.fn();
+const useHistory = () => ({ push: vi.fn(), replace: vi.fn(), goBack: vi.fn() });
 const useLocation = () => ({ pathname: '/', search: '', hash: '' });
 const useParams = () => ({});
 
