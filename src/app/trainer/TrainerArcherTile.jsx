@@ -3,7 +3,6 @@ import { withTranslation } from 'react-i18next'
 
 import API from 'api'
 
-import { withStyles } from '@mui/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
@@ -19,7 +18,6 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const styles = {}
 
 class TrainerRequestTile extends React.Component {
   constructor(props) {
@@ -100,4 +98,4 @@ class TrainerRequestTile extends React.Component {
   }
 }
 
-export default withTranslation('trainer')(withStyles(styles)(TrainerRequestTile));
+export default withTranslation('trainer')(TrainerRequestTile);

@@ -1,11 +1,9 @@
 import React from 'react'
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 
-const styles = {}
 
 class NewSeasonCardGoal extends React.Component {
   changeWeekPlan(event) {
@@ -50,4 +48,4 @@ class NewSeasonCardGoal extends React.Component {
   }
 }
 
-export default withTranslation('season')(withStyles(styles)(NewSeasonCardGoal));
+export default withTranslation('season')(NewSeasonCardGoal);

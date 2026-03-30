@@ -2,7 +2,6 @@ import React from 'react';
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 import Icon from '@mui/material/Icon';
 import Dialog from '@mui/material/Dialog';
@@ -25,7 +24,6 @@ import DistributionComparisonGraph from 'svg/DistributionComparisonGraph';
 import AssessmentArrowTable from 'app/assessments/AssessmentArrowTable';
 import Waiting from 'app/common/Waiting';
 
-const styles = {}
 
 class AssessmentReport extends React.Component {
   constructor(props) {
@@ -228,4 +226,4 @@ class AssessmentReport extends React.Component {
   }
 }
 
-export default withTranslation('assessment')(withStyles(styles)(AssessmentReport));
+export default withTranslation('assessment')(AssessmentReport);

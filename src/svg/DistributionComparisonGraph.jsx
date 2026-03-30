@@ -2,7 +2,6 @@ import React from 'react'
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 
 import GraphStyle from 'svg/common/GraphStyle'
 import GraphBar from 'svg/common/GraphBar'
@@ -10,7 +9,6 @@ import GraphBottomLabels from 'svg/common/GraphBottomLabels'
 import GraphAxisLabels from 'svg/common/GraphAxisLabels'
 import GraphGrid from 'svg/common/GraphGrid'
 
-const styles = {}
 
 class ValueDistributionGraph extends React.Component {
   render() {
@@ -74,4 +72,4 @@ class ValueDistributionGraph extends React.Component {
   }
 }
 
-export default withTranslation('common', 'home')(withStyles(styles)(ValueDistributionGraph));
+export default withTranslation('common', 'home')(ValueDistributionGraph);

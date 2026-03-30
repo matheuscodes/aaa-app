@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 
 import API from 'api';
 
@@ -14,10 +13,6 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Grid from '@mui/material/Grid';
-
-const styles = {
-  instructionText: {textAlign:"justify"}
-}
 
 
 class ForgottenCard extends React.Component {
@@ -50,7 +45,7 @@ class ForgottenCard extends React.Component {
   }
 
   render() {
-    const { t, classes } = this.props;
+    const { t } = this.props;
 
     return (
       <Card>
@@ -58,7 +53,7 @@ class ForgottenCard extends React.Component {
           <Grid container>
             <Grid item xs={12} >
               <Typography>
-                <p className={classes.instructionText}>{ !this.state.reset ? t('login:forgottenInstructionText') : t('login:forgottenConfirmationText') }</p>
+                <p style={{textAlign:"justify"}}>{ !this.state.reset ? t('login:forgottenInstructionText') : t('login:forgottenConfirmationText') }</p>
               </Typography>
             </Grid>
             {!this.state.reset ? <Grid item xs={12} >
@@ -85,4 +80,4 @@ class ForgottenCard extends React.Component {
   }
 }
 
-export default withTranslation('login')(withRouter(withStyles(styles)(ForgottenCard)));
+export default withTranslation('login')(withRouter(ForgottenCard));

@@ -3,7 +3,6 @@ import keycode from 'keycode';
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -15,7 +14,6 @@ import valueConverter from 'global/ValueConverter';
 
 import ArrowRingRow from 'app/assessments/ArrowRingRow';
 
-const styles = {}
 
 class NewAssessmentEnd extends React.Component {
   constructor(props) {
@@ -206,4 +204,4 @@ class NewAssessmentEnd extends React.Component {
   }
 }
 
-export default withTranslation('assessment')(withStyles(styles)(NewAssessmentEnd));
+export default withTranslation('assessment')(NewAssessmentEnd);

@@ -2,13 +2,11 @@ import React from 'react';
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 
 import Waiting from 'app/common/Waiting';
 import AssessmentTile from 'app/assessments/AssessmentTile';
 
-const styles = {}
 
 function AssessmentsGrid(props) {
   return (
@@ -29,4 +27,4 @@ function AssessmentsGrid(props) {
   );
 }
 
-export default withTranslation('assessment')(withStyles(styles)(AssessmentsGrid));
+export default withTranslation('assessment')(AssessmentsGrid);

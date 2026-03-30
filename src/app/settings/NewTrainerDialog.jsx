@@ -6,7 +6,6 @@ import API from 'api'
 import TrainerTile from 'app/settings/TrainerTile';
 import Waiting from 'app/common/Waiting';
 
-import { withStyles } from '@mui/styles';
 import FloatingActionButton from '@mui/material/Fab';
 import Icon from '@mui/material/Icon';
 import Grid from '@mui/material/Grid';
@@ -16,7 +15,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 
-const styles = {}
 
 class NewTrainerDialog extends React.Component {
   constructor(props) {
@@ -111,4 +109,4 @@ class NewTrainerDialog extends React.Component {
   }
 }
 
-export default withTranslation('settings')(withStyles(styles)(NewTrainerDialog));
+export default withTranslation('settings')(NewTrainerDialog);

@@ -2,7 +2,6 @@ import React from 'react';
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 import Stepper from '@mui/material/Stepper';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -31,7 +30,6 @@ import WeatherConditions from 'constants/WeatherConditions';
 import Compass from 'svg/icon/Compass';
 import WeatherIcons from 'svg/icon/Weather';
 
-const styles = {}
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -488,4 +486,4 @@ class NewAssessmentDialog extends React.Component {
   }
 }
 
-export default withTranslation('assessment')(withStyles(styles)(NewAssessmentDialog));
+export default withTranslation('assessment')(NewAssessmentDialog);

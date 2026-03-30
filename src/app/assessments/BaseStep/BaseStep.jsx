@@ -2,7 +2,6 @@ import React from 'react';
 
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
@@ -15,7 +14,6 @@ import StepContent from '@mui/material/StepContent';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-const styles = {}
 
 function BaseStep(props) {
   const { t } = props;
@@ -93,4 +91,4 @@ function BaseStep(props) {
   );
 }
 
-export default withTranslation('assessment')(withStyles(styles)(BaseStep));
+export default withTranslation('assessment')(BaseStep);

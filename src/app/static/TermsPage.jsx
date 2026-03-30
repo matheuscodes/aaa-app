@@ -1,7 +1,6 @@
 import React from 'react'
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -9,7 +8,6 @@ import Typography from '@mui/material/Typography';
 
 import LogoName from 'svg/LogoName'
 
-const styles = {}
 
 class TermsPage extends React.Component {
   render() {
@@ -282,4 +280,4 @@ class TermsPage extends React.Component {
   }
 }
 
-export default withTranslation('terms')(withStyles(styles)(TermsPage));
+export default withTranslation('terms')(TermsPage);

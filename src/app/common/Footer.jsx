@@ -1,9 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types';
 import { withRouter } from 'react-router'
 import { withTranslation } from 'react-i18next'
 
-import { withStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button'
 import ButtonGroup from '@mui/material/ButtonGroup'
@@ -27,20 +25,6 @@ var languageNodes = languages.map(function(language) {
   );
 });
 
-const styles = {
-  root: {
-    "& .MuiSelect-icon": {
-      fill: "rgba(255, 255, 255, 0.69)"
-    },
-    "& .MuiInput-underline::before": {
-      borderBottom: "1px solid rgba(255,255,255, 0.42)"
-    },
-    "&:hover .MuiInput-underline::before": {
-      borderBottom: "1px solid white"
-    },
-  },
-};
-
 class Footer extends React.Component {
 
   constructor(props){
@@ -58,7 +42,7 @@ class Footer extends React.Component {
     this.props.history.push(RoutePaths.about);
   }
   render() {
-    const { t, classes } = this.props;
+    const { t } = this.props;
     return (
       <footer style={{padding:'10pt'}}>
         <Grid container>
@@ -76,7 +60,11 @@ class Footer extends React.Component {
               fill: '#FFF',
             }} />
             <FormControl color="primary"
-              classes={classes}>
+              sx={{
+                "& .MuiSelect-icon": { fill: "rgba(255, 255, 255, 0.69)" },
+                "& .MuiInput-underline::before": { borderBottom: "1px solid rgba(255,255,255, 0.42)" },
+                "&:hover .MuiInput-underline::before": { borderBottom: "1px solid white" },
+              }}>
               <Select
                 style={{
                     color: 'white',
@@ -99,8 +87,4 @@ class Footer extends React.Component {
   }
 }
 
-Footer.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withTranslation('common')(withRouter(withStyles(styles)(Footer)));
+export default withTranslation('common')(withRouter(Footer));
