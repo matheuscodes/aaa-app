@@ -1,7 +1,7 @@
 import React from 'react'
 
 const baseSVG = function(icon) {
-  return function(props) {
+  return function WeatherIcon(props) {
     return (
       <svg
         style={props.style}

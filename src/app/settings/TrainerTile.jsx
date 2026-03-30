@@ -40,19 +40,19 @@ class TrainerTile extends React.Component {
           <h3>{t('trainer:tile.licenses')}</h3>
           <ul>
             {this.props.data.licenses ?
-              this.props.data.licenses.map(i => <li>{`${i.title} - ${i.issuer} (${t(`common:countries.${i.country}`)})`}</li>)
+              this.props.data.licenses.map((i, idx) => <li key={idx}>{`${i.title} - ${i.issuer} (${t(`common:countries.${i.country}`)})`}</li>)
               : ""}
           </ul>
           <h3>{t('trainer:tile.styles')}</h3>
           <ul>
             {this.props.data.styles ?
-              this.props.data.styles.map(i => <li>{t(`trainer:styles.${i}`)}</li>)
+              this.props.data.styles.map((i, idx) => <li key={idx}>{t(`trainer:styles.${i}`)}</li>)
               : ""}
           </ul>
           <h3>{t('trainer:tile.classes')}</h3>
           <ul>
             {this.props.data.classes ?
-              this.props.data.classes.map(i => <li>{t(`trainer:classes.${i}`)}</li>)
+              this.props.data.classes.map((i, idx) => <li key={idx}>{t(`trainer:classes.${i}`)}</li>)
               : ""}
           </ul>
         </CardContent>

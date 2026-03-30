@@ -24,7 +24,7 @@ class MonthGraph extends React.Component {
       values.push(single.value);
       // TODO maybe move unit to the components themselves?
       return (
-        <g>
+        <g key={index}>
           <ActualBar
             target={(single.shots - single.techniqueShots) * barUnit}
             training={single.techniqueShots * barUnit}

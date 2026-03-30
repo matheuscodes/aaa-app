@@ -35,7 +35,7 @@ class AssessmentReport extends React.Component {
     this.props.onDelete(this.props.seasonId, this.props.assessmentId);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.open === true && !this.state.called) {
       let callbacks = {
         context: this,

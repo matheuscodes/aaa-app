@@ -99,7 +99,7 @@ class Application extends React.Component {
         </Routes>
         <div style={{'backgroundColor':'white', padding:'10pt'}}>
           {Object.keys(this.state.alarms).map((alarm) =>
-            <Snackbar open={alarm} autoHideDuration={6000} onClose={this.handleAlarmClose.bind(this,alarm)}>
+            <Snackbar key={alarm} open={alarm} autoHideDuration={6000} onClose={this.handleAlarmClose.bind(this,alarm)}>
               <Alert elevation={6} variant="filled" style={{margin:'10pt'}} severity={this.state.alarms[alarm].type.toLowerCase()}>
                 {this.state.alarms[alarm].text}
               </Alert>

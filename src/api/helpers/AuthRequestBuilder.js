@@ -3,7 +3,7 @@ import getLocalArcher from 'api/helpers/getLocalArcher'
 const requestURL = (process.env.clientRequestURL || "https://api.archery.app");
 //console.log("Using Request URL:",requestURL)
 
-export default function(method, path, callbacks) {
+export default function AuthRequestBuilder(method, path, callbacks) {
   var xmlhttp = new XMLHttpRequest();
   var archer = getLocalArcher();
 

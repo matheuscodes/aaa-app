@@ -4,7 +4,7 @@
   "description": "AAA - Advanced Archery Application",
   "scripts": {
     "clean": "rm -rf node_modules && rm -rf build",
-    "eslint": "eslint --ext .jsx,.svg --fix ",
+    "eslint": "eslint src/",
     "fetch-languages": "rm -rf node_modules/aaa-languages && cp -R ../aaa-languages node_modules/",
     "revert-languages": "rm -rf node_modules/aaa-languages && npm run install aaa-languages",
     "just-deploy": "aws s3 cp build/ s3://frontend.archery.app.production/ --recursive --acl public-read",
@@ -36,21 +36,17 @@
     "@mui/x-date-pickers": "8.27.2",
     "aaa-languages": "git+https://github.com/matheuscodes/aaa-languages.git",
     "chart.js": "4.5.1",
-    "clsx": "2.1.1",
     "date-fns": "4.1.0",
     "i18next": "26.0.2",
     "i18next-browser-languagedetector": "8.2.1",
     "i18next-http-backend": "3.0.2",
-    "intl": "1.2.5",
     "keycode": "2.2.1",
-    "mobile-detect": "1.4.5",
     "moment": "2.30.1",
     "react": "19.2.4",
     "react-chartjs-2": "5.3.1",
     "react-dom": "19.2.4",
     "react-i18next": "17.0.1",
-    "react-router-dom": "7.13.2",
-    "typescript": "6.0.2"
+    "react-router-dom": "7.13.2"
   },
   "browserslist": {
     "development": [
@@ -75,10 +71,15 @@
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
     "@vitejs/plugin-react-swc": "4.3.0",
-    "babel-jest": "29.7.0",
+    "babel-jest": "30.3.0",
+    "eslint": "9.39.4",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "7.0.1",
+    "globals": "17.4.0",
     "identity-obj-proxy": "3.0.0",
     "jest": "30.3.0",
-    "jest-environment-jsdom": "29.7.0",
+    "jest-environment-jsdom": "30.3.0",
+    "typescript": "6.0.2",
     "vite": "8.0.3"
   }
 }

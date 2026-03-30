@@ -465,8 +465,8 @@ class NewAssessmentDialog extends React.Component {
                       </tbody>
                     </table>
                   </Grid>
-                  {this.state.rounds.map(round => (
-                    <Grid item xs={4} >
+                  {this.state.rounds.map((round, roundIndex) => (
+                    <Grid item xs={4} key={roundIndex}>
                       <AssessmentArrowTable
                         data={round} />
                     </Grid>

@@ -80,7 +80,7 @@ class NewTrainingDialog extends React.Component {
     this.setState(this.state);
   }
 
-  componentWillReceiveProps(nextProps){
+  UNSAFE_componentWillReceiveProps(nextProps){
     if(typeof nextProps.open !== 'undefined'){
       this.state.open = nextProps.open;
     }
