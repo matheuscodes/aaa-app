@@ -23,7 +23,7 @@ class LoginPage extends React.Component {
           <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
             <LogoName />
           </Grid>
-          <Grid justifyContent="center" container>
+          <Grid size={12} justifyContent="center" container>
             <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
               <LoginCard messenger={messenger} />
             </Grid>
