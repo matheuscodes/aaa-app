@@ -15,13 +15,13 @@ function AssessmentsGrid(props) {
         props.assessments ?
           props.assessments.map((assessment, index) => {
             return (
-              <Grid item key={`aaa-assessment_${assessment.date}`} xs={3} >
+              <Grid key={`aaa-assessment_${assessment.date}`} size={3}>
                 <AssessmentTile
                   data={assessment}
                   onDelete={props.deleteAssessment} />
               </Grid>
             );
-          }) : <Grid item xs={12} ><Waiting /></Grid>
+          }) : <Grid size={12}><Waiting /></Grid>
       }
     </Grid>
   );

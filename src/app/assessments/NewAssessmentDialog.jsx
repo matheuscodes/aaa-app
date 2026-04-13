@@ -222,7 +222,7 @@ class NewAssessmentDialog extends React.Component {
     const actions = [];
     if (stepIndex > 0) {
       actions.push(
-        <Grid item xs={6} key={'aaa-newAssessmentDialog-back'}>
+        <Grid key={'aaa-newAssessmentDialog-back'} size={6}>
           <Button fullWidth
             color="secondary"
             variant="contained"
@@ -238,7 +238,7 @@ class NewAssessmentDialog extends React.Component {
       );
     } else if (stepIndex === 0) {
       actions.push(
-        <Grid item xs={6} key={'aaa-newAssessmentDialog-exit'}>
+        <Grid key={'aaa-newAssessmentDialog-exit'} size={6}>
           <Button fullWidth
             color="secondary"
             variant="contained"
@@ -251,7 +251,7 @@ class NewAssessmentDialog extends React.Component {
 
     if (stepIndex < (1 + rounds.length)) {
       actions.push(
-        <Grid item xs={6} key={'aaa-newAssessmentDialog-next'}>
+        <Grid key={'aaa-newAssessmentDialog-next'} size={6}>
           <Button fullWidth
             color="primary"
             variant="contained"
@@ -266,7 +266,7 @@ class NewAssessmentDialog extends React.Component {
       );
     } else if(stepIndex < (1 + rounds.length + 1)) {
       actions.push(
-        <Grid item xs={6} key={'aaa-newAssessmentDialog-new'}>
+        <Grid key={'aaa-newAssessmentDialog-new'} size={6}>
           <Button fullWidth
             color="primary"
             variant="contained"
@@ -291,7 +291,7 @@ class NewAssessmentDialog extends React.Component {
       );
     } else {
       actions.push(
-        <Grid item xs={6} key={'aaa-newAssessmentDialog-submit'}>
+        <Grid key={'aaa-newAssessmentDialog-submit'} size={6}>
           <Button fullWidth
             color="primary"
             variant="contained"
@@ -379,8 +379,8 @@ class NewAssessmentDialog extends React.Component {
             <Step>
               <StepLabel>{t('assessment:newAssessment.confirmStep.title')}</StepLabel>
               <StepContent>
-                <Grid container justify="center" >
-                  <Grid item xs={4}>
+                <Grid container justifyContent="center">
+                  <Grid size={4}>
                     <h4>
                       {t('assessment:report.overviewTitle')}
                     </h4>
@@ -466,7 +466,7 @@ class NewAssessmentDialog extends React.Component {
                     </table>
                   </Grid>
                   {this.state.rounds.map((round, roundIndex) => (
-                    <Grid item xs={4} key={roundIndex}>
+                    <Grid key={roundIndex} size={4}>
                       <AssessmentArrowTable
                         data={round} />
                     </Grid>

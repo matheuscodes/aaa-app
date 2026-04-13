@@ -86,7 +86,7 @@ class ReportTile extends React.Component {
       content = (
         <div id="aaa-reportPrintableArea">
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <h2>{t('report:tableTitle', {date: new Date(this.props.year, this.props.month - 1, 1)})}</h2>
               <MonthReportTable data={this.state} allDays={allDays}/>
               <h3>{t('report:dailyGraphTitle')}</h3>

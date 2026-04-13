@@ -67,7 +67,7 @@ class DistancesStep extends React.Component {
             <Grid container>
               {
                 Object.keys(this.props.arrowDistances).map((distance, index) => (
-                  <Grid item xs={4} key={index} >
+                  <Grid key={index} size={4}>
                     <FormControlLabel
                       control={<Checkbox checked={this.props.arrowDistances[distance]} onChange={(event) => {
                         this.props.setArrowDistances({[distance]:event.target.checked});
@@ -76,15 +76,15 @@ class DistancesStep extends React.Component {
                   </Grid>
                 ))
               }
-              <Grid item container>
-                <Grid item xs={4}>
+              <Grid container>
+                <Grid size={4}>
                   <TextField fullWidth
                     id="newTrainingCardNewDistance"
                     onChange={this.changeNewDistances.bind(this)}
                     hintText={t('training:newTraining.distanceTextField.hint')}
                     label={t('training:newTraining.distanceTextField.label')} />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid size={4}>
                   <FloatingActionButton
                     onClick={this.createNewDistances.bind(this)} >
                     <Icon>add_box</Icon>

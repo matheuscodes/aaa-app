@@ -118,14 +118,14 @@ class LoginCard extends React.Component {
 
         <CardContent>
           <Grid container>
-            <Grid item xs={12} >
+            <Grid size={12}>
               <TextField
                 style={{width:'100%'}}
                 id={'aaa-loginEmail'}
                 onChange={this.changeEmail.bind(this)}
                 label={t('login:emailTextField.label')} />
             </Grid>
-            <Grid item xs={12} >
+            <Grid size={12}>
               <TextField
                 style={{width:'100%'}}
                 id={'aaa-loginPassword'}
@@ -140,7 +140,7 @@ class LoginCard extends React.Component {
         </CardContent>
         <CardActions>
           <Grid container spacing={2} >
-            <Grid item xs={12} >
+            <Grid size={12}>
               <Button
                 style={{width:'100%'}}
                 color="primary"
@@ -150,7 +150,7 @@ class LoginCard extends React.Component {
                 {t('login:loginButton.label')}
               </Button>
             </Grid>
-            <Grid item xs={12} >
+            <Grid size={12}>
               <Button
                 style={{width:'100%'}}
                 variant="contained"

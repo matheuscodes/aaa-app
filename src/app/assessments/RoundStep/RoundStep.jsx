@@ -21,17 +21,17 @@ function RoundStep(props) {
         </StepLabel>
         <StepContent>
           <Grid container spacing={2}>
-            <Grid item xs={6} >
+            <Grid size={6}>
               <NewAssessmentEnd
                 roundIndex={props.roundIndex}
                 addEnd={props.addEnd} />
             </Grid>
-            <Grid item xs={6} >
+            <Grid size={6}>
               <NewAssessmentRound
                 roundIndex={props.roundIndex}
                 addRound={props.addRound} />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <AssessmentArrowTable
                 data={props.round}
                 deleteEnd={props.deleteEnd} />

@@ -175,7 +175,7 @@ class AssessmentsPage extends React.Component {
     return (
       <div style={{'backgroundColor':'white', padding:'10pt'}}>
         <Grid container spacing={2} >
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Button fullWidth
               color="primary"
               variant="contained"
@@ -185,7 +185,7 @@ class AssessmentsPage extends React.Component {
             assessments={this.state.assessments}
             deleteAssessment={this.deleteAssessment.bind(this)}/>
           <Grid container >
-            <Grid item xs={6} sm={4} lg={3} style={{padding:'5pt'}}>
+            <Grid style={{padding:'5pt'}} size={{ xs: 6, sm: 4, lg: 3 }}>
               {
                 typeof this.state.previous !== 'undefined' ?
                 <Button
@@ -200,8 +200,8 @@ class AssessmentsPage extends React.Component {
                 </Button> : ''
               }
             </Grid>
-            <Grid item xs={false} sm={4} lg={6} />
-            <Grid item xs={6} sm={4} lg={3} style={{padding:'5pt'}}>
+            <Grid size={{ sm: 4, lg: 6 }} />
+            <Grid style={{padding:'5pt'}} size={{ xs: 6, sm: 4, lg: 3 }}>
               {
                 typeof this.state.next !== 'undefined' ?
                 <Button

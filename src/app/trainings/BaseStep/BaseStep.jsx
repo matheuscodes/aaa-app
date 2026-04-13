@@ -37,7 +37,7 @@ function BaseStep(props) {
       <StepContent>
         <FormControl style={{minWidth: '100%'}}>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <InputLabel htmlFor="newAssessmentSeason">
                 {t('training:newTraining.seasonSelectField.label')}
               </InputLabel>
@@ -49,7 +49,7 @@ function BaseStep(props) {
                 {seasons.map((season) => <MenuItem key={season.id} value={season.id}>{season.name}</MenuItem> )}
               </Select>
             </Grid>
-            <Grid item xs={2} >
+            <Grid size={2}>
               <DatePicker
                 label={t('training:newTraining.dateDatepicker.label')}
                 format="dd.MM.yyyy"
@@ -59,7 +59,7 @@ function BaseStep(props) {
               />
             </Grid>
 
-            <Grid item xs={10} >
+            <Grid size={10}>
               <FormLabel component="legend">{t('training:newTraining.classes.label')}</FormLabel>
               <FormGroup>
                 <FormControlLabel

@@ -158,7 +158,7 @@ class NewTrainingDialog extends React.Component {
     const actions = [];
     if (stepIndex > 0) {
       actions.push(
-        <Grid item xs={6} key={'aaa-newAssessmentDialog-back'}>
+        <Grid key={'aaa-newAssessmentDialog-back'} size={6}>
           <Button fullWidth
             color="secondary"
             variant="contained"
@@ -174,7 +174,7 @@ class NewTrainingDialog extends React.Component {
       );
     } else if (stepIndex === 0) {
       actions.push(
-        <Grid item xs={6} key={'aaa-newAssessmentDialog-exit'}>
+        <Grid key={'aaa-newAssessmentDialog-exit'} size={6}>
           <Button fullWidth
             color="secondary"
             variant="contained"
@@ -192,7 +192,7 @@ class NewTrainingDialog extends React.Component {
 
     if (stepIndex === stepCount) {
       actions.push(
-        <Grid item xs={6} key={'aaa-newAssessmentDialog-submit'}>
+        <Grid key={'aaa-newAssessmentDialog-submit'} size={6}>
           <Button fullWidth
             color="primary"
             variant="contained"
@@ -202,7 +202,7 @@ class NewTrainingDialog extends React.Component {
       );
     } else {
       actions.push(
-        <Grid item xs={6} key={'aaa-newAssessmentDialog-next'}>
+        <Grid key={'aaa-newAssessmentDialog-next'} size={6}>
           <Button fullWidth
             color="primary"
             variant="contained"
@@ -304,8 +304,8 @@ class NewTrainingDialog extends React.Component {
             <Step>
               <StepLabel>{t('training:newTraining.confirmStep.title')}</StepLabel>
               <StepContent>
-                <Grid container justify="center" >
-                  <Grid item xs={6} >
+                <Grid container justifyContent="center">
+                  <Grid size={6}>
                     <TrainingTile data={this.state.training} />
                   </Grid>
                 </Grid>

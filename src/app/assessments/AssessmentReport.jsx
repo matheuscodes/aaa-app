@@ -74,14 +74,14 @@ class AssessmentReport extends React.Component {
             };
 
             return (
-              <Grid item xs={6} key={'aaa-assessmentRound_' + roundIndex} >
+              <Grid key={'aaa-assessmentRound_' + roundIndex} size={6}>
                 <Grid container>
-                  <Grid item xs={6} >
+                  <Grid size={6}>
                     <AssessmentArrowTable
                       style={this.props.style}
                       data={round} />
                   </Grid>
-                  <Grid item xs={6} >
+                  <Grid size={6}>
                     <EndDistributionGraph
                       id={'aaa-assessmentGraph_' + roundIndex}
                       height={'230pt'}
@@ -94,17 +94,17 @@ class AssessmentReport extends React.Component {
         this);
       } else {
         rounds = (
-          <Grid xs={6} >
+          <Grid size={6}>
             {t('assessment:report.noRounds')}
           </Grid>
         );
       }
     }
 
-    let comparison = <Grid item xs={12} ><Waiting /></Grid>;
+    let comparison = <Grid size={12}><Waiting /></Grid>;
     if (typeof this.state.assessment.ringComparison !== 'undefined') {
       comparison = (
-        <Grid item xs={6}>
+        <Grid size={6}>
           <DistributionComparisonGraph
             data={this.state.assessment.ringComparison} />
         </Grid>
@@ -135,8 +135,8 @@ class AssessmentReport extends React.Component {
           </Toolbar>
         </AppBar>
         <DialogContent>
-          <Grid container spacing={2} justify="center">
-            <Grid item xs={3}>
+          <Grid container spacing={2} justifyContent="center">
+            <Grid size={3}>
               <h4>
                 {t('assessment:report.overviewTitle', this.props.data)}
               </h4>
@@ -212,7 +212,7 @@ class AssessmentReport extends React.Component {
                 ] : []
               }
             </Grid>
-            <Grid item xs={6}>
+            <Grid size={6}>
               <h4>
                 {t('assessment:report.comparisonTitle')}
               </h4>

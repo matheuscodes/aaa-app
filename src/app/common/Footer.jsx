@@ -46,13 +46,13 @@ class Footer extends React.Component {
     return (
       <footer style={{padding:'10pt'}}>
         <Grid container>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <ButtonGroup color="primary" variant="text">
               <Button onClick={this.openAbout.bind(this)}>{t('common:footlinks.about')}</Button>
               <Button onClick={this.openTerms.bind(this)}>{t('common:footlinks.impressum')}</Button>
             </ButtonGroup>
           </Grid>
-          <Grid item xs={12} sm={6} style={{ textAlign: 'right' }}>
+          <Grid style={{ textAlign: 'right' }} size={{ xs: 12, sm: 6 }}>
             <LanguageIcon style={{
               width: '24pt',
               height: '24pt',
@@ -78,7 +78,7 @@ class Footer extends React.Component {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} style={{ textAlign: 'center', color:'grey' }}>
+          <Grid style={{ textAlign: 'center', color:'grey' }} size={12}>
               Matheus Borges Teixeira &copy; 2026 - Version 2.6.0
           </Grid>
         </Grid>

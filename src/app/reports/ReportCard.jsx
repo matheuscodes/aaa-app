@@ -93,10 +93,10 @@ class ReportCard extends React.Component {
           subheader={t('report:cardSubtitle')} />
         <CardContent>
           <Grid container spacing={2}>
-            <Grid item xs={1} >
+            <Grid size={1}>
               {' '}
             </Grid>
-            <Grid item xs={5} >
+            <Grid size={5}>
               <InputLabel htmlFor="aaa-reportSeason">
                 {t('report:seasonSelectField.label')}
               </InputLabel>
@@ -108,7 +108,7 @@ class ReportCard extends React.Component {
                 {seasons}
               </Select>
             </Grid>
-            <Grid item xs={2} >
+            <Grid size={2}>
               <InputLabel htmlFor="aaa-reportYear">
                 {t('report:yearSelectField.label')}
               </InputLabel>
@@ -120,7 +120,7 @@ class ReportCard extends React.Component {
                 {years}
               </Select>
             </Grid>
-            <Grid item xs={3} >
+            <Grid size={3}>
               <InputLabel htmlFor="aaa-reportMonth">
                 {t('report:monthSelectField.label')}
               </InputLabel>
@@ -132,7 +132,7 @@ class ReportCard extends React.Component {
                 {months}
               </Select>
             </Grid>
-            <Grid item xs={12} >
+            <Grid size={12}>
               {seasonId && selectedYear && typeof selectedMonth !== 'undefined'?
                 <ReportTile
                   seasonId={seasonId}

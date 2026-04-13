@@ -94,10 +94,8 @@ class SeasonsPage extends React.Component {
     if (typeof this.state.seasons !== 'undefined') {
       seasons = this.state.seasons.map(function(season, index) {
         return (
-          <Grid item
-            key={'aaa-season_' + season.id}
-            xs={12}
-            lg={6} >
+          <Grid 
+ key={'aaa-season_' + season.id} size={{ xs: 12, lg: 6 }}>
             <SeasonTile
               seasonId={season.id}
               data={season}
@@ -118,7 +116,7 @@ class SeasonsPage extends React.Component {
           {t('season:newSeason.button')}
         </Button>
         <Grid container spacing={2}>
-          {(seasons || <Grid item xs={12} ><Waiting /></Grid>)}
+          {(seasons || <Grid size={12}><Waiting /></Grid>)}
         </Grid>
         <NewSeasonCard
           messenger={this.props.messenger}

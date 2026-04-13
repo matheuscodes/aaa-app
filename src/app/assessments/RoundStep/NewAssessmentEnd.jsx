@@ -143,7 +143,7 @@ class NewAssessmentEnd extends React.Component {
       'X', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M',
     ].map(function(value) {
       return (
-        <Grid item xs={3} key={value}>
+        <Grid key={value} size={3}>
           <Button fullWidth
             variant="contained"
             size="small"
@@ -161,13 +161,13 @@ class NewAssessmentEnd extends React.Component {
       );
     }, this);
     actions.push(
-      <Grid item xs={6}>
+      <Grid size={6}>
         <Button variant="contained" size="small" color="secondary" fullWidth
           onClick={this.undo.bind(this)}>{t('assessment:newAssessment.roundStep.undoEnd')}</Button>
       </Grid>
     );
     actions.push(
-      <Grid item xs={6}>
+      <Grid size={6}>
         <Button variant="contained" size="small" color="primary" fullWidth
           keyboardFocused={true}
           onClick={this.handleSubmit.bind(this)}>{t('assessment:submitEnd')}</Button>

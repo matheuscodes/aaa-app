@@ -22,7 +22,7 @@ function BaseStep(props) {
       <StepLabel>{t('assessment:newAssessment.baseStep.title')}</StepLabel>
       <StepContent>
         <Grid container spacing={2}>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FormControl fullWidth>
               <InputLabel htmlFor="newAssessmentSeason">
                 {t('assessment:newAssessment.seasonSelectField.label')}
@@ -36,7 +36,7 @@ function BaseStep(props) {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={6} >
+          <Grid size={6}>
             <FormControl fullWidth>
               <DatePicker
                 label={t('assessment:newAssessment.dateDatepicker.label')}
@@ -47,7 +47,7 @@ function BaseStep(props) {
               />
             </FormControl>
           </Grid>
-          <Grid item xs={6} >
+          <Grid size={6}>
             <FormControl fullWidth>
               <TextField fullWidth
                 id={'newAssessmentDistance'}
@@ -57,7 +57,7 @@ function BaseStep(props) {
                 label={t('assessment:newAssessment.distanceTextField.label')} />
             </FormControl>
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={6}>
             <FormControl fullWidth>
               <InputLabel htmlFor="newAssessmentTarget">
                 {t('assessment:newAssessment.targetSelectField.label')}
@@ -71,7 +71,7 @@ function BaseStep(props) {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={6}>
             <FormControl fullWidth>
               <InputLabel htmlFor="newAssessmentEvent">
                 {t('assessment:newAssessment.eventSelectField.label')}

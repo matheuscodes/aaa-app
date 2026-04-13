@@ -27,7 +27,7 @@ class InputStep extends React.Component {
               Object.keys(this.props.arrowTrainingTypes)
                 .filter((type) => this.props.arrowTrainingTypes[type])
                 .map((type, index1) => (
-                <Grid item xs={4} key={index1} >
+                <Grid key={index1} size={4}>
                   <InputLabel htmlFor="newAssessmentSeason">
                     {t(`training:arrowTrainingTypes.${type}`)}:
                   </InputLabel>
@@ -36,7 +36,7 @@ class InputStep extends React.Component {
                       Object.keys(this.props.arrowDistances)
                         .filter((distance) => this.props.arrowDistances[distance])
                         .map((distance, index2) => (
-                          <Grid item xs={4} key={index2} >
+                          <Grid key={index2} size={4}>
                             <TextField fullWidth
                               id={`aaa-arrowTraining_${type}_${distance}`}
                               onChange={(event, value) => {

@@ -58,14 +58,14 @@ class TrainerTile extends React.Component {
         </CardContent>
         <CardActions>
           <Grid container spacing={2}>
-            <Grid item xs={8} >
+            <Grid size={8}>
               <TextField
                 style={{width:'100%'}}
                 id={`aaa-trainer-message-${this.props.data.id}`}
                 onChange={this.changeMessage.bind(this)}
                 label={t('trainer:tile.message')} />
             </Grid>
-            <Grid item xs={4} >
+            <Grid size={4}>
               <Button
                 variant="contained"
                 color="primary"

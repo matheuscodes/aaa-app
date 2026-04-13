@@ -33,7 +33,7 @@ class SettingsPage extends React.Component {
     return (
       <div style={{'backgroundColor':'white', padding:'10pt'}}>
         <Grid container spacing={2} >
-          <Grid item xs={12} md={12} >
+          <Grid size={{ xs: 12, md: 12 }}>
             <Card>
               <CardHeader
                 title={t('settings:trainer.title')}

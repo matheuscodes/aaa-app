@@ -98,21 +98,21 @@ class NewAssessmentRound extends React.Component {
           </DialogTitle>
           <DialogContent>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <TextField fullWidth
                   id={'aaa-newRoundRings'}
                   onChange={this.changeRings.bind(this)}
                   hintText={t('assessment:newRound.ringsTextField.hint')}
                   label={t('assessment:newRound.ringsTextField.label')} />
               </Grid>
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <TextField fullWidth
                   id={'aaa-newRoundArrows'}
                   onChange={this.changeArrows.bind(this)}
                   hintText={t('assessment:newRound.arrowsTextField.hint')}
                   label={t('assessment:newRound.arrowsTextField.label')} />
               </Grid>
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <TextField fullWidth
                   id={'aaa-newRoundEnds'}
                   onChange={this.changeEnds.bind(this)}
