@@ -42,12 +42,14 @@ class ConfirmLoginPage extends React.Component {
   render() {
     return (
       <div style={{'backgroundColor':'white', padding:'10pt'}}>
-        <Grid justifyContent="center" container>
-          <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-            <LogoName />
-          </Grid>
-          <Grid justifyContent="center" container>
+        <Grid size={12} sx={{justifyContent: 'center'}} container>
+          <Grid size={12} sx={{justifyContent: 'center'}} container>
             <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+              <LogoName />
+            </Grid>
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, lg: 3 }} container>
+            <Grid size={12}>
             <Card>
               <CardContent>
                 <Typography variant="h4">{this.state.title()}</Typography>
