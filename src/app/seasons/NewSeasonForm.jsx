@@ -233,7 +233,7 @@ class NewSeasonCardForm extends React.Component {
     return (
       <Grid container spacing={2}>
         <Grid container spacing={2}>
-          <Grid item xs={4}>
+          <Grid size={4}>
             <TextField fullWidth
               id={'aaa-newSeasonName'}
               defaultValue={this.props.season.name}
@@ -241,7 +241,7 @@ class NewSeasonCardForm extends React.Component {
               hintText={t('season:newSeason.nameTextField.hint')}
               label={t('season:newSeason.nameTextField.label')} />
           </Grid>
-          <Grid item xs={4} >
+          <Grid size={4}>
             <InputLabel id="demo-simple-select-label">
               {t('season:newSeason.equipmentSelectField.label')}
             </InputLabel>
@@ -254,7 +254,7 @@ class NewSeasonCardForm extends React.Component {
               {this.getEquipments()}
             </Select>
           </Grid>
-          <Grid item xs={2} >
+          <Grid size={2}>
             <DatePicker
               label={t('season:newSeason.startDateDatepicker.label')}
               format="dd.MM.yyyy"
@@ -264,7 +264,7 @@ class NewSeasonCardForm extends React.Component {
               slotProps={{ textField: { fullWidth: true, margin: 'normal', id: 'aaa-seasonStartDate' } }}
             />
           </Grid>
-          <Grid item xs={2} >
+          <Grid size={2}>
             <DatePicker
               label={t('season:newSeason.endDateDatepicker.label')}
               format="dd.MM.yyyy"
@@ -274,7 +274,7 @@ class NewSeasonCardForm extends React.Component {
               slotProps={{ textField: { fullWidth: true, margin: 'normal', id: 'aaa-seasonEndDate' } }}
             />
           </Grid>
-          <Grid item xs={4} >
+          <Grid size={4}>
             <List>
               <ListSubheader>
                 {t('season:newSeason.trainers.subheader')}
@@ -282,10 +282,10 @@ class NewSeasonCardForm extends React.Component {
               {this.getTrainers()}
             </List>
           </Grid>
-          <Grid item xs={8} >
+          <Grid size={8}>
             <SeasonGraph style={{maxHeight:300}} data={this.state.season} events={this.state.registeredEvents} />
           </Grid>
-          <Grid item xs={8} >
+          <Grid size={8}>
             <Grid container spacing={2} >
               {this.getWeekPlans()}
             </Grid>

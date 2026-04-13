@@ -87,7 +87,7 @@ class TrainerReportsPage extends React.Component {
             subheader={t('trainer:report.cardSubtitle')} />
           <CardContent>
             <Grid container spacing={2} >
-              <Grid item xs={12} >
+              <Grid size={12}>
                 <InputLabel htmlFor="aaa-reportPupil">
                   {t('trainer:report.pupilSelectField.label')}
                 </InputLabel>
@@ -99,7 +99,7 @@ class TrainerReportsPage extends React.Component {
                   {pupils}
                 </Select>
               </Grid>
-              <Grid item xs={12} >
+              <Grid size={12}>
                 {this.state.seasons ? <ReportCard
                   messenger={this.props.messenger} 
                   pupilId={this.state.pupilId}

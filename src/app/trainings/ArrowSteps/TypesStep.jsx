@@ -21,7 +21,7 @@ function TypesStep(props) {
         <FormGroup>
           <Grid container>
             {ArrowTrainingTypes.map((type, index) => (
-              <Grid item xs={6} key={index} >
+              <Grid key={index} size={6}>
                 <FormControlLabel
                   control={<Checkbox checked={props.arrowTrainingTypes[type]} onChange={(event) => {
                     props.setArrowTrainingTypes({[type]:event.target.checked});

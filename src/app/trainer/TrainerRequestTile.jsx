@@ -29,9 +29,9 @@ class TrainerRequestTile extends React.Component {
         </CardContent>
         <CardActions>
           <Grid container spacing={2}>
-            <Grid item xs={4} />
+            <Grid size={4} />
 
-            <Grid item xs={4} >
+            <Grid size={4}>
               { this.props.data.status === 'NEW' ?
                 <Button
                   variant="contained"
@@ -44,7 +44,7 @@ class TrainerRequestTile extends React.Component {
               }
             </Grid>
 
-            <Grid item xs={4} >
+            <Grid size={4}>
               { this.props.data.status === 'NEW' ?
                 <Button
                   variant="contained"

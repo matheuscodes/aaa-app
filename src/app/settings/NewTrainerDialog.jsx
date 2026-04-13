@@ -73,10 +73,7 @@ class NewTrainerDialog extends React.Component {
     if (typeof this.state.trainers !== 'undefined') {
       trainers = this.state.trainers.map(function(trainer, index) {
         return (
-          <Grid item
-            key={'aaa-trainer_' + trainer.id}
-            xs={12}
-            lg={6} >
+          <Grid key={'aaa-trainer_' + trainer.id} size={{ xs: 12, lg: 6 }}>
             <TrainerTile
               data={trainer}
               onSelect={this.submitRequest.bind(this)} />
@@ -94,7 +91,7 @@ class NewTrainerDialog extends React.Component {
             {t('settings:trainer.new.subtitle')}
           </DialogContentText>
           <Grid container spacing={2}>
-            {(trainers || <Grid item xs={12} ><Waiting /></Grid>)}
+            {(trainers || <Grid size={12}><Waiting /></Grid>)}
           </Grid>
         </DialogContent>
         <DialogActions>

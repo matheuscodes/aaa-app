@@ -89,10 +89,7 @@ class TrainerRequestsPage extends React.Component {
     if (typeof this.state.requests !== 'undefined') {
       requests = this.state.requests.map(function(request, index) {
         return (
-          <Grid item
-            key={'aaa-request_' + request.archerId}
-            xs={12}
-            lg={6} >
+          <Grid key={'aaa-request_' + request.archerId} size={{ xs: 12, lg: 6 }}>
             <TrainerRequestTile
               data={request}
               onApprove={this.approveArcher.bind(this)}
@@ -104,14 +101,14 @@ class TrainerRequestsPage extends React.Component {
     return (
       <div style={{'backgroundColor':'white', padding:'10pt'}}>
         <Grid container spacing={2} >
-          <Grid item xs={12} md={12} >
+          <Grid size={{ xs: 12, md: 12 }}>
             <Card>
               <CardHeader
                 title={t('trainer:requests.title')}
                 subheader={t('trainer:requests.subtitle')} />
               <CardContent>
                 <Grid container spacing={2}>
-                  {(requests || <Grid item xs={12} ><Waiting /></Grid>)}
+                  {(requests || <Grid size={12}><Waiting /></Grid>)}
                 </Grid>
               </CardContent>
             </Card>

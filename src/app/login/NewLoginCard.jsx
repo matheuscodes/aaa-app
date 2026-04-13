@@ -126,33 +126,33 @@ class NewLoginCard extends React.Component {
         <CardContent>
           <FormControl>
             <Grid container spacing={2}>
-              <Grid item xs={12} >
+              <Grid size={12}>
                 <Typography style={{textAlign:"justify"}}>
                   { !this.state.reset ? t('login:newLoginInstructionText') : t('login:newLoginConfirmationText') }
                 </Typography>
               </Grid>
-              <Grid item xs={12} >
+              <Grid size={12}>
                 <TextField
                   style={{width:'100%'}}
                   id={'aaa-loginFullName'}
                   onChange={this.changeFullName.bind(this)}
                   label={t('login:fullNameTextField.label')} />
               </Grid>
-              <Grid item xs={12} >
+              <Grid size={12}>
                 <TextField
                   style={{width:'100%'}}
                   id={'aaa-loginEmail'}
                   onChange={this.changeEmail.bind(this)}
                   label={t('login:emailTextField.label')} />
               </Grid>
-              <Grid item xs={6} >
+              <Grid size={6}>
                 <TextField
                   style={{width:'100%'}}
                   id={'aaa-loginBirthYear'}
                   onChange={this.changeBirthYear.bind(this)}
                   label={t('login:birthYearTextField.label')} />
               </Grid>
-              <Grid item xs={6} >
+              <Grid size={6}>
                 <InputLabel htmlFor="aaa-loginGender">
                   {t('login:loginGenderSelectField.label')}
                 </InputLabel>
@@ -166,7 +166,7 @@ class NewLoginCard extends React.Component {
                   <MenuItem value="other" >{t('login:genderMenuItem.other')}</MenuItem>
                 </Select>
               </Grid>
-              <Grid item xs={12} >
+              <Grid size={12}>
                 <TextField
                   style={{width:'100%'}}
                   id={'aaa-loginPassword'}
@@ -176,7 +176,7 @@ class NewLoginCard extends React.Component {
                   error={this.checkedPassword.error}
                   label={t('login:passwordTextField.label')} />
               </Grid>
-              <Grid item xs={12} >
+              <Grid size={12}>
                 <TextField
                   style={{width:'100%'}}
                   id={'aaa-loginConfirmPassword'}

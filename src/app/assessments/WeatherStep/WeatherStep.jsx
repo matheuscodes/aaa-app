@@ -25,10 +25,10 @@ function WeatherStep(props) {
       </StepLabel>
       <StepContent>
         <Grid container spacing={2}>
-          <Grid item xs={2} >
+          <Grid size={2}>
             <Thermometer height={'32pt'}/>
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={6}>
             <TextField fullWidth
               id={'aaa-newAssessmentTemperature'}
               hintText={t('assessment:newAssessment.temperatureTextField.hint')}
@@ -36,16 +36,16 @@ function WeatherStep(props) {
               defaultValue={props.temperature}
               onChange={props.changeTemperature} />
           </Grid>
-          <Grid item xs={4}>
+          <Grid size={4}>
             <WeatherSelector
               value={props.weather}
               onChange={props.changeWeather}
               text={t('assessment:newAssessment.weatherSelector.hint')} />
           </Grid>
-          <Grid item xs={2}>
+          <Grid size={2}>
             <Windmills width={'32pt'} />
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={6}>
             <TextField fullWidth
               id={'aaa-newAssessmentWindSpeed'}
               hintText={t('assessment:newAssessment.windTextField.hint')}
@@ -53,17 +53,17 @@ function WeatherStep(props) {
               defaultValue={props.windSpeed}
               onChange={props.changeWindSpeed} />
           </Grid>
-          <Grid item xs={4}>
+          <Grid size={4}>
             <DirectionSelector
               type={'WindDirection'}
               value={props.windDirection}
               onChange={props.changeWindDirection}
               text={t('assessment:newAssessment.windDirectionSelector.hint')} />
           </Grid>
-          <Grid item xs={2}>
+          <Grid size={2}>
             <ArcherAnchored width={'32pt'} />
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={6}>
             <DirectionSelector
               type={'ShootDirection'}
               value={props.shootDirection}

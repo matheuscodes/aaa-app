@@ -255,7 +255,7 @@ class HomePage extends React.Component {
     return (
       <div style={{'backgroundColor':'white', padding:'10pt'}}>
         <Grid container spacing={2} >
-          <Grid item xs={12} md={6} >
+          <Grid size={{ xs: 12, md: 6 }}>
             <Card>
               <CardHeader
                 title={t('home:year.title')}
@@ -265,7 +265,7 @@ class HomePage extends React.Component {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} md={6} >
+          <Grid size={{ xs: 12, md: 6 }}>
             <Card>
               <CardHeader
                 title={t('home:rings.title')}

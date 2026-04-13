@@ -180,8 +180,7 @@ class TrainingsPage extends React.Component {
     if (typeof this.state.trainings !== 'undefined') {
       trainings = this.state.trainings.map(function(training, index) {
         return (
-          <Grid item xs={4}
-            key={['aaa-training_', index].join('')} >
+          <Grid key={['aaa-training_', index].join('')} size={4}>
             <TrainingTile data={training} onDelete={this.deleteTraining.bind(this)} />
           </Grid>
         );
@@ -199,10 +198,10 @@ class TrainingsPage extends React.Component {
           {t('training:newTraining.button')}
         </Button>
         <Grid container spacing={2}>
-          {(trainings || <Grid item xs={12} ><Waiting /></Grid>)}
+          {(trainings || <Grid size={12}><Waiting /></Grid>)}
         </Grid>
         <Grid container >
-          <Grid item xs={6} sm={4} lg={3} style={{padding:'5pt'}}>
+          <Grid style={{padding:'5pt'}} size={{ xs: 6, sm: 4, lg: 3 }}>
             {
               typeof this.state.previous !== 'undefined' ?
               <Button
@@ -217,8 +216,8 @@ class TrainingsPage extends React.Component {
               </Button> : ''
             }
           </Grid>
-          <Grid item xs={false} sm={4} lg={6} />
-          <Grid item xs={6} sm={4} lg={3} style={{padding:'5pt'}}>
+          <Grid size={{ xs: 0, sm: 4, lg: 6 }} />
+          <Grid style={{padding:'5pt'}} size={{ xs: 6, sm: 4, lg: 3 }}>
             {
               typeof this.state.next !== 'undefined' ?
               <Button

@@ -59,10 +59,7 @@ class TrainerArchersPage extends React.Component {
     if (typeof this.state.archers !== 'undefined') {
       archers = this.state.archers.map(function(archer, index) {
         return (
-          <Grid item
-            key={'aaa-request_' + archer.archerId}
-            xs={12}
-            lg={12} >
+          <Grid key={'aaa-request_' + archer.archerId} size={{ xs: 12, lg: 12 }}>
             <TrainerArcherTile
               data={archer}
               messenger={this.props.messenger}/>
@@ -73,14 +70,14 @@ class TrainerArchersPage extends React.Component {
     return (
       <div style={{'backgroundColor':'white', padding:'10pt'}}>
         <Grid container spacing={2} >
-          <Grid item xs={12} md={12} >
+          <Grid size={{ xs: 12, md: 12 }}>
             <Card>
               <CardHeader
                 title={t('trainer:archers.title')}
                 subheader={t('trainer:archers.subtitle')} />
               <CardContent>
                 <Grid container spacing={2}>
-                  {(archers || <Grid item xs={12} ><Waiting /></Grid>)}
+                  {(archers || <Grid size={12}><Waiting /></Grid>)}
                 </Grid>
               </CardContent>
             </Card>

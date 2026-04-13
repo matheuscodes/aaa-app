@@ -45,15 +45,13 @@ class AssessmentTile extends React.Component {
             subheader={this.props.data.seasonName} /> : ''}
         <CardContent>
           <Grid container >
-            <Grid item xs={6}>
+            <Grid size={6}>
               <p style={{margin: 0}}>
                 {t('assessment:report.totalPoints', this.props.data)} <br/>
                 {t('assessment:report.averagePoints', this.props.data)}
               </p>
             </Grid>
-            <Grid item
-              xs={6}
-              key={'aaa-moreButton'} >
+            <Grid key={'aaa-moreButton'} size={6}>
               <Button fullWidth
                 color="secondary"
                 onClick={this.handleOpen.bind(this)}>{this.props.t('assessment:detailsButton')}</Button>

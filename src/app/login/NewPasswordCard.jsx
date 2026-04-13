@@ -84,12 +84,12 @@ class NewPasswordCard extends React.Component {
       <Card>
         <CardContent>
           <Grid container spacing={2}>
-            <Grid item xs={12} >
+            <Grid size={12}>
               <Typography>
                 <p style={{textAlign:"justify"}}>{t('login:changePasswordInstructionText')}</p>
               </Typography>
             </Grid>
-            <Grid item xs={12} >
+            <Grid size={12}>
               <TextField
                 style={{width:'100%'}}
                 id={'aaa-loginPassword'}
@@ -99,7 +99,7 @@ class NewPasswordCard extends React.Component {
                 error={this.checkedPassword.error}
                 label={t('login:passwordTextField.label')} />
             </Grid>
-            <Grid item xs={12} >
+            <Grid size={12}>
               <TextField
                 style={{width:'100%'}}
                 id={'aaa-loginConfirmPassword'}

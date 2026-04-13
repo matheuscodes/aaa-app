@@ -11,7 +11,7 @@ export default function ArrowRingRow(props) {
     <Grid container spacing={1}>
       {
         props.arrows.map((arrow, arrowIndex) => (
-          <Grid item xs={2} key={arrowIndex}>
+          <Grid key={arrowIndex} size={2}>
             <Avatar
               key={`aaa-newAssessmentEndNewArrow_${arrowIndex}`}
               style={{

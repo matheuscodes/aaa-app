@@ -51,12 +51,12 @@ class ForgottenCard extends React.Component {
       <Card>
         <CardContent>
           <Grid container>
-            <Grid item xs={12} >
+            <Grid size={12}>
               <Typography>
                 <p style={{textAlign:"justify"}}>{ !this.state.reset ? t('login:forgottenInstructionText') : t('login:forgottenConfirmationText') }</p>
               </Typography>
             </Grid>
-            {!this.state.reset ? <Grid item xs={12} >
+            {!this.state.reset ? <Grid size={12}>
               <TextField
                 style={{width:'100%'}}
                 id={'aaa-loginEmail'}

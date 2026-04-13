@@ -16,9 +16,9 @@ class NewSeasonCardGoal extends React.Component {
     const t = this.props.t;
 
     return (
-      <Grid item xs={this.props.xs} >
+      <Grid size={this.props.xs}>
         <Grid container spacing={2}>
-          <Grid item xs={12} >
+          <Grid size={12}>
             <TextField fullWidth
               id={['aaa-newSeasonArrowCount_', this.props.goalIndex].join('')}
               defaultValue={this.props.goal.arrowCount}
@@ -30,7 +30,7 @@ class NewSeasonCardGoal extends React.Component {
                 t('season:newSeason.arrowCountTextField.label', this.props.goal)
               } />
           </Grid>
-          <Grid item xs={12} >
+          <Grid size={12}>
             <TextField fullWidth
               id={['aaa-newSeasonTargetShare_', this.props.goalIndex].join('')}
               defaultValue={this.props.goal.targetShare}
