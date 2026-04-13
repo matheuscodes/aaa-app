@@ -231,8 +231,8 @@ class NewSeasonCardForm extends React.Component {
     const t = this.props.t;
 
     return (
-      <Grid container spacing={2}>
-        <Grid container spacing={2}>
+      <Grid size={12} container spacing={2}>
+        <Grid size={12} container spacing={2}>
           <Grid size={4}>
             <TextField fullWidth
               id={'aaa-newSeasonName'}

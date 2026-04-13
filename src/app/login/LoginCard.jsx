@@ -101,10 +101,8 @@ class LoginCard extends React.Component {
         <CardActionArea>
           <CardMedia
             component="img"
-            alt="Contemplative Reptile"
             height="140"
             image={`/img/${this.state.image}.jpg`}
-            title="Contemplative Reptile"
           />
           <CardContent>
             <Typography style={{fontSize:'10pt'}}>
@@ -139,7 +137,7 @@ class LoginCard extends React.Component {
           </Grid>
         </CardContent>
         <CardActions>
-          <Grid container spacing={2} >
+          <Grid size={12} container spacing={2} >
             <Grid size={12}>
               <Button
                 style={{width:'100%'}}

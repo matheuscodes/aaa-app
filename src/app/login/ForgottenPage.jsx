@@ -24,12 +24,14 @@ class ForgottenPage extends React.Component {
 
     return (
       <div style={{'backgroundColor':'white', padding:'10pt'}}>
-        <Grid justifyContent="center" container>
-          <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-            <LogoName />
-          </Grid>
-          <Grid justifyContent="center" container>
+        <Grid size={12} sx={{justifyContent: 'center'}} container>
+          <Grid size={12} sx={{justifyContent: 'center'}} container>
             <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+              <LogoName />
+            </Grid>
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, lg: 3 }} container>
+            <Grid size={12}>
               { email && token ? <NewPasswordCard messenger={messenger} token={token} email={email}/> :
                   <ForgottenCard messenger={messenger} />
               }

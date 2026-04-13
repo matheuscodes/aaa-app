@@ -184,7 +184,7 @@ class AssessmentsPage extends React.Component {
           <AssessmentsGrid
             assessments={this.state.assessments}
             deleteAssessment={this.deleteAssessment.bind(this)}/>
-          <Grid container >
+          <Grid size={12} container >
             <Grid style={{padding:'5pt'}} size={{ xs: 6, sm: 4, lg: 3 }}>
               {
                 typeof this.state.previous !== 'undefined' ?

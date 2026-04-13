@@ -4,22 +4,6 @@ import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 
-
-function formatter(value, format, lng) {
-  switch (format) {
-    case 'dateTimeLong':
-      return moment(value).format("dddd, MMMM Do YYYY, h:mm a");
-    case 'dateLong':
-      return moment(value).format("MMMM Do YYYY");
-    case 'monthLong':
-      return moment(value).format("MMMM, YYYY");
-    case 'floatShort':
-      return typeof value === 'number' ? value.toFixed(2) : value;
-    default:
-      return value;
-  }
-}
-
 i18n
   // load translation using http -> see /public/locales
   // learn more: https://github.com/i18next/i18next-http-backend
@@ -51,8 +35,24 @@ i18n
 
     interpolation: {
       formatSeparator: ',',
-      format: formatter
     },
+  },
+  (err) => {
+    if (err) console.error(err);
+
+    // i18next v26 formatter registry expects lowercase keys
+    i18n.services.formatter.add('datelong', (value, lng, options) =>
+      moment(value).format('MMMM Do YYYY')
+    );
+    i18n.services.formatter.add('datetimelong', (value, lng, options) =>
+      moment(value).format('dddd, MMMM Do YYYY, h:mm a')
+    );
+    i18n.services.formatter.add('monthlong', (value, lng, options) =>
+      moment(value).format('MMMM, YYYY')
+    );
+    i18n.services.formatter.add('floatshort', (value) =>
+      typeof value === 'number' ? value.toFixed(2) : value
+    );
   });
 
 export default i18n;

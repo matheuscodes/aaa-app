@@ -3,6 +3,25 @@ import { createTheme } from '@mui/material/styles';
 
 // A custom theme for this app
 const theme = createTheme({
+  components: {
+    MuiTextField: {
+      defaultProps: {
+        variant: 'standard',
+      },
+    },
+    MuiFormControl: {
+      defaultProps: {
+        variant: 'standard',
+      },
+    },
+    MuiSelect: {
+      defaultProps: {
+        variant: 'standard',
+      },
+    },
+    // Optional: if you use raw InputBase/OutlinedInput elsewhere
+    // MuiInputBase: { defaultProps: { ... } },
+  },
   palette: {
     primary: {
       main: '#556cd6',
