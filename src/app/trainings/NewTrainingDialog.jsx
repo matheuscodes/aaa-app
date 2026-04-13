@@ -314,7 +314,7 @@ class NewTrainingDialog extends React.Component {
           </Stepper>
         </DialogContent>
         <DialogActions>
-          <Grid container spacing={2}>
+          <Grid spacing={2} sx={{ width: '100%' }} container>
             {this.stepActions}
           </Grid>
         </DialogActions>
