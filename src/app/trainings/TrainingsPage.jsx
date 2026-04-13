@@ -216,7 +216,7 @@ class TrainingsPage extends React.Component {
               </Button> : ''
             }
           </Grid>
-          <Grid size={{ sm: 4, lg: 6 }} />
+          <Grid size={{ xs: 0, sm: 4, lg: 6 }} />
           <Grid style={{padding:'5pt'}} size={{ xs: 6, sm: 4, lg: 3 }}>
             {
               typeof this.state.next !== 'undefined' ?
