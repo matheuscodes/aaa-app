@@ -59,8 +59,7 @@ class TrainerArchersPage extends React.Component {
     if (typeof this.state.archers !== 'undefined') {
       archers = this.state.archers.map(function(archer, index) {
         return (
-          <Grid 
- key={'aaa-request_' + archer.archerId} size={{ xs: 12, lg: 12 }}>
+          <Grid key={'aaa-request_' + archer.archerId} size={{ xs: 12, lg: 12 }}>
             <TrainerArcherTile
               data={archer}
               messenger={this.props.messenger}/>

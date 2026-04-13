@@ -89,8 +89,7 @@ class TrainerRequestsPage extends React.Component {
     if (typeof this.state.requests !== 'undefined') {
       requests = this.state.requests.map(function(request, index) {
         return (
-          <Grid 
- key={'aaa-request_' + request.archerId} size={{ xs: 12, lg: 6 }}>
+          <Grid key={'aaa-request_' + request.archerId} size={{ xs: 12, lg: 6 }}>
             <TrainerRequestTile
               data={request}
               onApprove={this.approveArcher.bind(this)}

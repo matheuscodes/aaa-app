@@ -73,8 +73,7 @@ class NewTrainerDialog extends React.Component {
     if (typeof this.state.trainers !== 'undefined') {
       trainers = this.state.trainers.map(function(trainer, index) {
         return (
-          <Grid 
- key={'aaa-trainer_' + trainer.id} size={{ xs: 12, lg: 6 }}>
+          <Grid key={'aaa-trainer_' + trainer.id} size={{ xs: 12, lg: 6 }}>
             <TrainerTile
               data={trainer}
               onSelect={this.submitRequest.bind(this)} />

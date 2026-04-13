@@ -51,8 +51,7 @@ class AssessmentTile extends React.Component {
                 {t('assessment:report.averagePoints', this.props.data)}
               </p>
             </Grid>
-            <Grid 
- key={'aaa-moreButton'} size={6}>
+            <Grid key={'aaa-moreButton'} size={6}>
               <Button fullWidth
                 color="secondary"
                 onClick={this.handleOpen.bind(this)}>{this.props.t('assessment:detailsButton')}</Button>

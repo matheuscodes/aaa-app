@@ -180,8 +180,7 @@ class TrainingsPage extends React.Component {
     if (typeof this.state.trainings !== 'undefined') {
       trainings = this.state.trainings.map(function(training, index) {
         return (
-          <Grid 
- key={['aaa-training_', index].join('')} size={4}>
+          <Grid key={['aaa-training_', index].join('')} size={4}>
             <TrainingTile data={training} onDelete={this.deleteTraining.bind(this)} />
           </Grid>
         );

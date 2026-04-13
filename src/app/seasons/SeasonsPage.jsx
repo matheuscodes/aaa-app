@@ -94,8 +94,7 @@ class SeasonsPage extends React.Component {
     if (typeof this.state.seasons !== 'undefined') {
       seasons = this.state.seasons.map(function(season, index) {
         return (
-          <Grid 
- key={'aaa-season_' + season.id} size={{ xs: 12, lg: 6 }}>
+          <Grid key={'aaa-season_' + season.id} size={{ xs: 12, lg: 6 }}>
             <SeasonTile
               seasonId={season.id}
               data={season}
